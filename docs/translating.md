@@ -204,9 +204,16 @@ visible text without the brackets (`tests/e2e/pseudo-locale.spec.ts`).
 - a translation has a key English does not, or leaves out a `{{placeholder}}`;
 - a bundled language leaves out an English key, or a plural form its plural rules need (French,
   Spanish, Italian and Portuguese have a `_many` form English does not);
-- an English string changed after it was translated.
+- an English string changed after it was translated;
+- a translation is the same as its English (usually English pasted in rather than translated).
 
-The last one works from `src/shared/locales/translated.lock.json`, which holds a short hash of the
+A translation may match English when it has no word of two or more letters once `{{placeholders}}`
+are taken out (`{{count}} h`), or when `src/shared/locales/same-as-english.json` allows that
+English text in that language: `"GitHub": "*"` for every language, `"Status": ["de", "pt-BR"]` for
+some. Add an entry only for names, and for words a language really shares with English. The
+checker also fails on an entry that no longer matches any string.
+
+The changed-English check works from `src/shared/locales/translated.lock.json`, which holds a short hash of the
 English each key was translated from. When the checker says a string changed, update it in every
 language, then record the new English with `npm run i18n:stamp`. The stamp records only keys every
 language has, so run it after translating, not instead of it.

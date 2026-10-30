@@ -7,6 +7,7 @@ import {
   checkRendererSource,
   jsxText,
   keysInSource,
+  sameAsEnglishProblems,
   sourceHash
 } from '../../scripts/check-i18n.cjs'
 
@@ -190,6 +191,55 @@ describe('check-i18n (P11.1)', () => {
         JSON.stringify({ 'common:a.save': sourceHash('Save changes') })
       )
       expect(run(root).errors).toEqual([])
+    })
+
+    it('fails on a string left the same as English, unless allowed', () => {
+      const english = {
+        save: 'Save changes',
+        status: 'Status',
+        github: 'GitHub',
+        hours: '{{count}} h'
+      }
+      const root = tree({
+        'src/shared/locales/en/common.json': JSON.stringify({ a: english }),
+        // "Save changes" pasted in, not translated; the rest may stay as they are.
+        'src/shared/locales/de/common.json': JSON.stringify({ a: english }),
+        'src/shared/locales/fr/common.json': JSON.stringify({
+          a: { ...english, save: 'Enregistrer', status: 'Statut' }
+        }),
+        'src/shared/locales/same-as-english.json': JSON.stringify({
+          Status: ['de'],
+          GitHub: '*',
+          Gone: '*'
+        }),
+        'src/shared/locales/translated.lock.json': JSON.stringify(
+          Object.fromEntries(
+            Object.entries(english).map(([key, text]) => [`common:a.${key}`, sourceHash(text)])
+          )
+        ),
+        'src/renderer/A.tsx': Object.keys(english)
+          .map((key) => `t('common:a.${key}')`)
+          .join('; ')
+      })
+      expect(run(root).errors).toEqual([
+        'de: common:a.save is the same as English ("Save changes"); translate it, or allow it in same-as-english.json',
+        'same-as-english.json: "Gone" matches no string; remove it'
+      ])
+    })
+
+    it('flags every language that pastes the same English, in one error', () => {
+      expect(
+        sameAsEnglishProblems(
+          new Map([
+            ['en', new Map([['common:a.save', 'Save']])],
+            ['de', new Map([['common:a.save', 'Save']])],
+            ['ja', new Map([['common:a.save', 'Save']])]
+          ]),
+          new Map()
+        )
+      ).toEqual([
+        'de, ja: common:a.save is the same as English ("Save"); translate it, or allow it in same-as-english.json'
+      ])
     })
 
     it('fails on a string that types out the product name', () => {

@@ -13,6 +13,13 @@
  *     src/shared/locales/translated.lock.json, holds a hash of the English
  *     each key was translated from. After updating every language, run
  *     `npm run i18n:stamp` (this script with --stamp) to record the new English.
+ *   - another language's string is the same as its English (most likely
+ *     English pasted in, not translated), unless it has no word of two or more
+ *     letters once `{{placeholders}}` are taken out, or
+ *     src/shared/locales/same-as-english.json allows that English text in
+ *     that language ("*" for every language): names such as "GitHub", and
+ *     words a language shares with English, such as "Status" in German. Each
+ *     entry must still match some string.
  * It warns, without failing, about English keys nothing uses.
  *
  * Keys are found as `t('ns:key')`, `t("ns:key")`, `i18nKey="ns:key"` and
@@ -31,6 +38,7 @@ const { walk: walkFiles } = require('./lib/walk.cjs')
 const LOCALES = path.join(projectRoot, 'src', 'shared', 'locales')
 const SOURCE_LANGUAGE = 'en'
 const LOCK_FILE = path.join(LOCALES, 'translated.lock.json')
+const SAME_FILE_NAME = 'same-as-english.json'
 const DEFAULT_NAMESPACE = 'common'
 // scripts/: the user guide's shortcuts page is written from strings (generate-shortcuts-doc.cjs).
 // The Android app (mobile/) reads the same resources, under the mobile namespace.
@@ -412,10 +420,58 @@ function translationProblems(languages, lock) {
   return errors
 }
 
+/** same-as-english.json: English text → the languages that may keep it, or "*". */
+function readSameAsEnglish(file) {
+  if (!fs.existsSync(file)) return new Map()
+  return new Map(Object.entries(JSON.parse(fs.readFileSync(file, 'utf8'))))
+}
+
+/** Text worth translating: a word of two or more letters outside `{{…}}` and `$t(…)`. */
+function hasTranslatableWords(text) {
+  return /\p{L}{2,}/u.test(text.replace(/\{\{[^}]*\}\}|\$t\([^)]*\)/g, ''))
+}
+
+/**
+ * Strings another language leaves the same as English, outside `allowed`
+ * (English text → languages, or "*"), and entries of `allowed` that no
+ * string needs any more. One error per key, naming every language.
+ */
+function sameAsEnglishProblems(languages, allowed) {
+  const english = languages.get(SOURCE_LANGUAGE) ?? new Map()
+  const same = new Map()
+  const needed = new Set()
+  for (const [language, strings] of languages) {
+    if (language === SOURCE_LANGUAGE) continue
+    for (const [key, text] of strings) {
+      if (key.endsWith('_comment')) continue
+      const source = english.get(key) ?? english.get(`${key.replace(PLURAL_SUFFIX, '')}_other`)
+      if (text !== source || !hasTranslatableWords(text)) continue
+      const languagesAllowed = allowed.get(text)
+      if (languagesAllowed === '*' || languagesAllowed?.includes(language)) {
+        needed.add(text)
+        continue
+      }
+      if (!same.has(key)) same.set(key, [])
+      same.get(key).push(language)
+    }
+  }
+  const errors = []
+  for (const [key, list] of same) {
+    errors.push(
+      `${list.join(', ')}: ${key} is the same as English ("${english.get(key) ?? key}"); translate it, or allow it in ${SAME_FILE_NAME}`
+    )
+  }
+  for (const text of allowed.keys()) {
+    if (!needed.has(text)) errors.push(`${SAME_FILE_NAME}: "${text}" matches no string; remove it`)
+  }
+  return errors
+}
+
 function check({
   root = projectRoot,
   locales = LOCALES,
-  lockFile = path.join(locales, 'translated.lock.json')
+  lockFile = path.join(locales, 'translated.lock.json'),
+  sameFile = path.join(locales, SAME_FILE_NAME)
 } = {}) {
   const errors = []
   const warnings = []
@@ -512,6 +568,7 @@ function check({
       }
     }
   }
+  errors.push(...sameAsEnglishProblems(languages, readSameAsEnglish(sameFile)))
   errors.push(...translationProblems(languages, readLock(lockFile)))
   return { errors, warnings }
 }
@@ -557,6 +614,7 @@ module.exports = {
   requiredKeys,
   stampedLock,
   translationProblems,
+  sameAsEnglishProblems,
   sourceHash,
   ALLOWLIST,
   TEXT_PROPS

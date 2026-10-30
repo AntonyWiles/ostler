@@ -32,6 +32,7 @@ tools/window-screenshot/*.png
 # Personal Claude Code settings
 .claude/settings.json
 .claude/settings.local.json
+.claude/handoff.md
 
 # Android app (mobile/): dependencies, generated native projects and Expo cache
 mobile/node_modules/
