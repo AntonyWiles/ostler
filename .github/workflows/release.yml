@@ -100,7 +100,11 @@ jobs:
             echo "**Unsigned build.** No WIN_CSC_LINK secret is set, so Windows SmartScreen will warn on first run. Updates are still checked against the sha512 in latest.yml." >> "$GITHUB_STEP_SUMMARY"
           fi
 
+      # bash, not the runner's default PowerShell: PowerShell splits
+      # `-c.releaseInfo...` at the dot and electron-builder reads it as a
+      # config file path.
       - name: Build and upload to a draft release
+        shell: bash
         run: npm run build && npx electron-builder --win --x64 --publish ${{ steps.version.outputs.publish }} -c.releaseInfo.releaseNotesFile=release-notes.md
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
