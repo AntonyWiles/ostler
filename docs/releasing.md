@@ -30,7 +30,8 @@ stops.
    `package.json` and `package-lock.json`, commits, and tags `v1.0.0`.
 3. **Push the commit and the tag.** `git push` then `git push origin v1.0.0`. The tag starts the
    **Release** workflow.
-4. **Check the draft.** The workflow builds the app and uploads to a **draft** GitHub release:
+4. **Check the draft.** The workflow makes one **draft** GitHub release (a pre-release when the
+   version has a `-beta` part), builds the app and uploads to it:
    - `Ostler-Setup-1.0.0.exe` (the installer)
    - `Ostler-Setup-1.0.0.exe.blockmap` (lets the next update download only what changed)
    - `Ostler-1.0.0-x64-portable.exe` (the portable exe)

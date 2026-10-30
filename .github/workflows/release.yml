@@ -100,6 +100,25 @@ jobs:
             echo "**Unsigned build.** No WIN_CSC_LINK secret is set, so Windows SmartScreen will warn on first run. Updates are still checked against the sha512 in latest.yml." >> "$GITHUB_STEP_SUMMARY"
           fi
 
+      # electron-builder publishes the installer and the portable exe in
+      # parallel, and when no release exists yet each makes its own draft.
+      # Make the one draft first so both upload to it.
+      - name: Create the draft release
+        if: steps.version.outputs.publish == 'always'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          if gh release view "v${VERSION}" > /dev/null 2>&1; then
+            echo "A release for v${VERSION} already exists; uploading to it."
+          else
+            prerelease=""
+            case "${VERSION}" in *-*) prerelease="--prerelease" ;; esac
+            gh release create "v${VERSION}" --draft ${prerelease} --verify-tag \
+              --title "${VERSION}" --notes-file release-notes.md
+          fi
+
       # bash, not the runner's default PowerShell: PowerShell splits
       # `-c.releaseInfo...` at the dot and electron-builder reads it as a
       # config file path.
