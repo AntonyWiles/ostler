@@ -1,0 +1,4 @@
+#!/bin/sh
+# Blocks commits that carry personal data, secrets, logs, build output or
+# scratch files. Enable once per clone with: git config core.hooksPath .githooks
+exec node scripts/check-hygiene.cjs --staged

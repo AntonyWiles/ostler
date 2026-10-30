@@ -133,14 +133,14 @@ describe('Settings › Connections › Accounts', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Connect an account…' }))
     fireEvent.click(screen.getByRole('button', { name: 'iCloud' }))
     expect(screen.queryByLabelText('Server address')).toBeNull()
-    fireEvent.change(screen.getByLabelText('Apple ID'), { target: { value: 'ann@icloud.com' } })
+    fireEvent.change(screen.getByLabelText('Apple ID'), { target: { value: 'ann@icloud.com' } }) // hygiene-allow: fake test account
     fireEvent.change(screen.getByLabelText('App password'), { target: { value: 'abcd-efgh' } })
     fireEvent.click(screen.getByRole('button', { name: 'Connect' }))
     await waitFor(() =>
       expect(connectAccount).toHaveBeenCalledWith({
         provider: 'caldav',
         server: 'https://caldav.icloud.com',
-        username: 'ann@icloud.com',
+        username: 'ann@icloud.com', // hygiene-allow: fake test account
         password: 'abcd-efgh'
       })
     )

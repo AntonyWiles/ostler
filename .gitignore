@@ -24,7 +24,29 @@ __pycache__/
 
 # Local logs and screenshots from the dev tools and UI tests
 logs/
+*.log
+npm-debug.log*
 tools/window-screenshot/*.png
+
+# Scratch files, dumps and editor leftovers (scripts/check-hygiene.cjs refuses them too)
+scratch/
+tmp/
+*.tmp
+*.bak
+*.orig
+*.rej
+*.swp
+*~
+*-dump.txt
+*-debug.json
+
+# Keys and packaged archives
+*.pem
+*.key
+*.p12
+*.pfx
+*.zip
+*.tgz
 
 # Agent harness state, when the harness is installed into this repository
 .agent-harness/

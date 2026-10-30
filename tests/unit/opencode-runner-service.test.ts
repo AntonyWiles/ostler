@@ -1071,7 +1071,7 @@ describe('opencode-runner-service.ts', { timeout: 30_000 }, () => {
   })
 
   it('passes provider API key as environment variable only and never writes it to disk anywhere', async () => {
-    const secretApiKey = 'sk-ant-SUPER-SECRET-API-KEY-NEVER-PERSIST-TO-DISK-12345'
+    const secretApiKey = 'sk-ant-SUPER-SECRET-API-KEY-NEVER-PERSIST-TO-DISK-12345' // hygiene-allow: fake key
     const customConfig: OstlerConfig = {
       ...DEFAULT_CONFIG,
       ai: {
