@@ -49,3 +49,27 @@ export async function readFileText(buffer: Buffer, source: TextSource): Promise<
     }
   )
 }
+
+/**
+ * Draws page `page` (from 1) of a PDF as a PNG, `width` pixels wide, for the
+ * Library's preview. Null when the PDF has no such page. Throws when it cannot.
+ */
+export async function renderPdfPage(
+  buffer: Buffer,
+  page: number,
+  width: number
+): Promise<Buffer | null> {
+  const parser = new PDFParse({ data: new Uint8Array(buffer) })
+  try {
+    const result = await parser.getScreenshot({
+      partial: [page],
+      desiredWidth: width,
+      imageBuffer: true,
+      imageDataUrl: false
+    })
+    const drawn = result.pages[0]
+    return drawn ? Buffer.from(drawn.data) : null
+  } finally {
+    await parser.destroy()
+  }
+}

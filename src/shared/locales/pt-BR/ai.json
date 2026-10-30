@@ -380,7 +380,7 @@
     "revision": "{{itemTitle}} (revisão {{revision}})",
     "removedLibrary": "Removido da Biblioteca",
     "saveLibrary": "Salvar na Biblioteca",
-    "saveReplyLibraryHuman": "Salvar esta resposta na Biblioteca como nota somente para humanos",
+    "saveReplyLibraryHuman": "Salvar esta resposta na Biblioteca como nota que {{aiName}} nunca lê",
     "writing": "O {{aiName}} está escrevendo…",
     "savedOutsideProject": "Salvo fora do projeto: {{savedPath}}",
     "attachedNextMessage": "Anexado à próxima mensagem",

@@ -7,15 +7,14 @@
     "attachLibrary": "Attach from Library",
     "libraryEmpty": "The library is empty.",
     "noLibraryItemsMatch": "No library items match.",
-    "noItemsOstlerAi": "No items {{aiName}} can read match. Human-only items cannot be attached."
+    "noItemsOstlerAi": "No items {{aiName}} may read match. Items {{aiName}} never reads are left out."
   },
   "libraryDetail": {
     "libraryItem": "Library item",
     "archived": "Archived",
-    "ostlerAiAccess": "{{aiName}} access",
+    "ostlerAiAccess": "{{aiName}} reads it",
     "primaryBriefProject": "Primary brief for this project",
-    "whatShouldOstlerAi": "What should {{aiName}} take from this?",
-    "oneLineEG": "One line, e.g. “Match this layout for the settings screen”",
+    "oneLineEG": "For example, “Prices from the three caterers”",
     "tags": "Tags",
     "commaSeparated": "Comma separated",
     "tagsItem": "Tags on this item",
@@ -51,7 +50,15 @@
     "delete2": "Delete \"{{itemTitle}}\"?",
     "permanentlyRemovesItemRevisions": "This permanently removes the item, its revisions, its links and its stored files. Archive it instead to keep it.",
     "deleteItem": "Delete item",
-    "moreActions": "More actions for {{itemTitle}}"
+    "moreActions": "More actions for {{itemTitle}}",
+    "summary": "Summary",
+    "summaryHint": "One line about what this is. It shows in the list.",
+    "summaryHintAi": "One line about what this is. It shows in the list, and {{aiName}} reads it too.",
+    "pageOf": "Page {{page}} of {{pageCount}}",
+    "pageImage": "{{title}}, {{page}}",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "resizeDetails": "Resize details"
   },
   "libraryEditor": {
     "edit": "Edit {{itemTitle}}",
@@ -100,7 +107,7 @@
     "title": "Title",
     "defaultsSiteName": "Defaults to the site name",
     "note": "Note",
-    "ostlerAiAccess": "{{aiName}} access",
+    "ostlerAiAccess": "{{aiName}} reads it",
     "enterHttpHttpsUrl": "Enter an http or https URL.",
     "saving": "Saving…",
     "save": "Save"
@@ -121,7 +128,7 @@
     "planWorkThese": "Plan work from these…",
     "primaryBrief": "Primary brief",
     "libraryEmpty": "The library is empty",
-    "libraryKeepsBriefsGuides": "The Library keeps briefs, guides, references and notes next to the work. Drop files anywhere here, paste a screenshot or a link, or use Add to write one.",
+    "libraryKeepsBriefsGuides": "Keep everything for this project in one place: notes, documents, pictures and links. Drop files anywhere here, paste a screenshot or a link, or write a note.",
     "nothingMatchesTheseFilters": "Nothing matches these filters.",
     "selectItemSeeDetails": "Select an item to see its details.",
     "dropAddLibrary": "Drop to add to the library",
@@ -139,15 +146,16 @@
     "addLink": "Add link",
     "importFiles": "Import files…",
     "importClipboard": "Import from clipboard",
-    "clipboardEmpty": "The clipboard has nothing to keep: copy a picture, a file, a web address or some text first."
+    "clipboardEmpty": "The clipboard has nothing to keep: copy a picture, a file, a web address or some text first.",
+    "writeNote": "Write a note"
   },
   "libraryPlanWorkModal": {
     "planWorkThese": "Plan work from these",
     "ostlerAiProposesGoal": "{{aiName}} proposes a goal from these items. Nothing is created until you confirm.",
     "cancel": "Cancel",
     "notReadAi": "not read by AI",
-    "humanOnlyArchivedItems_one": "{{count}} human-only or archived item is never sent to {{aiName}} and will be left out.",
-    "humanOnlyArchivedItems_other": "{{count}} human-only or archived items are never sent to {{aiName}} and will be left out.",
+    "humanOnlyArchivedItems_one": "{{count}} item is left out: it is archived, or {{aiName}} never reads it.",
+    "humanOnlyArchivedItems_other": "{{count}} items are left out: they are archived, or {{aiName}} never reads them.",
     "goal": "Goal",
     "title": "Title",
     "ostlerAiProposingGoal": "{{aiName}} is proposing a goal…",
@@ -163,7 +171,6 @@
     "proposeAgain": "Propose again"
   },
   "libraryRail": {
-    "libraryFilters": "Library filters",
     "context": "{{aiName}} context",
     "textAlwaysItemsSent": "Text from Always items sent with each {{aiName}} chat message. The project brief always goes whole; planning with {{aiName}} reads up to {{planningBudget}} characters.",
     "text": "Text",
@@ -174,7 +181,12 @@
     "images": "Images",
     "of": "{{imageCount}} of {{LIBRARY_MAX_ALWAYS_IMAGES}}",
     "loading": "Loading…",
-    "tags": "Tags"
+    "tags": "Tags",
+    "tagsHint": "No tags yet. Add tags to an item in its details to filter by them here.",
+    "allTags": "All tags",
+    "aiButton": "{{aiName}}",
+    "aiFiltered": "{{aiName}}: {{access}}",
+    "showOnly": "Show only"
   },
   "libraryUi": {
     "all": "All",
@@ -188,13 +200,18 @@
     "note": "Note",
     "always": "Always",
     "whenSelected": "When selected",
-    "humanOnly": "Human only",
+    "humanOnly": "Never",
     "kind": {
       "guide": "Guide",
       "image": "Reference",
       "document": "Document",
       "link": "Link",
       "whiteboard": "Whiteboard"
+    },
+    "badge": {
+      "always": "AI always",
+      "whenSelected": "AI when selected",
+      "humanOnly": "No AI"
     }
   },
   "templates": {

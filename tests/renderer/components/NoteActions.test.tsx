@@ -157,7 +157,7 @@ describe('Find actions and decisions', () => {
     const api = install()
     renderDetail({ ...note, aiAccess: 'human-only' })
     expect(screen.queryByRole('button', { name: 'Find actions and decisions' })).toBeNull()
-    expect(screen.getByText(/This note is Human only/)).toBeTruthy()
+    expect(screen.getByText(/This note is set so Ostler AI never reads it/)).toBeTruthy()
     expect(api.findNoteActions).not.toHaveBeenCalled()
   })
 

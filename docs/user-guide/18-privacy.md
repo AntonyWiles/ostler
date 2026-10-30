@@ -94,7 +94,7 @@ Nothing else is sent: no usage data, no crash reports and nothing about you. The
   - contacts, costs and the rest only when a feature needs them, such as **Describe it** naming a
     contact.
 
-  A Library item set to **Human only** is never sent. Ostler AI never writes: it suggests, and
+  A Library item set to **Never** is never sent. Ostler AI never writes: it suggests, and
   anything saved is your own click.
 
   What each feature sends: **Write it up** on Home's Since you were last here card sends only task
@@ -102,11 +102,11 @@ Nothing else is sent: no usage data, no crash reports and nothing about you. The
   in its box, when you press it. If you added a photo, it goes too, scaled down and without its
   location or other details, but only when Settings › AI lets the model read images. **Find
   actions and decisions** sends only that Library note's title and text, when you press it, and
-  never a note set to Human only. **Ask Ostler** sends your question and today's date, then your
+  never a note set to Never. **Ask Ostler** sends your question and today's date, then your
   question with the records, contacts and file passages Ostler's own search found on this PC (their
   listed fields, cut to a set size), when you press **Ask**. A follow-up question also sends the
   open conversation's earlier questions and answers (text only, the latest five). It never sends a
-  Human only Library item or anything from a project that is turned off, and reads no file when
+  Library item set to Never or anything from a project that is turned off, and reads no file when
   **Search file contents** is off. **Describe it** in a filter bar sends only your words, today's
   date and the project's names (statuses, priorities, labels, milestones, goals, iterations, people
   and contacts), when you press **Make filter**. No task is sent. **Improve writing** sends only
@@ -148,7 +148,7 @@ Nothing else is sent: no usage data, no crash reports and nothing about you. The
   notification-area menu or the command palette), and never in the background. The picture stays
   in memory until you press **Add task**, then is saved in the project's Library on this PC, set to
   **When selected** and attached to the task, so the task's agent and Ostler AI can read it like any
-  attachment; set it to **Human only** to keep it to yourself. **Cancel** throws it away. Ostler
+  attachment; set it to **Never** to keep it from both. **Cancel** throws it away. Ostler
   uploads it nowhere by itself.
 - **Contacts** stay in Ostler's data folder. **Call** and **Email** hand Windows a `tel:` or
   `mailto:` address made from the number or address saved on the contact, and Windows opens the app

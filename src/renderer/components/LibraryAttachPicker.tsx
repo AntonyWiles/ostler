@@ -4,6 +4,7 @@ import { KIND_LABEL } from '../views/project-detail/library/libraryUi'
 import { Badge, Button } from '../ui'
 import './LibraryAttachPicker.css'
 import { t } from '@shared/i18n'
+import { useFeatures } from '../navigation/features'
 
 interface LibraryAttachPickerProps {
   /** Every library item of the project; the picker offers only the AI-visible ones. */
@@ -11,7 +12,7 @@ interface LibraryAttachPickerProps {
   selectedIds: string[]
   onToggle: (item: LibraryItem) => void
   onClose: () => void
-  /** Work item sources may be human-only; they are marked rather than hidden. */
+  /** Human-only items are offered too, marked when Ostler AI is set up, rather than hidden. */
   includeHumanOnly?: boolean
   label?: string
 }
@@ -28,6 +29,7 @@ export function LibraryAttachPicker({
   includeHumanOnly = false,
   label = t('library:libraryAttachPicker.attachLibrary')
 }: LibraryAttachPickerProps) {
+  const ai = useFeatures().ai
   const [query, setQuery] = useState('')
   const rootRef = useRef<HTMLDivElement>(null)
 
@@ -95,7 +97,7 @@ export function LibraryAttachPicker({
                 <input type="checkbox" checked={checked} onChange={() => onToggle(item)} />
                 <span className="ostler-library-attach-kind">{KIND_LABEL[item.kind]}</span>
                 <span className="ostler-library-attach-title">{item.title}</span>
-                {item.aiAccess === 'human-only' && (
+                {ai && item.aiAccess === 'human-only' && (
                   <Badge tone="warning">{t('library:libraryAttachPicker.notReadAi')}</Badge>
                 )}
                 {item.summary && (

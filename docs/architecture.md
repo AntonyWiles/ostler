@@ -275,7 +275,7 @@ attachments likewise go through one resolver, `resolveTaskAttachments`, for the 
 the harness routes alike.
 
 The **automation agent** acts for the person through the automation API with the person's token: it
-sees the full Library (Human only items marked as such), and it can create, upload, attach and
+sees the full Library (items set to Never marked as such), and it can create, upload, attach and
 archive.
 
 ### Embedded sessions

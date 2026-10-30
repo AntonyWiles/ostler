@@ -7,15 +7,14 @@
     "attachLibrary": "Joindre depuis la Bibliothèque",
     "libraryEmpty": "La Bibliothèque est vide.",
     "noLibraryItemsMatch": "Aucun élément de la Bibliothèque ne correspond.",
-    "noItemsOstlerAi": "Aucun élément que {{aiName}} peut lire ne correspond. Les éléments réservés aux humains ne peuvent pas être joints."
+    "noItemsOstlerAi": "Aucun élément que {{aiName}} peut lire ne correspond. Ceux que {{aiName}} ne lit jamais n’apparaissent pas ici."
   },
   "libraryDetail": {
     "libraryItem": "Élément de la Bibliothèque",
     "archived": "Archivé",
-    "ostlerAiAccess": "Accès de {{aiName}}",
+    "ostlerAiAccess": "{{aiName}} le lit",
     "primaryBriefProject": "Brief principal de ce projet",
-    "whatShouldOstlerAi": "Que doit retenir {{aiName}} de ceci ?",
-    "oneLineEG": "Une ligne, par ex. « Reprendre cette mise en page pour l’écran des paramètres »",
+    "oneLineEG": "Par ex. « Tarifs des trois traiteurs »",
     "tags": "Étiquettes",
     "commaSeparated": "Séparées par des virgules",
     "tagsItem": "Étiquettes de cet élément",
@@ -51,7 +50,15 @@
     "delete2": "Supprimer « {{itemTitle}} » ?",
     "permanentlyRemovesItemRevisions": "Cela supprime définitivement l’élément, ses révisions, ses liens et ses fichiers stockés. Archivez-le plutôt pour le conserver.",
     "deleteItem": "Supprimer l’élément",
-    "moreActions": "Autres actions pour {{itemTitle}}"
+    "moreActions": "Autres actions pour {{itemTitle}}",
+    "summary": "Résumé",
+    "summaryHint": "Une ligne pour dire ce que c’est. Elle s’affiche dans la liste.",
+    "summaryHintAi": "Une ligne pour dire ce que c’est. Elle s’affiche dans la liste, et {{aiName}} la lit aussi.",
+    "pageOf": "Page {{page}} sur {{pageCount}}",
+    "pageImage": "{{title}}, {{page}}",
+    "previousPage": "Page précédente",
+    "nextPage": "Page suivante",
+    "resizeDetails": "Redimensionner les détails"
   },
   "libraryEditor": {
     "edit": "Modifier {{itemTitle}}",
@@ -101,7 +108,7 @@
     "title": "Titre",
     "defaultsSiteName": "Par défaut, le nom du site",
     "note": "Note",
-    "ostlerAiAccess": "Accès de {{aiName}}",
+    "ostlerAiAccess": "{{aiName}} le lit",
     "enterHttpHttpsUrl": "Saisissez une URL http ou https.",
     "saving": "Enregistrement…",
     "save": "Enregistrer"
@@ -123,7 +130,7 @@
     "planWorkThese": "Planifier le travail à partir de ceux-ci…",
     "primaryBrief": "Brief principal",
     "libraryEmpty": "La Bibliothèque est vide",
-    "libraryKeepsBriefsGuides": "La Bibliothèque conserve les briefs, guides, références et notes à côté du travail. Déposez des fichiers n’importe où ici, collez une capture d’écran ou un lien, ou utilisez Ajouter pour en rédiger un.",
+    "libraryKeepsBriefsGuides": "Gardez tout ce qui concerne ce projet au même endroit : notes, documents, images et liens. Déposez des fichiers n’importe où ici, collez une capture d’écran ou un lien, ou rédigez une note.",
     "nothingMatchesTheseFilters": "Aucun élément ne correspond à ces filtres.",
     "selectItemSeeDetails": "Sélectionnez un élément pour voir ses détails.",
     "dropAddLibrary": "Déposez pour ajouter à la Bibliothèque",
@@ -142,16 +149,17 @@
     "addLink": "Ajouter un lien",
     "importFiles": "Importer des fichiers…",
     "importClipboard": "Importer depuis le presse-papiers",
-    "clipboardEmpty": "Le presse-papiers ne contient rien à garder : copiez d’abord une image, un fichier, une adresse web ou du texte."
+    "clipboardEmpty": "Le presse-papiers ne contient rien à garder : copiez d’abord une image, un fichier, une adresse web ou du texte.",
+    "writeNote": "Écrire une note"
   },
   "libraryPlanWorkModal": {
     "planWorkThese": "Planifier le travail à partir de ceux-ci",
     "ostlerAiProposesGoal": "{{aiName}} propose un objectif à partir de ces éléments. Rien n’est créé tant que vous ne confirmez pas.",
     "cancel": "Annuler",
     "notReadAi": "non lu par l’IA",
-    "humanOnlyArchivedItems_one": "{{count}} élément réservé aux humains ou archivé n’est jamais envoyé à {{aiName}} et sera laissé de côté.",
-    "humanOnlyArchivedItems_many": "{{count}} éléments réservés aux humains ou archivés ne sont jamais envoyés à {{aiName}} et seront laissés de côté.",
-    "humanOnlyArchivedItems_other": "{{count}} éléments réservés aux humains ou archivés ne sont jamais envoyés à {{aiName}} et seront laissés de côté.",
+    "humanOnlyArchivedItems_one": "{{count}} élément est laissé de côté : il est archivé, ou {{aiName}} ne le lit jamais.",
+    "humanOnlyArchivedItems_many": "{{count}} éléments sont laissés de côté : ils sont archivés, ou {{aiName}} ne les lit jamais.",
+    "humanOnlyArchivedItems_other": "{{count}} éléments sont laissés de côté : ils sont archivés, ou {{aiName}} ne les lit jamais.",
     "goal": "Objectif",
     "title": "Titre",
     "ostlerAiProposingGoal": "{{aiName}} propose un objectif…",
@@ -167,7 +175,6 @@
     "proposeAgain": "Proposer à nouveau"
   },
   "libraryRail": {
-    "libraryFilters": "Filtres de la Bibliothèque",
     "context": "Contexte de {{aiName}}",
     "textAlwaysItemsSent": "Le texte des éléments Toujours est envoyé avec chaque message du chat de {{aiName}}. Le brief du projet est toujours envoyé en entier ; la planification avec {{aiName}} lit jusqu’à {{planningBudget}} caractères.",
     "text": "Texte",
@@ -179,7 +186,12 @@
     "images": "Images",
     "of": "{{imageCount}} sur {{LIBRARY_MAX_ALWAYS_IMAGES}}",
     "loading": "Chargement…",
-    "tags": "Étiquettes"
+    "tags": "Étiquettes",
+    "tagsHint": "Pas encore d’étiquettes. Ajoutez-en à un élément dans ses détails pour filtrer par elles ici.",
+    "allTags": "Toutes les étiquettes",
+    "aiButton": "{{aiName}}",
+    "aiFiltered": "{{aiName}} : {{access}}",
+    "showOnly": "Afficher seulement"
   },
   "libraryUi": {
     "all": "Tous",
@@ -193,13 +205,18 @@
     "note": "Note",
     "always": "Toujours",
     "whenSelected": "Quand sélectionné",
-    "humanOnly": "Humain uniquement",
+    "humanOnly": "Jamais",
     "kind": {
       "guide": "Guide",
       "image": "Référence",
       "document": "Document",
       "link": "Lien",
       "whiteboard": "Tableau blanc"
+    },
+    "badge": {
+      "always": "IA toujours",
+      "whenSelected": "IA si sélectionné",
+      "humanOnly": "Sans IA"
     }
   },
   "templates": {

@@ -89,9 +89,13 @@ async function handleLibraryRequest(
       .map((part) => decodeURIComponent(part))
     if (parts.length !== 3) return notFound()
     const [projectId, itemId, which] = parts
-    if (which !== 'file' && which !== 'thumb') return notFound()
+    // A PDF's page drawn as a picture: page-1, page-2...
+    const page = /^page-([1-9]\d{0,4})$/.exec(which)
+    if (which !== 'file' && which !== 'thumb' && !page) return notFound()
     const project = getProject(projectId)
-    const stored = libraryService.storedFile(project.id, itemId, which)
+    const stored = page
+      ? await libraryService.pdfPagePreview(project.id, itemId, Number(page[1]))
+      : libraryService.storedFile(project.id, itemId, which as 'file' | 'thumb')
     if (!stored) return notFound()
     const bytes = await fs.promises.readFile(stored.path)
     return new Response(new Uint8Array(bytes), {

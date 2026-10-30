@@ -46,7 +46,7 @@ import {
 } from './storage-paths'
 import { t } from '@shared/i18n'
 import { isMarkableImage, isPng, markedUpFileName } from '@shared/markup'
-import { readFileText, textSourceFor, type TextSource } from './library-file-text'
+import { readFileText, renderPdfPage, textSourceFor, type TextSource } from './library-file-text'
 import { OFFICE_MIME, officeKind } from './office-text'
 import { attachChangeRecorder } from './change-history/recorder'
 import { cleanTitle, MAX_TITLE_CHARS } from './library-title'
@@ -55,6 +55,8 @@ import { Refusal } from '@shared/refusal'
 
 const STORAGE_LABEL = 'Library storage'
 const THUMBNAIL_MAX_EDGE = 480
+/** How wide a PDF page is drawn for the preview, in pixels: sharp in a wide details panel. */
+const PDF_PREVIEW_WIDTH = 1200
 const MAX_SUMMARY_CHARS = 500
 const MAX_BODY_CHARS = 200_000
 const MAX_TAGS = 20
@@ -185,6 +187,8 @@ export class LibraryService {
   private attachmentsChangedListener: ((projectId: string, workItemId: string) => void) | null =
     null
   private bodyRewriter: ((projectId: string, body: string) => string) | null = null
+  /** PDF pages being drawn for the preview, so two asks for one page draw it once. */
+  private readonly pageDrawings = new Map<string, Promise<boolean>>()
 
   constructor(dbPath: string, dataDir: string) {
     this.root = canonicalRoot(dataDir)
@@ -511,6 +515,46 @@ export class LibraryService {
     } catch {
       return null
     }
+  }
+
+  /**
+   * Page `page` (from 1) of a PDF item, drawn as a PNG for the Library's
+   * preview: drawn on first ask and kept beside the original as page-N.png,
+   * so each PC draws its own. Null when the item is not a PDF, has no such
+   * page, or the page cannot be drawn.
+   */
+  async pdfPagePreview(
+    projectId: string,
+    itemId: string,
+    page: number
+  ): Promise<{ path: string; mimeType: string } | null> {
+    const item = this.getItem(projectId, itemId)
+    if (item.file?.mimeType !== OTHER_MIME.pdf || !Number.isInteger(page) || page < 1) return null
+    if (item.file.pageCount !== undefined && page > item.file.pageCount) return null
+    const name = `page-${page}.png`
+    const target = this.itemFilePath(projectId, item.id, name)
+    if (fs.existsSync(target)) return { path: target, mimeType: 'image/png' }
+
+    const key = `${projectId}/${item.id}/${page}`
+    let drawing = this.pageDrawings.get(key)
+    if (!drawing) {
+      drawing = (async () => {
+        try {
+          const original = await fs.promises.readFile(this.originalFilePath(projectId, item.id))
+          const png = await renderPdfPage(original, page, PDF_PREVIEW_WIDTH)
+          if (!png) return false
+          this.writeAtomic(this.itemDirectoryPath(projectId, item.id), name, png)
+          return true
+        } catch (error) {
+          console.error(`Could not draw page ${page} of ${item.file?.fileName}:`, error)
+          return false
+        } finally {
+          this.pageDrawings.delete(key)
+        }
+      })()
+      this.pageDrawings.set(key, drawing)
+    }
+    return (await drawing) ? { path: target, mimeType: 'image/png' } : null
   }
 
   private async importFile(
@@ -1009,7 +1053,12 @@ export class LibraryService {
     if (itemIds.length > 0) this.notifyAttachmentsChanged(projectId, [workItemId])
   }
 
-  /** Attaches an AI-visible item for a work item's agent. Re-attaching refreshes the revision. */
+  /**
+   * Attaches an item to a work item. Re-attaching refreshes the revision. A
+   * person may attach any live item, human-only included, as `attachCopies`
+   * does: `agentAttachments` still never gives a human-only one to an agent.
+   * Ostler AI and automation may attach only AI-visible items.
+   */
   attachToWorkItem(
     projectId: string,
     workItemId: string,
@@ -1018,7 +1067,10 @@ export class LibraryService {
   ): WorkItemAttachment[] {
     if (!ATTACHED_BY.includes(attachedBy)) throw new Error('Invalid attachedBy value')
     this.assertWorkItemInProject(projectId, workItemId)
-    const item = this.aiVisibleItem(projectId, itemId)
+    const item =
+      attachedBy === 'human'
+        ? this.liveItem(projectId, itemId)
+        : this.aiVisibleItem(projectId, itemId)
     if (!item) {
       throw new Error(t('errors:libraryService.onlyLiveLibraryItems'))
     }
@@ -1135,6 +1187,12 @@ export class LibraryService {
    * every attachment goes through here.
    */
   aiVisibleItem(projectId: string, itemId: string): LibraryItem | null {
+    const item = this.liveItem(projectId, itemId)
+    return item && item.aiAccess !== 'human-only' ? item : null
+  }
+
+  /** The project's item if it exists and is not archived, whatever its AI access. */
+  private liveItem(projectId: string, itemId: string): LibraryItem | null {
     try {
       validateProjectId(projectId, STORAGE_LABEL)
     } catch {
@@ -1143,8 +1201,7 @@ export class LibraryService {
     if (typeof itemId !== 'string' || !ID_PATTERN.test(itemId)) return null
     const item = this.repository.getItem(itemId)
     if (!item || item.projectId !== projectId) return null
-    if (item.archivedAt || item.aiAccess === 'human-only') return null
-    return item
+    return item.archivedAt ? null : item
   }
 
   /**

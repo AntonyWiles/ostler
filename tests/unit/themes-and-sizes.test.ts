@@ -140,9 +140,9 @@ describe('A 900 px window', () => {
       /project-detail\s*\(max-width:\s*900px\)/
     )
     expect(rule(narrow, '.ostler-library')).toMatch(/grid-template-columns:[^;]*minmax\(0, 1fr\);/)
-    expect(rule(narrow, '.ostler-library-detail')).toContain('grid-column: 1 / -1')
-    // Two columns: the editor may not reach for a third.
-    expect(rule(narrow, '.ostler-library-editor')).toContain('grid-column: 2 / -1')
+    // One column: the details go under the list, and can't be dragged.
+    expect(rule(narrow, '.ostler-library-detail-pane')).toContain('max-height: 45vh')
+    expect(rule(narrow, '.ostler-library-detail-resize')).toContain('display: none')
   })
 
   it('moves the Someday tray under the grid below 1000 px', () => {

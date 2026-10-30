@@ -804,7 +804,7 @@
     "changedSinceRR": "変更あり（r{{revisionAtAttach}} → r{{currentRevision}}）",
     "agentGetsCurrentRevision": "エージェントには最新のr{{currentRevision}}が渡されます",
     "notGivenAgents": "エージェントには渡されません",
-    "humanOnlyArchivedItems": "人だけが使う項目とアーカイブ済みの項目は、エージェントの実行開始時にスキップされます",
+    "humanOnlyArchivedItems": "アーカイブ済みの項目と{{aiName}}が読まない項目は、エージェントの実行開始時にスキップされます",
     "upToItems_other": "最大{{count}}件の項目を添付できます"
   },
   "workItemDrawer": {
@@ -2055,7 +2055,7 @@
   },
   "noteActions": {
     "open": "アクションと意思決定を探す",
-    "humanOnly": "このメモは「人間のみ」なので、{{aiName}}は読みません。このメモ内のアクションと意思決定を探すには、アクセス設定を変更してください。",
+    "humanOnly": "このメモは{{aiName}}が読まない設定です。アクションと意思決定を探すには、詳細でこの設定を変更してください。",
     "sent": "このメモのタイトルと本文を、AIプロバイダーに送信します。",
     "title": "「{{title}}」のアクションと意思決定",
     "description": "各タスクと意思決定にチェックを入れ、必要に応じて編集してください。「追加」を押すまで、何も追加されません。",

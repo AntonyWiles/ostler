@@ -360,7 +360,7 @@
     "revision": "{{itemTitle}}（改訂{{revision}}）",
     "removedLibrary": "ライブラリから外しました",
     "saveLibrary": "ライブラリに保存",
-    "saveReplyLibraryHuman": "この返信を、人だけが読むメモとしてライブラリに保存",
+    "saveReplyLibraryHuman": "この返信を、{{aiName}}が読まないメモとしてライブラリに保存",
     "writing": "{{aiName}}が書いています…",
     "savedOutsideProject": "プロジェクトの外に保存しました: {{savedPath}}",
     "attachedNextMessage": "次のメッセージに添付",

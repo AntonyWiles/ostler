@@ -853,7 +853,7 @@
     "changedSinceRR": "Geändert seit (r{{revisionAtAttach}} → r{{currentRevision}})",
     "agentGetsCurrentRevision": "Der Agent erhält die aktuelle Revision, r{{currentRevision}}",
     "notGivenAgents": "Nicht an Agenten übergeben",
-    "humanOnlyArchivedItems": "Nur für Menschen bestimmte und archivierte Elemente werden übersprungen, wenn ein Agentenlauf startet",
+    "humanOnlyArchivedItems": "Archivierte Elemente und Elemente, die {{aiName}} nie liest, werden übersprungen, wenn ein Agentenlauf startet",
     "upToItems_one": "Bis zu {{count}} Element kann angehängt werden",
     "upToItems_other": "Bis zu {{count}} Elemente können angehängt werden"
   },
@@ -2185,7 +2185,7 @@
   },
   "noteActions": {
     "open": "Aktionen und Entscheidungen finden",
-    "humanOnly": "Diese Notiz ist nur für Menschen, daher liest {{aiName}} sie nie. Ändern Sie ihren Zugriff, um darin Aktionen und Entscheidungen zu finden.",
+    "humanOnly": "Diese Notiz ist so eingestellt, dass {{aiName}} sie nie liest. Um darin Aktionen und Entscheidungen zu finden, ändern Sie das in ihren Details.",
     "sent": "Sendet den Titel und Text dieser Notiz an Ihren KI-Anbieter.",
     "title": "Aktionen und Entscheidungen in „{{title}}“",
     "description": "Markieren und bearbeiten Sie jede Aufgabe und Entscheidung. Nichts wird hinzugefügt, bis Sie auf Hinzufügen drücken.",

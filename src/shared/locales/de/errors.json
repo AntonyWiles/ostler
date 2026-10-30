@@ -772,7 +772,7 @@
     "taskHasNewerWork": "„{{title}}“ hat neuere Arbeit in der Warteschlange oder in Arbeit, daher kann diese ältere Arbeit jetzt nicht zurückgeholt werden."
   },
   "noteActions": {
-    "notReadable": "{{aiName}} kann diese Notiz nicht lesen: Sie ist auf „Nur für Menschen“ gesetzt, archiviert oder nicht mehr in diesem Projekt.",
+    "notReadable": "{{aiName}} kann diese Notiz nicht lesen: {{aiName}} soll sie nie lesen, sie ist archiviert, oder sie ist nicht mehr in diesem Projekt.",
     "notANote": "Aktionen und Entscheidungen finden liest Notizen, Briefings und Anleitungen.",
     "empty": "Diese Notiz hat noch keinen Text zum Lesen.",
     "tooLong": "Diese Notiz ist zu lang, um sie ganz zu senden: {{aiName}} liest auf einmal höchstens {{max}} Zeichen. Teilen Sie sie in kürzere Notizen auf und versuchen Sie jede einzeln.",
@@ -788,7 +788,7 @@
     "cannotUndo": "Diese Notiz wurde geändert, nachdem die Aufgaben erstellt wurden, daher wurden sie nicht rückgängig gemacht. Löschen Sie die Aufgaben und bearbeiten Sie die Notiz selbst."
   },
   "writingHelp": {
-    "notReadable": "{{aiName}} kann dieses Element nicht lesen: Es ist auf „Nur für Menschen“ gesetzt, archiviert oder nicht mehr in diesem Projekt.",
+    "notReadable": "{{aiName}} kann dieses Element nicht lesen: {{aiName}} soll es nie lesen, es ist archiviert, oder es ist nicht mehr in diesem Projekt.",
     "badStyle": "Wählen Sie, wie der Text verbessert werden soll.",
     "empty": "Es gibt noch keinen Text zum Verbessern.",
     "tooLong": "Dieser Text ist zu lang, um ihn auf einmal zu senden: {{aiName}} verbessert auf einmal höchstens {{max}} Zeichen. Wählen Sie einen Teil aus und versuchen Sie es erneut.",

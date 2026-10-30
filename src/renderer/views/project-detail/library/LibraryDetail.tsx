@@ -33,14 +33,20 @@ import { NoteActionsButton } from '../../../components/note-actions/NoteActionsD
 import { MarkUpCopyButton } from '../../../components/markup/MarkUpCopyButton'
 import { CloudFileLine } from './CloudFileLine'
 import { LibraryWhiteboardPreview } from './LibraryWhiteboardPreview'
+import { LibraryPdfPreview } from './LibraryPdfPreview'
 import { ACCESS_OPTIONS, KIND_LABEL, libraryFileUrl, parseTags, relativeTime } from './libraryUi'
 import { t } from '@shared/i18n'
+import { useFeatures } from '../../../navigation/features'
 import { formatFileSize, formatNumber } from '@shared/format'
 
 const PREVIEW_CHARS = 4000
 
 function isWrittenKind(kind: LibraryItem['kind']): boolean {
   return kind === 'note' || kind === 'brief' || kind === 'guide'
+}
+
+function isMarkdownFile(fileName: string): boolean {
+  return /\.(md|markdown)$/i.test(fileName)
 }
 
 interface LibraryDetailProps {
@@ -68,6 +74,7 @@ export function LibraryDetail({
   onDelete,
   onOpenWorkItem
 }: LibraryDetailProps) {
+  const ai = useFeatures().ai
   const [summary, setSummary] = useState(item.summary)
   const [tags, setTags] = useState(item.tags.join(', '))
   const [documentText, setDocumentText] = useState<string | null>(null)
@@ -166,6 +173,26 @@ export function LibraryDetail({
   const canOpen = item.kind === 'link' ? Boolean(item.url) : Boolean(item.file)
   // A whiteboard is edited only in the Plan: Open whiteboard, never Edit.
   const canEdit = item.kind !== 'image' && item.kind !== 'document' && !isWhiteboard
+  const isPdf = item.file?.mimeType === 'application/pdf'
+  const shownText =
+    documentText && documentText.length > PREVIEW_CHARS
+      ? `${documentText.slice(0, PREVIEW_CHARS)}…`
+      : documentText
+  // A document's text: a Markdown file drawn as Markdown, anything else as it reads.
+  const documentPreview =
+    shownText === null ? (
+      <Skeleton lines={4} />
+    ) : !shownText ? (
+      <pre className="ostler-library-document-text">
+        {t('library:libraryDetail.noReadableTextOpen')}
+      </pre>
+    ) : isMarkdownFile(item.file?.fileName ?? '') ? (
+      <div className="ostler-library-markdown">
+        <Markdown projectId={item.projectId}>{shownText}</Markdown>
+      </div>
+    ) : (
+      <pre className="ostler-library-document-text">{shownText}</pre>
+    )
 
   return (
     <aside className="ostler-library-detail" aria-label={t('library:libraryDetail.libraryItem')}>
@@ -204,15 +231,8 @@ export function LibraryDetail({
             </Markdown>
           </div>
         )}
-        {item.kind === 'document' && documentText === null && <Skeleton lines={4} />}
-        {item.kind === 'document' && documentText !== null && (
-          <pre className="ostler-library-document-text">
-            {documentText
-              ? documentText.slice(0, PREVIEW_CHARS) +
-                (documentText.length > PREVIEW_CHARS ? '…' : '')
-              : t('library:libraryDetail.noReadableTextOpen')}
-          </pre>
-        )}
+        {item.kind === 'document' &&
+          (isPdf ? <LibraryPdfPreview item={item} fallback={documentPreview} /> : documentPreview)}
       </div>
 
       {lineTasks && (
@@ -226,22 +246,24 @@ export function LibraryDetail({
 
       <LinkedFrom kind="library" id={item.id} refreshKey={item.updatedAt} />
 
-      <div className="ostler-library-field">
-        <span className="ostler-library-field-label" aria-hidden="true">
-          {t('library:libraryDetail.ostlerAiAccess')}
-        </span>
-        <SegmentedControl
-          label={t('library:libraryDetail.ostlerAiAccess')}
-          size="sm"
-          value={item.aiAccess}
-          onChange={setAccess}
-          options={ACCESS_OPTIONS.map((option) => ({
-            value: option.id,
-            label: option.label,
-            disabled: busy
-          }))}
-        />
-      </div>
+      {ai && (
+        <div className="ostler-library-field">
+          <span className="ostler-library-field-label" aria-hidden="true">
+            {t('library:libraryDetail.ostlerAiAccess')}
+          </span>
+          <SegmentedControl
+            label={t('library:libraryDetail.ostlerAiAccess')}
+            size="sm"
+            value={item.aiAccess}
+            onChange={setAccess}
+            options={ACCESS_OPTIONS.map((option) => ({
+              value: option.id,
+              label: option.label,
+              disabled: busy
+            }))}
+          />
+        </div>
+      )}
 
       {item.kind === 'brief' && (
         <Checkbox
@@ -253,7 +275,10 @@ export function LibraryDetail({
       )}
 
       <TextArea
-        label={t('library:libraryDetail.whatShouldOstlerAi')}
+        label={t('library:libraryDetail.summary')}
+        hint={
+          ai ? t('library:libraryDetail.summaryHintAi') : t('library:libraryDetail.summaryHint')
+        }
         ref={summaryRef}
         rows={2}
         value={summary}

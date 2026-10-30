@@ -902,7 +902,7 @@
     "changedSinceRR": "Modificado desde (r{{revisionAtAttach}} → r{{currentRevision}})",
     "agentGetsCurrentRevision": "El agente recibe la revisión actual, r{{currentRevision}}",
     "notGivenAgents": "No se da a los agentes",
-    "humanOnlyArchivedItems": "Los elementos solo para personas y los archivados se omiten cuando empieza una ejecución del agente",
+    "humanOnlyArchivedItems": "Los elementos archivados y los que {{aiName}} nunca lee se omiten cuando empieza una ejecución del agente",
     "upToItems_one": "Se puede adjuntar hasta {{count}} elemento",
     "upToItems_many": "Se pueden adjuntar hasta {{count}} elementos",
     "upToItems_other": "Se pueden adjuntar hasta {{count}} elementos"
@@ -2315,7 +2315,7 @@
   },
   "noteActions": {
     "open": "Buscar acciones y decisiones",
-    "humanOnly": "Esta nota es solo para personas, así que {{aiName}} nunca la lee. Cambia su acceso para buscar acciones y decisiones en ella.",
+    "humanOnly": "Esta nota está configurada para que {{aiName}} nunca la lea. Para buscar acciones y decisiones en ella, cámbialo en sus detalles.",
     "sent": "Envía el título y el texto de esta nota a tu proveedor de IA.",
     "title": "Acciones y decisiones en «{{title}}»",
     "description": "Marca y edita cada tarea y decisión. No se agrega nada hasta que pulses Agregar.",

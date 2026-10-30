@@ -773,7 +773,7 @@
     "taskHasNewerWork": "\"{{title}}\" has newer work in the queue or in progress, so this older work cannot be brought back now."
   },
   "noteActions": {
-    "notReadable": "{{aiName}} can't read this note: it is set to Human only, archived, or no longer in this project.",
+    "notReadable": "{{aiName}} can't read this note: it is set so {{aiName}} never reads it, it is archived, or it is no longer in this project.",
     "notANote": "Find actions and decisions reads notes, briefs and guides.",
     "empty": "This note has no text to read yet.",
     "tooLong": "This note is too long to send whole: {{aiName}} reads up to {{max}} characters at a time. Split it into shorter notes and try each one.",
@@ -789,7 +789,7 @@
     "cannotUndo": "This note changed after the tasks were made, so they were not undone. Delete the tasks and edit the note yourself."
   },
   "writingHelp": {
-    "notReadable": "{{aiName}} can't read this item: it is set to Human only, archived, or no longer in this project.",
+    "notReadable": "{{aiName}} can't read this item: it is set so {{aiName}} never reads it, it is archived, or it is no longer in this project.",
     "badStyle": "Choose how to improve the text.",
     "empty": "There is no text to improve yet.",
     "tooLong": "This text is too long to send at once: {{aiName}} improves up to {{max}} characters at a time. Select a part and try again.",

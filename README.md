@@ -293,7 +293,7 @@ a calendar link or turn on AI, and then only what that feature needs, to the pla
   sends only task titles and counts, when you press it; **Listen** uses a Windows voice and sends
   nothing. **Find tasks** sends only the text you gave it and any photo you added (scaled down,
   without its location data), when you press it. **Find actions and decisions** sends only that
-  Library note's title and text, never a Human only note. **Ask Ostler** sends your question and
+  Library note's title and text, never a note set to Never. **Ask Ostler** sends your question and
   the date, then your question with the records, contacts and file passages Ostler's own search
   found on your PC, when you press **Ask**; a follow-up also sends that conversation's earlier
   questions and answers. **Describe it** in a filter bar sends only your words, today's date and

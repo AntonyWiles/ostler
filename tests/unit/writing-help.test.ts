@@ -131,7 +131,7 @@ describe('improveWriting', () => {
         text: 'Secret',
         libraryItemId: item.id
       })
-    ).rejects.toThrow(/Human only/)
+    ).rejects.toThrow(/never reads it/)
     expect(chat).not.toHaveBeenCalled()
   })
 

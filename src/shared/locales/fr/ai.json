@@ -380,7 +380,7 @@
     "revision": "{{itemTitle}} (révision {{revision}})",
     "removedLibrary": "Retiré de la Bibliothèque",
     "saveLibrary": "Enregistrer dans la Bibliothèque",
-    "saveReplyLibraryHuman": "Enregistrer cette réponse dans la Bibliothèque comme note réservée aux humains",
+    "saveReplyLibraryHuman": "Enregistrer cette réponse dans la Bibliothèque comme note que {{aiName}} ne lit jamais",
     "writing": "{{aiName}} rédige…",
     "savedOutsideProject": "Enregistré hors du projet : {{savedPath}}",
     "attachedNextMessage": "Joint au prochain message",

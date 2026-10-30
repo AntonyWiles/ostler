@@ -7,15 +7,14 @@
     "attachLibrary": "从资料库附加",
     "libraryEmpty": "资料库是空的。",
     "noLibraryItemsMatch": "没有匹配的资料库条目。",
-    "noItemsOstlerAi": "没有 {{aiName}} 可以读取的匹配条目。仅限人工使用的条目无法附加。"
+    "noItemsOstlerAi": "没有 {{aiName}} 可读取的匹配项。{{aiName}} 从不读取的条目不在此列出。"
   },
   "libraryDetail": {
     "libraryItem": "资料库条目",
     "archived": "已归档",
-    "ostlerAiAccess": "{{aiName}} 访问权限",
+    "ostlerAiAccess": "{{aiName}} 读取",
     "primaryBriefProject": "本项目的主简报",
-    "whatShouldOstlerAi": "{{aiName}} 应从中获取什么？",
-    "oneLineEG": "一行，例如“按此布局设计设置页面”",
+    "oneLineEG": "例如“三家餐饮公司的报价”",
     "tags": "标签",
     "commaSeparated": "用逗号分隔",
     "tagsItem": "此条目的标签",
@@ -51,7 +50,15 @@
     "delete2": "删除“{{itemTitle}}”？",
     "permanentlyRemovesItemRevisions": "这将永久删除该条目、它的所有修订版本、链接和已存储的文件。如需保留，请改为归档。",
     "deleteItem": "删除条目",
-    "moreActions": "{{itemTitle}} 的更多操作"
+    "moreActions": "{{itemTitle}} 的更多操作",
+    "summary": "摘要",
+    "summaryHint": "用一行说明这是什么。显示在列表中。",
+    "summaryHintAi": "用一行说明这是什么。显示在列表中，{{aiName}} 也会读取。",
+    "pageOf": "第 {{page}} 页，共 {{pageCount}} 页",
+    "pageImage": "{{title}}，{{page}}",
+    "previousPage": "上一页",
+    "nextPage": "下一页",
+    "resizeDetails": "调整详情宽度"
   },
   "libraryEditor": {
     "edit": "编辑 {{itemTitle}}",
@@ -99,7 +106,7 @@
     "title": "标题",
     "defaultsSiteName": "默认为网站名称",
     "note": "备注",
-    "ostlerAiAccess": "{{aiName}} 访问权限",
+    "ostlerAiAccess": "{{aiName}} 读取",
     "enterHttpHttpsUrl": "请输入 http 或 https 网址。",
     "saving": "正在保存…",
     "save": "保存"
@@ -119,7 +126,7 @@
     "planWorkThese": "根据这些内容规划工作…",
     "primaryBrief": "主简报",
     "libraryEmpty": "资料库是空的",
-    "libraryKeepsBriefsGuides": "资料库会在工作旁边保存简报、指南、参考资料和笔记。可以把文件拖到此处任意位置，粘贴截图或链接，或使用“添加”来新建。",
+    "libraryKeepsBriefsGuides": "把此项目的所有资料放在一处：笔记、文档、图片和链接。可以把文件拖到此处任意位置，粘贴截图或链接，或写一条笔记。",
     "nothingMatchesTheseFilters": "没有符合这些筛选条件的内容。",
     "selectItemSeeDetails": "选择一个条目，以查看其详细信息。",
     "dropAddLibrary": "松开即可添加到资料库",
@@ -136,14 +143,15 @@
     "addLink": "添加链接",
     "importFiles": "导入文件…",
     "importClipboard": "从剪贴板导入",
-    "clipboardEmpty": "剪贴板中没有可保存的内容：请先复制图片、文件、网址或文本。"
+    "clipboardEmpty": "剪贴板中没有可保存的内容：请先复制图片、文件、网址或文本。",
+    "writeNote": "写笔记"
   },
   "libraryPlanWorkModal": {
     "planWorkThese": "根据这些内容规划工作",
     "ostlerAiProposesGoal": "{{aiName}} 将根据这些条目提议一个目标。在你确认之前，不会创建任何内容。",
     "cancel": "取消",
     "notReadAi": "AI 不读取",
-    "humanOnlyArchivedItems_other": "{{count}} 个仅限人工或已归档的条目绝不会发送给 {{aiName}}，将被略过。",
+    "humanOnlyArchivedItems_other": "{{count}} 个条目将被略过：已归档，或 {{aiName}} 从不读取。",
     "goal": "目标",
     "title": "标题",
     "ostlerAiProposingGoal": "{{aiName}} 正在提议一个目标…",
@@ -159,7 +167,6 @@
     "proposeAgain": "重新提议"
   },
   "libraryRail": {
-    "libraryFilters": "资料库筛选",
     "context": "{{aiName}} 上下文",
     "textAlwaysItemsSent": "“始终”条目中的文本会随每条 {{aiName}} 聊天消息一同发送。项目简报始终完整发送；与 {{aiName}} 一起规划时，最多读取 {{planningBudget}} 个字符。",
     "text": "文字",
@@ -169,7 +176,12 @@
     "images": "图片",
     "of": "{{imageCount}}/{{LIBRARY_MAX_ALWAYS_IMAGES}}",
     "loading": "正在加载…",
-    "tags": "标签"
+    "tags": "标签",
+    "tagsHint": "还没有标签。在项目详情中添加标签，即可在此按标签筛选。",
+    "allTags": "所有标签",
+    "aiButton": "{{aiName}}",
+    "aiFiltered": "{{aiName}}：{{access}}",
+    "showOnly": "只显示"
   },
   "libraryUi": {
     "all": "全部",
@@ -183,13 +195,18 @@
     "note": "笔记",
     "always": "始终",
     "whenSelected": "选中时",
-    "humanOnly": "仅限人工",
+    "humanOnly": "从不",
     "kind": {
       "guide": "指南",
       "image": "参考资料",
       "document": "文档",
       "link": "链接",
       "whiteboard": "白板"
+    },
+    "badge": {
+      "always": "AI：始终",
+      "whenSelected": "AI：选中时",
+      "humanOnly": "不用 AI"
     }
   },
   "templates": {

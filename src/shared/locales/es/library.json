@@ -7,15 +7,14 @@
     "attachLibrary": "Adjuntar desde la Biblioteca",
     "libraryEmpty": "La Biblioteca está vacía.",
     "noLibraryItemsMatch": "Ningún elemento de la Biblioteca coincide.",
-    "noItemsOstlerAi": "Ningún elemento que {{aiName}} pueda leer coincide. Los elementos solo para personas no se pueden adjuntar."
+    "noItemsOstlerAi": "Ningún elemento que {{aiName}} pueda leer coincide. Los que {{aiName}} nunca lee no aparecen aquí."
   },
   "libraryDetail": {
     "libraryItem": "Elemento de la Biblioteca",
     "archived": "Archivado",
-    "ostlerAiAccess": "Acceso de {{aiName}}",
+    "ostlerAiAccess": "{{aiName}} lo lee",
     "primaryBriefProject": "Encargo principal de este proyecto",
-    "whatShouldOstlerAi": "¿Qué debe tomar {{aiName}} de esto?",
-    "oneLineEG": "Una línea, por ejemplo: «Usa esta misma disposición para la pantalla de configuración»",
+    "oneLineEG": "Por ejemplo: «Precios de los tres servicios de catering»",
     "tags": "Etiquetas",
     "commaSeparated": "Separadas por comas",
     "tagsItem": "Etiquetas de este elemento",
@@ -51,7 +50,15 @@
     "delete2": "¿Eliminar «{{itemTitle}}»?",
     "permanentlyRemovesItemRevisions": "Esto elimina de forma permanente el elemento, sus revisiones, sus enlaces y sus archivos guardados. Si quieres conservarlo, archívalo.",
     "deleteItem": "Eliminar elemento",
-    "moreActions": "Más acciones para {{itemTitle}}"
+    "moreActions": "Más acciones para {{itemTitle}}",
+    "summary": "Resumen",
+    "summaryHint": "Una línea sobre qué es. Se muestra en la lista.",
+    "summaryHintAi": "Una línea sobre qué es. Se muestra en la lista y {{aiName}} también la lee.",
+    "pageOf": "Página {{page}} de {{pageCount}}",
+    "pageImage": "{{title}}, {{page}}",
+    "previousPage": "Página anterior",
+    "nextPage": "Página siguiente",
+    "resizeDetails": "Cambiar el ancho de los detalles"
   },
   "libraryEditor": {
     "edit": "Editar {{itemTitle}}",
@@ -101,7 +108,7 @@
     "title": "Título",
     "defaultsSiteName": "Por defecto, el nombre del sitio",
     "note": "Nota",
-    "ostlerAiAccess": "Acceso de {{aiName}}",
+    "ostlerAiAccess": "{{aiName}} lo lee",
     "enterHttpHttpsUrl": "Escribe una URL http o https.",
     "saving": "Guardando…",
     "save": "Guardar"
@@ -123,7 +130,7 @@
     "planWorkThese": "Planificar el trabajo a partir de estos…",
     "primaryBrief": "Encargo principal",
     "libraryEmpty": "La Biblioteca está vacía",
-    "libraryKeepsBriefsGuides": "La Biblioteca guarda encargos, guías, referencias y notas junto al trabajo. Suelta archivos en cualquier parte, pega una captura de pantalla o un enlace, o usa Agregar para escribir uno.",
+    "libraryKeepsBriefsGuides": "Guarda todo lo de este proyecto en un solo lugar: notas, documentos, imágenes y enlaces. Suelta archivos en cualquier parte, pega una captura de pantalla o un enlace, o escribe una nota.",
     "nothingMatchesTheseFilters": "Nada coincide con estos filtros.",
     "selectItemSeeDetails": "Selecciona un elemento para ver sus detalles.",
     "dropAddLibrary": "Suelta para agregar a la Biblioteca",
@@ -142,16 +149,17 @@
     "addLink": "Agregar enlace",
     "importFiles": "Importar archivos…",
     "importClipboard": "Importar desde el portapapeles",
-    "clipboardEmpty": "El portapapeles no tiene nada que guardar: copia antes una imagen, un archivo, una dirección web o un texto."
+    "clipboardEmpty": "El portapapeles no tiene nada que guardar: copia antes una imagen, un archivo, una dirección web o un texto.",
+    "writeNote": "Escribir una nota"
   },
   "libraryPlanWorkModal": {
     "planWorkThese": "Planificar el trabajo a partir de estos",
     "ostlerAiProposesGoal": "{{aiName}} propone un objetivo a partir de estos elementos. No se crea nada hasta que lo confirmes.",
     "cancel": "Cancelar",
     "notReadAi": "no lo lee la IA",
-    "humanOnlyArchivedItems_one": "{{count}} elemento solo para personas o archivado nunca se envía a {{aiName}} y se dejará fuera.",
-    "humanOnlyArchivedItems_many": "{{count}} elementos solo para personas o archivados nunca se envían a {{aiName}} y se dejarán fuera.",
-    "humanOnlyArchivedItems_other": "{{count}} elementos solo para personas o archivados nunca se envían a {{aiName}} y se dejarán fuera.",
+    "humanOnlyArchivedItems_one": "{{count}} elemento se deja fuera: está archivado o {{aiName}} nunca lo lee.",
+    "humanOnlyArchivedItems_many": "{{count}} elementos se dejan fuera: están archivados o {{aiName}} nunca los lee.",
+    "humanOnlyArchivedItems_other": "{{count}} elementos se dejan fuera: están archivados o {{aiName}} nunca los lee.",
     "goal": "Objetivo",
     "title": "Título",
     "ostlerAiProposingGoal": "{{aiName}} está proponiendo un objetivo…",
@@ -167,7 +175,6 @@
     "proposeAgain": "Proponer de nuevo"
   },
   "libraryRail": {
-    "libraryFilters": "Filtros de la Biblioteca",
     "context": "Contexto de {{aiName}}",
     "textAlwaysItemsSent": "El texto de los elementos Siempre se envía con cada mensaje del chat de {{aiName}}. El encargo del proyecto siempre se envía completo; planificar con {{aiName}} lee hasta {{planningBudget}} caracteres.",
     "text": "Texto",
@@ -179,7 +186,12 @@
     "images": "Imágenes",
     "of": "{{imageCount}} de {{LIBRARY_MAX_ALWAYS_IMAGES}}",
     "loading": "Cargando…",
-    "tags": "Etiquetas"
+    "tags": "Etiquetas",
+    "tagsHint": "Aún no hay etiquetas. Añade etiquetas a un elemento en sus detalles para filtrar por ellas aquí.",
+    "allTags": "Todas las etiquetas",
+    "aiButton": "{{aiName}}",
+    "aiFiltered": "{{aiName}}: {{access}}",
+    "showOnly": "Mostrar solo"
   },
   "libraryUi": {
     "all": "Todos",
@@ -193,13 +205,18 @@
     "note": "Nota",
     "always": "Siempre",
     "whenSelected": "Al seleccionar",
-    "humanOnly": "Solo personas",
+    "humanOnly": "Nunca",
     "kind": {
       "guide": "Guía",
       "image": "Referencia",
       "document": "Documento",
       "link": "Enlace",
       "whiteboard": "Pizarra"
+    },
+    "badge": {
+      "always": "IA siempre",
+      "whenSelected": "IA al seleccionar",
+      "humanOnly": "Sin IA"
     }
   },
   "templates": {

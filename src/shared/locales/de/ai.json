@@ -370,7 +370,7 @@
     "revision": "{{itemTitle}} (Revision {{revision}})",
     "removedLibrary": "Aus der Bibliothek entfernt",
     "saveLibrary": "In der Bibliothek speichern",
-    "saveReplyLibraryHuman": "Diese Antwort als Notiz nur für Menschen in der Bibliothek speichern",
+    "saveReplyLibraryHuman": "Diese Antwort als Notiz, die {{aiName}} nie liest, in der Bibliothek speichern",
     "writing": "{{aiName}} schreibt…",
     "savedOutsideProject": "Außerhalb des Projekts gespeichert: {{savedPath}}",
     "attachedNextMessage": "An die nächste Nachricht angehängt",

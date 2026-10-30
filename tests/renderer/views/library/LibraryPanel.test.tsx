@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 import type { CreateLibraryItemInput, LibraryItem } from '@shared/ostler-api'
 import { LibraryPanel } from '@renderer/views/project-detail/library/LibraryPanel'
+import { StaticFeaturesProvider } from '@renderer/navigation/features'
 import { installOstlerApi } from '../../fixtures/ostler-api'
 
 function item(id: string, kind: LibraryItem['kind'], title: string): LibraryItem {
@@ -32,7 +33,7 @@ const ITEMS = [
   { ...item('c', 'note', 'Old idea'), archivedAt: '2026-10-02T00:00:00.000Z' }
 ]
 
-function renderLibrary() {
+function renderLibrary({ ai = false }: { ai?: boolean } = {}) {
   const updateLibraryItem = vi.fn(async () => ({ ok: true as const, value: ITEMS[0] }))
   const createLibraryItem = vi.fn(async (_projectId: string, _input: CreateLibraryItemInput) => ({
     ok: true as const,
@@ -59,9 +60,11 @@ function renderLibrary() {
     createLibraryItem
   })
   render(
-    <MemoryRouter>
-      <LibraryPanel projectId="p1" initialItemId={null} />
-    </MemoryRouter>
+    <StaticFeaturesProvider value={{ ai, agents: false }}>
+      <MemoryRouter>
+        <LibraryPanel projectId="p1" initialItemId={null} />
+      </MemoryRouter>
+    </StaticFeaturesProvider>
   )
   return { updateLibraryItem, createLibraryItem }
 }
@@ -81,24 +84,61 @@ describe('LibraryPanel', () => {
     expect(screen.queryByText('Tester feedback')).toBeNull()
   })
 
-  it('shows the AI context as a progress bar and tags as chips', async () => {
-    renderLibrary()
+  it('shows the AI context and filters by access from the Ostler AI button', async () => {
+    renderLibrary({ ai: true })
+    await screen.findByText('Tester feedback')
+    fireEvent.click(screen.getByRole('button', { name: 'Ostler AI' }))
     expect(await screen.findByRole('progressbar', { name: 'Text' })).toHaveAttribute(
       'aria-valuetext',
       '500 / 2,000'
     )
-    await screen.findByText('Tester feedback')
-    expect(screen.getAllByText('#beta').length).toBeGreaterThan(0)
+    const showOnly = screen.getByRole('region', { name: 'Show only' })
+    fireEvent.click(within(showOnly).getByRole('button', { name: /Always/ }))
+    expect(screen.queryByText('Tester feedback')).toBeNull()
+    expect(screen.getByRole('button', { name: 'Ostler AI: Always' })).toBeTruthy()
+  })
+
+  it('filters by tag from the Tags menu, with no left-hand rail', async () => {
+    renderLibrary()
+    await screen.findByText('Writing style guide')
+    expect(screen.queryByRole('complementary', { name: 'Library filters' })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Tags' }))
+    fireEvent.click(await screen.findByRole('menuitemradio', { name: '#beta' }))
+    expect(screen.queryByText('Writing style guide')).toBeNull()
+    expect(screen.getByText('Tester feedback')).toBeTruthy()
+    expect(screen.getByRole('button', { name: '#beta' })).toBeTruthy()
+  })
+
+  it('drags the details wider from their left edge, and remembers it', async () => {
+    window.localStorage.removeItem('ostler.library-detail-width')
+    renderLibrary()
+    await screen.findByText('Writing style guide')
+    const handle = screen.getByRole('separator', { name: 'Resize details' })
+    const before = Number(handle.getAttribute('aria-valuenow'))
+    fireEvent.keyDown(handle, { key: 'ArrowLeft' })
+    expect(Number(handle.getAttribute('aria-valuenow'))).toBe(before + 32)
+    expect(window.localStorage.getItem('ostler.library-detail-width')).toBe(String(before + 32))
   })
 
   it('sets Ostler AI access with a segmented control', async () => {
-    const { updateLibraryItem } = renderLibrary()
+    const { updateLibraryItem } = renderLibrary({ ai: true })
     fireEvent.click(await screen.findByText('Writing style guide'))
-    const access = await screen.findByRole('radiogroup', { name: 'Ostler AI access' })
+    const access = await screen.findByRole('radiogroup', { name: 'Ostler AI reads it' })
     fireEvent.click(within(access).getByRole('radio', { name: 'Always' }))
     await waitFor(() =>
       expect(updateLibraryItem).toHaveBeenCalledWith('p1', 'a', { aiAccess: 'always' })
     )
+  })
+
+  it('without Ostler AI, shows no AI access, context or badges, and keeps tags', async () => {
+    renderLibrary()
+    fireEvent.click(await screen.findByText('Writing style guide'))
+    await screen.findByLabelText('Summary')
+    expect(screen.queryByRole('radiogroup', { name: 'Ostler AI reads it' })).toBeNull()
+    expect(screen.queryByRole('progressbar', { name: 'Text' })).toBeNull()
+    expect(screen.queryByText('AI when selected')).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Ostler AI' })).toBeNull()
+    expect(screen.getByRole('button', { name: 'Tags' })).toBeTruthy()
   })
 
   it('starts new meeting notes When selected, so Find actions works at once', async () => {

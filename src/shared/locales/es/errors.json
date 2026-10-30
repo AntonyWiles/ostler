@@ -779,7 +779,7 @@
     "taskHasNewerWork": "«{{title}}» tiene trabajo más reciente en la cola o en curso, así que este trabajo más antiguo no se puede incorporar ahora."
   },
   "noteActions": {
-    "notReadable": "{{aiName}} no puede leer esta nota: está configurada como solo para personas, archivada o ya no está en este proyecto.",
+    "notReadable": "{{aiName}} no puede leer esta nota: está configurada para que {{aiName}} nunca la lea, está archivada o ya no está en este proyecto.",
     "notANote": "Buscar acciones y decisiones lee notas, encargos y guías.",
     "empty": "Esta nota todavía no tiene texto que leer.",
     "tooLong": "Esta nota es demasiado larga para enviarla completa: {{aiName}} lee hasta {{max}} caracteres a la vez. Divídela en notas más cortas e inténtalo con cada una.",
@@ -795,7 +795,7 @@
     "cannotUndo": "Esta nota cambió después de crear las tareas, así que no se deshicieron. Elimina las tareas y edita la nota tú mismo."
   },
   "writingHelp": {
-    "notReadable": "{{aiName}} no puede leer este elemento: está configurado como solo para personas, archivado o ya no está en este proyecto.",
+    "notReadable": "{{aiName}} no puede leer este elemento: está configurado para que {{aiName}} nunca lo lea, está archivado o ya no está en este proyecto.",
     "badStyle": "Elige cómo mejorar el texto.",
     "empty": "Todavía no hay texto que mejorar.",
     "tooLong": "Este texto es demasiado largo para enviarlo de una vez: {{aiName}} mejora hasta {{max}} caracteres a la vez. Selecciona una parte e inténtalo de nuevo.",

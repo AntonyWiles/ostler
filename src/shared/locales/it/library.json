@@ -7,15 +7,14 @@
     "attachLibrary": "Allega dalla Libreria",
     "libraryEmpty": "La Libreria è vuota.",
     "noLibraryItemsMatch": "Nessun elemento della Libreria corrisponde.",
-    "noItemsOstlerAi": "Nessun elemento che {{aiName}} può leggere corrisponde. Gli elementi riservati alle persone non si possono allegare."
+    "noItemsOstlerAi": "Nessun elemento che {{aiName}} può leggere corrisponde. Quelli che {{aiName}} non legge mai non compaiono qui."
   },
   "libraryDetail": {
     "libraryItem": "Elemento della Libreria",
     "archived": "Archiviato",
-    "ostlerAiAccess": "Accesso di {{aiName}}",
+    "ostlerAiAccess": "{{aiName}} lo legge",
     "primaryBriefProject": "Brief principale di questo progetto",
-    "whatShouldOstlerAi": "Che cosa deve prendere {{aiName}} da questo?",
-    "oneLineEG": "Una riga, per esempio “Usa questo layout per la schermata delle impostazioni”",
+    "oneLineEG": "Per esempio “Prezzi dei tre catering”",
     "tags": "Etichette",
     "commaSeparated": "Separate da virgole",
     "tagsItem": "Etichette di questo elemento",
@@ -51,7 +50,15 @@
     "delete2": "Eliminare “{{itemTitle}}”?",
     "permanentlyRemovesItemRevisions": "Questo rimuove definitivamente l’elemento, le sue versioni, i suoi link e i file memorizzati. Per conservarlo, archivialo.",
     "deleteItem": "Elimina elemento",
-    "moreActions": "Altre azioni per {{itemTitle}}"
+    "moreActions": "Altre azioni per {{itemTitle}}",
+    "summary": "Riepilogo",
+    "summaryHint": "Una riga su cos’è. Compare nell’elenco.",
+    "summaryHintAi": "Una riga su cos’è. Compare nell’elenco e anche {{aiName}} la legge.",
+    "pageOf": "Pagina {{page}} di {{pageCount}}",
+    "pageImage": "{{title}}, {{page}}",
+    "previousPage": "Pagina precedente",
+    "nextPage": "Pagina successiva",
+    "resizeDetails": "Ridimensiona i dettagli"
   },
   "libraryEditor": {
     "edit": "Modifica {{itemTitle}}",
@@ -101,7 +108,7 @@
     "title": "Titolo",
     "defaultsSiteName": "Per impostazione predefinita, il nome del sito",
     "note": "Nota",
-    "ostlerAiAccess": "Accesso di {{aiName}}",
+    "ostlerAiAccess": "{{aiName}} lo legge",
     "enterHttpHttpsUrl": "Inserisci un URL http o https.",
     "saving": "Salvataggio…",
     "save": "Salva"
@@ -123,7 +130,7 @@
     "planWorkThese": "Pianifica il lavoro partendo da questi…",
     "primaryBrief": "Brief principale",
     "libraryEmpty": "La Libreria è vuota",
-    "libraryKeepsBriefsGuides": "La Libreria conserva brief, guide, riferimenti e note accanto al lavoro. Trascina qui dei file, incolla uno screenshot o un link, oppure usa Aggiungi per scriverne uno.",
+    "libraryKeepsBriefsGuides": "Tieni tutto ciò che riguarda questo progetto in un unico posto: note, documenti, immagini e link. Trascina qui dei file, incolla uno screenshot o un link, oppure scrivi una nota.",
     "nothingMatchesTheseFilters": "Nessun elemento corrisponde a questi filtri.",
     "selectItemSeeDetails": "Seleziona un elemento per vederne i dettagli.",
     "dropAddLibrary": "Rilascia per aggiungere alla Libreria",
@@ -142,16 +149,17 @@
     "addLink": "Aggiungi link",
     "importFiles": "Importa file…",
     "importClipboard": "Importa dagli appunti",
-    "clipboardEmpty": "Negli appunti non c’è niente da conservare: copia prima un’immagine, un file, un indirizzo web o del testo."
+    "clipboardEmpty": "Negli appunti non c’è niente da conservare: copia prima un’immagine, un file, un indirizzo web o del testo.",
+    "writeNote": "Scrivi una nota"
   },
   "libraryPlanWorkModal": {
     "planWorkThese": "Pianifica il lavoro partendo da questi",
     "ostlerAiProposesGoal": "{{aiName}} propone un obiettivo partendo da questi elementi. Non viene creato nulla finché non confermi.",
     "cancel": "Annulla",
     "notReadAi": "non letto dall’IA",
-    "humanOnlyArchivedItems_one": "{{count}} elemento riservato alle persone o archiviato non viene mai inviato a {{aiName}} e sarà escluso.",
-    "humanOnlyArchivedItems_many": "{{count}} elementi riservati alle persone o archiviati non vengono mai inviati a {{aiName}} e saranno esclusi.",
-    "humanOnlyArchivedItems_other": "{{count}} elementi riservati alle persone o archiviati non vengono mai inviati a {{aiName}} e saranno esclusi.",
+    "humanOnlyArchivedItems_one": "{{count}} elemento è escluso: è archiviato oppure {{aiName}} non lo legge mai.",
+    "humanOnlyArchivedItems_many": "{{count}} elementi sono esclusi: sono archiviati oppure {{aiName}} non li legge mai.",
+    "humanOnlyArchivedItems_other": "{{count}} elementi sono esclusi: sono archiviati oppure {{aiName}} non li legge mai.",
     "goal": "Obiettivo",
     "title": "Titolo",
     "ostlerAiProposingGoal": "{{aiName}} sta proponendo un obiettivo…",
@@ -167,7 +175,6 @@
     "proposeAgain": "Proponi di nuovo"
   },
   "libraryRail": {
-    "libraryFilters": "Filtri della Libreria",
     "context": "Contesto di {{aiName}}",
     "textAlwaysItemsSent": "Testo degli elementi Sempre, inviato con ogni messaggio della chat di {{aiName}}. Il brief del progetto viene sempre inviato per intero; la pianificazione con {{aiName}} legge fino a {{planningBudget}} caratteri.",
     "text": "Testo",
@@ -179,7 +186,12 @@
     "images": "Immagini",
     "of": "{{imageCount}} di {{LIBRARY_MAX_ALWAYS_IMAGES}}",
     "loading": "Caricamento…",
-    "tags": "Etichette"
+    "tags": "Etichette",
+    "tagsHint": "Ancora nessun tag. Aggiungi tag a un elemento nei suoi dettagli per filtrare qui.",
+    "allTags": "Tutti i tag",
+    "aiButton": "{{aiName}}",
+    "aiFiltered": "{{aiName}}: {{access}}",
+    "showOnly": "Mostra solo"
   },
   "libraryUi": {
     "all": "Tutti",
@@ -193,13 +205,18 @@
     "note": "Nota",
     "always": "Sempre",
     "whenSelected": "Quando selezionato",
-    "humanOnly": "Solo persone",
+    "humanOnly": "Mai",
     "kind": {
       "guide": "Guida",
       "image": "Riferimento",
       "document": "Documento",
       "link": "Link",
       "whiteboard": "Lavagna"
+    },
+    "badge": {
+      "always": "IA sempre",
+      "whenSelected": "IA se selezionato",
+      "humanOnly": "Niente IA"
     }
   },
   "templates": {

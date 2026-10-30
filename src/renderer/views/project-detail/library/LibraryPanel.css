@@ -1,10 +1,27 @@
 /* Library tab: rail · centre · detail, plus the editor and the drop overlay.
    Tokens only. */
 
+/* The Library fills the window and scrolls inside its list and details, so a
+   long item never scrolls the whole page (as Calendar and List do). */
+.ostler-workspace:has(> .ostler-workspace-view--library) {
+  height: 100%;
+}
+
+.ostler-workspace-view--library {
+  min-height: 0;
+}
+
+.ostler-project-detail-grid--library {
+  grid-template-rows: minmax(0, 1fr);
+}
+
 .ostler-library {
   position: relative;
   display: grid;
-  grid-template-columns: 12.5rem minmax(0, 1fr) 22.5rem;
+  /* The list, then the details at the width the person dragged them to; the
+     list never gets less than 24rem (useLibraryDetailWidth). */
+  grid-template-columns: minmax(24rem, 1fr) minmax(20rem, var(--library-detail-width, 27.5rem));
+  grid-template-rows: minmax(0, 1fr);
   gap: var(--space-300);
   height: 100%;
   min-height: 0;
@@ -15,15 +32,22 @@
   font-size: var(--text-caption);
 }
 
-/* ─── Rail ──────────────────────────────────────────────────────────────── */
+/* ─── Filters (Tags and Ostler AI, in the toolbar) ──────────────────────── */
 
-.ostler-library-rail {
+.ostler-library-filter {
+  flex-shrink: 0;
+}
+
+.ostler-library-filter--over {
+  color: var(--color-danger);
+}
+
+.ostler-library-ai-popover {
   display: flex;
   flex-direction: column;
   gap: var(--space-300);
-  min-height: 0;
-  overflow-y: auto;
-  scrollbar-gutter: stable;
+  width: 18rem;
+  padding: var(--space-300);
 }
 
 .ostler-library-rail-group {
@@ -99,17 +123,20 @@
   gap: var(--space-200);
   min-width: 0;
   min-height: 0;
+  container: library-list / inline-size;
 }
 
+/* Wraps rather than squeezing the search box when the list is narrow. */
 .ostler-library-toolbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-200);
 }
 
 .ostler-library-search {
-  flex: 1;
-  min-width: 0;
+  flex: 1 1 12rem;
+  min-width: 12rem;
 }
 
 .ostler-library-selection {
@@ -344,6 +371,59 @@
 
 /* ─── Detail ────────────────────────────────────────────────────────────── */
 
+/* The details and, on their left edge, the handle that drags them wider. */
+.ostler-library-detail-pane {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.ostler-library-detail-pane > .ostler-library-detail {
+  flex: 1;
+}
+
+.ostler-library-detail-resize {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: calc(-1 * var(--space-200));
+  width: var(--space-200);
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.ostler-library-detail-resize:hover,
+.ostler-library-detail-resize:focus-visible {
+  background: linear-gradient(
+    to right,
+    transparent calc(50% - var(--border-width)),
+    var(--color-focus) calc(50% - var(--border-width)),
+    var(--color-focus) calc(50% + var(--border-width)),
+    transparent calc(50% + var(--border-width))
+  );
+  outline: none;
+}
+
+/* A short pill on the edge, halfway down: says "this edge moves" without a word. */
+.ostler-library-detail-grip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--space-100);
+  height: var(--space-1000);
+  background: var(--color-border-strong);
+  border-radius: var(--radius-full);
+  transform: translate(-50%, -50%);
+}
+
+.ostler-library-detail-resize:hover .ostler-library-detail-grip,
+.ostler-library-detail-resize:focus-visible .ostler-library-detail-grip {
+  background: var(--color-focus);
+}
+
 .ostler-library-detail {
   display: flex;
   flex-direction: column;
@@ -371,7 +451,7 @@
 .ostler-library-preview img {
   display: block;
   max-width: 100%;
-  max-height: 20rem;
+  max-height: 28rem;
   margin: 0 auto;
   border-radius: var(--radius-control);
 }
@@ -401,7 +481,7 @@
 }
 
 .ostler-library-preview .ostler-library-markdown {
-  max-height: 15rem;
+  max-height: 24rem;
   overflow: auto;
 }
 
@@ -474,7 +554,7 @@
 /* ─── Editor ────────────────────────────────────────────────────────────── */
 
 .ostler-library-editor {
-  grid-column: 2 / 4;
+  grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
   gap: var(--space-300);
@@ -707,23 +787,59 @@
   gap: var(--space-300);
 }
 
-/* At 900 px the three columns left the list a sliver: the item's detail goes
-   under the rail and the list, at full width. Last in the file, so it wins
+/* A narrow list (details dragged wide) keeps the title readable: the kind and
+   tags columns go; the icon and the details still show them. */
+@container library-list (max-width: 36rem) {
+  .ostler-library-row {
+    grid-template-columns: var(--icon-size) minmax(0, 1fr) auto auto;
+  }
+
+  .ostler-library-row-kind,
+  .ostler-library-row-tags {
+    display: none;
+  }
+}
+
+/* At 900 px two columns leave the list a sliver: the item's details go under
+   the list, at full width, and can't be dragged. Last in the file, so it wins
    over the columns set above. */
 @container project-detail (max-width: 900px) {
   .ostler-library {
-    grid-template-columns: 12.5rem minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr) auto;
   }
 
-  .ostler-library-detail {
-    grid-column: 1 / -1;
+  .ostler-library-detail-pane {
     max-height: 45vh;
   }
 
-  .ostler-library-editor {
-    grid-column: 2 / -1;
+  .ostler-library-detail-resize {
+    display: none;
   }
+}
+
+/* A PDF's page, drawn as a picture, with Previous and Next under it. */
+.ostler-library-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+  margin: 0;
+}
+
+.ostler-library-preview .ostler-library-page-image {
+  width: 100%;
+  max-height: none;
+  border: var(--border-width) solid var(--color-border);
+}
+
+.ostler-library-page-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-200);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-variant-numeric: tabular-nums;
 }
 
 .ostler-library-cloud-file {

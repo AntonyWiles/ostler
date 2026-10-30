@@ -7,15 +7,14 @@
     "attachLibrary": "Aus der Bibliothek anhängen",
     "libraryEmpty": "Die Bibliothek ist leer.",
     "noLibraryItemsMatch": "Keine Bibliothekselemente passen.",
-    "noItemsOstlerAi": "Keine Elemente, die {{aiName}} lesen kann, passen. Nur für Menschen bestimmte Elemente können nicht angehängt werden."
+    "noItemsOstlerAi": "Keine Elemente, die {{aiName}} lesen darf, passen. Elemente, die {{aiName}} nie liest, fehlen hier."
   },
   "libraryDetail": {
     "libraryItem": "Bibliothekselement",
     "archived": "Archiviert",
-    "ostlerAiAccess": "Zugriff von {{aiName}}",
+    "ostlerAiAccess": "{{aiName}} liest es",
     "primaryBriefProject": "Hauptbriefing für dieses Projekt",
-    "whatShouldOstlerAi": "Was soll {{aiName}} daraus übernehmen?",
-    "oneLineEG": "Eine Zeile, z. B. „Dieses Layout für den Einstellungsbildschirm übernehmen“",
+    "oneLineEG": "Zum Beispiel „Preise der drei Caterer“",
     "tags": "Tags",
     "commaSeparated": "Durch Kommas getrennt",
     "tagsItem": "Tags an diesem Element",
@@ -51,7 +50,15 @@
     "delete2": "„{{itemTitle}}“ löschen?",
     "permanentlyRemovesItemRevisions": "Dies entfernt das Element endgültig samt seinen Revisionen, Links und gespeicherten Dateien. Archivieren Sie es stattdessen, um es zu behalten.",
     "deleteItem": "Element löschen",
-    "moreActions": "Weitere Aktionen für {{itemTitle}}"
+    "moreActions": "Weitere Aktionen für {{itemTitle}}",
+    "summary": "Zusammenfassung",
+    "summaryHint": "Eine Zeile dazu, worum es geht. Sie steht in der Liste.",
+    "summaryHintAi": "Eine Zeile dazu, worum es geht. Sie steht in der Liste, und {{aiName}} liest sie auch.",
+    "pageOf": "Seite {{page}} von {{pageCount}}",
+    "pageImage": "{{title}}, {{page}}",
+    "previousPage": "Vorherige Seite",
+    "nextPage": "Nächste Seite",
+    "resizeDetails": "Details-Breite ändern"
   },
   "libraryEditor": {
     "edit": "{{itemTitle}} bearbeiten",
@@ -100,7 +107,7 @@
     "title": "Titel",
     "defaultsSiteName": "Standardmäßig der Name der Website",
     "note": "Notiz",
-    "ostlerAiAccess": "Zugriff von {{aiName}}",
+    "ostlerAiAccess": "{{aiName}} liest es",
     "enterHttpHttpsUrl": "Geben Sie eine http- oder https-URL ein.",
     "saving": "Wird gespeichert…",
     "save": "Speichern"
@@ -121,7 +128,7 @@
     "planWorkThese": "Arbeit aus diesen planen…",
     "primaryBrief": "Hauptbriefing",
     "libraryEmpty": "Die Bibliothek ist leer",
-    "libraryKeepsBriefsGuides": "Die Bibliothek bewahrt Briefings, Anleitungen, Verweise und Notizen neben der Arbeit auf. Legen Sie hier Dateien ab, fügen Sie einen Screenshot oder Link ein oder verwenden Sie „Hinzufügen“, um etwas zu schreiben.",
+    "libraryKeepsBriefsGuides": "Bewahren Sie alles zu diesem Projekt an einem Ort auf: Notizen, Dokumente, Bilder und Links. Legen Sie hier Dateien ab, fügen Sie einen Screenshot oder Link ein oder schreiben Sie eine Notiz.",
     "nothingMatchesTheseFilters": "Nichts passt zu diesen Filtern.",
     "selectItemSeeDetails": "Wählen Sie ein Element, um seine Details zu sehen.",
     "dropAddLibrary": "Zum Hinzufügen zur Bibliothek ablegen",
@@ -139,15 +146,16 @@
     "addLink": "Link hinzufügen",
     "importFiles": "Dateien importieren…",
     "importClipboard": "Aus der Zwischenablage importieren",
-    "clipboardEmpty": "In der Zwischenablage ist nichts zum Aufbewahren. Kopiere zuerst ein Bild, eine Datei, eine Webadresse oder Text."
+    "clipboardEmpty": "In der Zwischenablage ist nichts zum Aufbewahren. Kopiere zuerst ein Bild, eine Datei, eine Webadresse oder Text.",
+    "writeNote": "Notiz schreiben"
   },
   "libraryPlanWorkModal": {
     "planWorkThese": "Arbeit aus diesen planen",
     "ostlerAiProposesGoal": "{{aiName}} schlägt aus diesen Elementen ein Ziel vor. Nichts wird angelegt, bevor Sie es bestätigen.",
     "cancel": "Abbrechen",
     "notReadAi": "nicht von der KI lesbar",
-    "humanOnlyArchivedItems_one": "{{count}} nur für Menschen bestimmtes oder archiviertes Element wird nie an {{aiName}} gesendet und bleibt außen vor.",
-    "humanOnlyArchivedItems_other": "{{count}} nur für Menschen bestimmte oder archivierte Elemente werden nie an {{aiName}} gesendet und bleiben außen vor.",
+    "humanOnlyArchivedItems_one": "{{count}} Element bleibt außen vor: Es ist archiviert, oder {{aiName}} liest es nie.",
+    "humanOnlyArchivedItems_other": "{{count}} Elemente bleiben außen vor: Sie sind archiviert, oder {{aiName}} liest sie nie.",
     "goal": "Ziel",
     "title": "Titel",
     "ostlerAiProposingGoal": "{{aiName}} schlägt ein Ziel vor…",
@@ -163,7 +171,6 @@
     "proposeAgain": "Erneut vorschlagen"
   },
   "libraryRail": {
-    "libraryFilters": "Filter der Bibliothek",
     "context": "Kontext für {{aiName}}",
     "textAlwaysItemsSent": "Text aus Immer-Elementen wird mit jeder Nachricht an {{aiName}} gesendet. Das Projektbriefing wird immer vollständig gesendet. Die Planung mit {{aiName}} liest bis zu {{planningBudget}} Zeichen.",
     "text": "Text",
@@ -174,7 +181,12 @@
     "images": "Bilder",
     "of": "{{imageCount}} von {{LIBRARY_MAX_ALWAYS_IMAGES}}",
     "loading": "Wird geladen…",
-    "tags": "Tags"
+    "tags": "Tags",
+    "tagsHint": "Noch keine Tags. Fügen Sie einem Eintrag in seinen Details Tags hinzu, um hier danach zu filtern.",
+    "allTags": "Alle Tags",
+    "aiButton": "{{aiName}}",
+    "aiFiltered": "{{aiName}}: {{access}}",
+    "showOnly": "Nur anzeigen"
   },
   "libraryUi": {
     "all": "Alle",
@@ -188,13 +200,18 @@
     "note": "Notiz",
     "always": "Immer",
     "whenSelected": "Bei Auswahl",
-    "humanOnly": "Nur Mensch",
+    "humanOnly": "Nie",
     "kind": {
       "guide": "Anleitung",
       "image": "Verweis",
       "document": "Dokument",
       "link": "Link",
       "whiteboard": "Whiteboard"
+    },
+    "badge": {
+      "always": "KI immer",
+      "whenSelected": "KI bei Auswahl",
+      "humanOnly": "Keine KI"
     }
   },
   "templates": {

@@ -3,7 +3,7 @@ import type { BadgeTone } from '../../../ui'
 import { t } from '@shared/i18n'
 import { formatRelativeTime } from '@shared/format'
 
-/** Left-rail sections. 'image' is shown to people as References. */
+/** The Library's sections. 'image' is shown to people as References. */
 export type LibrarySection = 'all' | LibraryItemKind
 
 export const LIBRARY_SECTIONS: { id: LibrarySection; label: string }[] = [
@@ -114,6 +114,19 @@ export const ACCESS_LABEL: Record<LibraryAiAccess, string> = {
   }
 }
 
+/** The list's badge: says it is about Ostler AI, which a bare "Never" would not. */
+export const ACCESS_BADGE: Record<LibraryAiAccess, string> = {
+  get always() {
+    return t('library:libraryUi.badge.always')
+  },
+  get 'when-selected'() {
+    return t('library:libraryUi.badge.whenSelected')
+  },
+  get 'human-only'() {
+    return t('library:libraryUi.badge.humanOnly')
+  }
+}
+
 export const ACCESS_TONE: Record<LibraryAiAccess, BadgeTone> = {
   always: 'info',
   'when-selected': 'neutral',
@@ -133,14 +146,17 @@ export function isWrittenKind(kind: LibraryItemKind): kind is 'brief' | 'guide' 
 export function libraryItemFileUrl(
   projectId: string,
   itemId: string,
-  which: 'file' | 'thumb',
+  which: 'file' | 'thumb' | `page-${number}`,
   revision?: number
 ): string {
   const url = `ostler-library://${encodeURIComponent(projectId)}/${encodeURIComponent(itemId)}/${which}`
   return revision === undefined ? url : `${url}?r=${revision}`
 }
 
-export function libraryFileUrl(item: LibraryItem, which: 'file' | 'thumb'): string {
+export function libraryFileUrl(
+  item: LibraryItem,
+  which: 'file' | 'thumb' | `page-${number}`
+): string {
   return libraryItemFileUrl(item.projectId, item.id, which, item.revision)
 }
 

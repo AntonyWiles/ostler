@@ -902,7 +902,7 @@
     "changedSinceRR": "Modifié depuis (r{{revisionAtAttach}} → r{{currentRevision}})",
     "agentGetsCurrentRevision": "L’agent reçoit la révision actuelle, r{{currentRevision}}",
     "notGivenAgents": "Non confié aux agents",
-    "humanOnlyArchivedItems": "Les éléments réservés aux personnes et les éléments archivés sont ignorés au démarrage d’une exécution d’agent",
+    "humanOnlyArchivedItems": "Les éléments archivés et ceux que {{aiName}} ne lit jamais sont ignorés au démarrage d’une exécution d’agent",
     "upToItems_one": "Jusqu’à {{count}} élément peut être joint",
     "upToItems_many": "Jusqu’à {{count}} éléments peuvent être joints",
     "upToItems_other": "Jusqu’à {{count}} éléments peuvent être joints"
@@ -2316,7 +2316,7 @@
   },
   "noteActions": {
     "open": "Trouver les actions et décisions",
-    "humanOnly": "Cette note est réservée aux humains : {{aiName}} ne la lit jamais. Modifiez son accès pour y trouver les actions et décisions.",
+    "humanOnly": "Cette note est réglée pour que {{aiName}} ne la lise jamais. Pour y trouver les actions et décisions, modifiez ce réglage dans ses détails.",
     "sent": "Envoie le titre et le texte de cette note à votre fournisseur d’IA.",
     "title": "Actions et décisions dans « {{title}} »",
     "description": "Cochez et modifiez chaque tâche et décision. Rien n’est ajouté tant que vous n’avez pas appuyé sur Ajouter.",

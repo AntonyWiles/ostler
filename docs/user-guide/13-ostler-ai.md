@@ -66,7 +66,7 @@ chose only what that feature needs:
 
 - **The request's own records**, such as the task, note or comments you asked about.
 - **The project's Library**: items set to **Always**, and items set to **When selected** when you
-  choose them or attach them to a task. An item set to **Human only** is never sent. Each message
+  choose them or attach them to a task. An item set to **Never** is never sent. Each message
   in a project's chat takes up to 20,000 characters of it, and planning (a plan, splitting a goal
   into tasks, next tasks) up to 100,000. The project brief, when it is sent, goes first and whole;
   items that do not fit after it are only named, and Ostler AI may ask you to choose one.
@@ -82,7 +82,7 @@ Settings › AI lets the model read images. If the model can't read pictures, Os
 nothing in its place; type the list, or choose a model that reads images.
 
 **Find actions and decisions** sends only the one note's title and text, and never a note set to
-**Human only**.
+**Never**.
 
 **Ask Ostler** sends your question and today's date first, then your question with the records
 and file passages it found: for a task its title, description, checklist and custom fields; for a
@@ -109,7 +109,7 @@ Type the question and press **Ask**. The panel says what it is doing ("Searching
    date are sent for this.
 2. Runs those searches itself, on this PC, across every project that is turned on: tasks,
    comments, goals, milestones, decisions and Library items, and your contacts. Archived and
-   deleted items are left out, and so are Library items set to **Human only**. If the searches
+   deleted items are left out, and so are Library items set to **Never**. If the searches
    find nothing, it searches the longer words of your question one at a time instead.
 3. Sends Ostler AI your question and the best 20 of what it found, and Ostler AI answers from those
    alone.
@@ -165,7 +165,7 @@ suggestion in the same style, and **Discard** closes it.
 Markdown, links and `[[links]]` are kept as they are. If a suggestion drops a link, Ostler says
 which before you accept. Ostler improves up to 20,000 characters at a time; for a longer text,
 select a part. It sends the text you chose (as it is in the editor, saved or not), the style and
-the project's name, and nothing else. It never shows on a Library item set to **Human only**.
+the project's name, and nothing else. It never shows on a Library item set to **Never**.
 
 ## Summarise comments
 

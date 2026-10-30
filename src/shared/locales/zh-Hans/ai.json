@@ -360,7 +360,7 @@
     "revision": "{{itemTitle}}（修订版 {{revision}}）",
     "removedLibrary": "已从资料库移除",
     "saveLibrary": "保存到资料库",
-    "saveReplyLibraryHuman": "将此回复以仅供人阅读的笔记形式保存到资料库",
+    "saveReplyLibraryHuman": "将此回复保存到资料库，作为 {{aiName}} 从不读取的笔记",
     "writing": "{{aiName}} 正在撰写…",
     "savedOutsideProject": "已保存到项目之外：{{savedPath}}",
     "attachedNextMessage": "已附加到下一条消息",

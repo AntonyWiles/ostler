@@ -66,9 +66,10 @@ export function WorkItemAttachmentsSection({ workItem }: { workItem: PlanningWor
             {t('tasks:workItemAttachmentsSection.attachLibrary')}
           </Button>
           {pickerOpen && library && (
-            // Without includeHumanOnly the picker offers AI-visible items only.
+            // Human-only items too: a person attaches them, and no agent is given one.
             <LibraryAttachPicker
               items={library}
+              includeHumanOnly
               selectedIds={attachments.map((attachment) => attachment.item.id)}
               onToggle={(item) =>
                 void (isAttached(item.id) ? detach(item.id) : attach(item.id, 'human'))

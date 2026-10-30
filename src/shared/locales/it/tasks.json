@@ -902,7 +902,7 @@
     "changedSinceRR": "Modificato da (r{{revisionAtAttach}} → r{{currentRevision}})",
     "agentGetsCurrentRevision": "L’agente riceve la revisione corrente, r{{currentRevision}}",
     "notGivenAgents": "Non dato agli agenti",
-    "humanOnlyArchivedItems": "Gli elementi riservati alle persone e quelli archiviati vengono saltati quando parte un’esecuzione dell’agente",
+    "humanOnlyArchivedItems": "Gli elementi archiviati e quelli che {{aiName}} non legge mai vengono saltati quando parte un’esecuzione dell’agente",
     "upToItems_one": "Si può allegare fino a {{count}} elemento",
     "upToItems_many": "Si possono allegare fino a {{count}} elementi",
     "upToItems_other": "Si possono allegare fino a {{count}} elementi"
@@ -2316,7 +2316,7 @@
   },
   "noteActions": {
     "open": "Trova azioni e decisioni",
-    "humanOnly": "Questa nota è solo per persone, quindi {{aiName}} non la legge mai. Cambia il suo accesso per trovarvi azioni e decisioni.",
+    "humanOnly": "Questa nota è impostata perché {{aiName}} non la legga mai. Per trovarvi azioni e decisioni, cambialo nei suoi dettagli.",
     "sent": "Invia il titolo e il testo di questa nota al tuo fornitore di IA.",
     "title": "Azioni e decisioni in “{{title}}”",
     "description": "Spunta e modifica ogni attività e decisione. Non si aggiunge nulla finché non premi Aggiungi.",

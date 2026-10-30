@@ -804,7 +804,7 @@
     "changedSinceRR": "自 r{{revisionAtAttach}} 起已更改（→ r{{currentRevision}}）",
     "agentGetsCurrentRevision": "智能体获取的是当前版本 r{{currentRevision}}",
     "notGivenAgents": "不提供给智能体",
-    "humanOnlyArchivedItems": "仅供人工使用的条目和已归档条目，会在智能体运行开始时被跳过",
+    "humanOnlyArchivedItems": "已归档条目和 {{aiName}} 从不读取的条目，会在智能体运行开始时被跳过",
     "upToItems_other": "最多可附加 {{count}} 个条目"
   },
   "workItemDrawer": {
@@ -2055,7 +2055,7 @@
   },
   "noteActions": {
     "open": "查找行动项和决策",
-    "humanOnly": "此笔记设为“仅限人工”，因此 {{aiName}} 从不读取它。若要在其中查找行动项和决策，请更改其访问权限。",
+    "humanOnly": "此笔记设为 {{aiName}} 从不读取。若要在其中查找行动项和决策，请在其详情中更改此设置。",
     "sent": "会将此笔记的标题和正文发送给你的 AI 提供方。",
     "title": "“{{title}}”中的行动项和决策",
     "description": "勾选并编辑每个任务和决策。在你按下“添加”之前，不会添加任何内容。",

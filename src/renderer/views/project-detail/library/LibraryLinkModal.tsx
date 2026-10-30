@@ -5,6 +5,7 @@ import { Button, Dialog, InlineAlert, SegmentedControl, TextArea, TextField } fr
 import '../../planning/planning-dialogs.css'
 import { ACCESS_OPTIONS, bareHttpUrl } from './libraryUi'
 import { t } from '@shared/i18n'
+import { useFeatures } from '../../../navigation/features'
 import { cloudFileOf } from '@shared/cloud-file-link'
 
 interface LibraryLinkModalProps {
@@ -24,6 +25,7 @@ export function LibraryLinkModal({
   onClose,
   onSaved
 }: LibraryLinkModalProps) {
+  const ai = useFeatures().ai
   const [url, setUrl] = useState(item?.url ?? initialUrl ?? '')
   const [title, setTitle] = useState(item?.title ?? '')
   const [note, setNote] = useState(item?.body ?? '')
@@ -131,18 +133,20 @@ export function LibraryLinkModal({
           value={note}
           onChange={(event) => setNote(event.target.value)}
         />
-        <div className="ostler-library-field">
-          <span className="ostler-library-field-label" aria-hidden="true">
-            {t('library:libraryLinkModal.ostlerAiAccess')}
-          </span>
-          <SegmentedControl
-            label={t('library:libraryLinkModal.ostlerAiAccess')}
-            size="sm"
-            value={access}
-            onChange={setAccess}
-            options={ACCESS_OPTIONS.map((option) => ({ value: option.id, label: option.label }))}
-          />
-        </div>
+        {ai && (
+          <div className="ostler-library-field">
+            <span className="ostler-library-field-label" aria-hidden="true">
+              {t('library:libraryLinkModal.ostlerAiAccess')}
+            </span>
+            <SegmentedControl
+              label={t('library:libraryLinkModal.ostlerAiAccess')}
+              size="sm"
+              value={access}
+              onChange={setAccess}
+              options={ACCESS_OPTIONS.map((option) => ({ value: option.id, label: option.label }))}
+            />
+          </div>
+        )}
         {error && <InlineAlert tone="danger">{error}</InlineAlert>}
       </form>
     </Dialog>

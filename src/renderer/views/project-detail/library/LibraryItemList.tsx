@@ -3,7 +3,8 @@ import type { LibraryItem } from '@shared/ostler-api'
 import { Badge, Card, Checkbox, Chip } from '../../../ui'
 import { Icon, Image } from '../../../ui/icons'
 import type { LibrarySelection } from './useLibrarySelection'
-import { ACCESS_LABEL, ACCESS_TONE, KIND_LABEL, libraryFileUrl, relativeTime } from './libraryUi'
+import { ACCESS_BADGE, ACCESS_TONE, KIND_LABEL, libraryFileUrl, relativeTime } from './libraryUi'
+import { useFeatures } from '../../../navigation/features'
 import { t } from '@shared/i18n'
 
 interface LibraryItemListProps {
@@ -15,6 +16,24 @@ interface LibraryItemListProps {
   selection: LibrarySelection
   onActivate(item: LibraryItem, event: React.MouseEvent): void
   onOpen(item: LibraryItem): void
+}
+
+/** Only when Ostler AI is set up: otherwise who may read an item means nothing here. */
+function AccessBadge({ item }: { item: LibraryItem }) {
+  return <Badge tone={ACCESS_TONE[item.aiAccess]}>{ACCESS_BADGE[item.aiAccess]}</Badge>
+}
+
+/**
+ * A written item's first line of text, skipping headings (a new brief is all
+ * headings) and list marks, so a row says what the item is about.
+ */
+function firstLine(body: string): string {
+  for (const line of body.split('\n')) {
+    if (/^\s*#/.test(line)) continue
+    const text = line.replace(/^\s*([-*+]|\d+\.)\s+(\[[ xX]\]\s+)?/, '').trim()
+    if (text) return text
+  }
+  return ''
 }
 
 export function Tick({ item, selection }: { item: LibraryItem; selection: LibrarySelection }) {
@@ -52,6 +71,7 @@ export function LibraryItemList({
   onActivate,
   onOpen
 }: LibraryItemListProps) {
+  const ai = useFeatures().ai
   const classFor = (item: LibraryItem, base: string) =>
     [
       base,
@@ -113,7 +133,7 @@ export function LibraryItemList({
                 <span className="ostler-library-tile-title" title={item.title}>
                   {item.title}
                 </span>
-                <Badge tone={ACCESS_TONE[item.aiAccess]}>{ACCESS_LABEL[item.aiAccess]}</Badge>
+                {ai && <AccessBadge item={item} />}
               </div>
             </Card>
           ))}
@@ -146,10 +166,10 @@ export function LibraryItemList({
                   {item.title}
                 </span>
                 <span className="ostler-library-row-summary">
-                  {item.summary || (item.kind === 'link' ? item.url : '')}
+                  {item.summary || (item.kind === 'link' ? item.url : firstLine(item.body))}
                 </span>
               </span>
-              <Badge tone={ACCESS_TONE[item.aiAccess]}>{ACCESS_LABEL[item.aiAccess]}</Badge>
+              {ai && <AccessBadge item={item} />}
               <span className="ostler-library-row-tags">
                 {item.tags.map((tag) => (
                   <Chip key={tag}>#{tag}</Chip>

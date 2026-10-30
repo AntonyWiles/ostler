@@ -858,7 +858,7 @@
     "changedSinceRR": "Changed since (r{{revisionAtAttach}} → r{{currentRevision}})",
     "agentGetsCurrentRevision": "The agent gets the current revision, r{{currentRevision}}",
     "notGivenAgents": "Not given to agents",
-    "humanOnlyArchivedItems": "Human-only and archived items are skipped when an agent run starts",
+    "humanOnlyArchivedItems": "Archived items, and items {{aiName}} never reads, are skipped when an agent run starts",
     "upToItems_one": "Up to {{count}} item can be attached",
     "upToItems_other": "Up to {{count}} items can be attached"
   },
@@ -2199,7 +2199,7 @@
   },
   "noteActions": {
     "open": "Find actions and decisions",
-    "humanOnly": "This note is Human only, so {{aiName}} never reads it. Change its access to find actions and decisions in it.",
+    "humanOnly": "This note is set so {{aiName}} never reads it. To find actions and decisions in it, change that in its details.",
     "sent": "Sends this note's title and text to your AI provider.",
     "title": "Actions and decisions in “{{title}}”",
     "description": "Tick and edit each task and decision. Nothing is added until you press Add.",

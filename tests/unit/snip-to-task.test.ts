@@ -146,7 +146,7 @@ describe('Snip to task', () => {
     expect(library.listItems(PROJECT)).toHaveLength(1)
   })
 
-  it('keeps the access the person gave the same picture, and the gate refuses a Human only one', async () => {
+  it('keeps the access the person gave the same picture, and never gives a Human only one to an agent', async () => {
     const { controller, delivered } = setUp()
     const task = planning.createWorkItem(PROJECT, { title: 'Same picture' }, human)
     const [{ item: picture }] = await library.importFiles(PROJECT, [
@@ -155,12 +155,13 @@ describe('Snip to task', () => {
     const known = library.updateItem(PROJECT, picture.id, { aiAccess: 'human-only' })
     await controller.start()
     controller.select({ displayId: 1, rect: { x: 0, y: 0, width: 40, height: 40 } })
-    await expect(controller.save(PROJECT, task.id, delivered[0].snipId)).rejects.toThrow(
-      /can be attached/
-    )
+    await controller.save(PROJECT, task.id, delivered[0].snipId)
     expect(library.listItems(PROJECT).map((item) => item.id)).toEqual([known.id])
     expect(library.getItem(PROJECT, known.id).aiAccess).toBe('human-only')
-    expect(library.listWorkItemAttachments(PROJECT, task.id)).toEqual([])
+    expect(library.listWorkItemAttachments(PROJECT, task.id).map((e) => e.item.id)).toEqual([
+      known.id
+    ])
+    expect(library.agentAttachments(PROJECT, task.id).given).toEqual([])
   })
 
   it('Cancel in quick add stores nothing', async () => {

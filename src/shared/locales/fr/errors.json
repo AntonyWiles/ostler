@@ -779,7 +779,7 @@
     "taskHasNewerWork": "« {{title}} » a un travail plus récent en file d’attente ou en cours, donc ce travail plus ancien ne peut pas être repris maintenant."
   },
   "noteActions": {
-    "notReadable": "{{aiName}} ne peut pas lire cette note : elle est réservée aux humains, archivée, ou ne fait plus partie de ce projet.",
+    "notReadable": "{{aiName}} ne peut pas lire cette note : elle est réglée pour que {{aiName}} ne la lise jamais, archivée, ou ne fait plus partie de ce projet.",
     "notANote": "Trouver des actions et des décisions lit les notes, les briefs et les guides.",
     "empty": "Cette note n’a pas encore de texte à lire.",
     "tooLong": "Cette note est trop longue pour être envoyée d’un bloc : {{aiName}} lit jusqu’à {{max}} caractères à la fois. Découpez-la en notes plus courtes et essayez chacune d’elles.",
@@ -795,7 +795,7 @@
     "cannotUndo": "Cette note a changé après la création des tâches : elles n’ont donc pas été annulées. Supprimez les tâches et modifiez la note vous-même."
   },
   "writingHelp": {
-    "notReadable": "{{aiName}} ne peut pas lire cet élément : il est réservé aux humains, archivé, ou ne fait plus partie de ce projet.",
+    "notReadable": "{{aiName}} ne peut pas lire cet élément : il est réglé pour que {{aiName}} ne le lise jamais, archivé, ou ne fait plus partie de ce projet.",
     "badStyle": "Choisissez la manière d’améliorer le texte.",
     "empty": "Il n’y a pas encore de texte à améliorer.",
     "tooLong": "Ce texte est trop long pour être envoyé d’un coup : {{aiName}} améliore jusqu’à {{max}} caractères à la fois. Sélectionnez une partie et réessayez.",

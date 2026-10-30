@@ -7,15 +7,14 @@
     "attachLibrary": "ライブラリから添付",
     "libraryEmpty": "ライブラリは空です。",
     "noLibraryItemsMatch": "一致するライブラリの項目はありません。",
-    "noItemsOstlerAi": "{{aiName}}が読める項目に一致するものはありません。人のみが読む項目は添付できません。"
+    "noItemsOstlerAi": "{{aiName}}が読める項目で一致するものはありません。{{aiName}}が読まない項目はここに出ません。"
   },
   "libraryDetail": {
     "libraryItem": "ライブラリの項目",
     "archived": "アーカイブ済み",
-    "ostlerAiAccess": "{{aiName}}のアクセス",
+    "ostlerAiAccess": "{{aiName}}が読む",
     "primaryBriefProject": "このプロジェクトの主要ブリーフ",
-    "whatShouldOstlerAi": "{{aiName}}は、この内容から何を読み取るべきですか？",
-    "oneLineEG": "1行で。例: 「設定画面のレイアウトに合わせる」",
+    "oneLineEG": "例: 「3社のケータリングの見積もり」",
     "tags": "タグ",
     "commaSeparated": "カンマで区切る",
     "tagsItem": "この項目のタグ",
@@ -51,7 +50,15 @@
     "delete2": "「{{itemTitle}}」を削除しますか？",
     "permanentlyRemovesItemRevisions": "項目、そのリビジョン、リンク、保存されたファイルを完全に削除します。残したい場合は、代わりにアーカイブしてください。",
     "deleteItem": "項目を削除",
-    "moreActions": "{{itemTitle}}のその他の操作"
+    "moreActions": "{{itemTitle}}のその他の操作",
+    "summary": "概要",
+    "summaryHint": "これが何かを1行で。一覧に表示されます。",
+    "summaryHintAi": "これが何かを1行で。一覧に表示され、{{aiName}}も読みます。",
+    "pageOf": "{{page}} / {{pageCount}} ページ",
+    "pageImage": "{{title}}、{{page}}",
+    "previousPage": "前のページ",
+    "nextPage": "次のページ",
+    "resizeDetails": "詳細の幅を変更"
   },
   "libraryEditor": {
     "edit": "{{itemTitle}}を編集",
@@ -99,7 +106,7 @@
     "title": "タイトル",
     "defaultsSiteName": "初期値はサイト名",
     "note": "メモ",
-    "ostlerAiAccess": "{{aiName}}のアクセス",
+    "ostlerAiAccess": "{{aiName}}が読む",
     "enterHttpHttpsUrl": "httpまたはhttpsのURLを入力してください。",
     "saving": "保存中…",
     "save": "保存"
@@ -119,7 +126,7 @@
     "planWorkThese": "これらから作業を計画…",
     "primaryBrief": "主要ブリーフ",
     "libraryEmpty": "ライブラリは空です",
-    "libraryKeepsBriefsGuides": "ライブラリには、作業と並んで、ブリーフ、ガイド、参照、メモが保存されます。ここにファイルをドロップしたり、スクリーンショットやリンクを貼り付けたり、「追加」で新しく作成したりできます。",
+    "libraryKeepsBriefsGuides": "このプロジェクトのメモ、文書、画像、リンクを1か所にまとめられます。ここにファイルをドロップしたり、スクリーンショットやリンクを貼り付けたり、メモを書いたりできます。",
     "nothingMatchesTheseFilters": "これらのフィルターに一致するものはありません。",
     "selectItemSeeDetails": "項目を選ぶと、詳細が表示されます。",
     "dropAddLibrary": "ドロップしてライブラリに追加",
@@ -136,14 +143,15 @@
     "addLink": "リンクを追加",
     "importFiles": "ファイルをインポート…",
     "importClipboard": "クリップボードから読み込む",
-    "clipboardEmpty": "クリップボードに保存できるものがありません。先に画像、ファイル、Web アドレス、テキストのいずれかをコピーしてください。"
+    "clipboardEmpty": "クリップボードに保存できるものがありません。先に画像、ファイル、Web アドレス、テキストのいずれかをコピーしてください。",
+    "writeNote": "メモを書く"
   },
   "libraryPlanWorkModal": {
     "planWorkThese": "これらから作業を計画",
     "ostlerAiProposesGoal": "{{aiName}}が、これらの項目から目標を提案します。確認するまで、何も作成されません。",
     "cancel": "キャンセル",
     "notReadAi": "AIは読みません",
-    "humanOnlyArchivedItems_other": "人のみが読む項目またはアーカイブ済みの項目{{count}}件は、{{aiName}}に送信されず、除外されます。",
+    "humanOnlyArchivedItems_other": "{{count}}件の項目は除外されます。アーカイブ済みか、{{aiName}}が読まない設定です。",
     "goal": "目標",
     "title": "タイトル",
     "ostlerAiProposingGoal": "{{aiName}}が目標を提案しています…",
@@ -159,7 +167,6 @@
     "proposeAgain": "もう一度提案"
   },
   "libraryRail": {
-    "libraryFilters": "ライブラリのフィルター",
     "context": "{{aiName}}のコンテキスト",
     "textAlwaysItemsSent": "「常に」の項目のテキストは、{{aiName}}のチャットの各メッセージとともに送信されます。プロジェクトのブリーフは常に全文が送られます。{{aiName}}との計画では、最大{{planningBudget}}文字まで読み取られます。",
     "text": "テキスト",
@@ -169,7 +176,12 @@
     "images": "画像",
     "of": "{{imageCount}} / {{LIBRARY_MAX_ALWAYS_IMAGES}}",
     "loading": "読み込み中…",
-    "tags": "タグ"
+    "tags": "タグ",
+    "tagsHint": "タグはまだありません。項目の詳細でタグを付けると、ここで絞り込めます。",
+    "allTags": "すべてのタグ",
+    "aiButton": "{{aiName}}",
+    "aiFiltered": "{{aiName}}：{{access}}",
+    "showOnly": "絞り込み"
   },
   "libraryUi": {
     "all": "すべて",
@@ -183,13 +195,18 @@
     "note": "メモ",
     "always": "常に",
     "whenSelected": "選択時",
-    "humanOnly": "人のみ",
+    "humanOnly": "読まない",
     "kind": {
       "guide": "ガイド",
       "image": "参照",
       "document": "ドキュメント",
       "link": "リンク",
       "whiteboard": "ホワイトボード"
+    },
+    "badge": {
+      "always": "AI: 常に",
+      "whenSelected": "AI: 選択時",
+      "humanOnly": "AIなし"
     }
   },
   "templates": {

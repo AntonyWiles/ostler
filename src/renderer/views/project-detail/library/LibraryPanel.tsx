@@ -11,7 +11,8 @@ import { newWhiteboardPath, projectPath, taskPath, whiteboardPath } from '../../
 import { useDismissable } from '../../../hooks/useDismissable'
 import { isTypingTarget } from '../../../utils/dom'
 import { resolveShortcut, shortcut } from '../../../navigation/shortcuts'
-import { LibraryRail } from './LibraryRail'
+import { LibraryAiFilter, LibraryTagFilter } from './LibraryFilters'
+import { useLibraryDetailWidth } from './LibraryDetailResize'
 import { LibraryItemList, Tick } from './LibraryItemList'
 import { LibraryDetail } from './LibraryDetail'
 import { LibraryEditor, type WrittenKind, type WrittenTemplate } from './LibraryEditor'
@@ -85,6 +86,7 @@ export function LibraryPanel({ projectId, initialItemId, initialNewKind }: Libra
 
   const selection = useLibrarySelection()
   const rootRef = useRef<HTMLDivElement>(null)
+  const detailWidth = useLibraryDetailWidth(rootRef)
   const sectionBar = useRef<HTMLDivElement>(null)
   const searchRef = useRef<HTMLInputElement>(null)
   const summaryRef = useRef<HTMLTextAreaElement>(null)
@@ -188,10 +190,10 @@ export function LibraryPanel({ projectId, initialItemId, initialNewKind }: Libra
       (item) =>
         (archived ? Boolean(item.archivedAt) : !item.archivedAt) &&
         (archived || section === 'all' || item.kind === section) &&
-        (!access || item.aiAccess === access) &&
+        (!access || !features.ai || item.aiAccess === access) &&
         (!tag || item.tags.includes(tag))
     )
-  }, [allItems, byId, searchIds, archived, section, access, tag])
+  }, [allItems, byId, searchIds, archived, section, access, features.ai, tag])
 
   const primary = visible.find((item) => item.isPrimaryBrief) ?? null
   const references = visible.filter((item) => item.kind === 'image')
@@ -484,6 +486,7 @@ export function LibraryPanel({ projectId, initialItemId, initialNewKind }: Libra
     <div
       ref={rootRef}
       className="ostler-library"
+      style={detailWidth.style}
       onDragEnter={(event) => {
         if (hasFiles(event)) setDragging(true)
       }}
@@ -503,15 +506,6 @@ export function LibraryPanel({ projectId, initialItemId, initialNewKind }: Libra
         void importFiles([...event.dataTransfer.files])
       }}
     >
-      <LibraryRail
-        items={allItems}
-        access={access}
-        onAccess={setAccess}
-        tag={tag}
-        onTag={setTag}
-        context={context}
-      />
-
       {editor ? (
         <LibraryEditor
           key={editor.item?.id ?? `new-${editor.kind}-${editor.template ?? ''}-${editor.seq ?? 0}`}
@@ -555,6 +549,15 @@ export function LibraryPanel({ projectId, initialItemId, initialNewKind }: Libra
                   }
                 }}
               />
+              <LibraryTagFilter items={allItems} tag={tag} onTag={setTag} />
+              {features.ai && (
+                <LibraryAiFilter
+                  items={allItems}
+                  access={access}
+                  onAccess={setAccess}
+                  context={context}
+                />
+              )}
               <Menu
                 label={t('library:libraryPanel.addLibrary')}
                 placement="bottom-end"
@@ -671,6 +674,16 @@ export function LibraryPanel({ projectId, initialItemId, initialNewKind }: Libra
                     headingLevel={3}
                     title={t('library:libraryPanel.libraryEmpty')}
                     description={t('library:libraryPanel.libraryKeepsBriefsGuides')}
+                    action={
+                      <Button variant="primary" icon={Plus} onClick={() => startNew('note')}>
+                        {t('library:libraryPanel.writeNote')}
+                      </Button>
+                    }
+                    secondaryAction={
+                      <Button icon={Upload} onClick={() => void pickFiles()}>
+                        {t('library:libraryPanel.importFiles')}
+                      </Button>
+                    }
                   />
                 ) : (
                   <div className="ostler-library-muted ostler-library-nomatch">
@@ -711,32 +724,35 @@ export function LibraryPanel({ projectId, initialItemId, initialNewKind }: Libra
             )}
           </section>
 
-          {activeItem ? (
-            <LibraryDetail
-              key={activeItem.id}
-              item={activeItem}
-              summaryRef={summaryRef}
-              onUpdate={updateActive}
-              onSetPrimary={setPrimary}
-              onEdit={() => open(activeItem)}
-              onOpen={() =>
-                activeItem.kind === 'whiteboard'
-                  ? open(activeItem)
-                  : void window.ostlerAPI
-                      .openLibraryItemExternally(projectId, activeItem.id)
-                      .then(report)
-              }
-              onArchive={archiveActive}
-              onDelete={deleteActive}
-              onOpenWorkItem={(workItemId) => navigate(taskPath(projectId, workItemId))}
-            />
-          ) : (
-            <aside className="ostler-library-detail ostler-library-detail--empty">
-              <span className="ostler-library-muted">
-                {t('library:libraryPanel.selectItemSeeDetails')}
-              </span>
-            </aside>
-          )}
+          <div className="ostler-library-detail-pane">
+            {detailWidth.handle}
+            {activeItem ? (
+              <LibraryDetail
+                key={activeItem.id}
+                item={activeItem}
+                summaryRef={summaryRef}
+                onUpdate={updateActive}
+                onSetPrimary={setPrimary}
+                onEdit={() => open(activeItem)}
+                onOpen={() =>
+                  activeItem.kind === 'whiteboard'
+                    ? open(activeItem)
+                    : void window.ostlerAPI
+                        .openLibraryItemExternally(projectId, activeItem.id)
+                        .then(report)
+                }
+                onArchive={archiveActive}
+                onDelete={deleteActive}
+                onOpenWorkItem={(workItemId) => navigate(taskPath(projectId, workItemId))}
+              />
+            ) : (
+              <aside className="ostler-library-detail ostler-library-detail--empty">
+                <span className="ostler-library-muted">
+                  {t('library:libraryPanel.selectItemSeeDetails')}
+                </span>
+              </aside>
+            )}
+          </div>
         </>
       )}
 
