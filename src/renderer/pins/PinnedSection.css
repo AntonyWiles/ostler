@@ -1,0 +1,39 @@
+/* The sidebar's Pinned section (N5.2a): an area-like heading over a list of pins. */
+.ostler-sidebar-pinned {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-100) var(--space-200) 0;
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.pinned-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-050);
+  transition: opacity var(--motion-fast) var(--ease-standard);
+}
+
+.pinned-item.is-dragging {
+  opacity: 0.5;
+}
+
+.pinned-link {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pinned-item.is-gone .pinned-link {
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
+.pinned-note {
+  flex: 0 0 auto;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}

@@ -1,0 +1,163 @@
+.ui-item-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  max-width: 100%;
+  padding: 0 var(--space-150);
+  vertical-align: baseline;
+  background: var(--color-surface-sunken);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-body-sm);
+  line-height: inherit;
+  cursor: pointer;
+}
+
+button.ui-item-link:hover {
+  background: var(--color-surface-hover);
+}
+
+button.ui-item-link:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.ui-item-link .ostler-icon {
+  flex-shrink: 0;
+  width: var(--space-300);
+  height: var(--space-300);
+}
+
+.ui-item-link__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ui-item-link.is-loading,
+.ui-item-link.is-deleted {
+  color: var(--color-text-muted);
+}
+
+.ui-item-link.is-deleted {
+  cursor: default;
+  font-style: italic;
+}
+
+@media (forced-colors: active) {
+  .ui-item-link {
+    border-color: ButtonText;
+  }
+}
+
+/* The [[ picker (useItemLinkPicker), shown under the text being typed. */
+.ui-item-link-picker {
+  margin-top: var(--space-100);
+  padding: var(--space-100);
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-md);
+}
+
+.ui-item-link-picker__label,
+.ui-item-link-picker__empty {
+  padding: var(--space-100) var(--space-200);
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.ui-item-link-picker ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ui-item-link-picker__option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  padding: var(--space-100) var(--space-200);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.ui-item-link-picker__option:hover {
+  background: var(--color-surface-hover);
+}
+
+.ui-item-link-picker__option.is-active {
+  background: var(--color-surface-selected);
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(-1 * var(--focus-ring-width));
+}
+
+.ui-item-link-picker__option .ostler-icon {
+  flex-shrink: 0;
+}
+
+.ui-item-link-picker__title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ui-item-link-picker__kind {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+/* View mode (N4.4b): a list item's Make a task, shown on hover and focus. */
+.ui-markdown-li-action {
+  margin-inline-start: var(--space-200);
+  opacity: 0;
+}
+
+li:hover > .ui-markdown-li-action,
+li:focus-within > .ui-markdown-li-action {
+  opacity: 1;
+}
+
+/* A picture kept in the Library, such as one pasted into a task. */
+.ui-markdown-img {
+  display: block;
+  max-width: 100%;
+  max-height: 24rem;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+/* A quoted passage (MOP-22): a bar down its left and a sunken background, so
+   it is plain where the quote ends and the reply starts. */
+blockquote {
+  margin: var(--space-200) 0;
+  padding: var(--space-100) var(--space-300);
+  background: var(--color-surface-sunken);
+  border-left: calc(var(--border-width) * 3) solid var(--color-border-strong);
+  border-radius: 0 var(--radius-control) var(--radius-control) 0;
+  color: var(--color-text-secondary);
+}
+
+blockquote > :first-child {
+  margin-top: 0;
+}
+
+blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+@media (forced-colors: active) {
+  blockquote {
+    border-left-color: CanvasText;
+  }
+}
+
+/* A mention names a person; it is not a link, so it is not a pointer. */
+.ui-mention {
+  cursor: default;
+}

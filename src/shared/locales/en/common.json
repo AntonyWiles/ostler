@@ -1,0 +1,373 @@
+{
+  "time": {
+    "justNow": "just now"
+  },
+  "date": {
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "yesterday": "Yesterday",
+    "overdueBy_one": "Overdue by {{count}} day",
+    "overdueBy_other": "Overdue by {{count}} days",
+    "daysAgo_one": "{{count}} day ago",
+    "daysAgo_other": "{{count}} days ago",
+    "inDays_one": "In {{count}} day",
+    "inDays_other": "In {{count}} days"
+  },
+  "count": {
+    "task_one": "{{count}} task",
+    "task_other": "{{count}} tasks",
+    "agent_one": "{{count}} agent",
+    "agent_other": "{{count}} agents",
+    "run_one": "{{count}} run",
+    "run_other": "{{count}} runs",
+    "goal_one": "{{count}} goal",
+    "goal_other": "{{count}} goals",
+    "milestone_one": "{{count}} milestone",
+    "milestone_other": "{{count}} milestones",
+    "fileEvent_one": "{{count}} file event",
+    "fileEvent_other": "{{count}} file events",
+    "commit_one": "{{count}} commit",
+    "commit_other": "{{count}} commits",
+    "agentEvent_one": "{{count}} agent event",
+    "agentEvent_other": "{{count}} agent events",
+    "day_one": "{{count}} day",
+    "day_other": "{{count}} days",
+    "libraryFile_one": "{{count}} Library file",
+    "libraryFile_other": "{{count}} Library files",
+    "list_one": "{{count}} list",
+    "list_other": "{{count}} lists",
+    "label_one": "{{count}} label",
+    "label_other": "{{count}} labels",
+    "member_one": "{{count}} member",
+    "member_other": "{{count}} members",
+    "file_one": "{{count}} file",
+    "file_other": "{{count}} files",
+    "phase_one": "{{count}} phase",
+    "phase_other": "{{count}} phases"
+  },
+  "keys": {
+    "plus": "plus",
+    "then": "then",
+    "or": "or",
+    "then_comment": "Between two keys pressed one after the other: “G then H”.",
+    "Ctrl": "Ctrl",
+    "Shift": "Shift",
+    "Alt": "Alt",
+    "Esc": "Esc",
+    "Enter": "Enter",
+    "Delete": "Delete",
+    "Tab": "Tab",
+    "Space": "Space",
+    "Backspace": "Backspace",
+    "Left": "Left",
+    "Right": "Right",
+    "Up": "Up",
+    "Down": "Down",
+    "ArrowKeys": "Arrow keys",
+    "Home": "Home",
+    "End": "End",
+    "PageUp": "Page Up",
+    "PageDown": "Page Down",
+    "Ctrl_comment": "Key names as printed on keyboards in this language; German keyboards print Strg for Ctrl."
+  },
+  "chip": {
+    "item": "item",
+    "remove": "Remove {{name}}"
+  },
+  "sentenceSeparator": ". ",
+  "sentenceSeparator_comment": "Joins short sentences read out together, such as a search result's name, excerpt and project: “Task: Draft brief. Needs a summary. Website”.",
+  "errorBoundary": {
+    "detailsLogCopyDiagnostics": "The details are in the log. Copy diagnostics to include them in a bug report.",
+    "viewCrashed": "View crashed: {{message}}",
+    "appCrashed": "App crashed: {{message}}",
+    "somethingWentWrongView": "Something went wrong in this view",
+    "somethingWentWrong": "Something went wrong",
+    "reloadView": "Reload view",
+    "reload": "Reload"
+  },
+  "ostlerContext": {
+    "unknownError": "Unknown error"
+  },
+  "useConfig": {
+    "unknownError": "Unknown error"
+  },
+  "avatarGroup": {
+    "people": "{{peopleCount}} people",
+    "more_one": "{{count}} more: {{names}}",
+    "more_other": "{{count}} more: {{names}}"
+  },
+  "daysOff": {
+    "note": "{{name}}: a day off",
+    "notePerson": "{{name}}: a day off for {{person}}",
+    "dayOffLabel": "day off: {{name}}",
+    "personOff": "{{person}} off",
+    "peopleOff": "{{people}} off"
+  },
+  "calendarGrid": {
+    "more": "+{{moreCount}} more",
+    "more2": "{{moreCount}} more on {{longDate}}",
+    "n1Item": "1 item",
+    "items": "{{total}} items"
+  },
+  "combobox": {
+    "create": "Create “{{text}}”",
+    "noMatches": "No matches"
+  },
+  "confirm": {
+    "cancel": "Cancel",
+    "useconfirmNeedsAboveApp": "useConfirm needs a <ConfirmProvider> above it (App.tsx)."
+  },
+  "dataTable": {
+    "deselectAllRows": "Deselect all rows",
+    "selectAllRows": "Select all rows",
+    "sortShiftClickAdds": "Sort by {{header}}. Shift+click adds it as another sort.",
+    "select": "Select {{entryLabel}}",
+    "sortedAscending": "Sorted by {{header}}, ascending",
+    "sortedDescending": "Sorted by {{header}}, descending",
+    "noLongerSorted": "{{header}} is no longer sorted",
+    "movedColumn": "{{header}} moved to column {{to}} of {{columnCount}}",
+    "pixelsWide": "{{header}} is {{width}} pixels wide",
+    "selected": "{{rowIdCount}} selected",
+    "movedColumn2": "{{header}} moved to column {{number}} of {{columnCount}}",
+    "sortRankAscending": "sort {{rank}}, ascending",
+    "sortRankDescending": "sort {{rank}}, descending",
+    "sortRankAscending_comment": "Read after a column name when the table is sorted by several columns: “Due, sort 2, ascending”."
+  },
+  "dateField": {
+    "quickDates": "Quick dates",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "nextWeek": "Next week",
+    "clear": "Clear",
+    "notADate": "Not a real date. Check the day, month and year."
+  },
+  "dialog": {
+    "close": "Close"
+  },
+  "drawer": {
+    "close": "Close",
+    "resizePanel": "Resize panel"
+  },
+  "errorText": {
+    "details": "Details"
+  },
+  "filterBuilder": {
+    "filters": "Filters",
+    "match": "Match",
+    "editFilter": "Edit filter: {{words}}",
+    "removeFilter": "Remove filter: {{words}}",
+    "removeFilter2": "Remove filter",
+    "addFilter": "Add filter",
+    "clear": "Clear",
+    "remove": "Remove",
+    "done": "Done",
+    "words": "Words",
+    "noTaskProjectHas": "No task in this project has a label yet.",
+    "when": "When",
+    "date": "Date",
+    "estimate": "Estimate",
+    "checklist": "Checklist",
+    "allFilters": "All filters",
+    "anyFilter": "Any filter",
+    "me": "Me",
+    "nobody": "Nobody",
+    "noMilestone": "No milestone",
+    "noGoal": "No goal",
+    "editFilterField": "Edit filter: {{field}}",
+    "customFields": "Custom fields",
+    "findField": "Find a field",
+    "noFieldMatches": "No field matches.",
+    "fieldDeleted": "This field was deleted. Remove the filter.",
+    "from": "From",
+    "to": "To",
+    "isEmpty": "is empty",
+    "isSet": "is set",
+    "currentIteration": "The current iteration",
+    "noIteration": "No iteration",
+    "noType": "No type",
+    "noSubproject": "No workstream"
+  },
+  "inlineAlert": {
+    "dismiss": "Dismiss"
+  },
+  "priorityIcon": {
+    "priority": "{{taskPriorityLabel}} priority"
+  },
+  "textField": {
+    "clear": "Clear"
+  },
+  "toast": {
+    "notifications": "Notifications",
+    "dismissNotification": "Dismiss notification",
+    "undo": "Undo",
+    "available": "{{actionLabel}} is available.",
+    "availableBoth": "{{firstLabel}} and {{secondLabel}} are available.",
+    "keptInCenter": "Missed one? They are all kept under the bell"
+  },
+  "toolbar": {
+    "moreActions": "More actions"
+  },
+  "chartFrame": {
+    "table": "{{title}} as a table",
+    "legend": "Legend",
+    "showChart": "Show as chart",
+    "showTable": "Show as table"
+  },
+  "chartCore": {
+    "total": "Total",
+    "noData": "{{kind}} with no data.",
+    "noValues": "{{series}}: no values",
+    "kind": {
+      "bar": "Bar chart",
+      "line": "Line chart",
+      "stackedArea": "Stacked area chart"
+    },
+    "bars_one": "{{count}} bar",
+    "bars_other": "{{count}} bars",
+    "points_one": "{{count}} point from {{first}} to {{last}}",
+    "points_other": "{{count}} points from {{first}} to {{last}}",
+    "barValues": "{{series}}: {{values}}",
+    "categoryValue": "{{category}} {{value}}",
+    "categoryNoValue": "{{category}} no value",
+    "staysAt": "{{series}} stays at {{value}}",
+    "staysAtPeaking": "{{series}} stays at {{value}}, peaking at {{peak}}",
+    "goesFrom": "{{series}} goes from {{from}} to {{to}}",
+    "goesFromPeaking": "{{series}} goes from {{from}} to {{to}}, peaking at {{peak}}",
+    "summary": "{{kind}}, {{span}}. {{details}}."
+  },
+  "timelineScale": {
+    "week": "Week of {{format}}"
+  },
+  "unit": {
+    "files": "files",
+    "days": "days",
+    "seconds": "seconds",
+    "ms": "ms",
+    "MB": "MB",
+    "minutes": "minutes",
+    "ms_comment": "Milliseconds, after a number field.",
+    "tokens": "tokens"
+  },
+  "itemLinks": {
+    "deletedItem": "Deleted item",
+    "deletedItem_comment": "Shown in place of a link whose task, milestone, decision or Library item no longer exists.",
+    "kinds": {
+      "task": "Task",
+      "milestone": "Milestone",
+      "decision": "Decision",
+      "library": "Library item"
+    },
+    "picker": "Link to an item",
+    "pickerHint": "Type to find a task, milestone, decision or Library item",
+    "noMatches": "Nothing matches",
+    "linkedFrom": "Linked from",
+    "sources": {
+      "task": "Task: {{title}}",
+      "comment": "Comment on “{{title}}”",
+      "decision": "Decision: {{title}}",
+      "library": "Library: {{title}}"
+    }
+  },
+  "pins": {
+    "pinned": "Pinned",
+    "pinnedCount_one": "{{count}} pin",
+    "pinnedCount_other": "{{count}} pins",
+    "pinToSidebar": "Pin to sidebar",
+    "unpinFromSidebar": "Unpin from sidebar",
+    "pinToOverview": "Pin to Overview",
+    "unpinFromOverview": "Unpin from Overview",
+    "sidebarFull": "The sidebar holds at most {{max}} pins. Unpin one to make room.",
+    "unpin": "Unpin",
+    "actions": "Actions for {{title}}",
+    "gone": "Gone",
+    "gone_comment": "Shown on a pin whose task, milestone, decision, Library item or view no longer exists.",
+    "archived": "Archived",
+    "pinnedToSidebar": "Pinned {{title}} to the sidebar",
+    "pinnedToOverview": "Pinned {{title}} to the Overview",
+    "unpinned": "Unpinned {{title}}",
+    "couldntPin": "Couldn’t pin it",
+    "couldntUnpin": "Couldn’t unpin it",
+    "couldntMove": "Couldn’t move the pin",
+    "couldntOpen": "Couldn’t open it",
+    "kinds": {
+      "task": "Task",
+      "milestone": "Milestone",
+      "decision": "Decision",
+      "library": "Library item",
+      "saved-view": "Saved view",
+      "project-view": "View",
+      "personal-goal": "Goal"
+    },
+    "openLinkTitle": "Open this link?",
+    "openLinkBody": "{{url}}\n\n“{{name}}” opens in your browser.",
+    "openLinkConfirm": "Open link",
+    "openFileTitle": "Open {{name}} in its app?",
+    "openFileBody": "The file opens outside {{appName}}, in the app Windows uses for it.",
+    "openFileConfirm": "Open",
+    "shortcuts": "Shortcuts",
+    "noShortcuts": "Pin the things you open most in this project, such as a milestone, a saved view or the shop’s admin page.",
+    "shortcutActions": "Shortcut actions for {{title}}",
+    "moveLeft": "Move left",
+    "moveRight": "Move right",
+    "addShortcut": "Add a shortcut",
+    "addShortcutExisting": "An item",
+    "addShortcutLink": "A new link",
+    "findItem": "Find a task, milestone, decision, Library item or view",
+    "findItemPlaceholder": "Type to find…",
+    "nothingToPin": "Nothing matches",
+    "linkName": "Name",
+    "linkAddress": "Address",
+    "linkAddressHint": "An https address. It is kept as a link in the Library.",
+    "enterHttpsAddress": "Enter an https address.",
+    "enterName": "Enter a name.",
+    "add": "Add shortcut",
+    "cancel": "Cancel",
+    "palettePin": "Pin…",
+    "palettePinHint": "Pin a task, milestone, decision, Library item or view to the sidebar",
+    "paletteFindToPin": "Find something to pin to the sidebar",
+    "paletteKeywords": "pin, pinned, shortcut, favourite, favorite, bookmark",
+    "thisView": "{{view}}"
+  },
+  "countdowns": {
+    "daysTo_one": "{{count}} day to {{title}}",
+    "daysTo_other": "{{count}} days to {{title}}",
+    "tomorrow": "{{title}} is tomorrow",
+    "today": "{{title}} is today",
+    "yesterday": "{{title}} was yesterday",
+    "daysAgo_one": "{{title}} was {{count}} day ago",
+    "daysAgo_other": "{{title}} was {{count}} days ago",
+    "done": "{{title}}: done",
+    "withWorkingDays": "{{words}} ({{workingDays}})",
+    "workingDays_one": "{{count}} working day",
+    "workingDays_other": "{{count}} working days",
+    "show": "Show as countdown",
+    "hide": "Stop the countdown",
+    "shown": "{{title}} shows as a countdown",
+    "hidden": "{{title}} no longer counts down",
+    "couldntChange": "Couldn’t change the countdown",
+    "offerAfterPin": "Show it as a countdown on Home?",
+    "limitTitle": "Turn off a countdown?",
+    "limitBody": "At most {{max}} countdowns show at once. Choose one to turn off for {{title}}.",
+    "turnOff": "Turn off {{title}}",
+    "turnOffShort": "Turn off",
+    "turnOffDone": "Turn off the countdown for {{title}}",
+    "cancel": "Cancel",
+    "heading": "Countdowns",
+    "open": "Open {{title}}, {{words}}, {{date}}",
+    "progress": "Time passed since it was pinned"
+  },
+  "notificationCenter": {
+    "title": "In-app notifications",
+    "intro": "Messages from {{brand}} as you work, kept here until it closes, with Undo still there. Reminders and agent alerts also go to Windows notifications, which are in the Windows notification centre (Windows key + N).",
+    "empty": "Nothing yet. Notifications you miss will wait here.",
+    "clearAll": "Clear all",
+    "settings": "Notification settings",
+    "remove": "Remove \"{{title}}\"",
+    "undone": "Undone",
+    "done": "Done"
+  },
+  "mentions": {
+    "noLongerHere": "Someone no longer here",
+    "picker": "Mention someone"
+  }
+}

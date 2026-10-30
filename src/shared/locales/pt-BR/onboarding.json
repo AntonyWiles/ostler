@@ -1,0 +1,201 @@
+{
+  "welcome": {
+    "goProjectSkipRest": "Ir para o projeto e pular o resto.",
+    "closeWelcomeWithoutCreating": "Feche a boas-vindas sem criar nada. Tudo isto também está em Configurações.",
+    "skipNow": "Pular por enquanto",
+    "welcome": "Bem-vindo ao {{brand}}",
+    "planProjectsTasksBoards": "Planeje projetos com tarefas, quadros, calendários e linhas do tempo. Tudo fica neste computador. Duas escolhas rápidas e depois o seu primeiro projeto.",
+    "whatShouldWeCall": "Como devemos chamar você?",
+    "tasksAssignYourselfShow": "As tarefas atribuídas a você mostram este nome. Você pode mudá-lo em Configurações › Pessoas.",
+    "theme": "Tema",
+    "continue": "Continuar",
+    "howDoWantStart": "Como você quer começar?",
+    "firstProject": "Seu primeiro projeto",
+    "startWithDemos": "Começar com os projetos de demonstração",
+    "setUpFromOtherDevice": "Configurar a partir do meu outro dispositivo",
+    "joinTitle": "Configurar a partir do meu outro dispositivo",
+    "joinLead": "Se você já usa o {{brand}} em outro PC, este PC pode entrar no espaço pessoal dele: seus projetos, dados pessoais e configurações também vêm para cá.",
+    "chooseTemplate": "Escolher um modelo",
+    "next": "Próximo",
+    "progress": "Progresso das boas-vindas",
+    "stepOf": "Passo {{current}} de {{total}}",
+    "startTemplate": "Começar a partir de um modelo",
+    "readyMadePlanSuch": "Um plano pronto, como o de um evento, de um lançamento de produto ou de um estudo.",
+    "blankProject": "Um projeto em branco",
+    "emptyProjectFillYourself": "Um projeto vazio para você preencher.",
+    "import": "Importar",
+    "spreadsheetCsvTrelloBoard": "De uma planilha (CSV) ou de um quadro do Trello.",
+    "projectName": "Nome do projeto",
+    "websiteRelaunch": "Relançamento do site",
+    "back": "Voltar",
+    "fewOptionalExtras": "Alguns extras opcionais",
+    "eachTheseOptionalCan": "Cada um destes é opcional, e você pode fazê-los depois em Configurações.",
+    "softwareProject": "Isto é um projeto de software?",
+    "linkedReadsNeverWrites": "Vinculado a {{folder}}. O {{brand}} só lê a pasta e nunca altera nada nela.",
+    "linkFolderBrowseFiles": "Vincule a pasta para navegar pelos arquivos e ver a atividade do Git. O {{brand}} só lê a pasta.",
+    "linkFolder": "Vincular uma pasta…",
+    "wantAiHelp": "Quer ajuda da IA?",
+    "setUp": "{{aiName}} está configurado.",
+    "canSuggestTasksBreak": "{{aiName}} pode sugerir tarefas, dividir metas e resumir. Use um modelo gratuito neste PC ou uma conta de IA.",
+    "setUpAi": "Configurar IA…",
+    "useAiAgents": "Usar agentes de IA?",
+    "agents": "Os agentes estão ativados.",
+    "agentsWorkThroughTasks": "Os agentes trabalham nas tarefas da sua pasta, cada um na própria cópia, e nada muda até você aceitar.",
+    "setUpAgents": "Configurar agentes…",
+    "system": "Sistema",
+    "followsWindows": "Segue o Windows",
+    "light": "Claro",
+    "lightAllTime": "Sempre claro",
+    "dark": "Escuro",
+    "darkAllTime": "Sempre escuro",
+    "chooseProjectFolder": "Escolha a pasta do projeto",
+    "couldntLinkFolder": "Não foi possível vincular a pasta. {{error}}",
+    "chooseFile": "Escolher um arquivo…",
+    "createProject": "Criar projeto",
+    "openProject": "Abrir o projeto",
+    "finish": "Concluir",
+    "readyOptional": "“{{projectName}}” está pronto. Cada um destes é opcional, e você pode fazê-los depois em Configurações."
+  },
+  "gettingStarted": {
+    "createTask": "Criar uma tarefa",
+    "giveTaskDueDate": "Dar uma data de vencimento a uma tarefa",
+    "tryAnotherViewList": "Experimente outra exibição: Lista, Calendário ou Linha do tempo",
+    "findSomethingCommandPalette": "Encontre algo com a paleta de comandos",
+    "seeWhereBackups": "Veja onde estão os seus backups",
+    "setUpAi": "Configurar IA"
+  },
+  "tips": {
+    "tipEyebrow": "Dica",
+    "tourEyebrow": "Tour",
+    "stepOf": "{{step}} de {{count}}",
+    "steps": "Passos do tour",
+    "goToStep": "Ir para o passo {{step}}",
+    "back": "Voltar",
+    "next": "Próximo",
+    "done": "Concluído",
+    "gotIt": "Entendi",
+    "notNow": "Agora não",
+    "close": "Fechar",
+    "showMeAround": "Me mostre por aqui",
+    "dontShowAgain": "Não mostrar de novo",
+    "dontShowTipAgain": "Não mostrar esta dica de novo",
+    "turnOffTips": "Desativar dicas",
+    "closeTour": "Fechar o tour",
+    "announce": "Dica: {{title}}",
+    "tourDone": "Esse é o tour",
+    "tourClosed": "Tour fechado",
+    "tourAgain": "Refaça quando quiser em Ajuda › Fazer o tour guiado.",
+    "turnedOff": "As dicas estão desativadas",
+    "turnedOffBody": "Ative-as de novo em Configurações › Geral › Dicas e tours.",
+    "turnBackOn": "Ativar de novo",
+    "openSettings": "Configurações",
+    "invite": {
+      "title": "É novo aqui? Faça um tour rápido",
+      "body": "Este projeto de demonstração é uma viagem de fim de semana fictícia, preenchida para você testar as coisas com segurança. O tour visita cada exibição e mostra o que testar, em {{count}} passos curtos."
+    },
+    "tour": {
+      "welcome": {
+        "title": "O projeto de demonstração",
+        "body": "Tudo aqui é inventado, então altere, mova ou exclua o que quiser. As tarefas são lidas de cima para baixo: as primeiras mostram o básico, e as seguintes, mais recursos. Nada do que você fizer aqui afeta os seus projetos."
+      },
+      "views": {
+        "title": "Um projeto, várias exibições",
+        "body": "Cada aba mostra este projeto de outro jeito, e todas compartilham as mesmas tarefas: altere uma tarefa em uma exibição e todas as outras mostram a mudança. Os próximos passos visitam cada aba."
+      },
+      "board": {
+        "title": "Quadro: o trabalho avançando",
+        "body": "Cada coluna é um status, e as tarefas avançam da esquerda para a direita conforme o trabalho passa de a fazer, para em andamento, até concluída. O número ao lado do nome de cada coluna mostra quantas tarefas ela tem."
+      },
+      "card": {
+        "title": "Abra uma tarefa",
+        "body": "Clique em um cartão para ver tudo sobre ele: status, prioridade, data de vencimento, responsável, lista de verificação e comentários. Arraste um cartão para outra coluna para avançá-lo."
+      },
+      "newTask": {
+        "title": "Adicione as suas",
+        "body": "Nova tarefa adiciona uma a este projeto. {{keys}} faz o mesmo de qualquer lugar do projeto."
+      },
+      "search": {
+        "title": "Encontre qualquer coisa",
+        "body": "A pesquisa encontra tarefas, projetos e documentos, e executa qualquer comando pelo nome. Pressione {{keys}} de qualquer lugar."
+      },
+      "help": {
+        "title": "A ajuda está sempre aqui",
+        "body": "O guia do usuário, os atalhos de teclado e este tour estão em Ajuda. Dicas como esta podem ser desativadas em Configurações › Geral."
+      },
+      "overview": {
+        "title": "Visão geral: o projeto de relance",
+        "body": "Quantas tarefas estão abertas, concluídas nesta semana e atrasadas, depois o que precisa de você, o que está em andamento e o que vem a seguir. Publique uma atualização para dizer a todos, em uma ou duas frases, como o projeto está indo."
+      },
+      "list": {
+        "title": "Lista: todas as tarefas em linhas",
+        "body": "Como uma planilha: clique em um cabeçalho para classificar, escolha o que aparece com Colunas e marque linhas para alterar várias tarefas de uma vez. As subtarefas ficam abaixo da tarefa principal, como as refeições abaixo de Plan the meals."
+      },
+      "calendar": {
+        "title": "Calendário: tarefas por data de vencimento",
+        "body": "Cada tarefa fica no dia em que vence, e os marcos aparecem sinalizados. Alterne entre Mês, Semana, Ano e Agenda, arraste uma tarefa para outro dia para mudar a data de vencimento, e encontre as tarefas sem data em Sem agendamento."
+      },
+      "timeline": {
+        "title": "Linha do tempo: planejar ao longo das semanas",
+        "body": "Cada barra vai do início da tarefa até a data de vencimento, agrupada sob o marco. Arraste uma barra para movê-la, ou uma ponta para redimensioná-la, e ative Mostrar caminho crítico para ver quais tarefas não podem atrasar."
+      },
+      "milestones": {
+        "title": "Marcos e metas",
+        "body": "Uma meta é a razão de existir do projeto; os marcos são os grandes momentos do caminho, cada um com uma data e as tarefas que levam até ele. A barra de um marco vai sendo preenchida conforme as tarefas são concluídas."
+      },
+      "library": {
+        "title": "Biblioteca: documentos ao lado do trabalho",
+        "body": "Resumos, notas e documentos deste projeto ficam aqui. Abra Trip plan para lê-lo, adicione os seus com Adicionar, e anexe qualquer um deles a uma tarefa para que ele apareça nos detalhes dela."
+      },
+      "decisions": {
+        "title": "Decisões: o que foi escolhido e por quê",
+        "body": "Registre o que foi decidido, o contexto, o que mais foi avaliado e o que decorre disso, para que ninguém precise lembrar depois. Uma decisão se vincula às tarefas que ela afeta, assim como esta se vincula a Book the cabin."
+      }
+    },
+    "drawer": {
+      "title": "As alterações são salvas automaticamente",
+      "body": "Não há botão Salvar: cada alteração é mantida no momento em que você a faz. Pressione Ctrl+Z para desfazer a última."
+    },
+    "drawerResize": {
+      "title": "Deixe este painel mais largo",
+      "body": "Arraste a borda esquerda do painel para dar a ele mais ou menos espaço. Cada painel mantém a largura que você definir."
+    },
+    "boardDrag": {
+      "title": "Arraste para avançar uma tarefa",
+      "body": "Arraste um cartão para outra coluna para mudar o status dele. Você também pode abrir um cartão e escolher um novo status no topo."
+    },
+    "list": {
+      "title": "Classifique e compare",
+      "body": "Clique em um cabeçalho de coluna para classificar por ele. Shift+clique em outro cabeçalho para classificar depois por esse."
+    },
+    "calendar": {
+      "title": "Datas de vencimento de relance",
+      "body": "As tarefas aparecem no dia em que vencem. Arraste uma para outro dia para mudar a data de vencimento."
+    },
+    "timeline": {
+      "title": "Planejar ao longo das semanas",
+      "body": "Cada barra vai do início de uma tarefa até a data de vencimento. Arraste uma barra para movê-la, ou arraste uma das pontas para mudar a duração."
+    },
+    "library": {
+      "title": "Documentos junto do trabalho",
+      "body": "Guarde aqui resumos, notas e documentos deste projeto. Abra um para ler ou editar, ou anexe-o a uma tarefa e ele aparecerá nos detalhes dela."
+    },
+    "pointers": {
+      "clickToOpen": "Clique para abrir",
+      "clickToAdd": "Clique para adicionar uma tarefa",
+      "clickOrPress": "Clique, ou pressione {{keys}}",
+      "clickForHelp": "Clique para ver a Ajuda",
+      "changeStatus": "Tente mudar o status",
+      "dragToColumn": "Arraste para a próxima coluna",
+      "dragToDay": "Arraste para outro dia",
+      "dragToMove": "Arraste para mover",
+      "dragToResize": "Arraste para redimensionar",
+      "addDocument": "Adicione um documento",
+      "postUpdate": "Mostre como está indo",
+      "chooseColumns": "Escolha as colunas",
+      "changeRange": "Mês, semana, ano ou agenda",
+      "criticalPath": "Veja o que não pode atrasar",
+      "clickToRead": "Clique para ler",
+      "recordDecision": "Registre uma decisão"
+    }
+  }
+}

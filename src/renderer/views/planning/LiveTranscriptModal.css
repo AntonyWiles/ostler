@@ -1,0 +1,206 @@
+/* The live transcript: message bubbles, tool calls collapsed. Tokens only. */
+
+.transcript.ui-dialog--lg {
+  width: min(60rem, 94vw);
+}
+
+.transcript__heading {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.transcript__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-height: 0;
+}
+
+.transcript__stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-100) var(--space-400);
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.transcript__stats div {
+  display: flex;
+  gap: var(--space-100);
+}
+
+.transcript__stats dd {
+  margin: 0;
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.transcript__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200) var(--space-300);
+}
+
+.transcript__spacer {
+  flex: 1 1 0;
+}
+
+.transcript__feed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-height: 16rem;
+  max-height: 55vh;
+  padding: var(--space-300);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+}
+
+.transcript__empty {
+  margin: auto;
+  color: var(--color-text-muted);
+}
+
+.transcript__entry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  max-width: 85%;
+  padding: var(--space-200) var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  align-self: flex-start;
+}
+
+.transcript__entry[data-kind='task'],
+.transcript__entry[data-kind='answer'] {
+  align-self: flex-end;
+  border-color: transparent;
+  background: var(--color-accent-subtle);
+}
+
+.transcript__entry[data-kind='question'],
+.transcript__entry[data-kind='answer'] {
+  border-color: var(--color-warning);
+  background: var(--color-warning-subtle);
+}
+
+.transcript__entry[data-kind='security'] {
+  border-color: var(--color-danger);
+  background: var(--color-danger-subtle);
+}
+
+.transcript__entry[data-kind='system'] {
+  align-self: center;
+  background: var(--color-surface-sunken);
+}
+
+.transcript__entry[data-kind='tool-call'],
+.transcript__entry[data-kind='tool-result'] {
+  max-width: 100%;
+  align-self: stretch;
+  padding: var(--space-100) var(--space-300);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-sunken);
+}
+
+.transcript__meta,
+.transcript__tool-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-width: 0;
+  font-size: var(--text-caption);
+}
+
+.transcript__tool-summary {
+  cursor: default;
+}
+
+summary.transcript__tool-summary {
+  cursor: pointer;
+}
+
+summary.transcript__tool-summary:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-control);
+}
+
+.transcript__label {
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-semibold);
+}
+
+.transcript__entry[data-kind='security'] .transcript__label {
+  color: var(--color-danger);
+}
+
+.transcript__entry[data-kind='question'] .transcript__label {
+  color: var(--color-warning);
+}
+
+.transcript__tool-line {
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.transcript__time {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.transcript__text {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.transcript__entry[data-kind^='tool'] .transcript__text {
+  margin-top: var(--space-100);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+}
+
+.transcript__count {
+  margin-right: auto;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+summary.transcript__tool-summary {
+  list-style: none;
+}
+
+summary.transcript__tool-summary::-webkit-details-marker {
+  display: none;
+}
+
+.transcript__chevron {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  transition: transform var(--motion-fast) var(--ease-standard);
+}
+
+details[open] > summary .transcript__chevron {
+  transform: rotate(90deg);
+}

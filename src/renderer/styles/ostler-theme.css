@@ -1,0 +1,46 @@
+/*
+ * App chrome: the canvas behind the shell and the status bar, and the motion
+ * every native control shares. Solid surfaces and quiet borders from
+ * tokens.css; components carry everything else.
+ */
+
+html,
+body,
+#root,
+.ostler-shell,
+.ostler-content {
+  background: var(--color-bg);
+}
+
+.ostler-statusbar {
+  height: var(--app-statusbar-height);
+  background: var(--color-surface);
+  border-top: var(--border-width) solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+button,
+input,
+textarea,
+select {
+  transition:
+    background var(--motion-fast) var(--ease-standard),
+    border-color var(--motion-fast) var(--ease-standard),
+    color var(--motion-fast) var(--ease-standard),
+    box-shadow var(--motion-fast) var(--ease-standard);
+}
+
+input,
+textarea,
+select {
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-accent);
+}

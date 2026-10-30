@@ -1,0 +1,13 @@
+/* A task's type icon (N2.7a): the shape carries the meaning, the colour helps. */
+.task-type-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  line-height: 0;
+}
+
+@media (forced-colors: active) {
+  .task-type-icon {
+    color: CanvasText !important;
+  }
+}

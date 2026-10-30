@@ -1,0 +1,41 @@
+- main:
+  - heading "Sample project" [level=1]:
+    - button "Sample project"
+  - button "New task"
+  - button "More project actions"
+  - tablist "Project views":
+    - tab "Overview"
+    - tab "Board" [selected]
+    - tab "List"
+    - tab "Calendar"
+    - tab "Timeline"
+    - tab "Milestones"
+    - tab "Library"
+  - button "More views"
+  - region "Board":
+    - toolbar "Board filters":
+      - 'button "Views: Default view"'
+      - text: Search tasks
+      - searchbox "Search tasks"
+      - text: /
+      - group "Filters":
+        - button "Add filter"
+      - text: /\d+ of \d+ tasks/
+      - button "Show selection boxes"
+      - button "View options"
+    - region "To do":
+      - heading "To do" [level=2]
+      - button /\d+ tasks?; click to edit WIP limit/
+      - button "Select all in To do"
+      - button "New task in To do"
+      - article /Pick the weekend, [A-Z]{2,5}-\d+/:
+        - heading "Pick the weekend" [level=3]
+        - button "More actions for Pick the weekend"
+    - region "In progress":
+      - heading "In progress" [level=2]
+      - button /\d+ tasks?; click to edit WIP limit/
+      - button "New task in In progress"
+    - region "Done":
+      - heading "Done" [level=2]
+      - button /\d+ tasks?; click to edit WIP limit/
+      - button "New task in Done"

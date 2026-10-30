@@ -1,0 +1,25 @@
+/* In a narrow window or at a large zoom, the end group wraps below rather
+   than squeezing the items (a search box) to nothing (P9.2, WCAG 1.4.10). */
+.ui-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--control-height);
+}
+
+.ui-toolbar__items {
+  display: flex;
+  flex: 1 1 calc(var(--space-1200) * 4);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+  min-width: 0;
+}
+
+.ui-toolbar__end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  margin-left: auto;
+}

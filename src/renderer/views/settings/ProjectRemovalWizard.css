@@ -1,0 +1,77 @@
+/* Guided project removal. Tokens only. */
+
+.removal-wizard__text {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+}
+
+.removal-wizard__text code,
+.removal-wizard__facts code,
+.removal-wizard__rows code {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  overflow-wrap: anywhere;
+}
+
+.removal-wizard__facts {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.removal-wizard__facts > div {
+  display: grid;
+  grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr);
+  gap: var(--space-300);
+  padding: var(--space-200) var(--space-300);
+  font-size: var(--text-body-sm);
+}
+
+.removal-wizard__facts > div + div {
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.removal-wizard__facts dt {
+  color: var(--color-text-secondary);
+}
+
+.removal-wizard__facts dd {
+  margin: 0;
+}
+
+.removal-wizard__details > summary {
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.removal-wizard__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: var(--space-200) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-body-sm);
+}
+
+.removal-wizard__rows li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-300);
+}
+
+.removal-wizard__command {
+  display: block;
+  margin-top: var(--space-200);
+  padding: var(--space-200) var(--space-300);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-sunken);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  overflow-wrap: anywhere;
+}

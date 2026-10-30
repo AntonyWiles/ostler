@@ -1,0 +1,168 @@
+/* The List view: toolbar, then the task table filling the rest of the page. */
+
+/* The table scrolls inside the page rather than the page scrolling round it:
+   the workspace is exactly the page's height, and the view may shrink below
+   its content (thousands of rows) to fit. */
+.ostler-workspace:has(> .ostler-workspace-view--list) {
+  height: 100%;
+}
+
+.ostler-workspace-view--list {
+  min-height: 0;
+}
+
+.list-view {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+  min-height: calc(var(--space-1200) * 6);
+}
+
+.list-view__table {
+  flex: 1;
+  min-height: 0;
+}
+
+.list-view__loading {
+  padding: var(--space-400);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.list-cell__value,
+.list-cell__title,
+.list-cell__person,
+.list-cell__labels {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-150);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.list-cell__title {
+  flex: 1;
+}
+
+.list-cell__title-text,
+.list-cell__text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-cell__title-text {
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+}
+
+/* Where a subtask's chevron would be, so titles line up. */
+.list-cell__twig {
+  flex: none;
+  width: var(--control-height-sm);
+}
+
+.list-cell__empty,
+.list-cell__more {
+  color: var(--color-text-muted);
+}
+
+.list-cell__due.is-overdue {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  color: var(--color-danger);
+}
+
+.list-cell__due.is-soon {
+  color: var(--color-warning);
+}
+
+.list-cell__labels {
+  overflow: hidden;
+}
+
+.list-quick-add {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-150);
+  padding: 0 var(--space-100);
+  border: 0;
+  background: none;
+  color: var(--color-text-muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.list-quick-add:hover {
+  color: var(--color-text);
+}
+
+.list-quick-add__icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+.list-quick-add__field {
+  width: calc(var(--space-1200) * 8);
+  max-width: 100%;
+}
+
+.list-columns__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list-columns__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-400);
+}
+
+.list-columns__moves {
+  display: inline-flex;
+  gap: var(--space-050);
+}
+
+/* Custom field columns (R2.2): their own heading, searchable, scrolling when long. */
+.list-columns__custom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin-top: var(--space-300);
+  padding-top: var(--space-300);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.list-columns__custom .list-columns__list {
+  max-height: calc(var(--space-1000) * 3);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.list-columns__heading {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.list-cell__hidden {
+  flex: none;
+}
+
+.list-cell__title:has(.list-cell__hidden) .list-cell__title-text {
+  color: var(--color-text-muted);
+}
+
+.list-cell__actions {
+  display: inline-flex;
+  gap: var(--space-100);
+}

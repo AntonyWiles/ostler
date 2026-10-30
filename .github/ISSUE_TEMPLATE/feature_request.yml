@@ -1,0 +1,37 @@
+name: Feature request
+description: Suggest something Ostler could do, or do better.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The job or problem behind the idea, in your own words.
+      placeholder: I plan a weekly shop and want the same tasks every week without retyping them.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+      description: How you imagine Ostler could do it. Rough is fine.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What do you do today instead?
+      description: Optional. Workarounds or other tools you have tried.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part of Ostler?
+      options:
+        - Planning (tasks, views, milestones, Home and Inbox)
+        - Software projects (folders, files, Git)
+        - Ostler AI
+        - AI coding agents
+        - Settings, install or updates
+        - Something else
+    validations:
+      required: true

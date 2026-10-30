@@ -1,0 +1,54 @@
+/* Send guidance to a running agent run (D41). */
+
+.send-guidance {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+}
+
+.send-guidance__heading {
+  margin: 0 0 var(--space-200);
+  font-size: var(--text-body-sm);
+  color: var(--color-text-muted);
+}
+
+.send-guidance__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  max-height: 240px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  list-style: none;
+}
+
+.send-guidance__item {
+  padding: var(--space-200) var(--space-300);
+  background: var(--color-surface-sunken);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.send-guidance__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--text-caption);
+  color: var(--color-text-muted);
+}
+
+.send-guidance__text {
+  overflow-wrap: anywhere;
+}
+
+.send-guidance__text > :first-child {
+  margin-top: var(--space-100);
+}
+
+.send-guidance__text > :last-child {
+  margin-bottom: 0;
+}

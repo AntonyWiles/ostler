@@ -1,0 +1,350 @@
+/* Project settings › Backup, Check and repair, Export and import, Remove. */
+
+.project-care-group {
+  display: flex;
+  flex-direction: column;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.project-care-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-200) var(--space-400);
+  padding: var(--space-300) var(--space-400);
+}
+
+.project-care-row + .project-care-row {
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.project-care-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  min-width: 0;
+}
+
+.project-care-row__title {
+  font-weight: var(--weight-medium);
+}
+
+.project-care-row__description {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+/* Numbered steps in a row's description, such as how someone joins a shared project;
+   and the points of what leaving a shared project does. */
+.project-sharing-steps,
+.project-sharing-leave {
+  margin: 0;
+  padding-left: var(--space-400);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+}
+
+.project-care-row__action {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-200);
+}
+
+.project-care-row__result {
+  grid-column: 1 / -1;
+}
+
+.project-care-muted {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.project-care-path {
+  font-family: var(--font-mono);
+  font-size: var(--text-body-sm);
+  overflow-wrap: anywhere;
+}
+
+/* Backups of this project. */
+.project-care-backups {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project-care-backup {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-200) var(--space-400);
+  padding: var(--space-300) var(--space-400);
+}
+
+.project-care-backup + .project-care-backup {
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.project-care-backup__when {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.project-care-backup__size {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.project-care-backup__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-100);
+}
+
+/* Remove: the backups found, what goes and what stays, then the choices. */
+.project-care-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-width: 0;
+}
+
+.project-care-block__title {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.project-care-checks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.project-care-check {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-300);
+  padding: var(--space-200) var(--space-400);
+}
+
+.project-care-check + .project-care-check {
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.project-care-check.is-ok > .ostler-icon {
+  color: var(--color-success);
+}
+
+.project-care-check.is-warn > .ostler-icon {
+  color: var(--color-warning);
+}
+
+.project-care-check.is-none > .ostler-icon {
+  color: var(--color-text-secondary);
+}
+
+.project-care-check__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.project-care-check__title {
+  font-weight: var(--weight-medium);
+}
+
+.project-care-check__detail {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  overflow-wrap: anywhere;
+}
+
+/* What removal deletes beside what it never touches. */
+.project-care-impact {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: var(--space-400);
+}
+
+.project-care-impact__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin: 0;
+  padding: var(--space-300) var(--space-400);
+  list-style: none;
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.project-care-impact__list li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+}
+
+.project-care-impact__what {
+  font-size: var(--text-body-sm);
+}
+
+/* The guided removal: the gentle way in, before the choices. */
+.project-care-guided {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-400);
+  background: var(--color-accent-subtle);
+  border-color: var(--color-accent);
+}
+
+.project-care-guided__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.project-care-choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-300);
+}
+
+.project-care-choice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.project-care-choice__title {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.project-care-choice__text {
+  flex: 1;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.project-care-choice--danger {
+  border-color: var(--color-danger);
+}
+
+.project-care-choice__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-200);
+}
+
+.project-care-sessions {
+  margin: var(--space-200) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project-care-sessions li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-300);
+  padding: var(--space-100) 0;
+}
+
+.project-care-list {
+  margin: var(--space-100) 0 0;
+  padding-left: var(--space-500);
+}
+
+@media (max-width: 760px) {
+  .project-care-impact,
+  .project-care-choices {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.project-care-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+/* A demo's Remove tab: one choice, the others a click away. */
+.project-care-demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  max-width: calc(var(--space-1000) * 14);
+}
+
+.project-care-demo__other {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+/* Email invite: the address, with its button level with the field. */
+.project-sharing-email {
+  align-items: end;
+}
+
+/* "What each role can do": a disclosure holding a role-by-capability table. */
+.project-sharing-roles > summary {
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+}
+
+.project-sharing-roles > summary:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-control);
+}
+
+.project-sharing-roles__table {
+  width: 100%;
+  margin-top: var(--space-200);
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+}
+
+.project-sharing-roles__table th,
+.project-sharing-roles__table td {
+  padding: var(--space-100) var(--space-200);
+  border-bottom: var(--border-width) solid var(--color-border);
+  text-align: center;
+}
+
+.project-sharing-roles__table tbody th {
+  text-align: start;
+  font-weight: var(--weight-regular);
+}
+
+.project-sharing-roles__table td {
+  color: var(--color-text-secondary);
+}
+
+.project-sharing-history {
+  margin: var(--space-200) 0 0;
+  padding-inline-start: var(--space-300);
+  font-size: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}

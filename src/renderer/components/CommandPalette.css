@@ -1,0 +1,146 @@
+/* Ctrl+K: a Dialog with a search field and a grouped list. Tokens only. */
+
+.palette.ui-dialog {
+  /* Near the top rather than centred: the list grows downward, so a centred
+     panel would jump as results change. */
+  align-self: flex-start;
+  width: min(40rem, 90vw);
+  max-height: 70vh;
+  margin-top: 12vh;
+}
+
+.palette .ui-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-height: 0;
+}
+
+.palette__results {
+  /* min-height: 0 is what lets this scroll inside the dialog body. */
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 50vh;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  list-style: none;
+}
+
+.palette__group {
+  padding: var(--space-200) var(--space-200) var(--space-100);
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+}
+
+.palette__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--row-height);
+  padding: 0 var(--space-200);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+  font-size: var(--text-body);
+}
+
+.palette__item[aria-selected='true'] {
+  background: var(--color-surface-selected);
+}
+
+.palette__icon {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
+.palette__item[aria-selected='true'] .palette__icon {
+  color: var(--color-link);
+}
+
+.palette__label {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.palette__label mark {
+  border-radius: var(--radius-control);
+  background: var(--color-warning-subtle);
+  color: inherit;
+  font-weight: var(--weight-semibold);
+}
+
+.palette__hint {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* Truncate the hint before the label: the name is what identifies the row. */
+  direction: rtl;
+}
+
+.palette__kbd {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.palette__hint + .palette__kbd {
+  margin-left: 0;
+}
+
+.palette__empty {
+  padding: var(--space-400);
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+  text-align: center;
+}
+
+.palette__keys {
+  display: flex;
+  gap: var(--space-400);
+  margin-right: auto;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.palette__keys span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+/* A content result (P5.7): its title, and the snippet with the matching words. */
+.palette__found {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--space-100) 0;
+}
+
+.palette__found .palette__label {
+  flex: none;
+}
+
+.palette__snippet {
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.palette__snippet mark {
+  border-radius: var(--radius-control);
+  background: var(--color-warning-subtle);
+  color: inherit;
+  font-weight: var(--weight-semibold);
+}

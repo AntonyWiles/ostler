@@ -1,0 +1,201 @@
+{
+  "welcome": {
+    "goProjectSkipRest": "Aller au projet et passer le reste.",
+    "closeWelcomeWithoutCreating": "Fermer l’accueil sans rien créer. Tout ce qui se trouve ici est aussi dans les Paramètres.",
+    "skipNow": "Passer pour l’instant",
+    "welcome": "Bienvenue dans {{brand}}",
+    "planProjectsTasksBoards": "Planifiez vos projets avec des tâches, des kanbans, des calendriers et des chronologies. Tout reste sur cet ordinateur. Deux choix rapides, puis votre premier projet.",
+    "whatShouldWeCall": "Comment devons-nous vous appeler ?",
+    "tasksAssignYourselfShow": "Les tâches qui vous sont attribuées affichent ce nom. Vous pouvez le modifier dans Paramètres › Personnes.",
+    "theme": "Thème",
+    "continue": "Continuer",
+    "howDoWantStart": "Comment souhaitez-vous commencer ?",
+    "firstProject": "Votre premier projet",
+    "startWithDemos": "Commencer avec les projets de démonstration",
+    "setUpFromOtherDevice": "Configurer depuis mon autre appareil",
+    "joinTitle": "Configurer depuis mon autre appareil",
+    "joinLead": "Si vous utilisez déjà {{brand}} sur un autre PC, ce PC peut rejoindre son espace personnel : vos projets, vos données personnelles et vos paramètres arrivent aussi ici.",
+    "chooseTemplate": "Choisir un modèle",
+    "next": "Suivant",
+    "progress": "Progression de la bienvenue",
+    "stepOf": "Étape {{current}} sur {{total}}",
+    "startTemplate": "Partir d’un modèle",
+    "readyMadePlanSuch": "Un plan tout prêt, comme pour un événement, le lancement d’un produit ou un plan d’études.",
+    "blankProject": "Un projet vierge",
+    "emptyProjectFillYourself": "Un projet vide à remplir vous-même.",
+    "import": "Importer",
+    "spreadsheetCsvTrelloBoard": "Depuis un tableur (CSV) ou un tableau Trello.",
+    "projectName": "Nom du projet",
+    "websiteRelaunch": "Refonte du site web",
+    "back": "Précédent",
+    "fewOptionalExtras": "Quelques compléments facultatifs",
+    "eachTheseOptionalCan": "Chacun de ces éléments est facultatif, et vous pourrez les faire plus tard dans les Paramètres.",
+    "softwareProject": "S’agit-il d’un projet logiciel ?",
+    "linkedReadsNeverWrites": "Lié à {{folder}}. {{brand}} le lit, et n’y écrit jamais.",
+    "linkFolderBrowseFiles": "Liez son dossier pour parcourir les fichiers et voir l’activité Git. {{brand}} ne fait que le lire.",
+    "linkFolder": "Lier un dossier…",
+    "wantAiHelp": "Voulez-vous l’aide de l’IA ?",
+    "setUp": "{{aiName}} est configuré.",
+    "canSuggestTasksBreak": "{{aiName}} peut suggérer des tâches, décomposer les objectifs et faire des synthèses. Utilisez un modèle gratuit sur cet ordinateur ou un compte d’IA.",
+    "setUpAi": "Configurer l’IA…",
+    "useAiAgents": "Utiliser des agents IA ?",
+    "agents": "Les agents sont activés.",
+    "agentsWorkThroughTasks": "Les agents traitent les tâches de votre dossier, chacun sur sa propre copie, et rien ne change tant que vous ne l’avez pas accepté.",
+    "setUpAgents": "Configurer les agents…",
+    "system": "Système",
+    "followsWindows": "Suit Windows",
+    "light": "Clair",
+    "lightAllTime": "Toujours clair",
+    "dark": "Sombre",
+    "darkAllTime": "Toujours sombre",
+    "chooseProjectFolder": "Choisir le dossier du projet",
+    "couldntLinkFolder": "Impossible de lier le dossier. {{error}}",
+    "chooseFile": "Choisir un fichier…",
+    "createProject": "Créer le projet",
+    "openProject": "Ouvrir le projet",
+    "finish": "Terminer",
+    "readyOptional": "« {{projectName}} » est prêt. Chacun de ces éléments est facultatif, et vous pourrez les faire plus tard dans les Paramètres."
+  },
+  "gettingStarted": {
+    "createTask": "Créer une tâche",
+    "giveTaskDueDate": "Donner une échéance à une tâche",
+    "tryAnotherViewList": "Essayez une autre vue : Liste, Calendrier ou Chronologie",
+    "findSomethingCommandPalette": "Trouver quelque chose avec la palette de commandes",
+    "seeWhereBackups": "Voir où se trouvent vos sauvegardes",
+    "setUpAi": "Configurer l’IA"
+  },
+  "tips": {
+    "tipEyebrow": "Astuce",
+    "tourEyebrow": "Visite",
+    "stepOf": "{{step}} sur {{count}}",
+    "steps": "Étapes de la visite",
+    "goToStep": "Aller à l’étape {{step}}",
+    "back": "Précédent",
+    "next": "Suivant",
+    "done": "Terminé",
+    "gotIt": "Compris",
+    "notNow": "Pas maintenant",
+    "close": "Fermer",
+    "showMeAround": "Faire le tour",
+    "dontShowAgain": "Ne plus afficher",
+    "dontShowTipAgain": "Ne plus afficher cette astuce",
+    "turnOffTips": "Désactiver les astuces",
+    "closeTour": "Fermer la visite",
+    "announce": "Astuce : {{title}}",
+    "tourDone": "C’est la fin de la visite",
+    "tourClosed": "Visite fermée",
+    "tourAgain": "Vous pouvez la refaire à tout moment depuis Aide › Faire la visite guidée.",
+    "turnedOff": "Les astuces sont désactivées",
+    "turnedOffBody": "Réactivez-les dans Paramètres › Général › Astuces et visites.",
+    "turnBackOn": "Réactiver",
+    "openSettings": "Paramètres",
+    "invite": {
+      "title": "Vous êtes nouveau ici ? Faites une courte visite",
+      "body": "Ce projet de démonstration est un week-end imaginaire, rempli pour que vous puissiez tout essayer sans risque. La visite passe en revue chaque vue et indique quoi essayer, en {{count}} étapes courtes."
+    },
+    "tour": {
+      "welcome": {
+        "title": "Le projet de démonstration",
+        "body": "Tout ce qui se trouve ici est fictif : modifiez, déplacez ou supprimez ce que vous voulez. Les tâches se lisent de haut en bas : les premières montrent les bases, les suivantes en présentent davantage. Rien de ce que vous faites ici ne touche à vos propres projets."
+      },
+      "views": {
+        "title": "Un projet, plusieurs vues",
+        "body": "Chaque onglet affiche ce projet sous un autre angle, et toutes les vues partagent les mêmes tâches : modifiez une tâche dans une vue, et toutes les autres vues affichent la modification. Les étapes suivantes passent en revue chaque onglet."
+      },
+      "board": {
+        "title": "Kanban : le travail en mouvement",
+        "body": "Chaque colonne correspond à un statut, et les tâches avancent de gauche à droite, de « À faire » à « En cours », puis à « Terminé ». Le nombre à côté du nom de chaque colonne indique combien de tâches elle contient."
+      },
+      "card": {
+        "title": "Ouvrir une tâche",
+        "body": "Cliquez sur une carte pour voir tout ce qui la concerne : statut, priorité, échéance, personne à qui elle est attribuée, liste de contrôle et commentaires. Faites glisser une carte dans une autre colonne pour la faire avancer."
+      },
+      "newTask": {
+        "title": "Ajoutez la vôtre",
+        "body": "Nouvelle tâche en ajoute une à ce projet. {{keys}} fait la même chose depuis n’importe où dans le projet."
+      },
+      "search": {
+        "title": "Trouvez tout",
+        "body": "La recherche trouve les tâches, les projets et les documents, et lance n’importe quelle commande par son nom. Appuyez sur {{keys}} depuis n’importe où."
+      },
+      "help": {
+        "title": "L’aide est toujours là",
+        "body": "Le guide de l’utilisateur, les raccourcis clavier et cette visite se trouvent dans Aide. Les astuces comme celle-ci peuvent être désactivées dans Paramètres › Général."
+      },
+      "overview": {
+        "title": "Vue d’ensemble : le projet en un coup d’œil",
+        "body": "Combien de tâches sont ouvertes, terminées cette semaine et en retard, puis ce qui a besoin de vous, ce qui est en cours et ce qui vient ensuite. Publiez un point d’étape pour dire en une ou deux phrases comment avance le projet."
+      },
+      "list": {
+        "title": "Liste : chaque tâche en lignes",
+        "body": "Comme un tableur : cliquez sur un en-tête pour trier, choisissez ce qui s’affiche avec Colonnes, et cochez des lignes pour modifier plusieurs tâches à la fois. Les sous-tâches se placent sous leur tâche parente, comme les repas sous Plan the meals."
+      },
+      "calendar": {
+        "title": "Calendrier : les tâches par échéance",
+        "body": "Chaque tâche se place au jour de son échéance, et les jalons sont signalés. Passez de Mois à Semaine, Année et Agenda, faites glisser une tâche vers un autre jour pour changer son échéance, et retrouvez les tâches sans date sous Non planifiées."
+      },
+      "timeline": {
+        "title": "Chronologie : planifier sur plusieurs semaines",
+        "body": "Chaque barre va du début d’une tâche à son échéance, regroupée sous son jalon. Faites glisser une barre pour la déplacer, ou une extrémité pour la redimensionner, et activez Afficher le chemin critique pour voir les tâches qui ne peuvent pas glisser."
+      },
+      "milestones": {
+        "title": "Jalons et objectifs",
+        "body": "Un objectif est la raison d’être du projet ; les jalons sont les grandes étapes du parcours, chacune avec une date et les tâches qui y mènent. La barre d’un jalon se remplit au fur et à mesure que ses tâches sont terminées."
+      },
+      "library": {
+        "title": "Bibliothèque : les documents à côté du travail",
+        "body": "Les briefs, notes et documents de ce projet se trouvent ici. Ouvrez Trip plan pour le lire, ajoutez les vôtres avec Ajouter, et joignez-en à une tâche pour qu’ils apparaissent dans le détail de cette tâche."
+      },
+      "decisions": {
+        "title": "Décisions : ce qui a été choisi et pourquoi",
+        "body": "Consignez ce qui a été décidé, le contexte, les autres options examinées et ce qui en découle, pour que personne n’ait à s’en souvenir plus tard. Une décision est liée aux tâches qu’elle concerne, comme celle-ci l’est à Book the cabin."
+      }
+    },
+    "drawer": {
+      "title": "Les modifications s’enregistrent au fil de l’eau",
+      "body": "Il n’y a pas de bouton Enregistrer : chaque modification est conservée au moment où vous la faites. Appuyez sur Ctrl+Z pour annuler la dernière."
+    },
+    "drawerResize": {
+      "title": "Élargir ce panneau",
+      "body": "Faites glisser le bord gauche du panneau pour lui donner plus ou moins de place. Chaque panneau garde la largeur que vous lui donnez."
+    },
+    "boardDrag": {
+      "title": "Faites glisser pour faire avancer une tâche",
+      "body": "Faites glisser une carte dans une autre colonne pour changer son statut. Vous pouvez aussi ouvrir une carte et choisir un nouveau statut en haut."
+    },
+    "list": {
+      "title": "Trier et comparer",
+      "body": "Cliquez sur un en-tête de colonne pour trier par cette colonne. Maj+clic sur un autre en-tête pour trier ensuite par celui-là."
+    },
+    "calendar": {
+      "title": "Les échéances en un coup d’œil",
+      "body": "Les tâches s’affichent le jour de leur échéance. Faites-en glisser une vers un autre jour pour changer son échéance."
+    },
+    "timeline": {
+      "title": "Planifier sur plusieurs semaines",
+      "body": "Chaque barre va du début d’une tâche à son échéance. Faites glisser une barre pour la déplacer, ou faites glisser l’une de ses extrémités pour changer sa durée."
+    },
+    "library": {
+      "title": "Documents à côté du travail",
+      "body": "Conservez ici les briefs, notes et documents de ce projet. Ouvrez-en un pour le lire ou le modifier, ou joignez-le à une tâche et il s’affichera dans le détail de cette tâche."
+    },
+    "pointers": {
+      "clickToOpen": "Cliquez pour ouvrir",
+      "clickToAdd": "Cliquez pour ajouter une tâche",
+      "clickOrPress": "Cliquez, ou appuyez sur {{keys}}",
+      "clickForHelp": "Cliquez pour l’aide",
+      "changeStatus": "Essayez de changer le statut",
+      "dragToColumn": "Faites glisser vers la colonne suivante",
+      "dragToDay": "Faites glisser vers un autre jour",
+      "dragToMove": "Faites glisser pour déplacer",
+      "dragToResize": "Faites glisser pour redimensionner",
+      "addDocument": "Ajoutez un document",
+      "postUpdate": "Partagez l’avancement",
+      "chooseColumns": "Choisissez les colonnes",
+      "changeRange": "Mois, semaine, année ou agenda",
+      "criticalPath": "Voyez ce qui ne peut pas glisser",
+      "clickToRead": "Cliquez pour lire",
+      "recordDecision": "Consignez une décision"
+    }
+  }
+}

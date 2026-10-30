@@ -1,0 +1,19 @@
+.ostler-home-sign-offs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ostler-home-sign-offs__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-200);
+}
+
+.ostler-home-sign-offs__body {
+  color: var(--color-text-secondary);
+}

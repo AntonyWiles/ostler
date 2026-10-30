@@ -1,0 +1,53 @@
+name: Bug report
+description: Something in Ostler does not work as it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. For a security issue, do not use this form: see SECURITY.md.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+      placeholder: I dragged a task to Done and it jumped back to In progress.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The shortest steps that show the problem, starting from opening Ostler.
+      placeholder: |
+        1. Open a project's Board
+        2. Drag a task to Done
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics
+      description: >-
+        In Ostler, choose Help › Copy diagnostics (or Settings › About › Copy diagnostics) and paste
+        the result here. Names, keys and tokens are removed and project names are never included,
+        but read it before you post.
+      render: text
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How do you run Ostler?
+      options:
+        - Installed (Setup .exe)
+        - Portable .exe
+        - Built from source
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Optional. Check that they show nothing private.

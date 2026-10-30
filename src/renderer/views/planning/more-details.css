@@ -1,0 +1,20 @@
+/* "More details": the disclosure that holds a short form's optional fields. Tokens only. */
+
+.more-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.more-details__toggle {
+  align-self: flex-start;
+}
+
+.more-details__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  padding-block-start: var(--space-100);
+  border-inline-start: var(--border-width) solid var(--color-border);
+  padding-inline-start: var(--space-300);
+}

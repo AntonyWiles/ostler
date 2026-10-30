@@ -1,0 +1,138 @@
+/* The Overview's Shortcuts strip (N5.2a). */
+.overview-shortcuts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.overview-shortcuts__title {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+}
+
+.overview-shortcuts__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.overview-shortcut {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  transition: opacity var(--motion-fast) var(--ease-standard);
+}
+
+.overview-shortcut.is-dragging {
+  opacity: 0.5;
+}
+
+.overview-shortcut__open {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  min-width: 0;
+  padding: var(--space-100) var(--space-150);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.overview-shortcut__open:hover {
+  background: var(--color-surface-hover);
+}
+
+.overview-shortcut__open:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(var(--focus-ring-offset) * -1);
+}
+
+.overview-shortcut.is-gone .overview-shortcut__open {
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
+.overview-shortcut__title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.overview-shortcut__note,
+.overview-shortcuts__empty {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+/* Add a shortcut. */
+.add-shortcut {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.add-shortcut__results {
+  display: flex;
+  flex-direction: column;
+  max-height: 20rem;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  list-style: none;
+}
+
+.add-shortcut__result {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  width: 100%;
+  padding: var(--space-100) var(--space-150);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.add-shortcut__result:hover:not(:disabled) {
+  background: var(--color-surface-hover);
+}
+
+.add-shortcut__result:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(var(--focus-ring-offset) * -1);
+}
+
+.add-shortcut__result:disabled {
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
+.add-shortcut__title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.add-shortcut__empty {
+  padding: var(--space-100) var(--space-150);
+  color: var(--color-text-muted);
+}

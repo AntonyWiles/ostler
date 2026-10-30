@@ -1,0 +1,42 @@
+{
+  "shortcutOverlay": {
+    "title": "Métodos abreviados de teclado",
+    "description": "Los métodos abreviados de una sola tecla funcionan cuando no escribes en un campo.",
+    "search": "Buscar métodos abreviados",
+    "noMatch": "Ningún método abreviado coincide con «{{query}}»."
+  },
+  "helpProvider": {
+    "diagnosticsCopied": "Diagnóstico copiado",
+    "versionsCountsEndLog": "Versiones, recuentos y el final del registro, sin nombres, claves ni tokens.",
+    "couldntCopyDiagnostics": "No se pudo copiar el diagnóstico",
+    "issuePageOpenBrowser": "La página de incidencias de {{brand}} está abierta en tu navegador, y el diagnóstico está en el portapapeles: pégalo en el informe solo si quieres.",
+    "couldntOpenIssuePage": "No se pudo abrir la página de incidencias"
+  },
+  "whatsNewDialog": {
+    "whatsNew": "Novedades de {{brand}}",
+    "version": "Versión {{version}}",
+    "close": "Cerrar",
+    "thereNoNotesVersion": "No hay notas para esta versión."
+  },
+  "guide": {
+    "version": "Versión {{version}}"
+  },
+  "helpView": {
+    "userGuidePages": "Páginas de la guía del usuario",
+    "userGuide": "Guía del usuario",
+    "searchGuide": "Buscar en la guía",
+    "matches_one": "{{count}} coincidencia",
+    "matches_many": "{{count}} coincidencias",
+    "matches_other": "{{count}} coincidencias",
+    "userGuideIsntBuild": "La guía del usuario no está incluida en esta versión",
+    "readOnlineRepositoryDocs": "Léela en línea en el repositorio de {{brand}}, en la carpeta docs/user-guide.",
+    "noPageMentions": "Ninguna página menciona esto.",
+    "foundPages_one": "Aparece en {{count}} página.",
+    "foundPages_many": "Aparece en {{count}} páginas.",
+    "foundPages_other": "Aparece en {{count}} páginas.",
+    "notPage": "No aparece en esta página.",
+    "matchesPageHighlighted_one": "{{count}} coincidencia en esta página, resaltada.",
+    "matchesPageHighlighted_many": "{{count}} coincidencias en esta página, resaltadas.",
+    "matchesPageHighlighted_other": "{{count}} coincidencias en esta página, resaltadas."
+  }
+}

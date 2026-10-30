@@ -1,0 +1,125 @@
+/*
+ * The custom title bar (P8.2). Its height is TITLE_BAR_HEIGHT
+ * (--title-bar-height, 36 = --control-height-lg in comfortable density), and
+ * it draws its own Minimise, Maximise and Close at its right end.
+ */
+
+.ostler-titlebar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--space-200);
+  width: 100%;
+  height: var(--title-bar-height, var(--control-height-lg));
+  padding-inline: var(--space-300) var(--space-200);
+  background: var(--color-surface);
+  border-bottom: var(--border-width) solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  app-region: drag;
+  -webkit-app-region: drag;
+  user-select: none;
+}
+
+.ostler-titlebar-icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  flex-shrink: 0;
+}
+
+.ostler-titlebar-menu {
+  app-region: no-drag;
+  -webkit-app-region: no-drag;
+}
+
+.ostler-titlebar-undo {
+  app-region: no-drag;
+  -webkit-app-region: no-drag;
+}
+
+.ostler-titlebar-title {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ostler-titlebar-place {
+  color: var(--color-text);
+}
+
+/* A project's icon (N5.1) before its name. */
+.ostler-titlebar-title .project-mark {
+  margin-right: var(--space-100);
+  vertical-align: middle;
+}
+
+.ostler-titlebar-app {
+  color: var(--color-text-muted);
+}
+
+/* Minimise, Maximise or Restore, and Close: full height, flush with the window's right edge. */
+.ostler-window-controls {
+  display: flex;
+  align-self: stretch;
+  margin-inline: auto calc(-1 * var(--space-200));
+  app-region: no-drag;
+  -webkit-app-region: no-drag;
+}
+
+.ostler-window-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-text);
+  cursor: default;
+}
+
+.ostler-window-control-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Restore's two squares and Maximise's one read at Windows' size. */
+.ostler-window-control--toggle-maximize .ostler-window-control-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.ostler-window-control:hover {
+  background: var(--color-surface-hover);
+}
+
+.ostler-window-control:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(-1 * var(--focus-ring-width));
+}
+
+/* Close turns Windows' red, with a white cross, as Windows' own does. */
+.ostler-window-control--close:hover {
+  background: var(--color-danger-fill);
+  color: var(--color-accent-contrast);
+}
+
+@media (forced-colors: active) {
+  .ostler-titlebar {
+    border-bottom-color: CanvasText;
+  }
+
+  .ostler-window-control {
+    color: ButtonText;
+  }
+
+  .ostler-window-control:hover,
+  .ostler-window-control--close:hover {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

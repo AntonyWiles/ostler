@@ -1,0 +1,215 @@
+/* Time blocks (N3.4a): a task's planned time, filled on its status colour
+   so it reads as work, apart from outside calendars' outlined events. */
+
+.time-block {
+  --chip-status: var(--status-backlog);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  padding: var(--space-050) var(--space-150);
+  overflow: hidden;
+  border: none;
+  border-left: var(--space-100) solid var(--chip-status);
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--chip-status) 18%, var(--color-surface));
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  text-align: left;
+  cursor: pointer;
+}
+
+.time-block:hover {
+  background: color-mix(in srgb, var(--chip-status) 28%, var(--color-surface));
+}
+
+.time-block:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: 0;
+}
+
+.week-hours__item--ready .time-block {
+  --chip-status: var(--status-ready);
+}
+
+.week-hours__item--active .time-block {
+  --chip-status: var(--status-active);
+}
+
+.week-hours__item--blocked .time-block {
+  --chip-status: var(--status-blocked);
+}
+
+.week-hours__item--review .time-block {
+  --chip-status: var(--status-review);
+}
+
+.week-hours__item--done .time-block {
+  --chip-status: var(--status-done);
+  opacity: 0.6;
+}
+
+.time-block__time {
+  /* Secondary, not muted: muted text is under 4.5:1 on the block's tint (WCAG 1.4.3). */
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.time-block__title {
+  max-width: 100%;
+  overflow: hidden;
+  font-weight: var(--weight-medium);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.time-block__resize {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: var(--space-150);
+  cursor: ns-resize;
+}
+
+/* A block's times beside its task in Month, Agenda, the drawer and My day. */
+.time-block-times {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.time-block-chip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  width: 100%;
+  min-width: 0;
+  padding: 0 var(--space-150);
+  overflow: hidden;
+  border: none;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-caption);
+  text-align: left;
+  cursor: pointer;
+}
+
+.time-block-chip:hover {
+  background: var(--color-surface-hover);
+}
+
+.time-block-chip:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: 0;
+}
+
+.time-block-chip__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.time-block-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-200);
+  max-width: 22rem;
+  padding: var(--space-300);
+}
+
+.time-block-card p,
+.time-block-card h3 {
+  margin: 0;
+}
+
+.time-block-card__title {
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.time-block-card__when,
+.time-block-card__project {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.time-block-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+}
+
+.time-block-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.time-block-task {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.time-block-task__head,
+.time-block-task__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-200);
+}
+
+.time-block-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Blocks that move (N3.4b). */
+.block-moves-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-150);
+  align-items: center;
+  margin-bottom: var(--space-150);
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.block-moves-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding-left: var(--space-300);
+}
+
+.block-moves-list__missed {
+  color: var(--color-text-muted);
+}
+
+.time-block-card__passed {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+/* The chip has no border of its own (`border: none` leaves the width at
+   medium, 3 px), so a passed block gets a whole thin dashed one. */
+.time-block-chip.is-passed {
+  border: var(--border-width) dashed currentColor;
+  color: var(--color-text-muted);
+}

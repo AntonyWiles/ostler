@@ -1,0 +1,151 @@
+.ui-drawer-backdrop {
+  z-index: var(--z-drawer);
+  justify-content: flex-end;
+}
+
+.ui-drawer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 90vw;
+  height: 100%;
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  border-left: var(--border-width) solid var(--color-border);
+  border-radius: 0;
+  box-shadow: var(--shadow-lg);
+  outline: none;
+  animation: ui-drawer-in var(--motion-normal) var(--ease-standard);
+}
+
+/* Closing (exit.ts): slides back the way it came while the backdrop fades. */
+.ui-drawer-backdrop.is-leaving .ui-drawer {
+  animation: ui-drawer-out var(--motion-fast) var(--ease-standard) forwards;
+}
+
+@keyframes ui-drawer-out {
+  to {
+    transform: translateX(var(--space-600));
+    opacity: 0;
+  }
+}
+
+@keyframes ui-drawer-in {
+  from {
+    transform: translateX(var(--space-600));
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.ui-drawer__resize {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(-1 * var(--space-100));
+  width: var(--space-200);
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.ui-drawer__resize:hover,
+.ui-drawer__resize:focus-visible {
+  background: linear-gradient(
+    to right,
+    transparent calc(50% - var(--border-width)),
+    var(--color-focus) calc(50% - var(--border-width)),
+    var(--color-focus) calc(50% + var(--border-width)),
+    transparent calc(50% + var(--border-width))
+  );
+  outline: none;
+}
+
+/* A short pill on the edge, halfway down: says "this edge moves" without a word. */
+.ui-drawer__grip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--space-100);
+  height: var(--space-1000);
+  border-radius: var(--radius-full);
+  background: var(--color-border-strong);
+  transform: translate(-50%, -50%);
+  transition: background-color var(--motion-fast) var(--ease-standard);
+}
+
+.ui-drawer__resize:hover .ui-drawer__grip,
+.ui-drawer__resize:focus-visible .ui-drawer__grip {
+  background: var(--color-focus);
+}
+
+.ui-drawer__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-300);
+  padding: var(--space-400) var(--space-500) var(--space-300);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.ui-drawer__start {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  min-height: var(--control-height-sm);
+}
+
+.ui-drawer__titles {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-050);
+  min-width: 0;
+}
+
+.ui-drawer__title {
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading-sm);
+  overflow-wrap: anywhere;
+}
+
+.ui-drawer__description {
+  font-size: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+
+.ui-drawer__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.ui-drawer__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  /* Room for the scrollbar is kept whether it shows or not, so opening a
+     section does not push the drawer's content sideways; the right padding
+     gives that room back. */
+  scrollbar-gutter: stable;
+  padding: var(--space-400) calc(var(--space-500) - var(--scrollbar-size)) var(--space-400)
+    var(--space-500);
+}
+
+.ui-drawer__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-200);
+  padding: var(--space-300) var(--space-500);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+@media (forced-colors: active) {
+  .ui-drawer {
+    border-left-color: CanvasText;
+  }
+}

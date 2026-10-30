@@ -1,0 +1,51 @@
+/* A custom field's editor (R2.2): the Choices type's checkboxes. */
+
+.custom-field-choices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.custom-field-choices__legend {
+  margin-bottom: var(--space-100);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+}
+
+.custom-field-choices__option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.custom-field-choices__empty,
+.custom-field-choices__error {
+  margin: 0;
+  font-size: var(--text-body-sm);
+}
+
+.custom-field-choices__empty {
+  color: var(--color-text-muted);
+}
+
+.custom-field-choices__error {
+  color: var(--color-danger);
+}
+
+.custom-field-dot {
+  flex-shrink: 0;
+  width: var(--space-200);
+  height: var(--space-200);
+  border-radius: var(--radius-full);
+}
+
+@media (forced-colors: active) {
+  .custom-field-dot {
+    border: var(--border-width) solid CanvasText;
+  }
+}

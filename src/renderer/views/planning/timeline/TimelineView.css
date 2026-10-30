@@ -1,0 +1,400 @@
+/* The Timeline view: zoom and grouping, the shared filter toolbar, then the
+   timeline (or its table) filling the page. */
+
+.ostler-workspace:has(> .ostler-workspace-view--timeline) {
+  height: 100%;
+}
+
+.ostler-workspace-view--timeline {
+  min-height: 0;
+}
+
+.timeline-view {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+  min-height: calc(var(--space-1200) * 8);
+}
+
+.timeline-view__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.timeline-view__group-by {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  margin-left: auto;
+}
+
+.timeline-view__nav .timeline-view__critical-for {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.timeline-view__nav .timeline-view__compare-with {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+/* Compare with (N7.4): the summary line, then each baseline as a thin hollow
+   bar under today's bar, and a hollow diamond for a milestone. Thinner,
+   hollow and in words, so colour is never the only sign. */
+.timeline-view__baseline-summary {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+
+.timeline-baseline {
+  fill: none;
+  stroke: var(--color-text-secondary);
+  stroke-width: 1;
+  stroke-dasharray: 3 2;
+}
+
+.timeline-baseline--diamond {
+  stroke-dasharray: none;
+  stroke-width: 1.5;
+}
+
+.timeline-view__grid,
+.timeline-view__table {
+  flex: 1;
+}
+
+.timeline-view__loading {
+  padding: var(--space-400);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+/* Labels */
+
+.timeline-group,
+.timeline-task {
+  display: flex;
+  align-items: center;
+  gap: var(--space-150);
+  width: 100%;
+  min-width: 0;
+  padding: 0 var(--space-200);
+}
+
+.timeline-row--group .ui-timeline__label {
+  background: var(--color-surface-sunken);
+}
+
+.timeline-group__toggle {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-150);
+  min-width: 0;
+  padding: var(--space-100);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+  text-align: left;
+  cursor: pointer;
+}
+
+.timeline-group__toggle:hover {
+  background: var(--color-surface-hover);
+}
+
+.timeline-group__toggle:focus-visible,
+.timeline-task__open:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(var(--focus-ring-width) * -1);
+}
+
+.timeline-group__name,
+.timeline-task__title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timeline-group__count,
+.timeline-group__date {
+  flex: none;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-regular);
+  font-variant-numeric: tabular-nums;
+}
+
+.timeline-task {
+  padding-left: var(--space-600);
+}
+
+.timeline-task.is-unscheduled {
+  cursor: grab;
+}
+
+.timeline-task__open {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-150);
+  min-width: 0;
+  padding: var(--space-100);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-body-sm);
+  text-align: left;
+  cursor: pointer;
+}
+
+.timeline-task__open:hover {
+  background: var(--color-surface-hover);
+}
+
+.timeline-task__open.is-done .timeline-task__title {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+.timeline-task__status {
+  flex: none;
+}
+
+.timeline-task__conflict {
+  display: inline-flex;
+  flex: none;
+  color: var(--color-warning);
+}
+
+/* Bars: the status colour at low intensity, the checklist's progress a
+   little stronger, done full. */
+
+.timeline-bar {
+  --bar-status: var(--status-backlog);
+}
+
+.timeline-bar--ready {
+  --bar-status: var(--status-ready);
+}
+
+.timeline-bar--active {
+  --bar-status: var(--status-active);
+}
+
+.timeline-bar--blocked {
+  --bar-status: var(--status-blocked);
+}
+
+.timeline-bar--review {
+  --bar-status: var(--status-review);
+}
+
+.timeline-bar--done {
+  --bar-status: var(--status-done);
+}
+
+.timeline-bar__track {
+  fill: color-mix(in srgb, var(--bar-status) 16%, var(--color-surface));
+  stroke: color-mix(in srgb, var(--bar-status) 55%, var(--color-surface));
+  stroke-width: 1;
+}
+
+.timeline-bar__progress {
+  fill: color-mix(in srgb, var(--bar-status) 42%, var(--color-surface));
+}
+
+.timeline-bar.is-done {
+  opacity: 0.75;
+}
+
+.timeline-bar.has-conflict .timeline-bar__track {
+  stroke: var(--color-warning);
+  stroke-width: 1.5;
+}
+
+.timeline-bar.is-active .timeline-bar__track {
+  stroke: var(--color-accent);
+  stroke-width: 2;
+}
+
+.timeline-bar__marker {
+  fill: var(--bar-status);
+}
+
+.timeline-bar__fade-from {
+  stop-color: color-mix(in srgb, var(--bar-status) 30%, var(--color-surface));
+}
+
+.timeline-bar__fade-to {
+  stop-color: var(--color-surface);
+  stop-opacity: 0;
+}
+
+.timeline-diamond {
+  fill: var(--color-accent);
+  stroke: var(--color-surface);
+  stroke-width: 1;
+}
+
+/* Show critical path (N7.3): a strong outline, never colour alone. */
+
+.timeline-bar__critical {
+  fill: none;
+  stroke: var(--color-text);
+  stroke-width: 2.5;
+  pointer-events: none;
+}
+
+.timeline-view__body {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: var(--space-300);
+  min-height: 0;
+}
+
+/* Side by side the grid takes the room; too narrow for both, the panel goes
+   below at full width. */
+.timeline-view__body > .timeline-view__grid {
+  flex: 1000 1 calc(var(--space-1200) * 12);
+  min-width: 0;
+  max-height: 100%;
+}
+
+.critical-path {
+  display: flex;
+  flex: 1 1 calc(var(--space-1200) * 6);
+  flex-direction: column;
+  gap: var(--space-200);
+  min-width: 0;
+  max-height: 100%;
+  padding: var(--space-300);
+  overflow: auto;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.critical-path__heading {
+  margin: 0;
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.critical-path__subheading {
+  margin: 0 0 var(--space-100);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
+}
+
+.critical-path__end,
+.critical-path__note {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+
+.critical-path__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  margin: 0;
+  padding-left: var(--space-500);
+}
+
+ul.critical-path__list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.critical-path__task {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: var(--space-100) var(--space-150);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-body-sm);
+  text-align: left;
+  cursor: pointer;
+}
+
+.critical-path__task:hover {
+  background: var(--color-surface-hover);
+}
+
+.critical-path__task:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(var(--focus-ring-width) * -1);
+}
+
+.critical-path__title {
+  overflow-wrap: anywhere;
+}
+
+.critical-path__dates {
+  font-size: var(--text-caption);
+  color: var(--color-text-muted);
+}
+
+/* The link into a chain's next task, in words (N7.2b). */
+.critical-path__link {
+  display: block;
+  padding: var(--space-050) var(--space-200);
+  font-size: var(--text-caption);
+  color: var(--color-text-secondary);
+}
+
+/* The Timeline's link popover (N7.2b). */
+.timeline-link-popover__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.timeline-link-popover__words,
+.timeline-link-popover__note {
+  margin: 0;
+  font-size: var(--text-caption);
+  color: var(--color-text-secondary);
+}
+
+.timeline-link-popover__actions {
+  display: flex;
+  gap: var(--space-150);
+  justify-content: flex-end;
+}
+
+.timeline-link-popover__remove {
+  margin-right: auto;
+}
+
+@media (forced-colors: active) {
+  .timeline-bar__track,
+  .timeline-bar__marker,
+  .timeline-diamond,
+  .timeline-bar__critical,
+  .timeline-baseline {
+    stroke: CanvasText;
+  }
+}

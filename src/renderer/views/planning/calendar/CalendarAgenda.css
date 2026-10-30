@@ -1,0 +1,97 @@
+/* Agenda (N3.1a): a month as a list of days, each a heading over its rows.
+   Rows reuse the calendar chip's status colours at a list row's size. */
+
+.calendar-agenda {
+  flex: 1;
+  min-height: 0;
+  padding: var(--space-400);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+.calendar-agenda__days,
+.calendar-agenda__items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.calendar-agenda__day + .calendar-agenda__day {
+  margin-top: var(--space-400);
+}
+
+.calendar-agenda__heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  margin: 0 0 var(--space-200);
+  padding-bottom: var(--space-100);
+  border-bottom: var(--border-width) solid var(--color-border);
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.calendar-agenda__heading:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.calendar-agenda__day.is-today .calendar-agenda__heading {
+  border-bottom-color: var(--color-accent);
+}
+
+.calendar-agenda__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.calendar-agenda__row.calendar-chip {
+  flex-wrap: wrap;
+  gap: var(--space-200);
+  min-height: var(--control-height);
+  padding: var(--space-100) var(--space-200);
+  font-size: var(--text-body);
+}
+
+.calendar-agenda__row .calendar-chip__title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* An outside event and a time block are rows here too, as tall as a task's
+   (WCAG 2.5.8: the rows stack 4px apart, so each must be 24px or more; the
+   control height is 32px, or 28px in compact density). */
+.calendar-agenda__items .calendar-event,
+.calendar-agenda__items .time-block-chip {
+  min-height: var(--control-height);
+  padding-block: var(--space-100);
+}
+
+.calendar-agenda__span {
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+}
+
+.calendar-agenda__labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+}
+
+.calendar-agenda__milestone {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--control-height);
+  padding: var(--space-100) var(--space-200);
+  font-weight: var(--weight-semibold);
+}
+
+.calendar-agenda__end {
+  margin: var(--space-400) 0 0;
+  color: var(--color-text-secondary);
+}

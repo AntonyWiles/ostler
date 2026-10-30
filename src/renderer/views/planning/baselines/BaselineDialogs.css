@@ -1,0 +1,49 @@
+/* Save a baseline and the Baselines list (N7.4). Tokens only. */
+
+.baseline-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.baseline-form__note,
+.baseline-list__empty {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.baseline-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: var(--space-300) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.baseline-list__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  padding: var(--space-200) 0;
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.baseline-list__text,
+.baseline-list__rename {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.baseline-list__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.baseline-list__meta {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}

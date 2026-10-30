@@ -1,0 +1,1782 @@
+{
+  "format": "ostler-project-package",
+  "version": 1,
+  "template": {
+    "description": "A small studio refits a café for its owner: weekly iterations, time and billing, suppliers, rules, a baseline and status updates.",
+    "icon": "rocket"
+  },
+  "project": {
+    "name": "Advanced demo",
+    "color": "#0d9488",
+    "estimateUnit": "hours",
+    "icon": "wrench",
+    "taskPrefix": "CAF"
+  },
+  "people": [
+    {
+      "ref": "leah",
+      "name": "Leah (demo)",
+      "initials": "L",
+      "color": "#8b5cf6"
+    },
+    {
+      "ref": "tom",
+      "name": "Tom (demo)",
+      "initials": "T",
+      "color": "#f59e0b"
+    },
+    {
+      "ref": "ade",
+      "name": "Ade (demo)",
+      "initials": "A",
+      "color": "#0ea5e9"
+    }
+  ],
+  "labels": [
+    {
+      "name": "Snag",
+      "color": "#ef4444"
+    },
+    {
+      "name": "Client asked",
+      "color": "#0d9488"
+    },
+    {
+      "name": "Nice to have",
+      "color": "#64748b"
+    }
+  ],
+  "fields": [
+    {
+      "ref": "room",
+      "name": "Room",
+      "type": "choice",
+      "options": [
+        {
+          "ref": "counter",
+          "name": "Counter",
+          "color": "#f59e0b"
+        },
+        {
+          "ref": "seating",
+          "name": "Seating area",
+          "color": "#22c55e"
+        },
+        {
+          "ref": "kitchen",
+          "name": "Kitchen",
+          "color": "#ef4444"
+        },
+        {
+          "ref": "shopfront",
+          "name": "Shopfront",
+          "color": "#3b82f6"
+        }
+      ]
+    },
+    {
+      "ref": "trades",
+      "name": "Trades",
+      "type": "choices",
+      "options": [
+        {
+          "ref": "joinery",
+          "name": "Joinery",
+          "color": "#a16207"
+        },
+        {
+          "ref": "electrics",
+          "name": "Electrics",
+          "color": "#eab308"
+        },
+        {
+          "ref": "plumbing",
+          "name": "Plumbing",
+          "color": "#0ea5e9"
+        },
+        {
+          "ref": "decorating",
+          "name": "Decorating",
+          "color": "#ec4899"
+        }
+      ]
+    },
+    {
+      "ref": "orderNo",
+      "name": "Order number",
+      "type": "text",
+      "options": []
+    },
+    {
+      "ref": "delivery",
+      "name": "Delivery date",
+      "type": "date",
+      "options": []
+    },
+    {
+      "ref": "signedOff",
+      "name": "Client signed off",
+      "type": "checkbox",
+      "options": []
+    },
+    {
+      "ref": "clientNote",
+      "name": "Note for the client",
+      "type": "text",
+      "options": [],
+      "aiInstruction": "One plain sentence the café owner can read: what this task changes in her café, without trade words."
+    }
+  ],
+  "goals": [
+    {
+      "ref": "g1",
+      "title": "Reopen on time and on budget",
+      "outcome": "Harbour Café reopens in three weeks with its new counter and floor, within the {{money:12000}} budget.",
+      "measure": {
+        "unit": "% of the refit done",
+        "startValue": 0,
+        "targetValue": 100,
+        "startDate": "-14d",
+        "targetDate": "+21d",
+        "direction": "up"
+      },
+      "checkIns": [
+        {
+          "date": "2026-01-09",
+          "value": 20,
+          "note": "Strip-out finished a day early.",
+          "recordedAt": "2026-01-09T17:00:00.000Z"
+        },
+        {
+          "date": "2026-01-14",
+          "value": 35,
+          "note": "First fix under way.",
+          "recordedAt": "2026-01-14T17:30:00.000Z"
+        }
+      ]
+    },
+    {
+      "ref": "g2",
+      "title": "Keep the regulars coming back",
+      "outcome": "The café's regulars know when it reopens, and like what they find."
+    }
+  ],
+  "milestones": [
+    {
+      "ref": "m1",
+      "name": "Strip-out finished",
+      "targetDate": "-6d",
+      "goalRef": "g1",
+      "outcome": "The old counter and floor are gone and the room is ready for first fix.",
+      "successCriteria": ["Old counter out", "Old floor up", "Skip collected"],
+      "status": "complete",
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "m2",
+      "name": "First fix done",
+      "targetDate": "+6d",
+      "goalRef": "g1",
+      "outcome": "Cables and pipes are in before the walls close.",
+      "successCriteria": ["Electrics tested", "Sink plumbed in", "Back wall plastered"],
+      "status": "active",
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "m3",
+      "name": "Opening day",
+      "targetDate": "+21d",
+      "goalRef": "g2",
+      "outcome": "Harbour Café opens its doors again.",
+      "successCriteria": ["Signed off by Marta", "Deep cleaned", "Regulars told"]
+    }
+  ],
+  "subprojects": [
+    {
+      "ref": "s1",
+      "name": "Building work",
+      "description": "Strip-out, first fix and the fit-out: everything the trades do.",
+      "color": "#d97706",
+      "leadRef": "tom",
+      "memberRefs": ["tom", "ade"],
+      "status": "active"
+    },
+    {
+      "ref": "s2",
+      "name": "Front of house",
+      "description": "The sign, the menu boards, the licence and telling the regulars.",
+      "color": "#7c3aed",
+      "leadRef": "leah",
+      "memberRefs": ["leah"],
+      "status": "active"
+    }
+  ],
+  "iterations": [
+    {
+      "ref": "w1",
+      "name": "Week 1: strip out",
+      "startDate": "-11d",
+      "endDate": "-5d",
+      "goal": "Old counter and floor out; the room ready for first fix.",
+      "status": "finished",
+      "summary": {
+        "doneCount": 3,
+        "doneEstimate": 19,
+        "carriedCount": 0,
+        "carriedEstimate": 0,
+        "carryOver": "next"
+      }
+    },
+    {
+      "ref": "w2",
+      "name": "Week 2: first fix",
+      "startDate": "-4d",
+      "endDate": "+2d",
+      "goal": "Electrics and plumbing in, and the counter top ordered.",
+      "status": "active",
+      "summary": null
+    },
+    {
+      "ref": "w3",
+      "name": "Week 3: walls and floor",
+      "startDate": "+3d",
+      "endDate": "+9d",
+      "goal": "Plastered, painted and floored.",
+      "status": "planned",
+      "summary": null
+    },
+    {
+      "ref": "w4",
+      "name": "Week 4: fit and finish",
+      "startDate": "+10d",
+      "endDate": "+16d",
+      "goal": "Counter fitted, lights up, snags cleared.",
+      "status": "planned",
+      "summary": null
+    }
+  ],
+  "taskTypes": [
+    {
+      "ref": "site",
+      "name": "Site work",
+      "icon": "hammer",
+      "color": "#f59e0b",
+      "fieldRefs": ["room", "trades", "clientNote"]
+    },
+    {
+      "ref": "order",
+      "name": "Order",
+      "icon": "package",
+      "color": "#3b82f6",
+      "fieldRefs": ["orderNo", "delivery"]
+    },
+    {
+      "ref": "snag",
+      "name": "Snag",
+      "icon": "flag",
+      "color": "#ef4444",
+      "fieldRefs": ["room", "signedOff"],
+      "templateName": "Snag"
+    }
+  ],
+  "rules": [
+    {
+      "name": "Waiting work gets attention",
+      "enabled": true,
+      "trigger": {
+        "kind": "statusChanged",
+        "to": "blocked"
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "kind": "setPriority",
+          "priority": "high"
+        },
+        {
+          "kind": "addComment",
+          "text": "Moved to Waiting on someone: say who we're waiting on, and since when."
+        }
+      ]
+    },
+    {
+      "name": "Snags start with photos",
+      "enabled": true,
+      "trigger": {
+        "kind": "taskCreated"
+      },
+      "conditions": [
+        {
+          "kind": "label",
+          "op": "is",
+          "label": "Snag"
+        }
+      ],
+      "actions": [
+        {
+          "kind": "addChecklistItems",
+          "items": ["Photo before", "Photo after"]
+        }
+      ]
+    },
+    {
+      "name": "Tell me when Marta needs to look",
+      "enabled": true,
+      "trigger": {
+        "kind": "statusChanged",
+        "to": "review"
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "kind": "notifyMe",
+          "message": "Ready for Marta to sign off"
+        }
+      ]
+    },
+    {
+      "name": "Archive signed-off work",
+      "enabled": false,
+      "trigger": {
+        "kind": "statusChanged",
+        "to": "done"
+      },
+      "conditions": [
+        {
+          "kind": "field",
+          "op": "is",
+          "fieldId": "signedOff",
+          "value": true
+        }
+      ],
+      "actions": [
+        {
+          "kind": "archive"
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "ref": "t1",
+      "title": "Strip out the old counter",
+      "description": "Cut up and carry out the old counter and its carcass.\n\n**This task shows:** time tracking and billing. Open it to see the hours logged against it. This week's hours have been invoiced already; open the Time report to see billed and unbilled time.",
+      "status": "done",
+      "priority": "high",
+      "labels": [],
+      "milestoneRef": "m1",
+      "iterationRef": "w1",
+      "typeRef": "site",
+      "assigneeRef": "tom",
+      "startDate": "-11d",
+      "dueDate": "-9d",
+      "estimate": 8,
+      "fieldValues": {
+        "room": "counter",
+        "trades": ["joinery"]
+      },
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t2",
+      "title": "Lift the old floor tiles",
+      "description": "Down to the screed, across the whole café.",
+      "status": "done",
+      "priority": "medium",
+      "labels": [],
+      "milestoneRef": "m1",
+      "iterationRef": "w1",
+      "typeRef": "site",
+      "assigneeRef": "ade",
+      "startDate": "-10d",
+      "dueDate": "-7d",
+      "estimate": 10,
+      "fieldValues": {
+        "room": "seating",
+        "trades": ["joinery"]
+      },
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t3",
+      "title": "Hire a skip",
+      "description": "An eight-yard skip for a week, outside on Quay Street.",
+      "status": "done",
+      "priority": "medium",
+      "labels": [],
+      "milestoneRef": "m1",
+      "iterationRef": "w1",
+      "typeRef": "order",
+      "assigneeRef": "leah",
+      "dueDate": "-11d",
+      "estimate": 1,
+      "fieldValues": {
+        "orderNo": "SK-20418",
+        "delivery": "-11d"
+      },
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t4",
+      "title": "First fix electrics",
+      "description": "New circuits for the counter, the coffee machine and the lights.\n\n**This task shows:** a supplier. Brightwire Electrical is a contact on this task; open Contacts to find their number, and the Shopping list to see what was bought from them.",
+      "status": "active",
+      "priority": "high",
+      "labels": ["Client asked"],
+      "milestoneRef": "m2",
+      "iterationRef": "w2",
+      "typeRef": "site",
+      "assigneeRef": "ade",
+      "startDate": "-3d",
+      "dueDate": "+1d",
+      "estimate": 12,
+      "dependsOnRefs": ["t1"],
+      "checklist": [
+        {
+          "text": "Counter circuit",
+          "checked": true
+        },
+        {
+          "text": "Coffee machine supply",
+          "checked": true
+        },
+        {
+          "text": "Lighting circuit",
+          "checked": false
+        },
+        {
+          "text": "Test and certificate",
+          "checked": false,
+          "dueDate": "+1d"
+        }
+      ],
+      "fieldValues": {
+        "room": "counter",
+        "trades": ["electrics"]
+      },
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t5",
+      "title": "First fix plumbing for the new sink",
+      "description": "Move the hand-wash sink to the end of the new counter.",
+      "status": "ready",
+      "priority": "medium",
+      "labels": [],
+      "milestoneRef": "m2",
+      "iterationRef": "w2",
+      "typeRef": "site",
+      "assigneeRef": "tom",
+      "startDate": "+0d",
+      "dueDate": "+2d",
+      "estimate": 6,
+      "dependsOnRefs": ["t2"],
+      "fieldValues": {
+        "room": "counter",
+        "trades": ["plumbing"]
+      },
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t6",
+      "title": "Order the new counter top",
+      "description": "Three metres of oak, or the green tile Marta liked: her call.\n\n**This task shows:** the Waiting on someone column (Blocked, renamed). When a task moves here, a rule raises its priority and asks who you're waiting on; see Project settings › Rules.",
+      "status": "blocked",
+      "priority": "high",
+      "labels": ["Client asked"],
+      "milestoneRef": "m2",
+      "iterationRef": "w2",
+      "typeRef": "order",
+      "assigneeRef": "leah",
+      "dueDate": "+2d",
+      "estimate": 1,
+      "fieldValues": {
+        "delivery": "+9d"
+      },
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t7",
+      "title": "Choose the paint colours with Marta",
+      "description": "Samples are on the back wall.\n\n**This task shows:** the Client sign-off column (In review, renamed). Every Board column is shown and named for this job; change them in Project settings › Board.",
+      "status": "review",
+      "priority": "medium",
+      "labels": ["Client asked"],
+      "milestoneRef": "m2",
+      "iterationRef": "w2",
+      "assigneeRef": "leah",
+      "dueDate": "+1d",
+      "estimate": 2,
+      "fieldValues": {},
+      "subprojectRef": "s2"
+    },
+    {
+      "ref": "t8",
+      "title": "Plaster the back wall",
+      "description": "Once the cables are in.",
+      "status": "backlog",
+      "priority": "medium",
+      "labels": [],
+      "milestoneRef": "m2",
+      "iterationRef": "w3",
+      "typeRef": "site",
+      "assigneeRef": "tom",
+      "startDate": "+3d",
+      "dueDate": "+4d",
+      "estimate": 8,
+      "dependsOnRefs": ["t4"],
+      "fieldValues": {
+        "room": "seating",
+        "trades": ["decorating"]
+      },
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t9",
+      "title": "Paint the café",
+      "description": "Two coats, in the colours Marta signs off.\n\n**This task shows:** a wait with a lag. Painting starts three days after the plastering is done, so the plaster can dry. Open the Timeline to see the gap, and the baseline to see how the dates have moved since the plan was agreed.",
+      "status": "backlog",
+      "priority": "medium",
+      "labels": [],
+      "milestoneRef": "m3",
+      "iterationRef": "w3",
+      "typeRef": "site",
+      "assigneeRef": "ade",
+      "startDate": "+8d",
+      "dueDate": "+11d",
+      "estimate": 16,
+      "dependsOnRefs": ["t8", "t7"],
+      "dependsOnLinks": [
+        {
+          "ref": "t8",
+          "type": "finish-to-start",
+          "lagDays": 3
+        }
+      ],
+      "fieldValues": {
+        "room": "seating",
+        "trades": ["decorating"]
+      },
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t10",
+      "title": "Lay the new floor",
+      "description": "Starts two days after the plastering starts, at the far end of the room.",
+      "status": "backlog",
+      "priority": "medium",
+      "labels": [],
+      "milestoneRef": "m3",
+      "iterationRef": "w3",
+      "typeRef": "site",
+      "assigneeRef": "tom",
+      "startDate": "+5d",
+      "dueDate": "+8d",
+      "estimate": 14,
+      "dependsOnRefs": ["t8", "t5"],
+      "dependsOnLinks": [
+        {
+          "ref": "t8",
+          "type": "start-to-start",
+          "lagDays": 2
+        }
+      ],
+      "fieldValues": {
+        "room": "seating",
+        "trades": ["joinery"]
+      },
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t11",
+      "title": "Fit the new counter",
+      "description": "Waits on the counter top arriving and the floor going down.",
+      "status": "backlog",
+      "priority": "high",
+      "labels": [],
+      "milestoneRef": "m3",
+      "iterationRef": "w4",
+      "typeRef": "site",
+      "assigneeRef": "tom",
+      "startDate": "+10d",
+      "dueDate": "+12d",
+      "estimate": 12,
+      "dependsOnRefs": ["t6", "t10"],
+      "fieldValues": {
+        "room": "counter",
+        "trades": ["joinery"]
+      },
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t11a",
+      "parentRef": "t11",
+      "title": "Template the worktop",
+      "status": "backlog",
+      "priority": "medium",
+      "labels": [],
+      "milestoneRef": "m3",
+      "iterationRef": "w4",
+      "assigneeRef": "tom",
+      "estimate": 3,
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t11b",
+      "parentRef": "t11",
+      "title": "Seal the joints",
+      "status": "backlog",
+      "priority": "medium",
+      "labels": [],
+      "milestoneRef": "m3",
+      "iterationRef": "w4",
+      "assigneeRef": "tom",
+      "estimate": 2,
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t12",
+      "title": "Hang the pendant lights",
+      "description": "Five over the counter.",
+      "status": "backlog",
+      "priority": "medium",
+      "labels": [],
+      "milestoneRef": "m3",
+      "iterationRef": "w4",
+      "typeRef": "site",
+      "assigneeRef": "ade",
+      "startDate": "+12d",
+      "dueDate": "+13d",
+      "estimate": 5,
+      "dependsOnRefs": ["t9"],
+      "fieldValues": {
+        "room": "counter",
+        "trades": ["electrics"]
+      },
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t22",
+      "title": "Order the pendant lights",
+      "description": "Three brass pendants for over the counter, from the lighting supplier.\n\n**This task shows:** a column of the project's own. On order counts as active, so it sits on the Board after On site. Its checklist items have dates and people of their own, which show on that person's Home. The task's ID, at the foot of its drawer, comes from the project's prefix.",
+      "status": "active",
+      "columnRef": "onorder",
+      "priority": "medium",
+      "labels": [],
+      "milestoneRef": "m3",
+      "iterationRef": "w2",
+      "typeRef": "order",
+      "assigneeRef": "leah",
+      "dueDate": "+5d",
+      "estimate": 1,
+      "checklist": [
+        {
+          "text": "Pick three pendants with Marta",
+          "checked": true,
+          "assigneeRef": "leah"
+        },
+        {
+          "text": "Pay the deposit",
+          "checked": false,
+          "dueDate": "+1d",
+          "assigneeRef": "leah"
+        },
+        {
+          "text": "Book the delivery",
+          "checked": false,
+          "dueDate": "+4d",
+          "assigneeRef": "tom"
+        }
+      ],
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t13",
+      "title": "New shopfront sign",
+      "description": "Painted board, same lettering as the menu.",
+      "status": "backlog",
+      "priority": "low",
+      "labels": ["Nice to have"],
+      "milestoneRef": "m3",
+      "assigneeRef": "leah",
+      "startDate": "+9d",
+      "dueDate": "+18d",
+      "impact": 4,
+      "effort": 3,
+      "fieldValues": {
+        "room": "shopfront"
+      },
+      "subprojectRef": "s2"
+    },
+    {
+      "ref": "t14",
+      "title": "Deep clean before opening",
+      "description": "Stays out of the way until the last week.",
+      "status": "backlog",
+      "priority": "medium",
+      "labels": [],
+      "milestoneRef": "m3",
+      "showFrom": "+14d",
+      "dueDate": "+20d",
+      "estimate": 6,
+      "subprojectRef": "s2"
+    },
+    {
+      "ref": "t15",
+      "title": "Tell the regulars when we reopen",
+      "description": "A card in the window and a post on the café's page.",
+      "status": "backlog",
+      "priority": "medium",
+      "labels": ["Client asked"],
+      "milestoneRef": "m3",
+      "assigneeRef": "leah",
+      "dueDate": "+18d",
+      "estimate": 1,
+      "subprojectRef": "s2"
+    },
+    {
+      "ref": "t16",
+      "title": "Snag: wobbly bench in the window seat",
+      "description": "The bench rocks when two people sit on it.\n\n**This task shows:** a task type with its own template and fields. New Snag tasks start from the Snag template, and a rule adds the photo steps to anything labelled Snag. Try New task and pick the Snag type.",
+      "status": "backlog",
+      "priority": "medium",
+      "labels": ["Snag"],
+      "iterationRef": "w4",
+      "typeRef": "snag",
+      "assigneeRef": "tom",
+      "dueDate": "+15d",
+      "estimate": 1,
+      "checklist": [
+        {
+          "text": "Photo before",
+          "checked": true
+        },
+        {
+          "text": "Fix",
+          "checked": false
+        },
+        {
+          "text": "Photo after",
+          "checked": false
+        },
+        {
+          "text": "Marta has seen it",
+          "checked": false
+        }
+      ],
+      "fieldValues": {
+        "room": "seating"
+      },
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t17",
+      "title": "Snag: bench by the window moves",
+      "description": "Logged twice.\n\n**This task shows:** Won't do, and links between tasks. It is closed as a duplicate of the wobbly bench snag; the link is in both tasks' details.",
+      "status": "backlog",
+      "priority": "medium",
+      "labels": ["Snag"],
+      "typeRef": "snag",
+      "resolution": "wont-do",
+      "resolutionReason": "Duplicate of the wobbly bench snag.",
+      "fieldValues": {
+        "room": "seating"
+      },
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t18",
+      "title": "Phone charging points at the bar",
+      "description": "**This task shows:** the Matrix. Ideas with impact and effort scores sit in the Matrix view, so the quick wins stand out.",
+      "status": "backlog",
+      "priority": "low",
+      "labels": ["Nice to have"],
+      "impact": 3,
+      "effort": 1,
+      "fieldValues": {
+        "room": "counter",
+        "trades": ["electrics"]
+      },
+      "subprojectRef": "s1"
+    },
+    {
+      "ref": "t19",
+      "title": "Apply for an outdoor seating licence",
+      "description": "Two tables on the pavement in summer.",
+      "status": "backlog",
+      "priority": "low",
+      "labels": ["Nice to have"],
+      "impact": 4,
+      "effort": 4,
+      "fieldValues": {
+        "room": "shopfront"
+      },
+      "subprojectRef": "s2"
+    },
+    {
+      "ref": "t20",
+      "title": "Rebrand the menu boards",
+      "description": "Next year, maybe.",
+      "status": "backlog",
+      "priority": "low",
+      "labels": ["Nice to have"],
+      "someday": true,
+      "subprojectRef": "s2"
+    },
+    {
+      "ref": "t21",
+      "title": "Site walk with Marta",
+      "description": "Half an hour on Monday morning, before the café's builders arrive.\n\n**This task shows:** a repeating task whose turn passes between Leah and Tom.",
+      "status": "backlog",
+      "priority": "medium",
+      "labels": ["Client asked"],
+      "assigneeRef": "leah",
+      "dueDate": "+4d",
+      "estimate": 1,
+      "recurrence": {
+        "rule": {
+          "every": "week",
+          "interval": 1,
+          "weekdays": [1]
+        },
+        "endsOn": "+21d",
+        "remaining": null,
+        "rotationRefs": ["leah", "tom"],
+        "nextIndex": 1
+      }
+    }
+  ],
+  "taskLinks": [
+    {
+      "fromRef": "t17",
+      "toRef": "t16",
+      "kind": "duplicates"
+    },
+    {
+      "fromRef": "t19",
+      "toRef": "t13",
+      "kind": "relates"
+    }
+  ],
+  "decisions": [
+    {
+      "title": "Close for four weeks, not work nights",
+      "context": "Marta wanted to stay open, but night work would take twice as long and cost a third more.",
+      "decision": "Close the café for four weeks and do the work in daytime.",
+      "alternatives": "Night work over eight weeks; or a half-and-half refit, one end of the room at a time.",
+      "consequences": "Marta loses four weeks of trade, so the reopening date matters. The regulars need telling.",
+      "date": "-20d",
+      "taskRefs": ["t1", "t15"]
+    },
+    {
+      "title": "Keep the old hand-wash sink, moved",
+      "context": "A new sink was on the list, but the old one is in good order.",
+      "decision": "Move the existing sink to the end of the new counter.",
+      "alternatives": "A new sink and tap set, about {{money:400}}.",
+      "consequences": "Saves {{money:400}} for the lights.",
+      "date": "-12d",
+      "taskRefs": ["t5"]
+    }
+  ],
+  "comments": [
+    {
+      "taskRef": "t6",
+      "authorRef": "leah",
+      "body": "Marta's deciding between the oak and the green tile. I'll chase her on Friday."
+    },
+    {
+      "taskRef": "t4",
+      "authorRef": "ade",
+      "body": "Two extra sockets behind the counter, as Marta asked."
+    },
+    {
+      "taskRef": "t9",
+      "authorRef": "tom",
+      "body": "Plaster needs three dry days before paint."
+    },
+    {
+      "taskRef": "t22",
+      "authorRef": "tom",
+      "body": "Delivery can only come on a weekday morning: the café is open at weekends."
+    },
+    {
+      "taskRef": "t22",
+      "authorRef": "leah",
+      "body": "> **Tom (demo)** wrote:\n>\n> Delivery can only come on a weekday morning: the café is open at weekends.\n\nI'll book Tuesday morning. To reply like this, use Quote on a comment."
+    }
+  ],
+  "timeEntries": [
+    {
+      "taskRef": "t1",
+      "personRef": "tom",
+      "startedAt": "2026-01-05T08:00:00.000Z",
+      "durationSeconds": 14400,
+      "note": "Counter out, carcass cut up",
+      "source": "manual",
+      "billable": true,
+      "billingRef": "b1"
+    },
+    {
+      "taskRef": "t1",
+      "personRef": "tom",
+      "startedAt": "2026-01-06T08:00:00.000Z",
+      "durationSeconds": 12600,
+      "note": "Carried out and cleared",
+      "source": "manual",
+      "billable": true,
+      "billingRef": "b1"
+    },
+    {
+      "taskRef": "t2",
+      "personRef": "ade",
+      "startedAt": "2026-01-06T09:00:00.000Z",
+      "durationSeconds": 18000,
+      "note": "Front half",
+      "source": "timer",
+      "billable": true,
+      "billingRef": "b1"
+    },
+    {
+      "taskRef": "t2",
+      "personRef": "ade",
+      "startedAt": "2026-01-07T08:30:00.000Z",
+      "durationSeconds": 21600,
+      "note": "Back half and the kitchen step",
+      "source": "timer",
+      "billable": true,
+      "billingRef": "b1"
+    },
+    {
+      "taskRef": "t3",
+      "personRef": "leah",
+      "startedAt": "2026-01-05T10:00:00.000Z",
+      "durationSeconds": 1800,
+      "note": "Booked the skip and the permit",
+      "source": "manual",
+      "billable": false
+    },
+    {
+      "taskRef": "t4",
+      "personRef": "ade",
+      "startedAt": "2026-01-12T08:00:00.000Z",
+      "durationSeconds": 21600,
+      "note": "Counter and coffee machine circuits",
+      "source": "timer",
+      "billable": true
+    },
+    {
+      "taskRef": "t4",
+      "personRef": "ade",
+      "startedAt": "2026-01-13T08:00:00.000Z",
+      "durationSeconds": 14400,
+      "note": "Back boxes for the lights",
+      "source": "timer",
+      "billable": true
+    },
+    {
+      "taskRef": "t6",
+      "personRef": "leah",
+      "startedAt": "2026-01-13T11:00:00.000Z",
+      "durationSeconds": 3600,
+      "note": "Quotes for oak and tile",
+      "source": "manual",
+      "billable": true
+    },
+    {
+      "taskRef": "t7",
+      "personRef": "leah",
+      "startedAt": "2026-01-14T14:00:00.000Z",
+      "durationSeconds": 5400,
+      "note": "Colour samples on the wall",
+      "source": "manual",
+      "billable": true
+    }
+  ],
+  "billingSettings": {
+    "hourlyRate": 45,
+    "newTimeBillable": true
+  },
+  "billings": [
+    {
+      "ref": "b1",
+      "from": "2026-01-04",
+      "to": "2026-01-10",
+      "markedAt": "2026-01-11T16:00:00.000Z",
+      "entryCount": 4,
+      "billableSeconds": 66600,
+      "hourlyRate": 45,
+      "amount": 832.5
+    }
+  ],
+  "statusUpdates": [
+    {
+      "health": "on-track",
+      "note": "Strip-out finished a day early and the skip has gone. First fix starts Monday.",
+      "by": "person",
+      "personRef": "leah",
+      "postedAt": "2026-01-09T17:00:00.000Z"
+    },
+    {
+      "health": "at-risk",
+      "note": "First fix is on track, but the counter top is waiting on Marta's choice. If she hasn't chosen by Friday, fitting the counter slips a week.",
+      "by": "person",
+      "personRef": "leah",
+      "postedAt": "2026-01-14T17:30:00.000Z"
+    }
+  ],
+  "budget": {
+    "amount": 12000
+  },
+  "costs": [
+    {
+      "date": "2026-01-04",
+      "amount": 450,
+      "description": "Skip hire, one week",
+      "category": "Waste",
+      "taskRef": "t3",
+      "milestoneRef": "m1",
+      "state": "paid"
+    },
+    {
+      "date": "2026-01-12",
+      "amount": 64,
+      "description": "Double sockets",
+      "category": "Materials",
+      "taskRef": "t4",
+      "state": "paid"
+    },
+    {
+      "date": "2026-01-11",
+      "amount": 832.5,
+      "description": "Week 1 labour, invoiced",
+      "category": "Labour",
+      "milestoneRef": "m1",
+      "state": "paid"
+    },
+    {
+      "date": "+9d",
+      "amount": 1800,
+      "description": "Oak counter top",
+      "category": "Materials",
+      "taskRef": "t6",
+      "milestoneRef": "m3",
+      "state": "planned"
+    },
+    {
+      "date": "+7d",
+      "amount": 350,
+      "description": "Paint and primer",
+      "category": "Materials",
+      "taskRef": "t9",
+      "state": "planned"
+    },
+    {
+      "date": "+11d",
+      "amount": 1200,
+      "description": "Pendant lights",
+      "category": "Materials",
+      "taskRef": "t12",
+      "state": "planned"
+    },
+    {
+      "date": "+18d",
+      "amount": 950,
+      "description": "Shopfront sign",
+      "category": "Signage",
+      "taskRef": "t13",
+      "state": "planned"
+    }
+  ],
+  "contacts": [
+    {
+      "ref": "marta",
+      "name": "Marta Lewis (demo)",
+      "organisation": "Harbour Café",
+      "role": "Owner",
+      "phones": [
+        {
+          "label": "Mobile",
+          "number": "07700 900123"
+        }
+      ],
+      "emails": ["marta@example.com"],
+      "website": "",
+      "address": "12 Quay Street",
+      "notes": "The client. Prefers a call before nine, before the café's busy."
+    },
+    {
+      "ref": "brightwire",
+      "name": "Brightwire Electrical (demo)",
+      "organisation": "Brightwire Electrical",
+      "role": "Electrical supplies",
+      "phones": [
+        {
+          "label": "Trade counter",
+          "number": "01632 960001"
+        }
+      ],
+      "emails": ["orders@example.com"],
+      "website": "https://example.com",
+      "address": "Unit 4, Mill Lane",
+      "notes": "Trade account in the studio's name."
+    },
+    {
+      "ref": "oaktile",
+      "name": "Oak & Tile Co. (demo)",
+      "organisation": "Oak & Tile Co.",
+      "role": "Worktops",
+      "phones": [
+        {
+          "label": "Work",
+          "number": "01632 960002"
+        }
+      ],
+      "emails": ["sales@example.com"],
+      "website": "https://example.com",
+      "address": "",
+      "notes": "Two weeks from order to delivery."
+    }
+  ],
+  "taskContacts": [
+    {
+      "taskRef": "t4",
+      "contactRef": "brightwire",
+      "role": "supplier"
+    },
+    {
+      "taskRef": "t6",
+      "contactRef": "oaktile",
+      "role": "supplier"
+    },
+    {
+      "taskRef": "t6",
+      "contactRef": "marta",
+      "role": "asked-for-it"
+    },
+    {
+      "taskRef": "t7",
+      "contactRef": "marta",
+      "role": "asked-for-it"
+    }
+  ],
+  "shopping": [
+    {
+      "name": "Double sockets",
+      "quantity": 8,
+      "estimate": 64,
+      "supplierRef": "brightwire",
+      "taskRef": "t4",
+      "costIndex": 1
+    },
+    {
+      "name": "Trade emulsion, warm white",
+      "quantity": 4,
+      "unit": "10 L tins",
+      "estimate": 260,
+      "taskRef": "t9"
+    },
+    {
+      "name": "Primer",
+      "quantity": 2,
+      "unit": "tins",
+      "estimate": 90,
+      "taskRef": "t9"
+    },
+    {
+      "name": "Pendant lights",
+      "quantity": 5,
+      "estimate": 1200,
+      "supplierRef": "brightwire",
+      "taskRef": "t12"
+    },
+    {
+      "name": "Floor adhesive",
+      "quantity": 6,
+      "unit": "tubs",
+      "estimate": 150,
+      "taskRef": "t10"
+    }
+  ],
+  "baselines": [
+    {
+      "name": "Plan agreed with Marta",
+      "savedAt": "2026-01-02T12:00:00.000Z",
+      "entries": [
+        {
+          "kind": "task",
+          "ref": "t8",
+          "start": "2026-01-17",
+          "due": "2026-01-18"
+        },
+        {
+          "kind": "task",
+          "ref": "t9",
+          "start": "2026-01-21",
+          "due": "2026-01-24"
+        },
+        {
+          "kind": "task",
+          "ref": "t10",
+          "start": "2026-01-19",
+          "due": "2026-01-22"
+        },
+        {
+          "kind": "task",
+          "ref": "t11",
+          "start": "2026-01-23",
+          "due": "2026-01-25"
+        },
+        {
+          "kind": "task",
+          "ref": "t12",
+          "start": "2026-01-25",
+          "due": "2026-01-26"
+        },
+        {
+          "kind": "milestone",
+          "ref": "m2",
+          "due": "2026-01-20"
+        },
+        {
+          "kind": "milestone",
+          "ref": "m3",
+          "due": "2026-02-03"
+        }
+      ]
+    }
+  ],
+  "columns": {
+    "names": {
+      "backlog": "Backlog",
+      "ready": "Ready to start",
+      "active": "On site",
+      "blocked": "Waiting on someone",
+      "review": "Client sign-off",
+      "done": "Done"
+    },
+    "hidden": [],
+    "custom": [
+      {
+        "ref": "onorder",
+        "name": "On order",
+        "countsAs": "active"
+      }
+    ]
+  },
+  "taskTemplates": [
+    {
+      "name": "Snag",
+      "body": {
+        "title": "Snag: ",
+        "description": "What's wrong, where it is, and what good looks like.",
+        "checklist": ["Fix", "Marta has seen it"],
+        "labels": ["Snag"],
+        "priority": "medium",
+        "estimate": 1,
+        "assigneeId": null,
+        "fieldValues": {},
+        "startDate": null,
+        "dueDate": "+3d",
+        "subtasks": []
+      },
+      "assigneeRef": null
+    }
+  ],
+  "library": [
+    {
+      "kind": "note",
+      "title": "Read me",
+      "summary": "What this demo shows, and where to find it",
+      "body": "This demo is a café refit run by a small studio: you, Leah, Tom and Ade. Marta owns the café. Everyone marked (demo) is made up.\n\nIt picks up where the weekend away demo stops, with the tools for bigger jobs:\n\n- **Every Board column**, named for this job: Waiting on someone is Blocked, and Client sign-off is In review.\n- **Iterations**: the work runs in weekly rounds. Week 1 is finished and Week 2 is under way.\n- **Time and billing**: hours logged against tasks, an hourly rate, and Week 1 already invoiced. See the Time report.\n- **Costs, budget and suppliers**: what's paid and what's planned, and who supplies what, in Contacts.\n- **Rules**: things that happen on their own, such as a task moved to Waiting on someone getting high priority. See Project settings › Rules.\n- **Task types and templates**: Site work, Order and Snag, each with its own fields; a new Snag starts from the Snag template.\n- **The Timeline**: tasks that wait with a lag, and a baseline showing how the dates have moved since the plan was agreed.\n- **Status updates and goal check-ins** on the Overview.\n- **Won't do**, **links between tasks**, and the **Matrix** for weighing ideas.\n\nChange anything you like. When you are done, remove the project from its More menu."
+    },
+    {
+      "kind": "brief",
+      "title": "Marta's brief",
+      "summary": "What the café wants, by when, for how much",
+      "body": "**The café:** Harbour Café, 12 Quay Street. Thirty covers, open seven days.\n\n**What Marta wants:** a longer counter with room for a second coffee machine, a new floor, warmer lighting and a fresh coat of paint.\n\n**When:** closed for four weeks; reopening on a Saturday.\n\n**Budget:** {{money:12000}} including labour.",
+      "tags": ["client"]
+    },
+    {
+      "kind": "guide",
+      "title": "How we handle snags",
+      "summary": "From spotting a snag to Marta signing it off",
+      "body": "1. Make a task of the Snag type: it starts from the Snag template.\n2. Take a photo before you touch anything.\n3. Fix it, take a photo after, and show Marta.\n4. Tick Client signed off when she's happy.",
+      "aiAccess": "always",
+      "tags": ["process"]
+    },
+    {
+      "kind": "note",
+      "title": "Notes from the first site meeting",
+      "summary": "Kept out of Ostler AI's reach",
+      "body": "Marta's happy with the four-week closure. She asked for two extra sockets behind the counter and wants to see paint samples on the wall, not on card.\n\n**This note shows:** a Library item marked Human only, so Ostler AI never reads it.",
+      "aiAccess": "human-only",
+      "tags": ["client", "meetings"]
+    },
+    {
+      "kind": "whiteboard",
+      "title": "Counter layout",
+      "summary": "A sketch of the counter, the sink and the lights",
+      "tags": [],
+      "whiteboard": {
+        "objects": [
+          {
+            "id": "frame",
+            "kind": "frame",
+            "x": 0,
+            "y": 0,
+            "width": 760,
+            "height": 420,
+            "z": 1,
+            "colour": "grey",
+            "text": "Counter, sink and lights",
+            "link": null,
+            "groupId": null,
+            "data": {}
+          },
+          {
+            "id": "counter",
+            "kind": "note",
+            "x": 40,
+            "y": 80,
+            "width": 200,
+            "height": 200,
+            "z": 2,
+            "colour": "yellow",
+            "text": "Oak counter top, 3 m",
+            "link": null,
+            "groupId": null,
+            "data": {
+              "textSize": "medium"
+            }
+          },
+          {
+            "id": "sink",
+            "kind": "note",
+            "x": 280,
+            "y": 80,
+            "width": 200,
+            "height": 200,
+            "z": 3,
+            "colour": "teal",
+            "text": "Sink at the left end, by the back door",
+            "link": null,
+            "groupId": null,
+            "data": {
+              "textSize": "medium"
+            }
+          },
+          {
+            "id": "lights",
+            "kind": "note",
+            "x": 520,
+            "y": 80,
+            "width": 200,
+            "height": 200,
+            "z": 4,
+            "colour": "orange",
+            "text": "Three pendants over the counter",
+            "link": null,
+            "groupId": null,
+            "data": {
+              "textSize": "medium"
+            }
+          },
+          {
+            "id": "line",
+            "kind": "connector",
+            "x": 240,
+            "y": 180,
+            "width": 40,
+            "height": 0,
+            "z": 5,
+            "colour": "black",
+            "text": "",
+            "link": null,
+            "groupId": null,
+            "data": {
+              "from": {
+                "objectId": "counter",
+                "x": 240,
+                "y": 180
+              },
+              "to": {
+                "objectId": "sink",
+                "x": 280,
+                "y": 180
+              },
+              "startHead": "none",
+              "endHead": "arrow",
+              "route": "straight",
+              "stroke": "medium",
+              "dashed": false
+            }
+          }
+        ],
+        "pictures": []
+      }
+    }
+  ],
+  "pins": [
+    {
+      "kind": "library",
+      "index": 0
+    },
+    {
+      "kind": "project-view",
+      "viewId": "timeline"
+    },
+    {
+      "kind": "milestone",
+      "index": 2
+    },
+    {
+      "kind": "view",
+      "index": 1
+    }
+  ],
+  "views": [
+    {
+      "viewType": "board",
+      "default": true,
+      "options": {
+        "groupBy": "subproject",
+        "cardFields": ["#field.room"]
+      }
+    },
+    {
+      "name": "Front of house",
+      "viewType": "board",
+      "filter": {
+        "match": "all",
+        "conditions": [
+          {
+            "field": "subproject",
+            "op": "is",
+            "value": ["#subproject.s2"]
+          }
+        ]
+      },
+      "options": {
+        "hiddenColumns": ["blocked", "custom:#column.onorder"]
+      }
+    },
+    {
+      "name": "Snags by room",
+      "viewType": "board",
+      "filter": {
+        "match": "all",
+        "conditions": [
+          {
+            "field": "type",
+            "op": "is",
+            "value": ["#type.snag"]
+          }
+        ]
+      },
+      "options": {
+        "groupBy": "field:#field.room",
+        "cardFields": ["#field.signedOff"]
+      }
+    },
+    {
+      "viewType": "list",
+      "default": true,
+      "options": {
+        "columns": [
+          {
+            "id": "key",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "title",
+            "visible": true,
+            "width": 280
+          },
+          {
+            "id": "status",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "priority",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "assignee",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "start",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "due",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "estimate",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "milestone",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "subproject",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "field:#field.room",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "field:#field.trades",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "labels",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "checklist",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "comments",
+            "visible": true,
+            "width": null
+          }
+        ],
+        "sort": [
+          {
+            "columnId": "due",
+            "direction": "asc"
+          }
+        ],
+        "groupBy": "none"
+      }
+    },
+    {
+      "name": "Tom's open work",
+      "viewType": "list",
+      "filter": {
+        "match": "all",
+        "conditions": [
+          {
+            "field": "assignee",
+            "op": "is",
+            "value": ["#person.tom"]
+          },
+          {
+            "field": "status",
+            "op": "isNot",
+            "value": ["done"]
+          }
+        ]
+      },
+      "options": {
+        "sort": [
+          {
+            "columnId": "due",
+            "direction": "asc"
+          }
+        ],
+        "groupBy": "milestone",
+        "columns": [
+          {
+            "id": "key",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "title",
+            "visible": true,
+            "width": 280
+          },
+          {
+            "id": "status",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "priority",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "start",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "due",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "estimate",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "milestone",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "field:#field.room",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "field:#field.trades",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "checklist",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "assignee",
+            "visible": false,
+            "width": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "Orders to chase",
+      "viewType": "list",
+      "filter": {
+        "match": "all",
+        "conditions": [
+          {
+            "field": "type",
+            "op": "is",
+            "value": ["#type.order"]
+          },
+          {
+            "field": "status",
+            "op": "isNot",
+            "value": ["done"]
+          }
+        ]
+      },
+      "options": {
+        "columns": [
+          {
+            "id": "key",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "title",
+            "visible": true,
+            "width": 280
+          },
+          {
+            "id": "status",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "priority",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "assignee",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "due",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "milestone",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "field:#field.orderNo",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "field:#field.delivery",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "estimate",
+            "visible": true,
+            "width": null
+          },
+          {
+            "id": "comments",
+            "visible": true,
+            "width": null
+          }
+        ],
+        "sort": [
+          {
+            "columnId": "field:#field.delivery",
+            "direction": "asc"
+          }
+        ],
+        "groupBy": "none"
+      }
+    },
+    {
+      "viewType": "calendar",
+      "default": true,
+      "options": {
+        "mode": "month",
+        "unscheduledOpen": true
+      }
+    },
+    {
+      "viewType": "timeline",
+      "default": true,
+      "options": {
+        "zoom": "week",
+        "groupBy": "milestone",
+        "criticalPath": true
+      }
+    },
+    {
+      "name": "Who's on what",
+      "viewType": "timeline",
+      "filter": {
+        "match": "all",
+        "conditions": [
+          {
+            "field": "status",
+            "op": "isNot",
+            "value": ["done"]
+          }
+        ]
+      },
+      "options": {
+        "zoom": "week",
+        "groupBy": "assignee"
+      }
+    }
+  ]
+}

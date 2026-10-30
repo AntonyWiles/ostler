@@ -1,0 +1,153 @@
+/* Customise board: the Board's views, toolbar, options and columns, beside the Board. */
+
+.board-layout .ui-drawer__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+}
+
+.board-layout__heading {
+  margin: 0 0 var(--space-200);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-muted);
+}
+
+.board-layout__hint,
+.board-layout__showing-hint,
+.board-layout__view-note {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+}
+
+/* What is showing, and Save or Revert while it has changed. */
+.board-layout__showing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  padding: var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.board-layout__showing-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.board-layout__showing-label {
+  color: var(--color-text-muted);
+}
+
+/* The toolbar as it stands: its controls wrap in the panel's width. */
+.board-layout__toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.board-layout__toolbar-row .task-toolbar__search {
+  flex: 1 1 calc(var(--space-1200) * 3);
+}
+
+.board-layout__toolbar-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+  margin-top: var(--space-200);
+}
+
+.board-layout__views,
+.board-layout__columns {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  padding-top: var(--space-300);
+}
+
+.board-layout__options {
+  padding-top: var(--space-300);
+}
+
+.board-layout__view-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.board-layout__view {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--control-height);
+}
+
+.board-layout__view-name {
+  max-width: 60%;
+}
+
+.board-layout__view-label {
+  padding: 0 var(--space-200);
+}
+
+.board-layout__view-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  margin-left: auto;
+}
+
+.board-layout__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+}
+
+.board-layout__actions--column {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.board-layout__wip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--space-1200) * 2), 1fr));
+  gap: var(--space-200);
+}
+
+/* View options' way into Customise board. */
+.task-view-options__more {
+  align-self: flex-start;
+}
+
+/* Settings › Projects › Board for all projects. */
+.ostler-board-defaults__views {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ostler-board-defaults__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-200);
+  min-height: var(--control-height);
+}
+
+.ostler-board-defaults__hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}

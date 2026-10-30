@@ -1,0 +1,47 @@
+/* The running timer in the status bar (R2.3). Tokens only. */
+
+.statusbar-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-050);
+  min-width: 0;
+}
+
+.statusbar-timer__task {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  min-width: 0;
+  height: 100%;
+  padding: 0 var(--space-100);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.statusbar-timer__task:hover {
+  background: var(--color-surface-hover);
+}
+
+.statusbar-timer__task:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(-1 * var(--focus-ring-width));
+}
+
+.statusbar-timer__icon {
+  color: var(--color-accent);
+}
+
+.statusbar-timer__title {
+  max-width: 24ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.statusbar-timer__clock {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--weight-medium);
+}

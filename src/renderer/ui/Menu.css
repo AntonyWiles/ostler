@@ -1,0 +1,111 @@
+.ui-menu {
+  min-width: calc(var(--space-1000) * 5);
+  max-width: calc(var(--space-1000) * 9);
+  max-height: min(
+    calc(var(--space-1000) * 12),
+    calc(100vh - var(--title-bar-height, 0px) - var(--space-400))
+  );
+  overflow-y: auto;
+  padding: var(--space-100);
+  outline: none;
+}
+
+.ui-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--control-height);
+  padding: 0 var(--space-200);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  font-size: var(--text-body);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ui-menu__item:focus {
+  background: var(--color-surface-hover);
+  outline: none;
+}
+
+.ui-menu__item:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(-1 * var(--focus-ring-width));
+}
+
+.ui-menu__item.is-danger {
+  color: var(--color-danger);
+}
+
+.ui-menu__item[aria-disabled='true'] {
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ui-menu__icon {
+  display: inline-flex;
+  width: var(--icon-size);
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
+.ui-menu__item.is-danger .ui-menu__icon {
+  color: inherit;
+}
+
+.ui-menu__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Shown under the item that has keyboard focus; the mouse gets it as a tooltip. */
+.ui-menu__hint {
+  display: none;
+  padding-bottom: var(--space-100);
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  white-space: normal;
+}
+
+.ui-menu__item:focus-visible .ui-menu__hint {
+  display: block;
+}
+
+.ui-menu__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ui-menu__shortcut {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.ui-menu__separator {
+  height: var(--border-width);
+  margin: var(--space-100) calc(-1 * var(--space-100));
+  background: var(--color-border);
+}
+
+.ui-menu__group-label {
+  padding: var(--space-150) var(--space-200) var(--space-050);
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+}
+
+@media (forced-colors: active) {
+  .ui-menu__item:focus {
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .ui-menu__separator {
+    background: CanvasText;
+  }
+}

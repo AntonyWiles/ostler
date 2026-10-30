@@ -1,0 +1,9 @@
+/* The box and layout are in Field.css, shared with every text-like field. */
+
+.ui-input-box > input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.ui-input-box > input:disabled {
+  cursor: not-allowed;
+}

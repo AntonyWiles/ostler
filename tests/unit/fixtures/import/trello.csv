@@ -1,0 +1,3 @@
+Card ID,Card Name,Card URL,Card Description,Labels,Members,Due Date,Start Date,Checklist Items Total,Checklist Items Completed,List Name,Archived
+abc1,Plan the menu,https://trello.com/c/abc1,Three courses,"Food (green), Urgent (red)",Alex Chen,2026-10-20T12:00:00.000Z,,2,1,Doing,false
+abc2,Send invites,https://trello.com/c/abc2,,,,,,0,0,To Do,false

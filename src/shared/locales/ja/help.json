@@ -1,0 +1,36 @@
+{
+  "shortcutOverlay": {
+    "title": "キーボードショートカット",
+    "description": "1キーのショートカットは、入力欄に入力していないときに使えます。",
+    "search": "ショートカットを検索",
+    "noMatch": "「{{query}}」に一致するショートカットはありません。"
+  },
+  "helpProvider": {
+    "diagnosticsCopied": "診断情報をコピーしました",
+    "versionsCountsEndLog": "バージョン、件数、ログの末尾です。名前、キー、トークンは除かれています。",
+    "couldntCopyDiagnostics": "診断情報をコピーできませんでした",
+    "issuePageOpenBrowser": "{{brand}}の問題報告ページをブラウザーで開き、診断情報をクリップボードにコピーしました。報告に貼り付けたい場合のみ貼り付けてください。",
+    "couldntOpenIssuePage": "問題報告ページを開けませんでした"
+  },
+  "whatsNewDialog": {
+    "whatsNew": "{{brand}}の新機能",
+    "version": "バージョン{{version}}",
+    "close": "閉じる",
+    "thereNoNotesVersion": "このバージョンのメモはありません。"
+  },
+  "guide": {
+    "version": "バージョン{{version}}"
+  },
+  "helpView": {
+    "userGuidePages": "ユーザーガイドのページ",
+    "userGuide": "ユーザーガイド",
+    "searchGuide": "ガイドを検索",
+    "matches_other": "{{count}}件一致",
+    "userGuideIsntBuild": "このビルドにはユーザーガイドが含まれていません",
+    "readOnlineRepositoryDocs": "{{brand}}のリポジトリ内の docs/user-guide フォルダーで、オンラインで読めます。",
+    "noPageMentions": "このページには該当する記載がありません。",
+    "foundPages_other": "{{count}}ページで見つかりました。",
+    "notPage": "このページにはありません。",
+    "matchesPageHighlighted_other": "このページで{{count}}件一致しました（ハイライト表示）。"
+  }
+}

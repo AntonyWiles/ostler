@@ -1,0 +1,101 @@
+/* Status updates (N5.5): the Overview's latest update and History, the
+   posting dialog, and Home's chip. Tokens only. */
+
+.status-update {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-width: 0;
+}
+
+.status-update__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.status-update__by,
+.status-update__edited {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+}
+
+.status-update__actions {
+  display: inline-flex;
+  gap: var(--space-100);
+  margin-inline-start: auto;
+}
+
+.status-update__note {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.status-update-history {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-300);
+  margin-block-start: var(--space-300);
+}
+
+.status-update-history__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.status-update-history__list > li {
+  padding-block-start: var(--space-300);
+  border-block-start: var(--border-width) solid var(--color-border);
+}
+
+.status-update-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+}
+
+.status-update-dialog__health {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-200);
+}
+
+.status-update-dialog__label {
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+}
+
+.status-update-dialog__drafted {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+}
+
+.status-update-dialog__draft {
+  margin-inline-end: auto;
+}
+
+.status-update-chip {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-150);
+  min-width: 0;
+}
+
+.status-update-chip__none,
+.status-update-chip__age {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+}

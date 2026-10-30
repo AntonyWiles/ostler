@@ -1,0 +1,623 @@
+/* Settings: a section list on the left, one section's rows on the right. */
+
+.ostler-settings {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.ostler-settings-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.ostler-settings-nav {
+  flex: 0 0 12rem;
+  padding: var(--space-400) var(--space-200);
+  border-right: var(--border-width) solid var(--color-border);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.ostler-settings-nav-title {
+  padding: 0 var(--space-200) var(--space-300);
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+
+.ostler-settings-nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ostler-settings-nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  padding: var(--space-150) var(--space-200);
+  border-radius: var(--radius-control);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body);
+  text-decoration: none;
+}
+
+.ostler-settings-nav-link:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.ostler-settings-nav-link[aria-current='page'] {
+  background: var(--color-surface-selected);
+  color: var(--color-text);
+  font-weight: var(--weight-medium);
+}
+
+.ostler-settings-nav-link:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* A section with sections under it: its chevron sits at the link's end, muted. */
+.ostler-settings-nav-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ostler-settings-nav-link > .ui-chevron {
+  flex: 0 0 auto;
+  color: var(--color-text-muted);
+}
+
+/* The open sections under it: indented, on a thin line from their parent. */
+.ostler-settings-nav ul.ostler-settings-nav-sub {
+  margin: var(--space-050) 0 0 var(--space-300);
+  padding-left: var(--space-200);
+  border-left: var(--border-width) solid var(--color-border);
+}
+
+.ostler-settings-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  padding: var(--space-400) var(--space-600);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.ostler-settings-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-300);
+  max-width: 48rem;
+}
+
+.ostler-settings-heading {
+  font-size: var(--text-title);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-title);
+}
+
+.ostler-settings-saved {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  min-height: var(--leading-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-success);
+}
+
+.ostler-settings-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-600);
+  max-width: 48rem;
+}
+
+/* Folding groups: one line each, with what they are set to, opening in place. */
+.ostler-settings-folds {
+  display: flex;
+  flex-direction: column;
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.ostler-settings-fold {
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.ostler-settings-fold__heading {
+  margin: 0;
+  font: inherit;
+}
+
+.ostler-settings-fold__toggle {
+  display: grid;
+  grid-template-columns: minmax(8rem, max-content) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-400);
+  width: 100%;
+  min-height: var(--row-height);
+  padding: var(--space-300) var(--space-200);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  text-align: start;
+}
+
+.ostler-settings-fold__toggle:hover {
+  background: var(--color-surface-hover);
+}
+
+.ostler-settings-fold__toggle:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(-1 * var(--focus-ring-width));
+}
+
+.ostler-settings-fold__title {
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading-sm);
+}
+
+.ostler-settings-fold__summary {
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  text-align: end;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ostler-settings-fold__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  /* Room above the first control, so it and the heading are separate targets. */
+  padding: var(--space-200) var(--space-200) var(--space-500);
+}
+
+.ostler-settings-fold__intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-200) var(--space-400);
+}
+
+@media (forced-colors: active) {
+  .ostler-settings-fold {
+    border-color: CanvasText;
+  }
+}
+
+.ostler-settings-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+}
+
+.ostler-settings-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.ostler-settings-label {
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.ostler-settings-text {
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-text);
+}
+
+.ostler-settings-hint {
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--color-text-muted);
+}
+
+.ostler-settings-error {
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--color-danger);
+}
+
+.ostler-settings-text code,
+.ostler-settings-hint code,
+.ostler-settings-list code,
+.ostler-settings-details code {
+  font-family: var(--font-mono);
+  font-size: var(--text-body-sm);
+  overflow-wrap: anywhere;
+}
+
+.ostler-settings-inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-200);
+}
+
+.ostler-settings-grow {
+  flex: 1 1 12rem;
+}
+
+.ostler-settings-details summary {
+  cursor: pointer;
+  font-size: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+
+.ostler-settings-details[open] summary {
+  margin-bottom: var(--space-100);
+}
+
+.ostler-settings-token {
+  padding: var(--space-050) var(--space-200);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-control);
+  font-family: var(--font-mono);
+  font-size: var(--text-body-sm);
+  overflow-wrap: anywhere;
+}
+
+/* Lists of projects, files and snapshots */
+
+.ostler-settings-list,
+.ostler-settings-project-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.ostler-settings-list > li,
+.ostler-settings-project {
+  padding: var(--space-200) var(--space-300);
+}
+
+.ostler-settings-list > li + li,
+.ostler-settings-project + .ostler-settings-project {
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.ostler-settings-list-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.ostler-settings-list-name {
+  font-weight: var(--weight-medium);
+}
+
+.ostler-settings-list-detail {
+  flex-basis: 100%;
+}
+
+.ostler-settings-project {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-300);
+}
+
+.ostler-settings-project-dot {
+  flex: 0 0 auto;
+  width: var(--space-300);
+  height: var(--space-300);
+  border-radius: var(--radius-full);
+}
+
+.ostler-settings-project-text {
+  flex: 1 1 12rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ostler-settings-project-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-200);
+  font-weight: var(--weight-medium);
+}
+
+.ostler-settings-project-folder {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-caption);
+  color: var(--color-text-muted);
+}
+
+.ostler-settings-project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+}
+
+/* People */
+
+.ostler-settings-people {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.ostler-settings-person {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-300);
+  padding: var(--space-200) var(--space-300);
+}
+
+.ostler-settings-person + .ostler-settings-person {
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.ostler-settings-person.is-editing {
+  padding: var(--space-300);
+}
+
+.ostler-settings-person-name {
+  flex: 1 1 10rem;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-width: 0;
+  font-weight: var(--weight-medium);
+}
+
+.ostler-settings-person-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-100);
+}
+
+.ostler-settings-person-editor {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.ostler-settings-person-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--space-300);
+}
+
+.ostler-settings-person-capacity {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-regular);
+}
+
+.ostler-settings-person-capacity-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: var(--space-300);
+  align-items: start;
+}
+
+.ostler-settings-person-days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200) var(--space-300);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.ostler-settings-person-days > legend {
+  margin-bottom: var(--space-100);
+  padding: 0;
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+}
+
+.ostler-settings-person-days-error {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--color-danger);
+  font-size: var(--text-caption);
+}
+
+/* A link inside a sentence is underlined, not told apart by colour alone (WCAG 1.4.1). */
+.ostler-settings-people-link {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .ostler-settings-person-capacity-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.ostler-settings-person-add {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-200);
+}
+
+.ostler-settings-person-add > .ui-field {
+  flex: 1;
+  max-width: calc(var(--space-1000) * 6);
+}
+
+/* Per-project agent tools */
+
+.ostler-settings-subsections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-500);
+}
+
+.ostler-settings-subsection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.ostler-settings-subsection h4 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+/* Numbers and tables */
+
+.ostler-settings-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--space-300);
+  margin: 0;
+}
+
+.ostler-settings-stat {
+  padding: var(--space-300);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.ostler-settings-stat dt {
+  font-size: var(--text-caption);
+  color: var(--color-text-secondary);
+}
+
+.ostler-settings-stat dd {
+  margin: 0;
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.ostler-settings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+}
+
+.ostler-settings-table th {
+  text-align: left;
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.ostler-settings-table th,
+.ostler-settings-table td {
+  padding: var(--space-150) var(--space-200);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.ostler-settings-table-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-100);
+}
+
+/* Old form rows still used by panels outside Settings until P4 restyles them. */
+
+@media (max-width: 1100px) {
+  .ostler-settings-nav {
+    flex-basis: 9.5rem;
+  }
+
+  .ostler-settings-main {
+    padding: var(--space-400);
+  }
+}
+
+/* Reminder and quiet-hours times (P5.6). */
+.settings-time-field {
+  max-width: 12rem;
+}
+
+.ostler-settings-facts {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-100) var(--space-400);
+}
+
+.ostler-settings-facts > div {
+  display: contents;
+}
+
+.ostler-settings-facts dt {
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.ostler-settings-facts dd {
+  min-width: 0;
+  font-size: var(--text-body);
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.ostler-settings-facts code {
+  font-family: var(--font-mono);
+  font-size: var(--text-body-sm);
+}
+
+.ostler-settings-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  padding-left: var(--space-400);
+  list-style: disc;
+}
+
+/* Release notes in Settings › About › Updates (P10.1): the release body's own line breaks. */
+.ostler-settings-notes {
+  white-space: pre-wrap;
+  margin-top: var(--space-100);
+}
+
+/* Settings › About › Open source licences: the generated notices, as written. */
+.ostler-settings-licences {
+  max-height: 60vh;
+  overflow: auto;
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: var(--font-mono);
+  font-size: var(--text-body-sm);
+}
+
+/* Deleting a person: what they have, then what happens to it. */
+.ostler-settings-delete-person {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}

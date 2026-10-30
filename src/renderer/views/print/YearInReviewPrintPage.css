@@ -1,0 +1,96 @@
+/*
+ * Your year (N3.6): A4 portrait (Letter in the US, as `pdfOf` picks), readable
+ * in black and white: every number is in a table, ruled, with no colour needed.
+ */
+
+.year-review {
+  font-size: var(--text-body);
+}
+
+.year-review__totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-600);
+  margin: var(--space-300) 0;
+}
+
+.year-review__totals dt {
+  font-size: var(--text-caption);
+}
+
+.year-review__totals dd {
+  margin: 0;
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.year-review__section {
+  break-inside: avoid;
+  margin-top: var(--space-400);
+}
+
+.year-review__section h2 {
+  margin: 0 0 var(--space-200);
+  padding-bottom: var(--space-100);
+  border-bottom: var(--border-width) solid var(--color-border-strong);
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.year-review__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space-200);
+}
+
+.year-review__table caption {
+  text-align: start;
+  font-weight: var(--weight-semibold);
+  padding-bottom: var(--space-100);
+}
+
+.year-review__table th,
+.year-review__table td {
+  padding: var(--space-100) var(--space-200) var(--space-100) 0;
+  border-bottom: var(--border-width) solid var(--color-border);
+  text-align: start;
+  font-weight: var(--weight-regular);
+}
+
+.year-review__table thead th {
+  font-weight: var(--weight-semibold);
+  border-bottom-color: var(--color-text);
+}
+
+.year-review__table tr {
+  break-inside: avoid;
+}
+
+.year-review__number {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.year-review__table .year-review__number {
+  text-align: end;
+}
+
+.year-review__columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-400);
+}
+
+.year-review__note {
+  margin-top: var(--space-200);
+  font-size: var(--text-caption);
+}
+
+.year-review__hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

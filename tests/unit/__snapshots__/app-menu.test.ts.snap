@@ -1,0 +1,339 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`buildMenuTemplate > builds File, Edit, View, Go and Help from the shared table (snapshot) 1`] = `
+[
+  {
+    "label": "&File",
+    "submenu": [
+      {
+        "accelerator": "CmdOrCtrl+N",
+        "command": {
+          "id": "new-task",
+          "kind": "shortcut",
+        },
+        "label": "New task",
+        "registerAccelerator": false,
+      },
+      {
+        "accelerator": "CmdOrCtrl+Shift+N",
+        "command": {
+          "id": "quick-add",
+          "kind": "shortcut",
+        },
+        "label": "Quick add",
+        "registerAccelerator": false,
+      },
+      {
+        "command": {
+          "kind": "new-project",
+        },
+        "label": "New project…",
+      },
+      {
+        "type": "separator",
+      },
+      {
+        "command": {
+          "kind": "import",
+        },
+        "label": "Import…",
+      },
+      {
+        "command": {
+          "kind": "export",
+        },
+        "enabled": true,
+        "label": "Export…",
+      },
+      {
+        "command": {
+          "kind": "print",
+        },
+        "enabled": true,
+        "label": "Print…",
+      },
+      {
+        "type": "separator",
+      },
+      {
+        "accelerator": "CmdOrCtrl+,",
+        "command": {
+          "id": "settings",
+          "kind": "shortcut",
+        },
+        "label": "Settings",
+        "registerAccelerator": false,
+      },
+      {
+        "type": "separator",
+      },
+      {
+        "label": "Exit",
+        "role": "quit",
+      },
+    ],
+  },
+  {
+    "label": "&Edit",
+    "submenu": [
+      {
+        "accelerator": "CmdOrCtrl+Z",
+        "command": {
+          "kind": "undo",
+        },
+        "label": "Undo",
+        "registerAccelerator": false,
+      },
+      {
+        "accelerator": "CmdOrCtrl+Y",
+        "command": {
+          "kind": "redo",
+        },
+        "label": "Redo",
+        "registerAccelerator": false,
+      },
+      {
+        "command": {
+          "kind": "undo-history",
+        },
+        "label": "Undo history…",
+      },
+      {
+        "type": "separator",
+      },
+      {
+        "label": "Cut",
+        "role": "cut",
+      },
+      {
+        "label": "Copy",
+        "role": "copy",
+      },
+      {
+        "label": "Paste",
+        "role": "paste",
+      },
+      {
+        "label": "Delete",
+        "role": "delete",
+      },
+      {
+        "type": "separator",
+      },
+      {
+        "label": "Select all",
+        "role": "selectAll",
+      },
+    ],
+  },
+  {
+    "label": "&View",
+    "submenu": [
+      {
+        "command": {
+          "id": "go-home",
+          "kind": "shortcut",
+        },
+        "label": "Home",
+      },
+      {
+        "command": {
+          "id": "go-inbox",
+          "kind": "shortcut",
+        },
+        "label": "Inbox",
+      },
+      {
+        "command": {
+          "id": "go-my-work",
+          "kind": "shortcut",
+        },
+        "label": "My work",
+      },
+      {
+        "accelerator": "CmdOrCtrl+B",
+        "command": {
+          "id": "sidebar",
+          "kind": "shortcut",
+        },
+        "label": "Toggle sidebar",
+        "registerAccelerator": false,
+      },
+      {
+        "type": "separator",
+      },
+      {
+        "label": "Theme",
+        "submenu": [
+          {
+            "checked": true,
+            "command": {
+              "kind": "theme",
+              "theme": "system",
+            },
+            "label": "System",
+            "type": "radio",
+          },
+          {
+            "checked": false,
+            "command": {
+              "kind": "theme",
+              "theme": "light",
+            },
+            "label": "Light",
+            "type": "radio",
+          },
+          {
+            "checked": false,
+            "command": {
+              "kind": "theme",
+              "theme": "dark",
+            },
+            "label": "Dark",
+            "type": "radio",
+          },
+        ],
+      },
+      {
+        "type": "separator",
+      },
+      {
+        "accelerator": "CmdOrCtrl+=",
+        "label": "Zoom in",
+        "zoom": "in",
+      },
+      {
+        "accelerator": "CmdOrCtrl+-",
+        "label": "Zoom out",
+        "zoom": "out",
+      },
+      {
+        "accelerator": "CmdOrCtrl+0",
+        "label": "Reset zoom",
+        "zoom": "reset",
+      },
+      {
+        "accelerator": "CmdOrCtrl+Plus",
+        "label": "Zoom in",
+        "visible": false,
+        "zoom": "in",
+      },
+      {
+        "accelerator": "CmdOrCtrl+numadd",
+        "label": "Zoom in",
+        "visible": false,
+        "zoom": "in",
+      },
+      {
+        "accelerator": "CmdOrCtrl+numsub",
+        "label": "Zoom out",
+        "visible": false,
+        "zoom": "out",
+      },
+      {
+        "accelerator": "CmdOrCtrl+num0",
+        "label": "Reset zoom",
+        "visible": false,
+        "zoom": "reset",
+      },
+      {
+        "type": "separator",
+      },
+      {
+        "label": "Full screen",
+        "role": "togglefullscreen",
+      },
+    ],
+  },
+  {
+    "label": "&Go",
+    "submenu": [
+      {
+        "accelerator": "CmdOrCtrl+K",
+        "command": {
+          "id": "palette",
+          "kind": "shortcut",
+        },
+        "label": "Search…",
+        "registerAccelerator": false,
+      },
+      {
+        "type": "separator",
+      },
+      {
+        "accelerator": "CmdOrCtrl+1",
+        "command": {
+          "kind": "open-view",
+          "view": "overview",
+        },
+        "label": "Overview",
+        "registerAccelerator": false,
+      },
+      {
+        "accelerator": "CmdOrCtrl+2",
+        "command": {
+          "kind": "open-view",
+          "view": "board",
+        },
+        "label": "Board",
+        "registerAccelerator": false,
+      },
+      {
+        "command": {
+          "kind": "open-view",
+          "view": "archive",
+        },
+        "label": "Archive",
+      },
+    ],
+  },
+  {
+    "label": "&Help",
+    "submenu": [
+      {
+        "command": {
+          "kind": "user-guide",
+        },
+        "label": "User guide",
+      },
+      {
+        "command": {
+          "id": "shortcut-help",
+          "kind": "shortcut",
+        },
+        "label": "Keyboard shortcuts",
+      },
+      {
+        "command": {
+          "kind": "whats-new",
+        },
+        "label": "What's new",
+      },
+      {
+        "type": "separator",
+      },
+      {
+        "command": {
+          "kind": "report-problem",
+        },
+        "label": "Report a problem…",
+      },
+      {
+        "command": {
+          "kind": "copy-diagnostics",
+        },
+        "label": "Copy diagnostics",
+      },
+      {
+        "type": "separator",
+      },
+      {
+        "command": {
+          "kind": "about",
+        },
+        "label": "About Ostler",
+      },
+    ],
+  },
+]
+`;

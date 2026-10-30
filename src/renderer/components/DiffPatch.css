@@ -1,0 +1,125 @@
+/* A unified diff and its +/- stat. Tokens only. */
+
+.diff-patch {
+  max-height: 28rem;
+  margin: 0;
+  padding: var(--space-200) 0;
+  overflow: auto;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  line-height: var(--leading-body);
+}
+
+.diff-patch__line {
+  display: flex;
+  padding-right: var(--space-300);
+  white-space: pre;
+  /* Highlighted lines show a bar on the left; others keep its room. */
+  border-left: var(--space-100) solid transparent;
+}
+
+/* Old and new line numbers (N9.1): not part of the text, not selectable. */
+.diff-patch__number {
+  flex: none;
+  min-width: 4ch;
+  padding: 0 var(--space-100);
+  color: var(--color-text-secondary);
+  text-align: right;
+  user-select: none;
+}
+
+.diff-patch__text {
+  flex: 1 0 auto;
+  padding-left: var(--space-200);
+}
+
+/* A walkthrough stop's lines. The bar carries it in high contrast, where backgrounds flatten. */
+.diff-patch__line--highlight {
+  border-left-color: var(--color-accent);
+  background: var(--color-accent-subtle);
+}
+
+.diff-patch__line--add {
+  background: var(--color-success-subtle);
+  color: var(--color-success);
+}
+
+.diff-patch__line--remove {
+  background: var(--color-danger-subtle);
+  color: var(--color-danger);
+}
+
+.diff-patch__line--hunk {
+  color: var(--color-info);
+}
+
+.diff-patch__line--file {
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-semibold);
+}
+
+.diff-stat {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.diff-stat__add {
+  color: var(--color-success);
+}
+
+.diff-stat__remove {
+  color: var(--color-danger);
+}
+
+/* Line comments (N9.2a): a line number that starts a comment. */
+.diff-patch__number--button {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.diff-patch__number--button:hover {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.diff-patch__number--button:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 var(--focus-ring-width) var(--color-focus);
+}
+
+/* Lines picked for a comment. The bar carries it in high contrast. */
+.diff-patch__line--selected {
+  border-left-color: var(--color-focus);
+  background: var(--color-accent-subtle);
+}
+
+/* High contrast: only the highlighted or picked lines show the bar, and the
+   line number's focus is an outline (box-shadows are removed there). */
+@media (forced-colors: active) {
+  .diff-patch__line {
+    border-left-color: Canvas;
+  }
+
+  .diff-patch__line--highlight,
+  .diff-patch__line--selected {
+    border-left-color: Highlight;
+  }
+
+  .diff-patch__number--button:focus-visible {
+    outline: var(--focus-ring-width) solid Highlight;
+    outline-offset: calc(-1 * var(--focus-ring-width));
+  }
+}
+
+/* A comment, or the comment form, under its lines: ordinary text, not code. */
+.diff-patch__after {
+  margin: var(--space-100) var(--space-300) var(--space-200) calc(8ch + var(--space-400));
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  white-space: normal;
+}

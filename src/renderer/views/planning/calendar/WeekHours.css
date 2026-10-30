@@ -1,0 +1,145 @@
+/* The Week's hours (N3.4a): a gutter of hour labels and seven day columns,
+   each a stack of 24 hour cells with blocks and timed events placed over
+   them by minute. Hours outside the working hours are shaded. */
+
+.week-hours {
+  --hour-row: calc(var(--space-1000) + var(--space-200));
+  --hour-gutter: calc(var(--space-1000) + var(--space-400));
+
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-top: var(--space-200);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.week-hours__scroll {
+  flex: 1;
+  min-height: calc(var(--hour-row) * 6);
+  max-height: calc(var(--hour-row) * 10);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.week-hours__grid {
+  display: grid;
+  grid-template-columns: var(--hour-gutter) repeat(7, minmax(0, 1fr));
+  height: calc(var(--hour-row) * 24);
+}
+
+.week-hours__gutter {
+  display: grid;
+  grid-template-rows: repeat(24, var(--hour-row));
+  border-right: var(--border-width) solid var(--color-border);
+}
+
+.week-hours__hour-label {
+  padding-right: var(--space-150);
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  transform: translateY(-50%);
+}
+
+.week-hours__day {
+  position: relative;
+  display: grid;
+  grid-template-rows: repeat(24, var(--hour-row));
+  min-width: 0;
+  border-right: var(--border-width) solid var(--color-border);
+}
+
+.week-hours__day:last-child {
+  border-right: none;
+}
+
+.week-hours__cell {
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.week-hours__cell.is-outside {
+  background: var(--color-surface-sunken);
+}
+
+.week-hours__item,
+.week-hours__preview,
+.week-hours__ghost,
+.week-hours__now {
+  position: absolute;
+  top: calc(var(--hour-top) * 100%);
+}
+
+.week-hours__item,
+.week-hours__preview,
+.week-hours__ghost {
+  left: calc(var(--hour-column, 0) / var(--hour-columns, 1) * 100% + var(--space-050));
+  width: calc(100% / var(--hour-columns, 1) - var(--space-100));
+  height: calc(var(--hour-height) * 100% - var(--space-050));
+  min-height: var(--space-500);
+}
+
+.week-hours__item--event .calendar-event {
+  align-items: flex-start;
+  height: 100%;
+  padding-top: var(--space-050);
+  background: var(--color-surface);
+}
+
+.week-hours__preview {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--space-050) var(--space-150);
+  border: var(--border-width) dashed var(--color-accent);
+  border-radius: var(--radius-control);
+  background: var(--color-accent-subtle);
+  color: var(--color-text);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+  pointer-events: none;
+}
+
+.week-hours__now {
+  right: 0;
+  left: 0;
+  height: var(--border-width);
+  border-top: var(--space-050) solid var(--color-danger);
+  pointer-events: none;
+}
+
+/* Fill my day's preview (N3.4b): where a block would go, drawn faintly. */
+.week-hours__ghost {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-050) var(--space-150);
+  overflow: hidden;
+  border: var(--border-width) dashed var(--color-accent);
+  border-radius: var(--radius-control);
+  background: var(--color-accent-subtle);
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  pointer-events: none;
+}
+
+/* A block whose time passed with its task unfinished (N3.4b): quieter. */
+.week-hours__item.is-passed .time-block {
+  border-left-style: dashed;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+}
+
+/* High contrast flattens the shading of hours outside the working hours, so
+   they are hatched in GrayText instead. The cells hold no text. */
+@media (forced-colors: active) {
+  .week-hours__cell.is-outside {
+    forced-color-adjust: none;
+    background: repeating-linear-gradient(
+      135deg,
+      GrayText 0 var(--border-width),
+      Canvas var(--border-width) var(--space-200)
+    );
+  }
+}

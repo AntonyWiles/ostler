@@ -1,0 +1,19 @@
+/* The sparkle beside an AI field and beside a value Ostler AI filled (N8.4). */
+.ai-field-mark {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  margin-inline-start: var(--space-050);
+  color: var(--color-accent);
+  vertical-align: middle;
+  border-radius: var(--radius-md);
+}
+
+.ai-field-mark.is-stale {
+  color: var(--color-warning);
+}
+
+.ai-field-mark:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}

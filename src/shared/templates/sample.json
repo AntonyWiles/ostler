@@ -1,0 +1,450 @@
+{
+  "format": "ostler-project-package",
+  "version": 1,
+  "template": {
+    "description": "A weekend away with three friends. Read the tasks from top to bottom: the first ones use the basics, the later ones show more.",
+    "icon": "sparkles"
+  },
+  "project": {
+    "name": "Sample project",
+    "color": "#8b5cf6",
+    "estimateUnit": "hours"
+  },
+  "people": [
+    {
+      "ref": "sam",
+      "name": "Sam (demo)",
+      "initials": "S",
+      "color": "#0ea5e9"
+    },
+    {
+      "ref": "priya",
+      "name": "Priya (demo)",
+      "initials": "P",
+      "color": "#f97316"
+    },
+    {
+      "ref": "jordan",
+      "name": "Jordan (demo)",
+      "initials": "J",
+      "color": "#22c55e"
+    }
+  ],
+  "labels": [],
+  "fields": [
+    {
+      "ref": "where",
+      "name": "Where",
+      "type": "choice",
+      "options": [
+        {
+          "ref": "home",
+          "name": "At home",
+          "color": "#64748b"
+        },
+        {
+          "ref": "lake",
+          "name": "At the lake",
+          "color": "#0ea5e9"
+        }
+      ]
+    },
+    {
+      "ref": "bookingRef",
+      "name": "Booking reference",
+      "type": "text"
+    }
+  ],
+  "goals": [
+    {
+      "ref": "g1",
+      "title": "A relaxed weekend away together",
+      "outcome": "Four friends get a weekend at the lake, without anyone doing all the organising.",
+      "measure": {
+        "unit": "{{currency}} in the pot",
+        "startValue": 0,
+        "targetValue": 400,
+        "startDate": "+0d",
+        "targetDate": "+21d",
+        "direction": "up"
+      }
+    }
+  ],
+  "milestones": [
+    {
+      "ref": "m1",
+      "name": "Everything booked",
+      "targetDate": "+10d",
+      "goalRef": "g1",
+      "outcome": "Somewhere to stay and a way to get there.",
+      "successCriteria": ["The cabin is booked", "Everyone knows how they are getting there"]
+    },
+    {
+      "ref": "m2",
+      "name": "The weekend away",
+      "targetDate": "+24d",
+      "goalRef": "g1",
+      "outcome": "Two days at the lake.",
+      "successCriteria": ["Everyone came home happy"]
+    }
+  ],
+  "taskTypes": [
+    {
+      "ref": "booking",
+      "name": "Booking",
+      "icon": "calendar",
+      "color": "#0ea5e9",
+      "fieldRefs": ["bookingRef"]
+    },
+    {
+      "ref": "errand",
+      "name": "Errand",
+      "icon": "circle-dot",
+      "color": "#f59e0b",
+      "fieldRefs": ["where"]
+    }
+  ],
+  "tasks": [
+    {
+      "ref": "e1",
+      "title": "Pick the weekend",
+      "description": "Find a weekend when all four of us are free.\n\n**This task shows:** a task's details. Click a card to open it: change its status, priority, due date and who it is assigned to, and read the comments at the bottom. Everything saves as you go, and Ctrl+Z undoes it.",
+      "status": "backlog",
+      "priority": "high",
+      "assigneeRef": "priya",
+      "dueDate": "+2d"
+    },
+    {
+      "ref": "e2",
+      "title": "Ask everyone what food they like",
+      "description": "So nobody goes hungry.\n\n**This task shows:** a checklist, for breaking a task into small steps. Tick the rest off.",
+      "status": "backlog",
+      "priority": "medium",
+      "assigneeRef": "sam",
+      "dueDate": "+5d",
+      "checklist": [
+        {
+          "text": "Sam",
+          "checked": true
+        },
+        {
+          "text": "Priya",
+          "checked": true
+        },
+        {
+          "text": "Jordan",
+          "checked": false
+        },
+        {
+          "text": "Me",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "ref": "e3",
+      "title": "Put money in the trip pot",
+      "description": "A little every week adds up.\n\n**This task shows:** a repeating task. Mark it Done and the next one appears a week later.",
+      "status": "backlog",
+      "priority": "medium",
+      "dueDate": "+3d",
+      "recurrence": {
+        "rule": {
+          "every": "week",
+          "interval": 1,
+          "weekdays": [5]
+        },
+        "endsOn": "+21d",
+        "remaining": null
+      }
+    },
+    {
+      "ref": "e4",
+      "title": "Check what time the lake café opens",
+      "description": "We want breakfast there on Saturday.\n\n**This task shows:** dates on the Calendar. Open the Calendar view and find this task on its day. Drag it to another day to move it.",
+      "status": "backlog",
+      "priority": "low",
+      "dueDate": "+20d"
+    },
+    {
+      "ref": "s1",
+      "title": "Book the cabin",
+      "description": "Two nights, four beds, near the water. Waits until we have picked the weekend.\n\n**This task shows:** a milestone, a task it waits on, a start date and an estimate (see it on the Timeline), a task type with its own field, and a decision that explains it.",
+      "status": "backlog",
+      "priority": "high",
+      "milestoneRef": "m1",
+      "typeRef": "booking",
+      "assigneeRef": "jordan",
+      "startDate": "+3d",
+      "dueDate": "+6d",
+      "estimate": 1,
+      "dependsOnRefs": ["e1"]
+    },
+    {
+      "ref": "s2",
+      "title": "Sort out how we get there",
+      "description": "One car, or the train?\n\n**This task shows:** a checklist where each item has its own person and date.",
+      "status": "backlog",
+      "priority": "medium",
+      "milestoneRef": "m1",
+      "dueDate": "+9d",
+      "estimate": 1,
+      "dependsOnRefs": ["s1"],
+      "checklist": [
+        {
+          "text": "Compare train times",
+          "checked": false,
+          "assigneeRef": "sam",
+          "dueDate": "+7d"
+        },
+        {
+          "text": "Ask to borrow the big car",
+          "checked": false,
+          "assigneeRef": "jordan",
+          "dueDate": "+7d"
+        },
+        {
+          "text": "Tell everyone the plan",
+          "checked": false,
+          "dueDate": "+9d"
+        }
+      ]
+    },
+    {
+      "ref": "s3",
+      "title": "Plan the meals",
+      "description": "Who cooks what.\n\n**This task shows:** subtasks, each its own task with its own person.",
+      "status": "backlog",
+      "priority": "medium",
+      "milestoneRef": "m2",
+      "dueDate": "+14d",
+      "dependsOnRefs": ["e2"]
+    },
+    {
+      "ref": "s3a",
+      "parentRef": "s3",
+      "title": "Friday dinner",
+      "status": "backlog",
+      "priority": "medium",
+      "milestoneRef": "m2",
+      "assigneeRef": "sam"
+    },
+    {
+      "ref": "s3b",
+      "parentRef": "s3",
+      "title": "Saturday picnic",
+      "status": "backlog",
+      "priority": "medium",
+      "milestoneRef": "m2",
+      "assigneeRef": "priya"
+    },
+    {
+      "ref": "s4",
+      "title": "Weekly catch-up call",
+      "description": "Ten minutes on a Sunday to see where we are.\n\n**This task shows:** taking turns. It repeats every week, and each time it goes to the next person in the list.",
+      "status": "backlog",
+      "priority": "low",
+      "dueDate": "+6d",
+      "recurrence": {
+        "rule": {
+          "every": "week",
+          "interval": 1,
+          "weekdays": [0]
+        },
+        "endsOn": "+21d",
+        "remaining": null,
+        "rotationRefs": ["sam", "priya", "jordan"],
+        "nextIndex": 0
+      },
+      "assigneeRef": "sam"
+    },
+    {
+      "ref": "s5",
+      "title": "Check the weather forecast",
+      "description": "No point looking before the week of the trip.\n\n**This task shows:** Show from. This task stays out of the way until a few days before the trip.",
+      "status": "backlog",
+      "priority": "medium",
+      "milestoneRef": "m2",
+      "showFrom": "+20d",
+      "dueDate": "+22d"
+    },
+    {
+      "ref": "s7",
+      "title": "Next year: a whole week away",
+      "description": "An idea for later.\n\n**This task shows:** Someday. It is parked out of the Board until you want it; find it in the Someday view.",
+      "status": "backlog",
+      "priority": "low",
+      "someday": true
+    },
+    {
+      "ref": "s6",
+      "title": "Set up Ostler AI (optional)",
+      "description": "Ostler works fully without AI. If you would like help writing tasks and summaries, open Settings › AI and choose a provider. Remove this task if you don't want it.",
+      "status": "backlog",
+      "priority": "low"
+    },
+    {
+      "ref": "x1",
+      "title": "Pay the cabin deposit",
+      "description": "Half now, half on arrival.\n\n**This task shows:** the project's budget and its costs. Open the Costs view to see what is planned and what is paid.",
+      "status": "backlog",
+      "priority": "high",
+      "milestoneRef": "m1",
+      "typeRef": "booking",
+      "assigneeRef": "jordan",
+      "dueDate": "+7d",
+      "dependsOnRefs": ["s1"]
+    },
+    {
+      "ref": "x2",
+      "title": "Buy the picnic food",
+      "description": "The day before we leave.\n\n**This task shows:** the Shopping list. Its items belong to this task; tick them off in the Shopping list view as you buy them.",
+      "status": "backlog",
+      "priority": "medium",
+      "milestoneRef": "m2",
+      "typeRef": "errand",
+      "assigneeRef": "priya",
+      "dueDate": "+23d",
+      "fieldValues": {
+        "where": "home"
+      },
+      "dependsOnRefs": ["s3"]
+    },
+    {
+      "ref": "x3",
+      "title": "Hire kayaks for Saturday",
+      "description": "Only if the weather is good.\n\n**This task shows:** impact and effort scores, for choosing between ideas.",
+      "status": "backlog",
+      "priority": "low",
+      "milestoneRef": "m2",
+      "typeRef": "booking",
+      "impact": 4,
+      "effort": 2
+    },
+    {
+      "ref": "a1",
+      "title": "Make a group chat",
+      "description": "Somewhere for the four of us to talk.\n\n**This task shows:** the Board's columns. This one is In progress. Drag a card to another column to change its status.",
+      "status": "active",
+      "priority": "medium",
+      "assigneeRef": "sam"
+    },
+    {
+      "ref": "d1",
+      "title": "Agree to go away together",
+      "description": "Done! Finished tasks sit in Done for a while, then move to the Archive.",
+      "status": "done",
+      "priority": "medium"
+    }
+  ],
+  "decisions": [
+    {
+      "title": "Stay at the lake, not in the city",
+      "context": "We wanted somewhere quiet that all four of us can reach in two hours.",
+      "decision": "Book a cabin at the lake.",
+      "alternatives": "A city break: more to do, but louder and dearer.",
+      "consequences": "We need a car or the train, and we bring our own food.",
+      "date": "+0d",
+      "taskRefs": ["s1"]
+    }
+  ],
+  "comments": [
+    {
+      "taskRef": "e1",
+      "authorRef": "sam",
+      "body": "Any weekend except the first one works for me."
+    },
+    {
+      "taskRef": "e1",
+      "authorRef": "jordan",
+      "body": "Same here. The third weekend would be perfect."
+    },
+    {
+      "taskRef": "s1",
+      "authorRef": "priya",
+      "body": "I found a nice one with a jetty. Details are in the Trip plan brief in the Library."
+    }
+  ],
+  "budget": {
+    "amount": 800
+  },
+  "costs": [
+    {
+      "date": "+7d",
+      "amount": 150,
+      "description": "Cabin deposit",
+      "category": "Stay",
+      "taskRef": "x1",
+      "milestoneRef": "m1",
+      "state": "planned"
+    },
+    {
+      "date": "+24d",
+      "amount": 150,
+      "description": "Cabin balance",
+      "category": "Stay",
+      "milestoneRef": "m2",
+      "state": "planned"
+    },
+    {
+      "date": "+24d",
+      "amount": 80,
+      "description": "Kayak hire",
+      "category": "Fun",
+      "taskRef": "x3",
+      "state": "planned"
+    }
+  ],
+  "shopping": [
+    {
+      "name": "Bread rolls",
+      "quantity": 8,
+      "estimate": 3,
+      "taskRef": "x2"
+    },
+    {
+      "name": "Strawberries",
+      "quantity": 2,
+      "unit": "punnets",
+      "estimate": 5,
+      "taskRef": "x2"
+    },
+    {
+      "name": "Lemonade",
+      "quantity": 3,
+      "unit": "bottles",
+      "estimate": 4.5,
+      "taskRef": "x2"
+    }
+  ],
+  "columns": {
+    "names": {
+      "backlog": "To do"
+    },
+    "hidden": ["ready", "blocked", "review"]
+  },
+  "library": [
+    {
+      "kind": "note",
+      "title": "Read me",
+      "summary": "What this demo is and how to read it",
+      "body": "This demo project plans a weekend away for four friends: you, Sam, Priya and Jordan. Sam, Priya and Jordan are made-up people, marked (demo) in People.\n\nRead the To do column from top to bottom. Each task says what it shows, starting with the everyday tools (tasks, the Board, the List, the Calendar and the Library), then milestones, the Timeline, decisions, goals, subtasks and tasks that wait on each other, and last costs, the shopping list and scores.\n\nSome tasks are not on the Board on purpose: Check the weather forecast stays hidden until near the trip, and Next year: a whole week away is in Someday.\n\nChange anything you like. When you are done, remove the project from its More menu. The user guide, in Help, covers the rest."
+    },
+    {
+      "kind": "brief",
+      "title": "Trip plan",
+      "summary": "Where, when and who",
+      "body": "**Where:** a cabin at the lake, two hours away.\n\n**When:** a weekend about three weeks from now.\n\n**Who:** you, Sam, Priya and Jordan.\n\n**Budget:** {{money:800}} for the cabin, travel and food, shared four ways."
+    }
+  ],
+  "pins": [
+    {
+      "kind": "library",
+      "index": 0
+    },
+    {
+      "kind": "milestone",
+      "index": 1
+    }
+  ]
+}

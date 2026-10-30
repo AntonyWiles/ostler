@@ -1,0 +1,58 @@
+/* "Add to this task" and the parts it adds. Tokens only. */
+
+/* A part's fields take their places in the drawer's grid as if unwrapped. */
+.task-part {
+  display: contents;
+}
+
+.task-parts-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-150);
+}
+
+.task-parts-bar__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  margin-inline-end: var(--space-050);
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.task-parts-bar__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  height: var(--control-height-sm);
+  padding: 0 var(--space-200);
+  background: transparent;
+  border: var(--border-width) dashed var(--color-border-strong);
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  font: inherit;
+  font-size: var(--text-body-sm);
+  cursor: pointer;
+}
+
+.task-parts-bar__chip .ostler-icon {
+  color: var(--color-text-muted);
+}
+
+.task-parts-bar__chip:hover {
+  background: var(--color-surface-hover);
+  border-style: solid;
+  color: var(--color-text);
+}
+
+.task-parts-bar__more {
+  color: var(--color-text-secondary);
+}
+
+@media (forced-colors: active) {
+  .task-parts-bar__chip {
+    border-color: ButtonText;
+    color: ButtonText;
+  }
+}

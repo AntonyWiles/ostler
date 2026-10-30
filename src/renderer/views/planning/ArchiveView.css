@@ -1,0 +1,172 @@
+/* Archive and recycle bin: one table-like list. Tokens only. */
+
+.archive-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+}
+
+.archive-view__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-300);
+}
+
+.archive-view__intro {
+  max-width: 70ch;
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.archive-view__count {
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+
+.archive-table {
+  --archive-columns: auto minmax(0, 1fr) calc(var(--space-1200) * 2.5) calc(var(--space-1200) * 2.5)
+    auto;
+
+  display: flex;
+  flex-direction: column;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+/* The recycle bin has one more column. A class, not its label: the label is
+   translated. */
+.archive-view--bin .archive-table {
+  --archive-columns: auto minmax(0, 1fr) calc(var(--space-1200) * 2.5) calc(var(--space-1200) * 2)
+    calc(var(--space-1200) * 3) auto;
+}
+
+.archive-table__row {
+  display: grid;
+  grid-template-columns: var(--archive-columns);
+  align-items: center;
+  gap: var(--space-300);
+  min-height: var(--row-height);
+  padding: var(--space-150) var(--space-300);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.archive-table__row--head {
+  border-top: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+}
+
+.archive-table__row:not(.archive-table__row--head):hover {
+  background: var(--color-surface-hover);
+}
+
+.archive-table__title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.archive-table__title > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.archive-table__muted {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.archive-table__when-label {
+  display: none;
+}
+
+.archive-table__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-100);
+}
+
+@media (width < 1100px) {
+  .archive-table,
+  .archive-view--bin .archive-table {
+    --archive-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .archive-table__row {
+    row-gap: var(--space-050);
+  }
+
+  .archive-table__row > [role='cell'] {
+    grid-column: 2;
+  }
+
+  .archive-table__row > [role='cell']:first-child {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .archive-table__row > .archive-table__actions {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .archive-table__when-label {
+    display: inline;
+  }
+
+  .archive-table__row--head > :not(:first-child, :nth-child(2), :last-child) {
+    display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .archive-table,
+  .archive-table__row {
+    border-color: CanvasText;
+  }
+}
+
+/* A won't-do task (N1.2): its mark and reason under the title. */
+.archive-table__resolution {
+  display: flex;
+  align-items: center;
+  gap: var(--space-150);
+  min-width: 0;
+}
+
+.archive-table__reason {
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* An archived task's title opens it in the drawer. */
+.archive-table__open {
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.archive-table__open:hover {
+  text-decoration: underline;
+}
+
+.archive-table__open:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}

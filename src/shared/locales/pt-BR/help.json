@@ -1,0 +1,42 @@
+{
+  "shortcutOverlay": {
+    "title": "Atalhos de teclado",
+    "description": "Os atalhos de uma tecla funcionam quando você não está digitando em um campo.",
+    "search": "Pesquisar atalhos",
+    "noMatch": "Nenhum atalho corresponde a “{{query}}”."
+  },
+  "helpProvider": {
+    "diagnosticsCopied": "Diagnóstico copiado",
+    "versionsCountsEndLog": "Versões, contagens e o fim do registro, sem nomes, chaves nem tokens.",
+    "couldntCopyDiagnostics": "Não foi possível copiar o diagnóstico",
+    "issuePageOpenBrowser": "A página de problemas do {{brand}} está aberta no seu navegador, e o diagnóstico está na área de transferência: cole-o no relatório só se quiser.",
+    "couldntOpenIssuePage": "Não foi possível abrir a página de problemas"
+  },
+  "whatsNewDialog": {
+    "whatsNew": "Novidades do {{brand}}",
+    "version": "Versão {{version}}",
+    "close": "Fechar",
+    "thereNoNotesVersion": "Não há notas para esta versão."
+  },
+  "guide": {
+    "version": "Versão {{version}}"
+  },
+  "helpView": {
+    "userGuidePages": "Páginas do guia do usuário",
+    "userGuide": "Guia do usuário",
+    "searchGuide": "Pesquisar no guia",
+    "matches_one": "{{count}} resultado",
+    "matches_many": "{{count}} resultados",
+    "matches_other": "{{count}} resultados",
+    "userGuideIsntBuild": "O guia do usuário não está nesta versão",
+    "readOnlineRepositoryDocs": "Leia online no repositório do {{brand}}, na pasta docs/user-guide.",
+    "noPageMentions": "Nenhuma página menciona isso.",
+    "foundPages_one": "Encontrado em {{count}} página.",
+    "foundPages_many": "Encontrado em {{count}} páginas.",
+    "foundPages_other": "Encontrado em {{count}} páginas.",
+    "notPage": "Não está nesta página.",
+    "matchesPageHighlighted_one": "{{count}} resultado nesta página, destacado.",
+    "matchesPageHighlighted_many": "{{count}} resultados nesta página, destacados.",
+    "matchesPageHighlighted_other": "{{count}} resultados nesta página, destacados."
+  }
+}

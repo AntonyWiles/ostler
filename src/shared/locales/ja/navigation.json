@@ -1,0 +1,648 @@
+{
+  "globalViews": {
+    "home": {
+      "label": "ホーム",
+      "keywords": "スタート、ポートフォリオ、対応が必要"
+    },
+    "inbox": {
+      "label": "受信トレイ",
+      "keywords": "通知、更新、リマインダー、未読"
+    },
+    "myWork": {
+      "label": "自分の作業",
+      "keywords": "割り当て、タスク、自分、担当、プロジェクト横断、すべて"
+    },
+    "search": {
+      "label": "検索",
+      "keywords": "検索、結果、コメント、意思決定、ライブラリ"
+    },
+    "agents": {
+      "label": "エージェント",
+      "keywords": "キュー、セッション、ハーネス"
+    },
+    "help": {
+      "label": "ユーザーガイド",
+      "keywords": "ヘルプ、ドキュメント、使い方、マニュアル、ガイド"
+    },
+    "settings": {
+      "label": "設定",
+      "keywords": "環境設定、オプション"
+    },
+    "timesheet": {
+      "label": "作業時間表",
+      "keywords": "時間、時数、タイマー、記録、ログ、週"
+    },
+    "workload": {
+      "label": "作業量",
+      "keywords": "キャパシティ、人、チーム、時間、割り当て、超過、週、リソース"
+    },
+    "weeklyReview": {
+      "label": "週次レビュー",
+      "keywords": "レビュー、週、期限切れ、ブロック、停滞、いつか、整理、計画"
+    },
+    "timelineOverview": {
+      "label": "プロジェクト横断のタイムライン",
+      "keywords": "タイムライン、ガント、マイルストーン、プロジェクト、ポートフォリオ、重なり、期限、ロードマップ"
+    },
+    "contacts": {
+      "label": "連絡先",
+      "keywords": "人、顧客、仕入先、電話、メール、住所、vCard、電話をかける"
+    },
+    "goals": {
+      "label": "目標",
+      "keywords": "個人の目標、自分の目標、ターゲット、目的、貯金、指標、チェックイン、進捗"
+    },
+    "undoHistory": {
+      "label": "変更履歴",
+      "keywords": "履歴、元に戻す、やり直す、変更、ログ、タイムライン、復元、何を変えたか、アクティビティ"
+    },
+    "team": {
+      "label": "チーム",
+      "keywords": "チーム, メンバー, リーダー, 期限切れ, ブロック, 作業量"
+    }
+  },
+  "views": {
+    "overview": {
+      "label": "概要",
+      "keywords": "今日、要約、サマリー、判断が必要",
+      "description": "プロジェクトの進み具合と、対応が必要なことを表示します。"
+    },
+    "plan": {
+      "label": "計画",
+      "keywords": "計画、目標、マイルストーン、スケジュール、始める、プロジェクトを開始",
+      "description": "プロジェクトを順を追って計画します：目標、マイルストーン、タスク、日付。"
+    },
+    "board": {
+      "label": "ボード",
+      "keywords": "カンバン、タスク、列",
+      "description": "未着手から完了まで、タスクを列ごとに表示します。"
+    },
+    "list": {
+      "label": "リスト",
+      "keywords": "表、タスク、行、スプレッドシート",
+      "description": "すべてのタスクを、並べ替えと絞り込みができる表で表示します。"
+    },
+    "calendar": {
+      "label": "カレンダー",
+      "keywords": "日付、期限、月、週、予定",
+      "description": "期限の日ごとにタスクを表示します。"
+    },
+    "timeline": {
+      "label": "タイムライン",
+      "keywords": "ガント、予定、依存関係、計画、日付",
+      "description": "開始日と期限のあるタスクを、時間の流れに沿って並べて表示します。"
+    },
+    "milestones": {
+      "label": "マイルストーン",
+      "keywords": "目標、準備状況",
+      "description": "目標と、そこに至るまでのマイルストーンを表示します。"
+    },
+    "library": {
+      "label": "ライブラリ",
+      "keywords": "ブリーフ、ドキュメント、メモ、リンク",
+      "description": "ブリーフ、ドキュメント、メモ、画像、リンクを表示します。"
+    },
+    "decisions": {
+      "label": "意思決定",
+      "keywords": "意思決定ログ",
+      "description": "何が決まったか、そしてその理由を表示します。"
+    },
+    "files": {
+      "label": "ファイル",
+      "keywords": "コード、エディター、コピー",
+      "description": "プロジェクトのフォルダーにあるファイルを表示します。"
+    },
+    "history": {
+      "label": "履歴",
+      "keywords": "元に戻す、復元、バージョン、変更、破棄",
+      "description": "フォルダー内の作業を、元に戻したり、復元したり、戻したりします。"
+    },
+    "agents": {
+      "label": "エージェント",
+      "keywords": "キュー、タスク、レビュー、適用",
+      "description": "コーディングエージェントのキュー、実行、レビューを表示します。"
+    },
+    "matrix": {
+      "label": "マトリクス",
+      "keywords": "優先度、緊急、重要、アイゼンハワー、象限、何から",
+      "description": "アイデアを影響度と労力で表示します。何から取り組むかが分かります。"
+    },
+    "triage": {
+      "label": "仕分け",
+      "keywords": "仕分け、取り込み、クイック追加、受信トレイ、整理、承認、新規",
+      "description": "数えられる前に仕分けする、新しい取り込みです。"
+    },
+    "someday": {
+      "label": "いつか",
+      "keywords": "アイデア、後で、そのうち、保留、非表示",
+      "description": "後で取り組むために保留したアイデアです。"
+    },
+    "costs": {
+      "label": "費用",
+      "keywords": "予算、お金、支出、経費、支払い済み、予定",
+      "description": "予算と、支出済みまたは予定している金額です。"
+    },
+    "shopping": {
+      "label": "買い物リスト",
+      "keywords": "購入、買い物、用品、材料、ショップ、注文、仕入先",
+      "description": "買うもの、そして購入済みのものを表示します。"
+    },
+    "timeReport": {
+      "label": "時間レポート",
+      "keywords": "請求可能、請求、時間、料金、請求書、課金、顧客",
+      "description": "記録した時間を、タスクと担当者ごとに、請求できる形で表示します。"
+    },
+    "archive": {
+      "label": "アーカイブ",
+      "keywords": "アーカイブ済みのタスク",
+      "description": "片付けたタスクを、記録として残しています。"
+    },
+    "bin": {
+      "label": "ごみ箱",
+      "keywords": "削除済み、ゴミ、復元",
+      "description": "削除したタスクです。30日間は復元できます。"
+    }
+  },
+  "settings": {
+    "general": {
+      "label": "一般",
+      "keywords": "外観、テーマ、表示密度、アクセント、起動"
+    },
+    "projects": {
+      "label": "プロジェクト",
+      "keywords": "フォルダー、色、アーカイブ、削除"
+    },
+    "people": {
+      "label": "人",
+      "keywords": "自分、担当者、割り当て、チーム"
+    },
+    "notifications": {
+      "label": "通知",
+      "keywords": "アラート"
+    },
+    "ai": {
+      "label": "AI",
+      "keywords": "プロバイダー、モデル、キー、AIの設定"
+    },
+    "agents": {
+      "label": "エージェント",
+      "keywords": "ハーネス、接続されたエージェント、エージェントのトークン"
+    },
+    "connections": {
+      "label": "接続",
+      "keywords": "自動化API、MCP、AIアシスタント、Claude、ChatGPT、トークン、接続"
+    },
+    "devices": {
+      "label": "デバイス",
+      "keywords": "PC、コンピューター、ペアリング、参加、同期、個人スペース、別のPC、デバイスの削除"
+    },
+    "data": {
+      "label": "データ",
+      "keywords": "データベース、バックアップ、復元、サイズ"
+    },
+    "advanced": {
+      "label": "詳細設定",
+      "keywords": "ファイルの動き、監視、Git、ポート、開発者"
+    },
+    "git": {
+      "label": "Git",
+      "keywords": "コミット、リポジトリ、履歴、ポーリング"
+    },
+    "about": {
+      "label": "バージョン情報",
+      "keywords": "バージョン、更新、診断"
+    },
+    "groups": {
+      "appearance": {
+        "keywords": "テーマ, ダークモード, ライトモード, 色, アクセント, 密度, フォントサイズ, 文字サイズ"
+      },
+      "startUp": {
+        "keywords": "起動, 開始ページ, スタートページ, ホーム, 最初"
+      },
+      "language": {
+        "keywords": "言語, 翻訳, 表示言語"
+      },
+      "workingHours": {
+        "keywords": "勤務時間, 時間, 就業日, 週, 曜日, スケジュール, 開始, 終了"
+      },
+      "windows": {
+        "keywords": "ウィンドウ, トレイ, 最小化, タスクバー, 常に手前, 閉じる"
+      },
+      "calendars": {
+        "keywords": "ics, 購読, フィード, リンク, Outlook, Google カレンダー"
+      },
+      "progress": {
+        "keywords": "年間まとめ, 連続記録, 統計, 進捗を表示"
+      },
+      "boardAllProjects": {
+        "keywords": "ボード, 列, かんばん, 既定, すべてのプロジェクト, レイアウト"
+      },
+      "reminders": {
+        "keywords": "リマインダー, 期限, 毎日, スヌーズ, 静かな時間, 期限切れ"
+      },
+      "desktopNotifications": {
+        "keywords": "トースト, バナー, Windows 通知, 音, ポップアップ"
+      },
+      "aiPrivacy": {
+        "keywords": "データ, 伏せ字, 送信, 共有, 機密, プライベート"
+      },
+      "builtInAgent": {
+        "keywords": "opencode, モデル, プロバイダー, 組み込みエージェント, API キー"
+      },
+      "usagePrices": {
+        "keywords": "コスト, 価格, トークン, 支出, 予算, 請求"
+      },
+      "accounts": {
+        "keywords": "google, microsoft, outlook, サインイン, カレンダー, 接続, アカウント"
+      },
+      "syncServer": {
+        "keywords": "共有, 共同作業, サーバー, 同期, 招待, チーム"
+      },
+      "emailServer": {
+        "keywords": "メール, SMTP, 招待, 送信, サーバー"
+      },
+      "automationApi": {
+        "keywords": "API, ポート, 自動化, Webhook, 連携, ローカルサーバー"
+      },
+      "githubToken": {
+        "keywords": "GitHub, トークン, 個人用アクセストークン, イシュー, プルリクエスト"
+      },
+      "storage": {
+        "keywords": "ディスク, 容量, サイズ, データベース, 場所, データフォルダー, 古いものを削除"
+      },
+      "agentCopies": {
+        "keywords": "ワークツリー, コピー, 保持, エージェント履歴, 整理"
+      },
+      "import": {
+        "keywords": "CSV, Trello, Jira, Asana, 取り込み, アップロード, スプレッドシート"
+      },
+      "backups": {
+        "keywords": "バックアップ, 復元, 別の保存先, スケジュール, コピー, 安全"
+      },
+      "versionHistory": {
+        "keywords": "git, スナップショット, 復元ポイント, 自分の編集, 履歴"
+      },
+      "developer": {
+        "keywords": "開発者ツール, devtools, デバッグ, コンソール, 検査"
+      },
+      "updates": {
+        "keywords": "更新, アップグレード, 新バージョン, 更新を確認, リリースノート"
+      },
+      "licences": {
+        "keywords": "ライセンス, オープンソース, サードパーティ, 通知, クレジット"
+      },
+      "diagnostics": {
+        "keywords": "診断をコピー, レポート, ログ, サポート, バグ, 問題"
+      }
+    }
+  },
+  "shortcutGroups": {
+    "anywhere": "どこでも",
+    "project": "プロジェクト内",
+    "tasks": "ボードとリスト",
+    "dates": "カレンダーとタイムライン",
+    "library": "ライブラリ"
+  },
+  "markupShortcutsHeading": "画像に注釈を付ける",
+  "markupShortcuts": {
+    "select": "選択。マークを移動・変更します",
+    "arrow": "矢印",
+    "box": "四角",
+    "highlight": "蛍光ペン",
+    "text": "テキスト",
+    "blur": "ぼかし。非公開の部分に",
+    "undo": "元に戻す",
+    "redo": "やり直す",
+    "next-mark": "次のマークへ移動",
+    "move": "選択したマークを移動",
+    "move-far": "選択したマークをさらに移動",
+    "resize": "選択したマークのサイズを変更",
+    "delete": "選択したマークを削除"
+  },
+  "whiteboardShortcutsHeading": "ホワイトボード",
+  "whiteboardShortcuts": {
+    "select": "選択",
+    "hand": "手のひら: ホワイトボード内を移動",
+    "pan": "どのツールでもホワイトボード内を移動",
+    "next-object": "次のオブジェクト",
+    "previous-object": "前のオブジェクト",
+    "move": "選択範囲を移動",
+    "move-far": "選択範囲を 10 倍移動",
+    "resize": "選択したオブジェクトのサイズを変更",
+    "resize-far": "サイズを 10 倍変更",
+    "free-move": "グリッドに合わせずに移動",
+    "keep-ratio": "形を保ったままサイズを変更",
+    "select-all": "すべて選択",
+    "deselect": "選択を解除",
+    "delete": "選択範囲を削除",
+    "undo": "元に戻す",
+    "redo": "やり直す",
+    "zoom-in": "拡大",
+    "zoom-out": "縮小",
+    "zoom-fit": "ホワイトボード全体を表示",
+    "zoom-reset": "100% に拡大縮小",
+    "note": "付箋",
+    "text": "テキスト",
+    "place": "選んだツールのオブジェクトを表示の中央に置く",
+    "edit-text": "選択したオブジェクトのテキストを編集",
+    "finish-text": "テキストの編集を終える",
+    "duplicate": "複製",
+    "copy": "コピー",
+    "cut": "切り取り",
+    "paste": "貼り付け",
+    "group": "グループ化",
+    "ungroup": "グループ解除",
+    "bring-forward": "前面へ移動",
+    "send-backward": "背面へ移動",
+    "bring-to-front": "最前面へ移動",
+    "send-to-back": "最背面へ移動",
+    "pen": "ペン",
+    "marker": "マーカー",
+    "eraser": "消しゴム: 描画を消す",
+    "shape": "図形 (もう一度押すと次の図形)",
+    "frame": "フレーム",
+    "draw-square": "正方形または円を描く",
+    "connector": "線または矢印",
+    "connect-to": "選択したオブジェクトを別のオブジェクトに接続",
+    "picture": "画像を挿入",
+    "paste-lines": "各行を個別の付箋として貼り付け",
+    "link": "項目または Web ページにリンク",
+    "open-link": "選択したオブジェクトのリンクを開く",
+    "make-tasks": "選択からタスクを作成",
+    "mindmap": "マインドマップ",
+    "mind-map-child": "子のアイデアを追加 (入力中は Tab、選択中は Insert)",
+    "mind-map-sibling": "次のアイデアを追加 (入力中)",
+    "mind-map-new-line": "アイデア内で改行",
+    "mind-map-navigate": "マインドマップの枝に沿って移動",
+    "mind-map-move": "アイデアを枝ごと移動 (中心のアイデアはマップ全体を移動)",
+    "pick-in-group": "グループ内のオブジェクトを 1 つ選択",
+    "context-menu": "選択中のもののメニューを開く",
+    "node": "ノード: 辺の中央でオブジェクトをつなぐ"
+  },
+  "shortcuts": {
+    "palette": "コマンドパレットと検索",
+    "new-task": "クイック追加。現在のプロジェクトがあれば、そこに追加",
+    "quick-add": "どこからでもクイック追加",
+    "settings": "設定",
+    "sidebar": "サイドバーを折りたたむ、または展開する",
+    "go-home": "ホームへ移動",
+    "go-inbox": "受信トレイへ移動",
+    "go-my-work": "自分の作業へ移動",
+    "focus-search": "ビューの検索またはフィルターにフォーカス",
+    "shortcut-help": "キーボードショートカットを表示",
+    "undo": "直前の変更を元に戻す（テキスト欄では入力を元に戻す）",
+    "redo": "元に戻した変更をやり直す",
+    "undo-history": "変更履歴を開く",
+    "escape": "最前面の層を閉じ、次に選択を解除",
+    "project-view": "プロジェクトのビューを順番に切り替え",
+    "next-task": "タスク間を移動",
+    "plan-indent": "計画の行を、上の行のサブタスクにする",
+    "plan-outdent": "計画の行を1段階上に移動",
+    "open-task": "フォーカスしているタスクを開く",
+    "move-task-order": "フォーカスしているタスクを、手動の順序で上下に移動（ボード、リスト、タスクのサブタスク）",
+    "move-task-column": "フォーカスしているカードを、手動の順序で前後の列に移動（ボード）",
+    "move-task-matrix": "フォーカスしているカードを1マス上下に移動し、優先度を変更（マトリクス）",
+    "select-task": "フォーカスしているタスクを選択または選択解除",
+    "edit-title": "タイトルをその場で編集",
+    "delete-task": "ごみ箱に移動",
+    "calendar-today": "今日へ移動",
+    "move-task-date": "フォーカスしているタスクを1日（Left、Right）または1週間（Up、Down）移動（カレンダー）。1日移動（タイムライン）",
+    "move-task-due": "フォーカスしているタスクの期限を1日移動（タイムライン）",
+    "move-task-start": "フォーカスしているタスクの開始日を1日移動（タイムライン）",
+    "library-search": "ライブラリを検索",
+    "library-make-task": "選択した行からタスクを作成（ライブラリのエディター）",
+    "zoom-in": "拡大",
+    "zoom-out": "縮小",
+    "zoom-reset": "ズームをリセット",
+    "find-replace": "現在のプロジェクトで検索と置換"
+  },
+  "app": {
+    "loading": "読み込み中"
+  },
+  "skipLink": {
+    "skipContent": "コンテンツへ移動"
+  },
+  "titleBar": {
+    "menu": "メニュー",
+    "minimize": "最小化",
+    "maximize": "最大化",
+    "restore": "元に戻す（縮小）",
+    "close": "閉じる"
+  },
+  "sidebar": {
+    "sidebar": "サイドバー",
+    "search": "検索",
+    "search2": "検索…",
+    "main": "メイン",
+    "more": "その他",
+    "projects": "プロジェクト",
+    "newProject": "新しいプロジェクト",
+    "actions": "{{projectName}}の操作",
+    "unread": "未読{{unread}}件",
+    "running": "{{running}}件実行中",
+    "couldnTSaveProject": "プロジェクトの順序を保存できませんでした",
+    "moveUp": "上へ移動",
+    "moveDown": "下へ移動",
+    "expandSidebar": "サイドバーを展開",
+    "collapseSidebar": "サイドバーを折りたたむ"
+  },
+  "commandPalette": {
+    "commandPalette": "コマンドパレット",
+    "move": "移動",
+    "open": "開く",
+    "close": "閉じる",
+    "commandPaletteSearch": "コマンドパレットの検索",
+    "goProjectViewSetting": "プロジェクト、ビュー、設定へ移動、またはすべてを検索…",
+    "results": "結果",
+    "noMatches": "一致するものはありません",
+    "newTask": "新しいタスク",
+    "create": "作成",
+    "quickAddTask": "タスクをクイック追加",
+    "newProject": "新しいプロジェクト",
+    "openSampleProject": "サンプルプロジェクトを開く",
+    "openAdvancedDemo": "詳細なデモプロジェクトを開く",
+    "go": "移動",
+    "keyboardShortcuts": "キーボードショートカット",
+    "whatSNew": "新機能",
+    "reportProblem": "問題を報告…",
+    "copyDiagnostics": "診断情報をコピー",
+    "help": "ヘルプ",
+    "projects": "プロジェクト",
+    "noFolder": "フォルダーなし",
+    "projectViews": "プロジェクトのビュー",
+    "newTask2": "{{projectName}}に新しいタスク",
+    "newNote": "{{projectName}}に新しいメモ",
+    "settings": "設定",
+    "settings2": "設定: {{sectionLabel}}",
+    "settingsGroup": "{{sectionLabel}} › {{groupLabel}}",
+    "developer": "開発者",
+    "developerUiGallery": "開発者: UIギャラリー",
+    "savedViews": "保存したビュー",
+    "openView": "ビューを開く: {{viewName}} · {{projectName}}",
+    "comment": "{{resultTitle}}にコメント",
+    "search": "検索",
+    "seeAllResults": "「{{trimmed}}」のすべての結果を表示",
+    "keywords": {
+      "quickAdd": "追加、作成、タスク、取り込み",
+      "sampleProject": "ツアー、ようこそ、学ぶ、例、チュートリアル",
+      "shortcuts": "キー、ホットキー",
+      "whatsNew": "変更履歴、リリースノート、バージョン",
+      "report": "バグ、不具合、フィードバック",
+      "diagnostics": "ログ、サポート",
+      "create": "追加、作成",
+      "savedView": "保存したビュー、フィルター",
+      "calendarFile": "ics、カレンダー、Outlook、Googleカレンダー、エクスポート、期限",
+      "printMyWeek": "印刷、紙、PDF、週、予定、今日、今後",
+      "printYearInReview": "印刷、紙、PDF、年、レビュー、進捗、完了、終了",
+      "taskTemplate": "テンプレート、パターン、新しいタスク、繰り返し、チェックリスト",
+      "findReplace": "名前の変更、検索、置換、テキストの変更",
+      "snip": "スクリーンショット、切り取り、キャプチャ、画像、画面",
+      "statusUpdate": "ステータス、更新、健全性、順調、要注意、遅延、報告",
+      "playbook": "プレイブック、エージェント、実行、キュー、テンプレート、繰り返し",
+      "tour": "ウォークスルー、ヒント、チュートリアル、学ぶ、オンボーディング、ガイド"
+    },
+    "newTaskFromTemplate": "テンプレートから新しいタスク…",
+    "findTaskTemplate": "タスクテンプレートを検索",
+    "noTaskTemplates": "まだタスクテンプレートはありません。タスクのメニューから「タスクテンプレートとして保存…」を選ぶと保存できます。",
+    "planTasks": "複数のタスクを計画",
+    "exportCalendarFile": "カレンダーファイルにエクスポート…",
+    "print": "印刷",
+    "findReplace": "検索と置換…",
+    "projectsInArea": "プロジェクト · {{area}}",
+    "snipToTask": "タスクに切り取り",
+    "postUpdate": "ステータス更新を投稿",
+    "runPlaybook": "プレイブックを実行…",
+    "takeTheTour": "ツアーを見る"
+  },
+  "statusBar": {
+    "sharingSummary": "{{who}} · {{status}}",
+    "sharingStatus": {
+      "up-to-date": "最新",
+      "catching-up": "同期中",
+      "cannot-reach-folder": "フォルダーに接続できません",
+      "problems": "一部のファイルを読み取れませんでした"
+    },
+    "sharedWithName": "{{name}}さんと共有中",
+    "sharedWithCount_other": "{{count}}人と共有中",
+    "sharedOnYourPcs": "あなたのPC間で共有中",
+    "sharingDetail": "このプロジェクトの共有相手を確認する、またはプロジェクトから抜ける",
+    "aiBusy": "AI処理中",
+    "aiStoppedResume": "AI停止中 · 再開",
+    "aiStoppedNoAgent": "AIは停止中です。エージェントの実行は自動では始まりません。クリックすると再開します。",
+    "cancelEveryAiRequest": "すべてのAIリクエストをキャンセルし、実行中のエージェントをすべて停止して、再開するまでキュー待ちのタスクを保留します",
+    "stoppedAllAiRequests_other": "すべてのAIリクエストと{{count}}件のエージェントの実行を停止しました。",
+    "couldnTStopAll": "すべてのAIを停止できませんでした: {{error}}。もう一度お試しください。",
+    "couldNotResume": "再開できませんでした: {{error}}",
+    "stopping": "停止中…",
+    "stopAllAi": "すべてのAIを停止",
+    "agentsRunning_other": "{{count}}件のエージェントが実行中",
+    "notifications": "アプリ内通知",
+    "notificationsUnread_other": "アプリ内通知、未確認{{count}}件",
+    "notificationsTitle": "アプリ内通知: 画面の隅に表示されたものすべて。元に戻す操作も使えます",
+    "notificationsShort": "通知"
+  },
+  "helpMenu": {
+    "help": "ヘルプ",
+    "userGuide": "ユーザーガイド",
+    "keyboardShortcuts": "キーボードショートカット",
+    "whatSNew": "新機能",
+    "reportProblem": "問題を報告…",
+    "opensIssuePageBrowser": "問題報告のページをブラウザーで開き、必要であれば貼り付けられるように診断情報をコピーします",
+    "copyDiagnostics": "診断情報をコピー",
+    "about": "バージョン情報",
+    "takeTheTour": "ツアーを見る",
+    "takeTheTourHint": "デモプロジェクトを、いくつかの短いステップで案内します"
+  },
+  "projectHeader": {
+    "branch": "ブランチ",
+    "newTask": "新しいタスク",
+    "moreProjectActions": "その他のプロジェクト操作",
+    "projectName": "プロジェクト名",
+    "quickAddPress": "クイック追加:",
+    "rename": "名前を変更"
+  },
+  "projectWorkspace": {
+    "loadingProject": "プロジェクトを読み込み中",
+    "projectNotFound": "プロジェクトが見つかりません",
+    "mayHaveBeenRemoved": "削除またはアーカイブされた可能性があります。アーカイブ済みのプロジェクトは、設定 › プロジェクトに一覧表示されます。",
+    "goHome": "ホームへ移動",
+    "projectViews": "プロジェクトのビュー",
+    "runningReview": "{{queueAttention}}件が実行中、またはレビュー待ち",
+    "loading": "読み込み中",
+    "loading2": "{{currentLabel}}を読み込み中",
+    "couldnTPrint": "印刷できませんでした",
+    "savedPdf": "PDFとして保存しました",
+    "list": "{{projectName}} - リスト",
+    "couldnTExport": "エクスポートできませんでした",
+    "exportedList": "リストをエクスポートしました",
+    "exportViewCsv": "このビューをCSVにエクスポート…",
+    "importExportGroup": "インポートとエクスポート",
+    "printGroup": "印刷",
+    "print": "印刷…",
+    "savePdf": "PDFとして保存…",
+    "didnTWorkTry": "うまくいきませんでした。もう一度お試しください。",
+    "planTasks": "複数のタスクを計画",
+    "findReplace": "検索と置換…",
+    "moreViews": "その他のビュー",
+    "moreViewsMenu": "このプロジェクトのその他のビュー",
+    "tabsInMore_other": "収まらないタブが{{count}}件ここにあります",
+    "tabsGroup": "タブ",
+    "tabsApplyTo": "タブの適用先",
+    "tabsAllProjects": "すべてのプロジェクト",
+    "tabsThisProject": "このプロジェクトのみ"
+  },
+  "boardTab": {
+    "generating": "生成中…",
+    "suggestTasks": "タスクを提案…"
+  },
+  "listTab": {
+    "generating": "生成中…",
+    "suggestTasks": "タスクを提案…"
+  },
+  "overviewTab": {
+    "softwareProject": "ソフトウェアのプロジェクトですか？",
+    "canSuggestTasksBreak": "タスクの提案、目標の分解、このプロジェクトの要約ができます。任意です。",
+    "canHelpPlan": "{{aiName}}が計画を手伝えます",
+    "notesChat": "メモのチャット",
+    "linkFolder": "フォルダーをリンク…",
+    "linkFolderBrowseFiles": "フォルダーをリンクすると、ここでファイルとGitの動きを確認でき、タスクをエージェントに渡せます。",
+    "linkFolderBrowseFiles2": "フォルダーをリンクすると、ここでファイルとGitの動きを確認できます。",
+    "setUpAi": "AIを設定",
+    "show": "表示",
+    "panes": {
+      "summary": "要約",
+      "insights": "インサイト",
+      "code": "コード"
+    }
+  },
+  "agentAnnouncements": {
+    "in": "「{{runTitle}}」（{{projectName}}）",
+    "run": "{{projectName}}での実行",
+    "agentStarted": "エージェントが{{runName}}を開始しました。",
+    "agentBlocked": "エージェントは{{runName}}で止まっています。",
+    "agentResumed": "エージェントが{{runName}}を再開しました。",
+    "agentRunEnded": "エージェントの実行が終了しました: {{runName}}。"
+  },
+  "useUpdateToast": {
+    "updateReadyRestartUpdate": "アップデートの準備ができました。再起動して更新",
+    "agentsWorkingCanRestart": "エージェントが作業中です。完了したら再起動できます。",
+    "versionInstallsWhenRestart": "バージョン{{version}}は、再起動するとインストールされます。",
+    "restartOptions": "再起動のオプション",
+    "restartNow": "今すぐ再起動"
+  },
+  "popOut": {
+    "openInNewWindow": "新しいウィンドウで開く",
+    "paletteOpen": "{{view}}を新しいウィンドウで開く",
+    "paletteKeywords": "切り離し, 2画面目, モニター, ウィンドウ",
+    "fullTitle": "8つのウィンドウが開いています",
+    "fullBody": "最も古い{{oldest}}を閉じて、これを開きますか？",
+    "closeOldest": "閉じて開く",
+    "couldNotOpen": "新しいウィンドウを開けませんでした",
+    "windowMenu": "ウィンドウメニュー",
+    "reopenAtStart": "起動時に再度開く",
+    "reopenAtStartHint": "終了時にこのウィンドウが開いていれば、次回の起動時にも開きます",
+    "showMainWindow": "メインウィンドウを表示",
+    "home": "ホーム",
+    "projectView": "{{projectName}} - {{view}}"
+  }
+}

@@ -1,0 +1,143 @@
+/* Comments on lines of a change (N9.2a). Tokens only. */
+
+/* The diff and its Comments list: side by side when there is room, stacked when not. */
+.line-comments__layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-300);
+  align-items: flex-start;
+}
+
+.line-comments__layout > .diff-patch {
+  flex: 3 1 28rem;
+  min-width: 0;
+}
+
+.line-comments__layout > .line-comments {
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+
+.line-comments__title {
+  margin: 0 0 var(--space-200);
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.line-comments__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.line-comments__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  padding: var(--space-200);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.line-comments__where {
+  font-size: var(--text-caption);
+  color: var(--color-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.line-comments__text,
+.line-comments__inline {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.line-comments__inline {
+  padding: var(--space-150) var(--space-200);
+  border-left: var(--space-100) solid var(--color-focus);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.line-comments__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+  padding: var(--space-200);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.line-comments__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-100);
+}
+
+.line-comments__excerpt {
+  max-height: 14rem;
+  margin: 0;
+  padding: var(--space-150) var(--space-200);
+  overflow: auto;
+  border-radius: var(--radius-control);
+  background: var(--color-surface-sunken);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+}
+
+/* Comments from the last review with the agent's answers (N9.2b). */
+.line-comments__side {
+  display: flex;
+  flex: 1 1 14rem;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+}
+
+.line-comments__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-100);
+}
+
+.line-comments__counts {
+  margin: 0 0 var(--space-100);
+  font-weight: var(--weight-semibold);
+}
+
+.line-comments__answer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  padding: var(--space-150) var(--space-200);
+  border-left: var(--space-100) solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-sunken);
+}
+
+.line-comments__answer-label {
+  font-size: var(--text-caption);
+  color: var(--color-text-secondary);
+}
+
+/* A reviewer's finding (N9.5b): its severity is a word in a badge, never colour alone. */
+.reviewer-finding__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-150);
+  align-items: center;
+}
+
+.reviewer-finding--dismissed .line-comments__text {
+  color: var(--color-text-secondary);
+}

@@ -1,0 +1,36 @@
+.ui-tooltip {
+  position: fixed;
+  z-index: var(--z-tooltip);
+  max-width: calc(var(--space-1200) * 6);
+  padding: var(--space-100) var(--space-200);
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-radius: var(--radius-control);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  pointer-events: none;
+}
+
+.ui-tooltip[hidden] {
+  display: none;
+}
+
+@media (forced-colors: active) {
+  .ui-tooltip {
+    background: Canvas;
+    color: CanvasText;
+    border: var(--border-width) solid CanvasText;
+  }
+}
+
+/* The trigger's shortcut, after the label. Keycaps on the inverted surface. */
+.ui-tooltip__kbd {
+  margin-inline-start: var(--space-200);
+  vertical-align: baseline;
+}
+
+.ui-tooltip__kbd .ui-kbd__key {
+  background: transparent;
+  color: inherit;
+  border-color: currentColor;
+}

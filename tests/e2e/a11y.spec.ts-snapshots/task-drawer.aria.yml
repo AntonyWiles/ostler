@@ -1,0 +1,68 @@
+- dialog "Agree to go away together":
+  - banner:
+    - text: /SP-\d+ Status/
+    - combobox "Status":
+      - option "To do"
+      - option "In progress"
+      - option "Done" [selected]
+    - heading "Agree to go away together" [level=2]:
+      - textbox "Title": Agree to go away together
+    - status
+    - button "Task actions"
+    - button "Close"
+  - text: Assignee
+  - combobox "Assignee": Unassigned
+  - button "Assign to me"
+  - text: Priority
+  - combobox "Priority":
+    - option "Low"
+    - option "Medium" [selected]
+    - option "High"
+    - option "Critical"
+  - text: Due date
+  - textbox "Due date"
+  - button "Quick dates"
+  - text: Milestone
+  - combobox "Milestone":
+    - option "No milestone" [selected]
+    - option "The weekend away"
+    - option "Everything booked"
+  - group "Labels":
+    - text: Labels Add a label
+    - combobox "Add a label"
+  - group "Add to this task":
+    - button "Type"
+    - button "Repeat"
+    - button "Estimate"
+    - button "Subtasks"
+    - button /\d+ more/
+  - region "Description":
+    - heading "Description" [level=3]
+    - radiogroup "Description view":
+      - radio "Write" [checked]
+      - radio "Preview"
+    - text: ""
+    - textbox "Description":
+      - /placeholder: What this task is, and what done looks like. Markdown works.
+      - text: Done! Finished tasks sit in Done for a while, then move to the Archive.
+  - region "Checklist":
+    - heading "Checklist" [level=3]
+    - button "Add item"
+  - region "Waits on":
+    - heading "Waits on" [level=3]
+    - paragraph: Tasks this one waits on, and how.
+    - text: Add a task it waits on
+    - combobox "Add a task it waits on"
+  - region "Activity":
+    - heading "Activity" [level=3]
+    - radiogroup "Show":
+      - radio "All" [checked]
+      - radio "Comments"
+      - radio "Changes"
+    - text: Comment
+    - textbox "Comment":
+      - /placeholder: Write a comment. Markdown works. Ctrl+Enter sends.
+    - button "Comment" [disabled]
+    - text: Write something first
+  - contentinfo: /Created .+/
+  - separator "Resize panel"

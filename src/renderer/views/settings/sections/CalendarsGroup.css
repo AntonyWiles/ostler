@@ -1,0 +1,62 @@
+/* Settings › General › Calendars (N3.3a). Rows reuse the people list's styles. */
+
+.ostler-calendars__empty,
+.ostler-calendars__hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.ostler-calendars__mark {
+  flex: none;
+  width: var(--space-100);
+  align-self: stretch;
+  border-radius: var(--radius-full);
+}
+
+.ostler-calendars__path {
+  display: block;
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ostler-calendars__rename {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--space-300);
+}
+
+.ostler-calendars__add {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.ostler-calendars__add p {
+  margin: 0;
+}
+
+.ostler-calendars__error {
+  color: var(--color-danger);
+}
+
+/* A link calendar's last failed try (N3.3b). */
+.ostler-calendars__failure {
+  display: block;
+  color: var(--color-danger);
+  font-size: var(--text-caption);
+}
+
+.ostler-calendars__write {
+  display: flex;
+  align-items: center;
+  gap: var(--space-300);
+  margin-top: var(--space-300);
+  padding-top: var(--space-300);
+  border-top: var(--border-width) solid var(--color-border);
+}

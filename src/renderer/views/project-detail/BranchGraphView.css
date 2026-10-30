@@ -1,0 +1,125 @@
+/* The branch and commit graph. Lanes use the chart palette. Tokens only. */
+
+.branch-graph {
+  display: flex;
+  gap: var(--space-300);
+  max-height: 26rem;
+  margin: var(--space-300) 0;
+  padding: var(--space-200);
+  overflow: auto;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.branch-graph__svg {
+  flex-shrink: 0;
+}
+
+.branch-graph__edge {
+  stroke-width: 2;
+  opacity: 0.7;
+}
+
+.branch-graph__node {
+  stroke: none;
+}
+
+.branch-graph__edge.branch-graph__lane-1 {
+  stroke: var(--chart-1);
+}
+
+.branch-graph__edge.branch-graph__lane-2 {
+  stroke: var(--chart-2);
+}
+
+.branch-graph__edge.branch-graph__lane-3 {
+  stroke: var(--chart-3);
+}
+
+.branch-graph__edge.branch-graph__lane-4 {
+  stroke: var(--chart-4);
+}
+
+.branch-graph__edge.branch-graph__lane-5 {
+  stroke: var(--chart-5);
+}
+
+.branch-graph__edge.branch-graph__lane-6 {
+  stroke: var(--chart-6);
+}
+
+.branch-graph__node.branch-graph__lane-1 {
+  fill: var(--chart-1);
+}
+
+.branch-graph__node.branch-graph__lane-2 {
+  fill: var(--chart-2);
+}
+
+.branch-graph__node.branch-graph__lane-3 {
+  fill: var(--chart-3);
+}
+
+.branch-graph__node.branch-graph__lane-4 {
+  fill: var(--chart-4);
+}
+
+.branch-graph__node.branch-graph__lane-5 {
+  fill: var(--chart-5);
+}
+
+.branch-graph__node.branch-graph__lane-6 {
+  fill: var(--chart-6);
+}
+
+/* An agent's session branch: hollow, in the agent colour. */
+.branch-graph__node--session {
+  fill: var(--color-surface);
+  stroke: var(--status-active);
+  stroke-width: 2;
+}
+
+.branch-graph__list {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.branch-graph__list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  overflow: hidden;
+  font-size: var(--text-body-sm);
+  white-space: nowrap;
+}
+
+.branch-graph__hash {
+  min-width: 4rem;
+  color: var(--color-link);
+  font-family: var(--font-mono);
+}
+
+.branch-graph__refs {
+  display: flex;
+  gap: var(--space-100);
+}
+
+.branch-graph__ref--head {
+  font-weight: var(--weight-semibold);
+}
+
+.branch-graph__message {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.branch-graph__empty {
+  margin: 0;
+  color: var(--color-text-muted);
+}

@@ -1,0 +1,66 @@
+/* A project's labels in its settings: one row each, edited in place. */
+
+.project-labels {
+  display: flex;
+  flex-direction: column;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.project-labels__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--row-height);
+  padding: 0 var(--space-200) 0 var(--space-300);
+}
+
+.project-labels__row + .project-labels__row {
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.project-labels__row.is-editing {
+  padding: var(--space-300);
+}
+
+.project-labels__dot {
+  flex-shrink: 0;
+  width: var(--space-300);
+  height: var(--space-300);
+  border-radius: var(--radius-full);
+}
+
+.project-labels__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-body-sm);
+}
+
+.project-labels__count {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.project-labels__editor {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.project-labels__editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-200);
+}
+
+@media (forced-colors: active) {
+  .project-labels__dot {
+    border: var(--border-width) solid CanvasText;
+  }
+}

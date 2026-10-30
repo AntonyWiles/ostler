@@ -1,0 +1,18 @@
+/* Ostler AI's proposed attachments on a drafted task. Tokens only. */
+
+.proposed-attachments {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+  margin: 0;
+  padding: var(--space-200) var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.proposed-attachments > legend {
+  padding: 0 var(--space-100);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+}

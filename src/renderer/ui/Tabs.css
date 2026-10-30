@@ -1,0 +1,152 @@
+.ui-tabs__list {
+  display: flex;
+  gap: var(--space-100);
+  /* Scrolls sideways only when the tabs overflow; never up and down. */
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* The bottom line is drawn inside the strip, so the active underline can
+     sit on it without overflowing the strip and calling up a scrollbar. */
+  box-shadow: inset 0 calc(-1 * var(--border-width)) 0 var(--color-border);
+}
+
+/* The tabs and what follows them on one line, over one bottom line. */
+.ui-tabs__bar {
+  display: flex;
+  align-items: stretch;
+  box-shadow: inset 0 calc(-1 * var(--border-width)) 0 var(--color-border);
+}
+
+.ui-tabs__bar > .ui-tabs__list {
+  min-width: 0;
+}
+
+.ui-tabs__trailing {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.ui-tabs__tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-150);
+  height: var(--control-height-lg);
+  padding: 0 var(--space-300);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+}
+
+.ui-tabs__tab:hover {
+  color: var(--color-text);
+}
+
+.ui-tabs__tab[aria-selected='true'] {
+  color: var(--color-text);
+}
+
+.ui-tabs__tab[aria-selected='true']::after {
+  position: absolute;
+  right: var(--space-200);
+  bottom: 0;
+  left: var(--space-200);
+  height: var(--space-050);
+  background: var(--color-accent);
+  border-radius: var(--radius-full);
+  content: '';
+}
+
+.ui-tabs__tab:focus-visible {
+  outline-offset: calc(-1 * var(--focus-ring-width));
+}
+
+.ui-tabs__tab:disabled {
+  color: var(--color-text-disabled);
+  opacity: 1;
+}
+
+.ui-tabs__badge {
+  padding: 0 var(--space-150);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.ui-tabs__panel {
+  padding-top: var(--space-400);
+}
+
+.ui-tabs__panel:focus-visible {
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Vertical: the tabs in a column, their panel beside them. */
+.ui-tabs--vertical {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-500);
+}
+
+.ui-tabs--vertical > .ui-tabs__list {
+  position: sticky;
+  top: 0;
+  flex-direction: column;
+  gap: var(--space-050);
+  overflow: visible;
+  box-shadow: none;
+}
+
+.ui-tabs--vertical .ui-tabs__tab {
+  height: var(--control-height-md);
+  padding: 0 var(--space-300);
+  border-radius: var(--radius-md);
+  text-align: start;
+}
+
+.ui-tabs--vertical .ui-tabs__tab:hover {
+  background: var(--color-surface-hover);
+}
+
+.ui-tabs--vertical .ui-tabs__tab[aria-selected='true'] {
+  background: var(--color-accent-subtle);
+}
+
+.ui-tabs--vertical .ui-tabs__tab[aria-selected='true']::after {
+  top: var(--space-150);
+  right: auto;
+  bottom: var(--space-150);
+  left: 0;
+  width: var(--space-050);
+  height: auto;
+}
+
+/* A new group of tabs: a line above it, with room on both sides. */
+.ui-tabs--vertical .ui-tabs__tab--group-start {
+  margin-top: var(--space-400);
+  overflow: visible;
+}
+
+.ui-tabs--vertical .ui-tabs__tab--group-start::before {
+  position: absolute;
+  top: calc(-1 * var(--space-200) - var(--border-width) / 2);
+  right: 0;
+  left: 0;
+  height: var(--border-width);
+  background: var(--color-border);
+  content: '';
+}
+
+.ui-tabs--vertical > .ui-tabs__panel {
+  padding-top: 0;
+}
+
+@media (forced-colors: active) {
+  .ui-tabs__tab[aria-selected='true']::after {
+    background: Highlight;
+  }
+}

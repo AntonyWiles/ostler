@@ -1,0 +1,111 @@
+{
+  "id": "board1",
+  "name": "Summer fair",
+  "lists": [
+    { "id": "l-done", "name": "Done", "closed": false, "pos": 3000 },
+    { "id": "l-todo", "name": "To Do", "closed": false, "pos": 1000 },
+    { "id": "l-doing", "name": "Doing", "closed": false, "pos": 2000 },
+    { "id": "l-old", "name": "Old ideas", "closed": true, "pos": 4000 }
+  ],
+  "labels": [
+    { "id": "lab-food", "name": "Food", "color": "green" },
+    { "id": "lab-urgent", "name": "Urgent", "color": "red_dark" },
+    { "id": "lab-blank", "name": "", "color": "sky" }
+  ],
+  "members": [
+    { "id": "m-alex", "fullName": "Alex Chen", "username": "alexc" },
+    { "id": "m-sam", "fullName": "Sam Lee", "username": "saml" }
+  ],
+  "checklists": [
+    {
+      "id": "cl1",
+      "idCard": "c-menu",
+      "name": "Courses",
+      "pos": 1,
+      "checkItems": [
+        { "name": "Dessert", "state": "incomplete", "pos": 2 },
+        { "name": "Starter", "state": "complete", "pos": 1 }
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "c-menu",
+      "name": "Plan the menu",
+      "desc": "Three courses",
+      "idList": "l-doing",
+      "closed": false,
+      "pos": 2,
+      "due": "2026-10-20T12:00:00.000Z",
+      "dueComplete": false,
+      "idLabels": ["lab-food", "lab-urgent"],
+      "idMembers": ["m-alex", "m-sam"],
+      "attachments": [{ "name": "Recipe", "url": "https://example.com/recipe" }]
+    },
+    {
+      "id": "c-invites",
+      "name": "Send invites",
+      "desc": "",
+      "idList": "l-todo",
+      "closed": false,
+      "pos": 1,
+      "due": null,
+      "dueComplete": false,
+      "idLabels": ["lab-blank"],
+      "idMembers": [],
+      "attachments": []
+    },
+    {
+      "id": "c-venue",
+      "name": "Book the venue",
+      "desc": "",
+      "idList": "l-doing",
+      "closed": false,
+      "pos": 1,
+      "due": "2026-10-05T12:00:00.000Z",
+      "dueComplete": true,
+      "idLabels": [],
+      "idMembers": ["m-sam"],
+      "attachments": []
+    },
+    {
+      "id": "c-archived",
+      "name": "Hire a magician",
+      "desc": "",
+      "idList": "l-todo",
+      "closed": true,
+      "pos": 3,
+      "due": null,
+      "dueComplete": false,
+      "idLabels": [],
+      "idMembers": [],
+      "attachments": []
+    },
+    {
+      "id": "c-old",
+      "name": "Fireworks",
+      "desc": "",
+      "idList": "l-old",
+      "closed": false,
+      "pos": 1,
+      "due": null,
+      "dueComplete": false,
+      "idLabels": [],
+      "idMembers": [],
+      "attachments": []
+    },
+    {
+      "id": "c-shipped",
+      "name": "Print posters",
+      "desc": "",
+      "idList": "l-done",
+      "closed": false,
+      "pos": 1,
+      "due": null,
+      "dueComplete": false,
+      "idLabels": [],
+      "idMembers": [],
+      "attachments": []
+    }
+  ]
+}

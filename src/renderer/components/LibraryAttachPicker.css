@@ -1,0 +1,81 @@
+/* The "Attach from Library" picker. Tokens only. */
+
+.ostler-library-attach-picker {
+  position: absolute;
+  bottom: calc(100% + var(--space-150));
+  left: 0;
+  z-index: var(--z-dropdown);
+  display: flex;
+  flex-direction: column;
+  width: calc(var(--space-1200) * 7.5);
+  max-width: calc(100vw - var(--space-800));
+  max-height: calc(var(--space-1200) * 7.5);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-lg);
+}
+
+.ostler-library-attach-picker input[type='search'] {
+  margin: var(--space-200);
+  padding: var(--space-150) var(--space-200);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.ostler-library-attach-picker input[type='search']:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+}
+
+.ostler-library-attach-picker ul {
+  flex: 1;
+  margin: 0;
+  padding: 0 var(--space-200);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  list-style: none;
+}
+
+.ostler-library-attach-picker li label {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: var(--space-050) var(--space-200);
+  padding: var(--space-150) var(--space-050);
+  cursor: pointer;
+}
+
+.ostler-library-attach-kind {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.ostler-library-attach-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ostler-library-attach-summary {
+  grid-column: 2 / -1;
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ostler-library-attach-empty {
+  padding: var(--space-200) var(--space-050);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.ostler-library-attach-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-200);
+}

@@ -1,0 +1,55 @@
+/* A project's custom fields in its settings (R2.2): the labels list's rows, plus options. */
+
+.project-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.project-fields__new {
+  padding: var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.project-fields__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.project-fields__options legend {
+  margin-bottom: var(--space-100);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.project-fields__option-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project-fields__option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.project-fields__option > .ui-field:first-of-type {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Fill with AI (N8.4): the switch, the instruction and what is sent. */
+.project-fields__ai {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}

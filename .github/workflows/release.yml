@@ -1,0 +1,119 @@
+name: Release
+
+# Pushing a tag `v1.2.3` builds Ostler for Windows and uploads it to a DRAFT
+# GitHub release: the installer, the portable exe, latest.yml and the
+# blockmaps, with that version's CHANGELOG.md section as the release notes.
+# Nobody gets the update until a maintainer checks the draft and publishes it
+# (docs/releasing.md).
+#
+# The checks run on the maintainer's PC before tagging, not here. Run it by
+# hand (Actions › Release › Run workflow) for a dry run: the same
+# build, the notes in the job summary and the files as a workflow
+# artifact, and nothing published.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      notes_version:
+        description: 'CHANGELOG section for the dry run notes (a version, or Unreleased)'
+        required: false
+        default: 'Unreleased'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Electron 43 no longer downloads its binary on install.
+      - name: Download Electron
+        run: npx install-electron
+
+      - name: Work out the version
+        id: version
+        shell: bash
+        env:
+          NOTES_INPUT: ${{ inputs.notes_version }}
+        run: |
+          version=$(node -p "require('./package.json').version")
+          if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+            tag="${GITHUB_REF_NAME}"
+            if [ "${tag}" != "v${version}" ]; then
+              echo "::error::Tag ${tag} does not match package.json version ${version}. Use npm version (docs/releasing.md)."
+              exit 1
+            fi
+            echo "notes=${version}" >> "$GITHUB_OUTPUT"
+            echo "publish=always" >> "$GITHUB_OUTPUT"
+          else
+            echo "notes=${NOTES_INPUT:-Unreleased}" >> "$GITHUB_OUTPUT"
+            echo "publish=never" >> "$GITHUB_OUTPUT"
+          fi
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+      # Before the long checks: a release without its notes fails at once.
+      - name: Release notes from CHANGELOG.md
+        shell: bash
+        env:
+          NOTES_VERSION: ${{ steps.version.outputs.notes }}
+        run: |
+          node scripts/release-notes.cjs "${NOTES_VERSION}" > release-notes.md
+          {
+            echo "## Release notes (${NOTES_VERSION})"
+            echo
+            cat release-notes.md
+            echo
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # No verify, smoke or e2e here: the windows-latest runner is too flaky for
+      # them (folder-move EPERM, test-runner timeouts). Run `npm run verify`
+      # locally before tagging (docs/releasing.md).
+
+      # Signs when a certificate is configured (roadmap D14); otherwise the
+      # build is unsigned and says so. electron-builder reads WIN_CSC_LINK and
+      # WIN_CSC_KEY_PASSWORD itself. A SignPath step would replace this one's
+      # signing once the project is accepted (docs/releasing.md).
+      - name: Signing
+        id: signing
+        shell: bash
+        env:
+          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+        run: |
+          if [ -n "${WIN_CSC_LINK}" ]; then
+            echo "Signed with the configured certificate." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "**Unsigned build.** No WIN_CSC_LINK secret is set, so Windows SmartScreen will warn on first run. Updates are still checked against the sha512 in latest.yml." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Build and upload to a draft release
+        run: npm run build && npx electron-builder --win --x64 --publish ${{ steps.version.outputs.publish }} -c.releaseInfo.releaseNotesFile=release-notes.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+
+      - name: Keep the files (dry run)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ostler-${{ steps.version.outputs.version }}-windows
+          path: |
+            dist/ostler/*.exe
+            dist/ostler/*.blockmap
+            dist/ostler/latest.yml
+          if-no-files-found: error

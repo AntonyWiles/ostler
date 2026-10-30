@@ -1,0 +1,206 @@
+/* The Someday view's grid (N1.1b): impact up, effort across, with the tray of unscored ideas beside it. */
+
+.idea-board {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+}
+
+.idea-board__hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.idea-board__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(calc(var(--space-1200) * 4), 18rem);
+  gap: var(--space-300);
+  align-items: start;
+}
+
+.idea-grid {
+  display: grid;
+  grid-template-columns: auto auto repeat(5, minmax(0, 1fr));
+  grid-auto-rows: minmax(calc(var(--space-1200) * 1.5), auto);
+  gap: var(--space-100);
+  min-width: 0;
+}
+
+.idea-grid__axis {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.idea-grid__axis--impact {
+  grid-row: 1 / span 5;
+  grid-column: 1;
+  align-self: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.idea-grid__axis--effort {
+  justify-self: center;
+}
+
+.idea-grid__step {
+  align-self: center;
+  justify-self: center;
+  padding: 0 var(--space-100);
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.idea-grid__cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  min-width: 0;
+  padding: var(--space-100);
+  background: var(--color-surface-sunken);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-control);
+}
+
+.idea-grid__cell--quick-win {
+  background: var(--color-success-subtle);
+  border-color: var(--color-border);
+}
+
+.idea-grid__cell--probably-not {
+  border-style: dashed;
+  border-color: var(--color-border);
+}
+
+.idea-grid__cell.is-drop-target,
+.idea-tray.is-drop-target {
+  background: var(--color-accent-subtle);
+  border-color: var(--color-accent);
+}
+
+.idea-grid__corner {
+  color: var(--color-text);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+}
+
+.idea-grid__corner--end {
+  margin-top: auto;
+  align-self: flex-end;
+  color: var(--color-text-muted);
+}
+
+.idea-grid__cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.idea-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-050);
+  min-width: 0;
+  padding: var(--space-050) var(--space-100);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+}
+
+.idea-card__title {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-body-sm);
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+
+.idea-card__title:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.idea-card__actions {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.idea-grid__list {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(var(--space-1200) * 6);
+  margin: 0;
+  padding: var(--space-100);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  list-style: none;
+}
+
+.idea-tray {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  max-height: calc(var(--space-1200) * 10);
+  padding: var(--space-200);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  background: var(--color-surface-sunken);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-md);
+}
+
+.idea-tray__title {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.idea-tray__empty {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+/* High contrast flattens the cells' fills: every cell and the tray keep an
+   edge, a quick win a thicker one beside its words. */
+@media (forced-colors: active) {
+  .idea-grid__cell,
+  .idea-tray {
+    border-color: CanvasText;
+  }
+
+  .idea-grid__cell--quick-win {
+    border-width: var(--focus-ring-width);
+  }
+
+  .idea-grid__cell.is-drop-target,
+  .idea-tray.is-drop-target {
+    border-color: Highlight;
+  }
+}
+
+/* Below 1000 px (the app's narrow breakpoint) the five columns of cards
+   need the whole width, so the tray goes under the grid. */
+@media (width < 1000px) {
+  .idea-board__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

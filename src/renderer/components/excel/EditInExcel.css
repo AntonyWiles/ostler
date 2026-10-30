@@ -1,0 +1,92 @@
+.edit-in-excel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200) var(--space-300);
+  margin: var(--space-200) var(--space-400) 0;
+  padding: var(--space-200) var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+.edit-in-excel__icon {
+  flex: none;
+  color: var(--color-text-secondary);
+}
+
+.edit-in-excel__text {
+  display: flex;
+  flex: 1 1 16rem;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.edit-in-excel__file {
+  overflow: hidden;
+  font-weight: var(--weight-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.edit-in-excel__hint {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.edit-in-excel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+}
+
+.bring-back__summary {
+  margin: 0 0 var(--space-300);
+  color: var(--color-text-secondary);
+}
+
+.bring-back__section {
+  margin-top: var(--space-400);
+}
+
+.bring-back__section h3 {
+  margin: 0 0 var(--space-200);
+  font-size: var(--text-heading-sm);
+}
+
+.bring-back__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bring-back__changes {
+  margin: var(--space-100) 0 0 var(--space-600);
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-body-sm);
+}
+
+.bring-back__change {
+  color: var(--color-text-secondary);
+}
+
+.bring-back__from {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+.bring-back__problem {
+  color: var(--color-warning);
+}
+
+.bring-back__skipped {
+  margin: 0;
+  padding-left: var(--space-400);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}

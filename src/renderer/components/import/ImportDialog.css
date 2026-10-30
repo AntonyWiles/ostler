@@ -1,0 +1,102 @@
+.import-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+}
+
+.import-dialog__body p {
+  margin: 0;
+}
+
+.import-dialog__choose {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+}
+
+.import-dialog__older {
+  margin: 0;
+}
+
+.import-dialog__file {
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.import-dialog__file strong {
+  color: var(--color-text);
+}
+
+.import-dialog__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.import-dialog__group legend {
+  margin-bottom: var(--space-100);
+  padding: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.import-dialog__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--space-1000) * 5)), 1fr));
+  gap: var(--space-200) var(--space-300);
+}
+
+.import-dialog__hint {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.import-dialog__summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.import-dialog__table {
+  height: min(calc(var(--space-1000) * 9), 45vh);
+}
+
+.import-dialog__cell {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.import-dialog__cell--warning {
+  color: var(--color-warning);
+}
+
+.import-dialog__cell--error {
+  color: var(--color-danger);
+}
+
+.import-dialog__problem {
+  overflow: hidden;
+  color: var(--color-warning);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.import-dialog__problem.is-error {
+  color: var(--color-danger);
+}
+
+.import-dialog__unlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}

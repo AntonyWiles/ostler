@@ -1,0 +1,384 @@
+/* The app's sidebar:
+   240 px, collapsing to 56 px of icons. Tokens only. */
+
+.ostler-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: calc(var(--space-1200) * 5);
+  flex: 0 0 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  border-right: var(--border-width) solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: width var(--motion-normal) var(--ease-standard);
+}
+
+/* Drag (or arrow keys) to widen the open sidebar; a zero-width sibling over its border. */
+.ostler-sidebar-resize {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 var(--space-200);
+  margin: 0 calc(-1 * var(--space-100));
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.ostler-sidebar-resize:hover,
+.ostler-sidebar-resize:focus-visible {
+  background: linear-gradient(
+    to right,
+    transparent calc(50% - var(--border-width)),
+    var(--color-focus) calc(50% - var(--border-width)),
+    var(--color-focus) calc(50% + var(--border-width)),
+    transparent calc(50% + var(--border-width))
+  );
+  outline: none;
+}
+
+/* No width animation while dragging, and the cursor stays put over the page. */
+.ostler-sidebar-resizing .ostler-sidebar {
+  transition: none;
+}
+
+.ostler-sidebar-resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+.ostler-sidebar.collapsed {
+  /* The icon rail stays centred; it has no room to keep for a scrollbar. */
+  scrollbar-gutter: auto;
+  width: calc(var(--space-1200) + var(--space-200));
+}
+
+/* When the window is short or zoomed, the sidebar scrolls; its parts keep
+   their height instead of being squeezed over each other (P9.2). */
+.ostler-sidebar > * {
+  flex-shrink: 0;
+}
+
+.ostler-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-100);
+  min-height: var(--space-1200);
+  padding: var(--space-100) var(--space-200) var(--space-100) var(--space-300);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.ostler-sidebar.collapsed .ostler-sidebar-header {
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-100);
+}
+
+.ostler-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-width: 0;
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.logo-icon {
+  color: var(--color-link);
+}
+
+.ostler-sidebar-search {
+  padding: var(--space-200) var(--space-200) 0;
+}
+
+.ostler-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  padding: var(--space-200);
+}
+
+.ostler-sidebar-nav--end {
+  margin-top: auto;
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.ostler-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  width: 100%;
+  min-height: var(--control-height);
+  padding: var(--space-150) var(--space-200);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--color-text-secondary);
+  font: inherit;
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ostler-sidebar-link:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.ostler-sidebar-link.active {
+  background: var(--color-surface-selected);
+  color: var(--color-text);
+}
+
+.ostler-sidebar-link:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(var(--focus-ring-offset) * -1);
+}
+
+.ostler-sidebar.collapsed .ostler-sidebar-link {
+  justify-content: center;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.ostler-sidebar-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ostler-sidebar-search-button {
+  border-color: var(--color-border);
+  background: var(--color-surface-sunken);
+  font-weight: var(--weight-regular);
+}
+
+.ostler-sidebar-count {
+  min-width: var(--space-500);
+  padding: 0 var(--space-150);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-subtle);
+  color: var(--color-link);
+  font-size: var(--text-caption);
+  text-align: center;
+}
+
+.ostler-sidebar.collapsed .ostler-sidebar-count {
+  display: none;
+}
+
+.ostler-sidebar-projects {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0 var(--space-200);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.ostler-sidebar-projects-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-200) 0 var(--space-100) var(--space-200);
+}
+
+.ostler-sidebar.collapsed .ostler-sidebar-projects-header {
+  justify-content: center;
+  padding-left: 0;
+}
+
+.projects-title {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+}
+
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  margin: 0;
+  padding: 0 0 var(--space-200);
+  list-style: none;
+}
+
+.projects-list li {
+  transition: opacity var(--motion-fast) var(--ease-standard);
+}
+
+.projects-list li.is-dragging {
+  opacity: 0.5;
+}
+
+/* Areas (N5.1): headings that fold, each over its own list. */
+.ostler-sidebar-projects-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-050);
+}
+
+.projects-areas {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0 0 var(--space-200);
+  list-style: none;
+}
+
+.projects-area .projects-list {
+  padding-bottom: var(--space-100);
+}
+
+.projects-area--collapsed + .projects-area--collapsed {
+  margin-top: var(--space-100);
+  padding-top: var(--space-100);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.projects-area-title {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.projects-area-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  width: 100%;
+  padding: var(--space-100) var(--space-200);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  text-align: left;
+  cursor: pointer;
+  transition: opacity var(--motion-fast) var(--ease-standard);
+}
+
+.projects-area-heading:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.projects-area-heading:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(var(--focus-ring-offset) * -1);
+}
+
+.projects-area-heading.is-dragging {
+  opacity: 0.5;
+}
+
+.projects-area-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.projects-area-count {
+  flex: 0 0 auto;
+  font-weight: var(--weight-regular);
+}
+
+.project-color {
+  width: var(--space-200);
+  height: var(--space-200);
+  flex: 0 0 auto;
+  border-radius: var(--radius-full);
+}
+
+.project-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* On hold and Done projects (N5.3): marked quietly, never moved. */
+.project-link.is-resting .project-name {
+  color: var(--color-text-secondary);
+}
+
+.project-stage-mark {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+/* Workstreams (sub-projects) sit indented under their project; not while collapsed. */
+.project-row {
+  position: relative;
+}
+
+.project-row--disclosable .project-link {
+  padding-inline-start: var(--space-500);
+}
+
+.project-disclosure {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: var(--space-050);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-300);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.project-disclosure:hover {
+  color: var(--color-text);
+}
+
+.project-disclosure:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(var(--focus-ring-offset) * -1);
+}
+
+.subprojects-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  margin: var(--space-050) 0 0;
+  padding: 0;
+  padding-inline-start: var(--space-400);
+  list-style: none;
+}
+
+.subproject-link.is-resting .project-name {
+  color: var(--color-text-secondary);
+}
+
+.subproject-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.subproject-dialog-members {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}

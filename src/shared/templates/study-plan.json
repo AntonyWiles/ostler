@@ -1,0 +1,131 @@
+{
+  "format": "ostler-project-package",
+  "version": 1,
+  "template": {
+    "description": "Prepare for an exam or course with topics, weekly reviews and practice tests.",
+    "icon": "book"
+  },
+  "project": {
+    "name": "Study plan",
+    "color": "#6366f1",
+    "estimateUnit": "points"
+  },
+  "people": [],
+  "labels": [
+    {
+      "name": "reading",
+      "color": "#3b82f6"
+    },
+    {
+      "name": "practice",
+      "color": "#f59e0b"
+    }
+  ],
+  "goals": [],
+  "milestones": [
+    {
+      "ref": "m1",
+      "name": "Topics covered",
+      "targetDate": "+42d"
+    },
+    {
+      "ref": "m2",
+      "name": "Exam ready",
+      "targetDate": "+56d",
+      "successCriteria": ["Two practice exams done", "Weak topics revised"]
+    }
+  ],
+  "tasks": [
+    {
+      "ref": "t1",
+      "title": "Gather the syllabus and materials",
+      "milestoneRef": "m1",
+      "priority": "high",
+      "dueDate": "+2d"
+    },
+    {
+      "ref": "t2",
+      "title": "Make a topic list",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "dueDate": "+4d",
+      "dependsOnRefs": ["t1"]
+    },
+    {
+      "ref": "t3",
+      "title": "Study topic 1",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["reading"],
+      "dueDate": "+12d",
+      "dependsOnRefs": ["t2"]
+    },
+    {
+      "ref": "t4",
+      "title": "Study topic 2",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["reading"],
+      "dueDate": "+22d",
+      "dependsOnRefs": ["t3"]
+    },
+    {
+      "ref": "t5",
+      "title": "Study topic 3",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["reading"],
+      "dueDate": "+32d",
+      "dependsOnRefs": ["t4"]
+    },
+    {
+      "ref": "t6",
+      "title": "Weekly review",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["practice"],
+      "dueDate": "+7d",
+      "recurrence": {
+        "rule": {
+          "every": "week",
+          "interval": 1,
+          "weekdays": [0]
+        },
+        "endsOn": null,
+        "remaining": 7
+      }
+    },
+    {
+      "ref": "t7",
+      "title": "Practice exam 1",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["practice"],
+      "dueDate": "+45d",
+      "dependsOnRefs": ["t5"]
+    },
+    {
+      "ref": "t8",
+      "title": "Revise weak topics",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "dueDate": "+50d",
+      "dependsOnRefs": ["t7"]
+    },
+    {
+      "ref": "t9",
+      "title": "Practice exam 2",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["practice"],
+      "dueDate": "+54d",
+      "dependsOnRefs": ["t8"]
+    }
+  ],
+  "decisions": [],
+  "comments": [],
+  "columns": {
+    "hidden": ["ready", "blocked", "review"]
+  },
+  "library": []
+}

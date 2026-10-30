@@ -1,0 +1,201 @@
+{
+  "welcome": {
+    "goProjectSkipRest": "Ir al proyecto y saltarse el resto.",
+    "closeWelcomeWithoutCreating": "Cierra la bienvenida sin crear nada. Todo esto también está en Configuración.",
+    "skipNow": "Omitir por ahora",
+    "welcome": "Te damos la bienvenida a {{brand}}",
+    "planProjectsTasksBoards": "Planifica proyectos con tareas, tableros, calendarios y cronogramas. Todo se queda en este equipo. Dos decisiones rápidas y después tu primer proyecto.",
+    "whatShouldWeCall": "¿Cómo quieres que te llamemos?",
+    "tasksAssignYourselfShow": "Las tareas que te asignes mostrarán este nombre. Puedes cambiarlo en Configuración › Personas.",
+    "theme": "Tema",
+    "continue": "Continuar",
+    "howDoWantStart": "¿Cómo quieres empezar?",
+    "firstProject": "Tu primer proyecto",
+    "startWithDemos": "Empezar con los proyectos de demostración",
+    "setUpFromOtherDevice": "Configurar desde mi otro dispositivo",
+    "joinTitle": "Configurar desde mi otro dispositivo",
+    "joinLead": "Si ya usas {{brand}} en otro PC, este PC puede unirse a su espacio personal: tus proyectos, datos personales y configuración también llegan aquí.",
+    "chooseTemplate": "Elige una plantilla",
+    "next": "Siguiente",
+    "progress": "Progreso de la bienvenida",
+    "stepOf": "Paso {{current}} de {{total}}",
+    "startTemplate": "Empezar desde una plantilla",
+    "readyMadePlanSuch": "Un plan ya hecho, como para un evento, el lanzamiento de un producto o un plan de estudio.",
+    "blankProject": "Un proyecto en blanco",
+    "emptyProjectFillYourself": "Un proyecto vacío que completas tú.",
+    "import": "Importar",
+    "spreadsheetCsvTrelloBoard": "Desde una hoja de cálculo (CSV) o un tablero de Trello.",
+    "projectName": "Nombre del proyecto",
+    "websiteRelaunch": "Relanzamiento del sitio web",
+    "back": "Atrás",
+    "fewOptionalExtras": "Algunos extras opcionales",
+    "eachTheseOptionalCan": "Cada uno de estos pasos es opcional, y puedes hacerlos más tarde en Configuración.",
+    "softwareProject": "¿Es un proyecto de software?",
+    "linkedReadsNeverWrites": "Vinculado a {{folder}}. {{brand}} lo lee y nunca escribe en él.",
+    "linkFolderBrowseFiles": "Vincula su carpeta para explorar archivos y ver la actividad de Git. {{brand}} solo la lee.",
+    "linkFolder": "Vincular una carpeta…",
+    "wantAiHelp": "¿Quieres ayuda de la IA?",
+    "setUp": "{{aiName}} está configurada.",
+    "canSuggestTasksBreak": "{{aiName}} puede sugerir tareas, dividir objetivos y resumir. Usa un modelo gratuito en este equipo o una cuenta de IA.",
+    "setUpAi": "Configurar IA…",
+    "useAiAgents": "¿Usar agentes de IA?",
+    "agents": "Los agentes están activados.",
+    "agentsWorkThroughTasks": "Los agentes trabajan en las tareas de tu carpeta, cada uno en su propia copia, y no se cambia nada hasta que lo aceptes.",
+    "setUpAgents": "Configurar agentes…",
+    "system": "Igual que Windows",
+    "followsWindows": "Sigue a Windows",
+    "light": "Claro",
+    "lightAllTime": "Siempre claro",
+    "dark": "Oscuro",
+    "darkAllTime": "Siempre oscuro",
+    "chooseProjectFolder": "Elige la carpeta del proyecto",
+    "couldntLinkFolder": "No se pudo vincular la carpeta. {{error}}",
+    "chooseFile": "Elige un archivo…",
+    "createProject": "Crear proyecto",
+    "openProject": "Abrir el proyecto",
+    "finish": "Terminar",
+    "readyOptional": "«{{projectName}}» está listo. Cada uno de estos pasos es opcional, y puedes hacerlos más tarde en Configuración."
+  },
+  "gettingStarted": {
+    "createTask": "Crear una tarea",
+    "giveTaskDueDate": "Poner una fecha límite a una tarea",
+    "tryAnotherViewList": "Prueba otra vista: Lista, Calendario o Cronograma",
+    "findSomethingCommandPalette": "Busca algo con la paleta de comandos",
+    "seeWhereBackups": "Mira dónde están tus copias de seguridad",
+    "setUpAi": "Configurar IA"
+  },
+  "tips": {
+    "tipEyebrow": "Consejo",
+    "tourEyebrow": "Recorrido",
+    "stepOf": "{{step}} de {{count}}",
+    "steps": "Pasos del recorrido",
+    "goToStep": "Ir al paso {{step}}",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "done": "Listo",
+    "gotIt": "Entendido",
+    "notNow": "Ahora no",
+    "close": "Cerrar",
+    "showMeAround": "Enséñame la app",
+    "dontShowAgain": "No volver a mostrar esto",
+    "dontShowTipAgain": "No volver a mostrar este consejo",
+    "turnOffTips": "Desactivar los consejos",
+    "closeTour": "Cerrar el recorrido",
+    "announce": "Consejo: {{title}}",
+    "tourDone": "Eso es todo el recorrido",
+    "tourClosed": "Recorrido cerrado",
+    "tourAgain": "Puedes repetirlo cuando quieras desde Ayuda › Hacer el recorrido.",
+    "turnedOff": "Los consejos están desactivados",
+    "turnedOffBody": "Vuelve a activarlos en Configuración › General › Consejos y recorridos.",
+    "turnBackOn": "Volver a activar",
+    "openSettings": "Configuración",
+    "invite": {
+      "title": "¿Es tu primera vez? Haz un recorrido rápido",
+      "body": "Este proyecto de demostración es una escapada de fin de semana ficticia, con datos para que pruebes cosas sin riesgo. El recorrido visita cada vista por turno y señala qué probar en cada una, en {{count}} pasos breves."
+    },
+    "tour": {
+      "welcome": {
+        "title": "El proyecto de demostración",
+        "body": "Todo lo que hay aquí es inventado, así que cambia, mueve o elimina lo que quieras. Sus tareas se leen de arriba abajo: las primeras muestran lo básico y las siguientes, más. Nada de lo que hagas aquí afecta a tus proyectos."
+      },
+      "views": {
+        "title": "Un proyecto, muchas vistas",
+        "body": "Cada pestaña muestra este proyecto de otra forma, y todas comparten las mismas tareas: si cambias una tarea en una vista, todas las demás muestran el cambio. Los siguientes pasos visitan cada pestaña por turno."
+      },
+      "board": {
+        "title": "Tablero: el trabajo en movimiento",
+        "body": "Cada columna es un estado, y las tareas avanzan de izquierda a derecha a medida que el trabajo pasa de Por hacer a En curso y a Terminada. El número junto al nombre de cada columna indica cuántas tareas contiene."
+      },
+      "card": {
+        "title": "Abre una tarea",
+        "body": "Haz clic en una tarjeta para ver todo sobre ella: estado, prioridad, fecha límite, responsable, lista de comprobación y comentarios. Arrastra una tarjeta a otra columna para avanzarla."
+      },
+      "newTask": {
+        "title": "Añade la tuya",
+        "body": "Nueva tarea añade una a este proyecto. {{keys}} hace lo mismo desde cualquier lugar del proyecto."
+      },
+      "search": {
+        "title": "Encuentra cualquier cosa",
+        "body": "La búsqueda encuentra tareas, proyectos y documentos, y ejecuta cualquier comando por su nombre. Pulsa {{keys}} desde cualquier lugar."
+      },
+      "help": {
+        "title": "La ayuda siempre está aquí",
+        "body": "La guía del usuario, los métodos abreviados de teclado y este recorrido están en Ayuda. Los consejos como este se pueden desactivar en Configuración › General."
+      },
+      "overview": {
+        "title": "Resumen: el proyecto de un vistazo",
+        "body": "Cuántas tareas están abiertas, cuántas se terminaron esta semana y cuántas están atrasadas; después, qué requiere tu atención, qué está en curso y qué viene después. Publica una actualización para contar a todos, en una o dos frases, cómo va el proyecto."
+      },
+      "list": {
+        "title": "Lista: todas las tareas en filas",
+        "body": "Como una hoja de cálculo: haz clic en un encabezado para ordenar, elige qué se muestra con Columnas y marca filas para cambiar varias tareas a la vez. Las subtareas aparecen debajo de su tarea principal, como las comidas bajo Plan the meals."
+      },
+      "calendar": {
+        "title": "Calendario: tareas por fecha límite",
+        "body": "Cada tarea aparece el día en que vence, con los hitos marcados. Cambia entre Mes, Semana, Año y Agenda, arrastra una tarea a otro día para cambiar su fecha límite y encuentra las tareas sin fecha en Sin programar."
+      },
+      "timeline": {
+        "title": "Cronograma: planifica por semanas",
+        "body": "Cada barra va desde el inicio de una tarea hasta su fecha límite, agrupada bajo su hito. Arrastra una barra para moverla o un extremo para cambiar su duración, y activa Mostrar ruta crítica para ver qué tareas no pueden retrasarse."
+      },
+      "milestones": {
+        "title": "Hitos y objetivos",
+        "body": "Un objetivo es para lo que sirve el proyecto; los hitos son los grandes momentos del camino, cada uno con una fecha y las tareas que llevan a él. La barra de un hito se va llenando a medida que se terminan sus tareas."
+      },
+      "library": {
+        "title": "Biblioteca: documentos junto al trabajo",
+        "body": "Aquí viven los encargos, las notas y los documentos de este proyecto. Abre Trip plan para leerlo, añade el tuyo con Agregar y adjunta cualquiera de ellos a una tarea para que aparezca en los detalles de esa tarea."
+      },
+      "decisions": {
+        "title": "Decisiones: qué se eligió y por qué",
+        "body": "Registra lo que se decidió, el contexto, lo que también se valoró y lo que se deriva de ello, para que nadie tenga que acordarse después. Una decisión se enlaza con las tareas que afecta, como esta se enlaza con Book the cabin."
+      }
+    },
+    "drawer": {
+      "title": "Los cambios se guardan sobre la marcha",
+      "body": "No hay botón de Guardar: cada cambio se conserva en cuanto lo haces. Pulsa Ctrl+Z para deshacer el último."
+    },
+    "drawerResize": {
+      "title": "Haz este panel más ancho",
+      "body": "Arrastra el borde izquierdo del panel para darle más o menos espacio. Cada panel conserva el ancho que le des."
+    },
+    "boardDrag": {
+      "title": "Arrastra para mover una tarea",
+      "body": "Arrastra una tarjeta a otra columna para cambiar su estado. También puedes abrir una tarjeta y elegir un estado nuevo arriba."
+    },
+    "list": {
+      "title": "Ordena y compara",
+      "body": "Haz clic en un encabezado de columna para ordenar por ella. Mayús+clic en otro encabezado para ordenar después por ese."
+    },
+    "calendar": {
+      "title": "Fechas límite de un vistazo",
+      "body": "Las tareas aparecen el día en que vencen. Arrastra una a otro día para cambiar su fecha límite."
+    },
+    "timeline": {
+      "title": "Planifica por semanas",
+      "body": "Cada barra va desde el inicio de una tarea hasta su fecha límite. Arrastra una barra para moverla, o arrastra cualquiera de sus extremos para cambiar cuánto dura."
+    },
+    "library": {
+      "title": "Documentos junto al trabajo",
+      "body": "Guarda aquí los encargos, las notas y los documentos de este proyecto. Abre uno para leerlo o editarlo, o adjúntalo a una tarea y aparecerá en los detalles de esa tarea."
+    },
+    "pointers": {
+      "clickToOpen": "Haz clic para abrir",
+      "clickToAdd": "Haz clic para agregar una tarea",
+      "clickOrPress": "Haz clic o pulsa {{keys}}",
+      "clickForHelp": "Haz clic para ver la ayuda",
+      "changeStatus": "Prueba a cambiar el estado",
+      "dragToColumn": "Arrastra a la columna siguiente",
+      "dragToDay": "Arrastra a otro día",
+      "dragToMove": "Arrastra para mover",
+      "dragToResize": "Arrastra para cambiar el tamaño",
+      "addDocument": "Agrega un documento",
+      "postUpdate": "Comparte cómo va",
+      "chooseColumns": "Elige columnas",
+      "changeRange": "Mes, semana, año o agenda",
+      "criticalPath": "Mira qué no puede retrasarse",
+      "clickToRead": "Haz clic para leer",
+      "recordDecision": "Registra una decisión"
+    }
+  }
+}

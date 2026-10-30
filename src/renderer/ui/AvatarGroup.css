@@ -1,0 +1,17 @@
+.ui-avatar-group {
+  display: inline-flex;
+  align-items: center;
+}
+
+.ui-avatar-group > * + * {
+  margin-left: calc(-1 * var(--space-150));
+}
+
+.ui-avatar-group > * {
+  box-shadow: 0 0 0 var(--focus-ring-offset) var(--color-surface);
+}
+
+.ui-avatar--more {
+  background: var(--color-surface-sunken);
+  color: var(--color-text-secondary);
+}

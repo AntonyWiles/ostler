@@ -1,0 +1,341 @@
+{
+  "time": {
+    "justNow": "刚刚"
+  },
+  "date": {
+    "today": "今天",
+    "tomorrow": "明天",
+    "yesterday": "昨天",
+    "overdueBy_other": "逾期 {{count}} 天",
+    "daysAgo_other": "{{count}} 天前",
+    "inDays_other": "{{count}} 天后"
+  },
+  "count": {
+    "task_other": "{{count}} 个任务",
+    "agent_other": "{{count}} 个智能体",
+    "run_other": "{{count}} 次运行",
+    "goal_other": "{{count}} 个目标",
+    "milestone_other": "{{count}} 个里程碑",
+    "fileEvent_other": "{{count}} 次文件事件",
+    "commit_other": "{{count}} 个提交",
+    "agentEvent_other": "{{count}} 次智能体事件",
+    "day_other": "{{count}} 天",
+    "libraryFile_other": "{{count}} 个资料库文件",
+    "list_other": "{{count}} 个列表",
+    "label_other": "{{count}} 个标签",
+    "member_other": "{{count}} 个成员",
+    "file_other": "{{count}} 个文件",
+    "phase_other": "{{count}} 个阶段"
+  },
+  "keys": {
+    "plus": "加",
+    "then": "然后",
+    "or": "或",
+    "Ctrl": "Ctrl",
+    "Shift": "Shift",
+    "Alt": "Alt",
+    "Esc": "Esc",
+    "Enter": "Enter",
+    "Delete": "Delete",
+    "Tab": "Tab",
+    "Space": "空格",
+    "Backspace": "Backspace",
+    "Left": "左",
+    "Right": "右",
+    "Up": "上",
+    "Down": "下",
+    "ArrowKeys": "方向键",
+    "Home": "Home",
+    "End": "End",
+    "PageUp": "Page Up",
+    "PageDown": "Page Down"
+  },
+  "chip": {
+    "item": "项",
+    "remove": "移除 {{name}}"
+  },
+  "sentenceSeparator": "。",
+  "errorBoundary": {
+    "detailsLogCopyDiagnostics": "详细信息已记录在日志中。复制诊断信息，即可将其附在问题报告里。",
+    "viewCrashed": "视图出错：{{message}}",
+    "appCrashed": "应用出错：{{message}}",
+    "somethingWentWrongView": "此视图出现问题",
+    "somethingWentWrong": "出现问题",
+    "reloadView": "重新加载视图",
+    "reload": "重新加载"
+  },
+  "ostlerContext": {
+    "unknownError": "未知错误"
+  },
+  "useConfig": {
+    "unknownError": "未知错误"
+  },
+  "avatarGroup": {
+    "people": "{{peopleCount}} 人",
+    "more_other": "还有 {{count}} 人：{{names}}"
+  },
+  "daysOff": {
+    "note": "{{name}}：休息日",
+    "notePerson": "{{name}}：{{person}} 的休息日",
+    "dayOffLabel": "休息日：{{name}}",
+    "personOff": "{{person}} 休假",
+    "peopleOff": "{{people}} 休假"
+  },
+  "calendarGrid": {
+    "more": "+{{moreCount}} 项",
+    "more2": "{{longDate}} 还有 {{moreCount}} 项",
+    "n1Item": "1 项",
+    "items": "{{total}} 项"
+  },
+  "combobox": {
+    "create": "创建“{{text}}”",
+    "noMatches": "没有匹配项"
+  },
+  "confirm": {
+    "cancel": "取消",
+    "useconfirmNeedsAboveApp": "useConfirm 需要在其上方有 <ConfirmProvider>（App.tsx）。"
+  },
+  "dataTable": {
+    "deselectAllRows": "取消选择所有行",
+    "selectAllRows": "选择所有行",
+    "sortShiftClickAdds": "按 {{header}} 排序。按住 Shift 并单击，可将其添加为另一个排序条件。",
+    "select": "选择 {{entryLabel}}",
+    "sortedAscending": "已按 {{header}} 升序排序",
+    "sortedDescending": "已按 {{header}} 降序排序",
+    "noLongerSorted": "{{header}} 已不再排序",
+    "movedColumn": "{{header}} 已移至第 {{to}} 列，共 {{columnCount}} 列",
+    "pixelsWide": "{{header}} 宽 {{width}} 像素",
+    "selected": "已选择 {{rowIdCount}} 项",
+    "movedColumn2": "{{header}} 已移至第 {{number}} 列，共 {{columnCount}} 列",
+    "sortRankAscending": "排序 {{rank}}，升序",
+    "sortRankDescending": "排序 {{rank}}，降序"
+  },
+  "dateField": {
+    "quickDates": "快速日期",
+    "today": "今天",
+    "tomorrow": "明天",
+    "nextWeek": "下周",
+    "clear": "清空",
+    "notADate": "不是有效的日期。请检查日、月和年。"
+  },
+  "dialog": {
+    "close": "关闭"
+  },
+  "drawer": {
+    "close": "关闭",
+    "resizePanel": "调整面板大小"
+  },
+  "errorText": {
+    "details": "详情"
+  },
+  "filterBuilder": {
+    "filters": "筛选条件",
+    "match": "匹配",
+    "editFilter": "编辑筛选条件：{{words}}",
+    "removeFilter": "移除筛选条件：{{words}}",
+    "removeFilter2": "移除筛选条件",
+    "addFilter": "添加筛选条件",
+    "clear": "清空",
+    "remove": "移除",
+    "done": "完成",
+    "words": "文字",
+    "noTaskProjectHas": "此项目中还没有任务带标签。",
+    "when": "时间",
+    "date": "日期",
+    "estimate": "预估",
+    "checklist": "检查清单",
+    "allFilters": "所有筛选条件",
+    "anyFilter": "任一筛选条件",
+    "me": "我",
+    "nobody": "无人",
+    "noMilestone": "无里程碑",
+    "noGoal": "无目标",
+    "editFilterField": "编辑筛选条件：{{field}}",
+    "customFields": "自定义字段",
+    "findField": "查找字段",
+    "noFieldMatches": "没有匹配的字段。",
+    "fieldDeleted": "此字段已被删除。请移除该筛选条件。",
+    "from": "从",
+    "to": "到",
+    "isEmpty": "为空",
+    "isSet": "已设置",
+    "currentIteration": "当前迭代",
+    "noIteration": "无迭代",
+    "noType": "无类型",
+    "noSubproject": "无工作流"
+  },
+  "inlineAlert": {
+    "dismiss": "关闭"
+  },
+  "priorityIcon": {
+    "priority": "{{taskPriorityLabel}} 优先级"
+  },
+  "textField": {
+    "clear": "清空"
+  },
+  "toast": {
+    "notifications": "通知",
+    "dismissNotification": "关闭通知",
+    "undo": "撤销",
+    "available": "{{actionLabel}} 可用。",
+    "availableBoth": "{{firstLabel}} 和 {{secondLabel}} 可用。",
+    "keptInCenter": "漏看了？所有通知都保存在铃铛图标下。"
+  },
+  "toolbar": {
+    "moreActions": "更多操作"
+  },
+  "chartFrame": {
+    "table": "{{title}}（表格）",
+    "legend": "图例",
+    "showChart": "以图表显示",
+    "showTable": "以表格显示"
+  },
+  "chartCore": {
+    "total": "合计",
+    "noData": "{{kind}}没有数据。",
+    "noValues": "{{series}}：没有数值",
+    "kind": {
+      "bar": "柱状图",
+      "line": "折线图",
+      "stackedArea": "堆叠面积图"
+    },
+    "bars_other": "{{count}} 个柱",
+    "points_other": "从 {{first}} 到 {{last}} 共 {{count}} 个点",
+    "barValues": "{{series}}：{{values}}",
+    "categoryValue": "{{category}} {{value}}",
+    "categoryNoValue": "{{category}} 无数值",
+    "staysAt": "{{series}} 保持在 {{value}}",
+    "staysAtPeaking": "{{series}} 保持在 {{value}}，峰值为 {{peak}}",
+    "goesFrom": "{{series}} 从 {{from}} 变为 {{to}}",
+    "goesFromPeaking": "{{series}} 从 {{from}} 变为 {{to}}，峰值为 {{peak}}",
+    "summary": "{{kind}}，{{span}}。{{details}}。"
+  },
+  "timelineScale": {
+    "week": "{{format}} 所在周"
+  },
+  "unit": {
+    "files": "文件",
+    "days": "天",
+    "seconds": "秒",
+    "ms": "ms",
+    "MB": "MB",
+    "minutes": "分钟",
+    "tokens": "令牌"
+  },
+  "itemLinks": {
+    "deletedItem": "已删除的条目",
+    "kinds": {
+      "task": "任务",
+      "milestone": "里程碑",
+      "decision": "决策",
+      "library": "资料库条目"
+    },
+    "picker": "链接到条目",
+    "pickerHint": "输入以查找任务、里程碑、决策或资料库条目",
+    "noMatches": "没有匹配项",
+    "linkedFrom": "链接来源",
+    "sources": {
+      "task": "任务：{{title}}",
+      "comment": "对“{{title}}”的评论",
+      "decision": "决策：{{title}}",
+      "library": "资料库：{{title}}"
+    }
+  },
+  "pins": {
+    "pinned": "已固定",
+    "pinnedCount_other": "{{count}} 个固定项",
+    "pinToSidebar": "固定到侧边栏",
+    "unpinFromSidebar": "从侧边栏取消固定",
+    "pinToOverview": "固定到概览",
+    "unpinFromOverview": "从概览取消固定",
+    "sidebarFull": "侧边栏最多可固定 {{max}} 项。请先取消固定一项，以腾出空间。",
+    "unpin": "取消固定",
+    "actions": "{{title}} 的操作",
+    "gone": "已不存在",
+    "archived": "已归档",
+    "pinnedToSidebar": "已将 {{title}} 固定到侧边栏",
+    "pinnedToOverview": "已将 {{title}} 固定到概览",
+    "unpinned": "已取消固定 {{title}}",
+    "couldntPin": "无法固定",
+    "couldntUnpin": "无法取消固定",
+    "couldntMove": "无法移动固定项",
+    "couldntOpen": "无法打开",
+    "kinds": {
+      "task": "任务",
+      "milestone": "里程碑",
+      "decision": "决策",
+      "library": "资料库条目",
+      "saved-view": "已保存的视图",
+      "project-view": "视图",
+      "personal-goal": "目标"
+    },
+    "openLinkTitle": "打开此链接？",
+    "openLinkBody": "{{url}}\n\n“{{name}}”将在你的浏览器中打开。",
+    "openLinkConfirm": "打开链接",
+    "openFileTitle": "用其应用打开 {{name}}？",
+    "openFileBody": "文件将在 {{appName}} 之外打开，使用 Windows 为其指定的应用。",
+    "openFileConfirm": "打开",
+    "shortcuts": "快捷方式",
+    "noShortcuts": "在此项目中固定你最常打开的内容，例如里程碑、已保存的视图或店铺的管理页面。",
+    "shortcutActions": "{{title}} 的快捷方式操作",
+    "moveLeft": "左移",
+    "moveRight": "右移",
+    "addShortcut": "添加快捷方式",
+    "addShortcutExisting": "一个条目",
+    "addShortcutLink": "新链接",
+    "findItem": "查找任务、里程碑、决策、资料库条目或视图",
+    "findItemPlaceholder": "输入以查找…",
+    "nothingToPin": "没有匹配项",
+    "linkName": "名称",
+    "linkAddress": "地址",
+    "linkAddressHint": "https 地址。它会作为链接保存在资料库中。",
+    "enterHttpsAddress": "请输入 https 地址。",
+    "enterName": "请输入名称。",
+    "add": "添加快捷方式",
+    "cancel": "取消",
+    "palettePin": "固定…",
+    "palettePinHint": "将任务、里程碑、决策、资料库条目或视图固定到侧边栏",
+    "paletteFindToPin": "查找要固定到侧边栏的内容",
+    "paletteKeywords": "固定，已固定，快捷方式，收藏，书签，pin，pinned，shortcut，favourite，favorite，bookmark",
+    "thisView": "{{view}}"
+  },
+  "countdowns": {
+    "daysTo_other": "距 {{title}} 还有 {{count}} 天",
+    "tomorrow": "{{title}} 是明天",
+    "today": "{{title}} 是今天",
+    "yesterday": "{{title}} 是昨天",
+    "daysAgo_other": "{{title}} 是 {{count}} 天前",
+    "done": "{{title}}：已完成",
+    "withWorkingDays": "{{words}}（{{workingDays}}）",
+    "workingDays_other": "{{count}} 个工作日",
+    "show": "以倒计时显示",
+    "hide": "停止倒计时",
+    "shown": "{{title}} 已以倒计时显示",
+    "hidden": "{{title}} 不再倒计时",
+    "couldntChange": "无法更改倒计时",
+    "offerAfterPin": "在首页以倒计时显示它吗？",
+    "limitTitle": "关闭一个倒计时？",
+    "limitBody": "同时最多显示 {{max}} 个倒计时。请选择一个将其关闭，以便显示 {{title}}。",
+    "turnOff": "关闭 {{title}}",
+    "turnOffShort": "关闭",
+    "turnOffDone": "已关闭 {{title}} 的倒计时",
+    "cancel": "取消",
+    "heading": "倒计时",
+    "open": "打开 {{title}}，{{words}}，{{date}}",
+    "progress": "自固定以来已过去的时间"
+  },
+  "notificationCenter": {
+    "title": "应用内通知",
+    "intro": "工作时来自 {{brand}} 的消息会保留在此处，直到关闭应用，撤销按钮也会保留。提醒和智能体提醒还会发送到 Windows 通知，可在 Windows 通知中心（Windows 键+N）中查看。",
+    "empty": "暂无内容。你错过的通知会保存在这里。",
+    "clearAll": "全部清除",
+    "settings": "通知设置",
+    "remove": "移除“{{title}}”",
+    "undone": "已撤销",
+    "done": "完成"
+  },
+  "mentions": {
+    "noLongerHere": "已不在的人",
+    "picker": "提及某人"
+  }
+}

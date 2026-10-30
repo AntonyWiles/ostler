@@ -1,0 +1,336 @@
+/* A project's Plan: the step list beside one step's pane. Tokens only. */
+
+.plan-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-500);
+  min-width: 0;
+}
+
+/* The steps beside the pane once the workspace has the room. An open board
+   is not this layout: it fills the page at every width. */
+@container project-detail (min-width: 800px) {
+  .plan-page:not(.plan-page--board) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    align-items: start;
+  }
+}
+
+/* The step list, and the Whiteboards entry under it (not a step) */
+
+.plan-page__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-width: 0;
+}
+
+.plan-page__extras {
+  padding-top: var(--space-200);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.plan-page__step[aria-current='true'] {
+  border-color: var(--color-border);
+  background: var(--color-surface-selected);
+}
+
+/* An open whiteboard fills the page (D4) */
+
+.plan-page--board {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: calc(var(--space-1200) * 8);
+}
+
+.plan-board {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-width: 0;
+  min-height: 0;
+}
+
+.plan-board--message {
+  align-items: center;
+  justify-content: center;
+}
+
+.plan-board__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200) var(--space-300);
+}
+
+.plan-board__title {
+  overflow: hidden;
+  margin: 0;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.plan-board__editor {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.plan-board__editor > .wb-editor {
+  flex: 1 1 auto;
+  height: auto;
+}
+
+.plan-page__steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-page__step {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-050) var(--space-200);
+  width: 100%;
+  padding: var(--space-200) var(--space-300);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.plan-page__step:hover {
+  background: var(--color-surface-hover);
+}
+
+.plan-page__step[aria-current='step'] {
+  border-color: var(--color-border);
+  background: var(--color-surface-selected);
+}
+
+.plan-page__step:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.plan-page__step-name {
+  font-weight: var(--weight-medium);
+}
+
+.plan-page__step-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.plan-page__step-mark[data-done='true'] {
+  color: var(--color-success);
+}
+
+.plan-page__step-summary {
+  grid-column: 1 / -1;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+/* The pane */
+
+.plan-page__pane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-500);
+  min-width: 0;
+}
+
+.plan-page__pane-head h2 {
+  margin: 0 0 var(--space-100);
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+
+.plan-page__pane-head p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+/* What the steps' panes share */
+
+.plan-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.plan-step__note {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.plan-step__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-step__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  padding: var(--space-200) var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.plan-step__item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-200);
+}
+
+.plan-step__item-name {
+  overflow: hidden;
+  font-weight: var(--weight-medium);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.plan-step__item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100) var(--space-300);
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.plan-step__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+/* The Tasks step */
+
+.plan-tasks__tools,
+.plan-tasks__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.plan-tasks__hint {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.plan-tasks__heading {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.plan-tasks__loose {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-tasks__task {
+  width: 100%;
+  overflow: hidden;
+  padding: var(--space-100) var(--space-200);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.plan-tasks__task:hover {
+  background: var(--color-surface-hover);
+}
+
+.plan-tasks__task:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* The Schedule step */
+
+.plan-schedule__finish {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+}
+
+.plan-schedule__finish-date {
+  margin: 0;
+  font-weight: var(--weight-semibold);
+}
+
+/* The Start step */
+
+.plan-start__checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-start__check {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-200);
+  padding: var(--space-100) 0;
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.plan-people__over {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-text);
+}
+
+@media (forced-colors: active) {
+  .plan-step__item {
+    border-color: CanvasText;
+  }
+}

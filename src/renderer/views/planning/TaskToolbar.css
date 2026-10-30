@@ -1,0 +1,153 @@
+/* The toolbar every task view shares (Board, List): filters, view options and the bulk bar. */
+
+/* Toolbar and bulk bar: the same row, so selecting moves nothing below it. */
+.task-toolbar {
+  min-height: var(--control-height);
+}
+
+.task-toolbar__search {
+  width: calc(var(--space-1200) * 4);
+  max-width: 100%;
+}
+
+.task-toolbar__presets {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.task-toolbar__hidden {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.task-toolbar__count {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.task-view-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.task-view-options__hint {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+}
+
+/* The bulk bar lies over the filter row, which keeps its place hidden, so
+   starting or clearing a selection never moves what is below (TaskToolbarRow). */
+.task-toolbar-row {
+  position: relative;
+  min-width: 0;
+}
+
+.task-toolbar-row.is-selecting .task-toolbar-row__filters {
+  visibility: hidden;
+}
+
+.task-toolbar-row__bulk {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.task-bulk-bar {
+  flex: 1;
+  flex-wrap: nowrap;
+  min-width: 0;
+  padding: 0 var(--space-200);
+  overflow-x: auto;
+  background: var(--color-surface-selected);
+  border-radius: var(--radius-md);
+}
+
+/* One row however many actions it has: it scrolls sideways instead of
+   growing a second row. */
+.task-bulk-bar .ui-toolbar__items {
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+}
+
+.task-bulk-bar .ui-toolbar__items > * {
+  flex-shrink: 0;
+}
+
+.task-bulk-bar__count {
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+
+/* Fill with AI's progress and Stop (N8.4). */
+.task-bulk-bar__ai-progress {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-200);
+  white-space: nowrap;
+}
+
+.task-bulk-bar__popover {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.task-bulk-bar__popover-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-200);
+}
+
+.task-view-options__fields {
+  display: grid;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.task-view-options__legend {
+  padding: 0;
+  margin-block-end: var(--space-100);
+  font-weight: var(--weight-medium);
+}
+
+/* Describe it (N8.1): the words and Make filter, then what is sent and any notes. */
+.describe-filter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  width: calc(var(--space-1200) * 8);
+  max-width: calc(100vw - var(--space-800));
+}
+
+.describe-filter__form {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-200);
+}
+
+.describe-filter__form > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.describe-filter__hint,
+.describe-filter__notes {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+}
+
+.describe-filter__notes {
+  padding-inline-start: var(--space-400);
+}

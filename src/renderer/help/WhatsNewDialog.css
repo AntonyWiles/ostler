@@ -1,0 +1,22 @@
+.ostler-whats-new {
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+.ostler-whats-new h3 {
+  margin: var(--space-400) 0 var(--space-150);
+  font-size: var(--text-heading-sm);
+}
+
+.ostler-whats-new h3:first-child {
+  margin-top: 0;
+}
+
+.ostler-whats-new ul {
+  margin: 0 0 var(--space-300);
+  padding-left: var(--space-500);
+}
+
+.ostler-whats-new li + li {
+  margin-top: var(--space-100);
+}

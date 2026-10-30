@@ -1,0 +1,4 @@
+/* The browser's own clear button is replaced by the field's. */
+.ui-search-field input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}

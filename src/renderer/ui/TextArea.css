@@ -1,0 +1,13 @@
+/* The box and layout are in Field.css. */
+
+.ui-textarea {
+  align-items: stretch;
+}
+
+.ui-textarea > textarea {
+  resize: none;
+}
+
+.ui-textarea > textarea::placeholder {
+  color: var(--color-text-muted);
+}

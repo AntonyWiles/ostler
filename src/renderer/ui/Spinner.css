@@ -1,0 +1,33 @@
+.ui-spinner {
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  border: var(--space-050) solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--radius-full);
+  animation: ui-spin calc(var(--motion-slow) * 3) linear infinite;
+}
+
+.ui-spinner--sm {
+  width: var(--space-300);
+  height: var(--space-300);
+}
+
+.ui-spinner--lg {
+  width: var(--space-600);
+  height: var(--space-600);
+}
+
+@keyframes ui-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Reduced motion zeroes the motion tokens; a spinner still needs to read as busy. */
+@media (prefers-reduced-motion: reduce) {
+  .ui-spinner {
+    animation-duration: 1.5s;
+  }
+}

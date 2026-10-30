@@ -1,0 +1,229 @@
+/* The Board: its toolbar, columns and swimlanes. Cards: PlanningCard.css. */
+
+.board {
+  --board-column-min: calc(var(--space-1200) * 4.5);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+}
+
+/* Columns */
+
+.board__columns {
+  display: grid;
+  grid-template-columns: repeat(var(--board-column-count, 6), minmax(var(--board-column-min), 1fr));
+  gap: var(--space-300);
+  align-items: start;
+  overflow-x: auto;
+  padding-bottom: var(--space-300);
+}
+
+.board-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: calc(var(--space-1200) * 3);
+  background: var(--color-surface-sunken);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-md);
+  transition:
+    background var(--motion-fast) var(--ease-standard),
+    border-color var(--motion-fast) var(--ease-standard);
+}
+
+/* A hidden column shown for now from the toolbar's eye (MOP-43): dashed, so
+   it reads as one this view normally leaves out. */
+.board-column.is-peeked {
+  border-color: var(--color-border);
+  border-style: dashed;
+}
+
+.board-column.is-drop-target {
+  background: var(--color-accent-subtle);
+  border-color: var(--color-accent);
+}
+
+.board-column__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--control-height);
+  padding: var(--space-200) var(--space-200) var(--space-100) var(--space-300);
+}
+
+.board-column__title {
+  display: flex;
+  flex-shrink: 0;
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.board-column__count {
+  min-width: var(--space-600);
+  padding: 0 var(--space-150);
+  border-radius: var(--radius-full);
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--leading-body-sm);
+}
+
+.board-column__count:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.board-column__count.is-over {
+  background: var(--color-warning-subtle);
+  color: var(--color-warning);
+}
+
+.board-column__wip-editor {
+  width: calc(var(--space-1000) * 2.5);
+}
+
+.board-column__actions {
+  display: flex;
+  gap: var(--space-050);
+  margin-left: auto;
+}
+
+/* "Select all" shows on demand, like a card's own box. */
+.board-column__actions .ui-icon-button[aria-pressed] {
+  opacity: 0;
+}
+
+.board-column__header:hover .ui-icon-button[aria-pressed],
+.board-column__actions .ui-icon-button[aria-pressed]:focus-visible,
+.board-column__actions .ui-icon-button[aria-pressed].is-visible {
+  opacity: 1;
+}
+
+.board-column__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  padding: var(--space-100) var(--space-200) var(--space-200);
+}
+
+/* A long column renders only the cards near the screen (P9.1). */
+.board-column__virtual {
+  position: relative;
+}
+
+.board-column__virtual-row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  width: 100%;
+  padding-bottom: var(--space-200);
+}
+
+.board-column__empty {
+  padding: var(--space-200) var(--space-100);
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+/* Where the dragged card will land. */
+.board-column__drop-line {
+  height: var(--space-050);
+  margin: calc(-1 * var(--space-050)) 0;
+  background: var(--color-accent);
+  border-radius: var(--radius-full);
+}
+
+/* Under a sort other than Manual, while a card is dragged: how to place cards by hand. */
+.board__sort-hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.board__sort-hint:not(:empty) {
+  padding: 0 var(--space-100) var(--space-100);
+}
+
+/* Swimlanes */
+
+.board__lanes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  overflow-x: auto;
+  padding-bottom: var(--space-300);
+}
+
+.board-lane__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--board-column-count, 6), minmax(var(--board-column-min), 1fr));
+  gap: var(--space-300);
+}
+
+.board-lane {
+  min-width: min-content;
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.board-lane__header {
+  position: sticky;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  padding: var(--space-200) var(--space-300);
+}
+
+.board-lane:not(.is-collapsed) .board-lane__header {
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.board-lane__titles {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-200);
+  min-width: 0;
+}
+
+.board-lane__titles h3 {
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+
+.board-lane__titles p {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board-lane__grid {
+  padding: var(--space-300);
+}
+
+.board-lane__grid .board-column {
+  min-height: calc(var(--space-1200) * 2);
+}
+
+@media (forced-colors: active) {
+  .board-column {
+    border-color: CanvasText;
+  }
+
+  .board-column.is-drop-target {
+    border-color: Highlight;
+  }
+
+  .board-column__drop-line {
+    background: Highlight;
+  }
+}

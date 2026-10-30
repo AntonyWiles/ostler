@@ -1,0 +1,121 @@
+/* Goals (N5.6b): goals of one's own, their measures and the project goals that count towards them. Tokens only. */
+
+.goals-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  padding: var(--space-400);
+}
+
+.goals-view .ui-page-header {
+  margin: 0;
+}
+
+.goals-view__list,
+.goals-view__folded-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.goals-view__folded {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-200);
+}
+
+.goals-view__folded-list {
+  align-self: stretch;
+}
+
+.goals-view__goal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  padding: var(--space-300) var(--space-400);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.goals-view__goal.is-highlighted {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-selected);
+}
+
+/* High contrast: every card's border is CanvasText, so the goal you came to
+   is outlined in Highlight. */
+@media (forced-colors: active) {
+  .goals-view__goal.is-highlighted {
+    outline: var(--focus-ring-width) solid Highlight;
+    outline-offset: calc(-1 * var(--focus-ring-width));
+  }
+}
+
+.goals-view__goal-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-200) var(--space-400);
+}
+
+.goals-view__goal-titles {
+  min-width: 0;
+}
+
+.goals-view__goal-title {
+  margin: 0;
+  font-size: var(--text-heading-sm);
+}
+
+.goals-view__goal-outcome {
+  margin: var(--space-100) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.goals-view__goal-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.goals-view__links ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.goals-view__links-heading {
+  margin: 0 0 var(--space-100);
+  font-size: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+
+.goals-view__link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-100) var(--space-200);
+  min-width: 0;
+}
+
+.goals-view__link-title {
+  font-weight: var(--weight-semibold);
+}
+
+.goals-view__link-project,
+.goals-view__link-value,
+.goals-view__link-note {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.goals-view__link .ui-icon-button {
+  margin-inline-start: auto;
+}

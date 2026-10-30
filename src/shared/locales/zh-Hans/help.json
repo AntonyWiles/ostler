@@ -1,0 +1,36 @@
+{
+  "shortcutOverlay": {
+    "title": "键盘快捷键",
+    "description": "单键快捷键仅在你未输入文字时生效。",
+    "search": "搜索快捷键",
+    "noMatch": "没有与“{{query}}”匹配的快捷键。"
+  },
+  "helpProvider": {
+    "diagnosticsCopied": "诊断信息已复制",
+    "versionsCountsEndLog": "版本、计数和日志末尾，已删除名称、密钥和令牌。",
+    "couldntCopyDiagnostics": "无法复制诊断信息",
+    "issuePageOpenBrowser": "{{brand}} 的问题页面已在浏览器中打开，诊断信息已复制到剪贴板。只有在你需要时，才将其粘贴到报告中。",
+    "couldntOpenIssuePage": "无法打开问题页面"
+  },
+  "whatsNewDialog": {
+    "whatsNew": "{{brand}} 新功能",
+    "version": "版本 {{version}}",
+    "close": "关闭",
+    "thereNoNotesVersion": "此版本没有更新说明。"
+  },
+  "guide": {
+    "version": "版本 {{version}}"
+  },
+  "helpView": {
+    "userGuidePages": "用户指南页面",
+    "userGuide": "用户指南",
+    "searchGuide": "搜索指南",
+    "matches_other": "{{count}} 处匹配",
+    "userGuideIsntBuild": "此版本中没有用户指南",
+    "readOnlineRepositoryDocs": "请在 {{brand}} 代码仓库的 docs/user-guide 文件夹中在线阅读。",
+    "noPageMentions": "没有页面提到这一内容。",
+    "foundPages_other": "在 {{count}} 个页面中找到。",
+    "notPage": "本页没有。",
+    "matchesPageHighlighted_other": "本页有 {{count}} 处匹配，已高亮显示。"
+  }
+}

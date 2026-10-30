@@ -1,0 +1,657 @@
+{
+  "globalViews": {
+    "home": {
+      "label": "Home",
+      "keywords": "start, portfolio, needs you"
+    },
+    "inbox": {
+      "label": "Inbox",
+      "keywords": "notifications, updates, reminders, unread"
+    },
+    "myWork": {
+      "label": "My work",
+      "keywords": "assigned, tasks, mine, person, across projects, everything"
+    },
+    "search": {
+      "label": "Search",
+      "keywords": "find, results, comments, decisions, library"
+    },
+    "agents": {
+      "label": "Agents",
+      "keywords": "queue, sessions, harness"
+    },
+    "help": {
+      "label": "User guide",
+      "keywords": "help, documentation, how to, manual, guide"
+    },
+    "settings": {
+      "label": "Settings",
+      "keywords": "preferences, options"
+    },
+    "timesheet": {
+      "label": "Timesheet",
+      "keywords": "time, hours, timer, tracking, log, week"
+    },
+    "workload": {
+      "label": "Workload",
+      "keywords": "capacity, people, team, hours, allocation, over, week, resources"
+    },
+    "weeklyReview": {
+      "label": "Weekly review",
+      "keywords": "review, week, overdue, blocked, stale, someday, tidy, plan"
+    },
+    "timelineOverview": {
+      "label": "Timeline across projects",
+      "keywords": "timeline, gantt, milestones, projects, portfolio, clashes, deadlines, roadmap"
+    },
+    "contacts": {
+      "label": "Contacts",
+      "keywords": "people, clients, suppliers, phone, email, address, vcard, call"
+    },
+    "goals": {
+      "label": "Goals",
+      "keywords": "goals of your own, personal goals, targets, aims, savings, measures, check in, progress"
+    },
+    "undoHistory": {
+      "label": "Undo history",
+      "keywords": "history, undo, redo, changes, log, timeline, restore, what did I change, activity"
+    },
+    "team": {
+      "label": "Team",
+      "keywords": "team, people, leader, overdue, blocked, load, who"
+    }
+  },
+  "views": {
+    "overview": {
+      "label": "Overview",
+      "keywords": "today, brief, summary, needs a decision",
+      "description": "How the project is going, and what needs you."
+    },
+    "plan": {
+      "label": "Plan",
+      "keywords": "planning, goals, milestones, schedule, get started, start the project",
+      "description": "Plan the project step by step: its goal, milestones, tasks and dates."
+    },
+    "board": {
+      "label": "Board",
+      "keywords": "kanban, tasks, columns",
+      "description": "Tasks in columns, from to do to done."
+    },
+    "list": {
+      "label": "List",
+      "keywords": "table, tasks, rows, spreadsheet",
+      "description": "Every task in a table you can sort and filter."
+    },
+    "calendar": {
+      "label": "Calendar",
+      "keywords": "dates, due, month, week, schedule",
+      "description": "Tasks on the days they are due."
+    },
+    "timeline": {
+      "label": "Timeline",
+      "keywords": "gantt, schedule, dependencies, plan, dates",
+      "description": "Tasks with start and due dates, side by side over time."
+    },
+    "milestones": {
+      "label": "Milestones",
+      "keywords": "goals, readiness",
+      "description": "Goals and the milestones on the way to them."
+    },
+    "library": {
+      "label": "Library",
+      "keywords": "briefs, documents, notes, links",
+      "description": "Briefs, documents, notes, pictures and links."
+    },
+    "decisions": {
+      "label": "Decisions",
+      "keywords": "decision log",
+      "description": "What was decided, and why."
+    },
+    "files": {
+      "label": "Files",
+      "keywords": "code, editor, copies",
+      "description": "The files in the project’s folder."
+    },
+    "history": {
+      "label": "History",
+      "keywords": "undo, restore, versions, changes, discarded",
+      "description": "Undo, restore and bring back work in the folder."
+    },
+    "agents": {
+      "label": "Agents",
+      "keywords": "queue, tasks, review, apply",
+      "description": "Coding agents’ queue, runs and reviews."
+    },
+    "matrix": {
+      "label": "Matrix",
+      "keywords": "priority, urgent, important, eisenhower, quadrants, what first",
+      "description": "Ideas by impact and effort: what to do first."
+    },
+    "triage": {
+      "label": "To triage",
+      "keywords": "triage, captures, quick add, inbox, sort, accept, new",
+      "description": "New captures to sort before they count."
+    },
+    "someday": {
+      "label": "Someday",
+      "keywords": "ideas, later, maybe, parked, hidden",
+      "description": "Ideas parked for later."
+    },
+    "costs": {
+      "label": "Costs",
+      "keywords": "budget, money, spending, expenses, paid, planned",
+      "description": "The budget, and what has been spent or planned."
+    },
+    "shopping": {
+      "label": "Shopping list",
+      "keywords": "buy, purchases, supplies, materials, shop, order, supplier",
+      "description": "Things to buy, and what is bought."
+    },
+    "timeReport": {
+      "label": "Time report",
+      "keywords": "billable, billing, hours, rate, invoice, charge, client",
+      "description": "Time logged, by task and person, ready to bill."
+    },
+    "archive": {
+      "label": "Archive",
+      "keywords": "archived tasks",
+      "description": "Tasks put away, kept for the record."
+    },
+    "bin": {
+      "label": "Recycle bin",
+      "keywords": "deleted, trash, restore",
+      "description": "Deleted tasks, restorable for 30 days."
+    }
+  },
+  "settings": {
+    "general": {
+      "label": "General",
+      "keywords": "appearance, theme, density, accent, start-up"
+    },
+    "projects": {
+      "label": "Projects",
+      "keywords": "folders, colour, archive, remove"
+    },
+    "people": {
+      "label": "People",
+      "keywords": "me, assignees, assign, team"
+    },
+    "notifications": {
+      "label": "Notifications",
+      "keywords": "alerts"
+    },
+    "ai": {
+      "label": "AI",
+      "keywords": "provider, model, key, set up AI"
+    },
+    "agents": {
+      "label": "Agents",
+      "keywords": "harness, connected agents, agent tokens"
+    },
+    "connections": {
+      "label": "Connections",
+      "keywords": "automation API, MCP, AI assistant, Claude, ChatGPT, token, connect"
+    },
+    "devices": {
+      "label": "Devices",
+      "keywords": "PC, computer, pair, join, sync, personal space, other PC, remove device"
+    },
+    "data": {
+      "label": "Data",
+      "keywords": "database, backups, restore, size"
+    },
+    "advanced": {
+      "label": "Advanced",
+      "keywords": "file activity, watcher, git, ports, developer"
+    },
+    "git": {
+      "label": "Git",
+      "keywords": "commits, repository, history, polling"
+    },
+    "about": {
+      "label": "About",
+      "keywords": "version, updates, diagnostics"
+    },
+    "groups": {
+      "appearance": {
+        "keywords": "theme, dark mode, light mode, colour, accent, density, font size, text size"
+      },
+      "startUp": {
+        "keywords": "launch, opening page, start page, home, begin"
+      },
+      "language": {
+        "keywords": "locale, translation, display language"
+      },
+      "workingHours": {
+        "keywords": "hours, workday, week, days, schedule, start, finish"
+      },
+      "windows": {
+        "keywords": "window, tray, minimise, taskbar, always on top, close button"
+      },
+      "calendars": {
+        "keywords": "ics, subscribe, feed, link, outlook, google calendar"
+      },
+      "progress": {
+        "keywords": "year in review, streak, stats, show my progress"
+      },
+      "boardAllProjects": {
+        "keywords": "board, columns, kanban, defaults, all projects, layout"
+      },
+      "reminders": {
+        "keywords": "alerts, due, daily, snooze, quiet hours, overdue"
+      },
+      "desktopNotifications": {
+        "keywords": "toast, banner, windows notifications, sound, popups"
+      },
+      "aiPrivacy": {
+        "keywords": "data, redact, send, share, sensitive, private"
+      },
+      "builtInAgent": {
+        "keywords": "opencode, model, provider, embedded agent, API key"
+      },
+      "usagePrices": {
+        "keywords": "cost, price, tokens, spend, budget, billing"
+      },
+      "accounts": {
+        "keywords": "google, microsoft, outlook, sign in, calendar, connect, account"
+      },
+      "syncServer": {
+        "keywords": "share, sharing, collaborate, server, sync, invite, team"
+      },
+      "emailServer": {
+        "keywords": "email, SMTP, mail, invite, outgoing, server"
+      },
+      "automationApi": {
+        "keywords": "API, port, automation, webhook, integration, local server"
+      },
+      "githubToken": {
+        "keywords": "GitHub, token, personal access token, issues, pull requests"
+      },
+      "storage": {
+        "keywords": "disk, space, size, database, location, data folder, delete old"
+      },
+      "agentCopies": {
+        "keywords": "worktree, copies, retention, agent history, clean up"
+      },
+      "import": {
+        "keywords": "CSV, Trello, Jira, Asana, bring in, upload, spreadsheet"
+      },
+      "backups": {
+        "keywords": "backup, restore, second place, schedule, copy, safety"
+      },
+      "versionHistory": {
+        "keywords": "git, snapshots, restore points, my edits, history"
+      },
+      "developer": {
+        "keywords": "developer tools, devtools, debug, console, inspect"
+      },
+      "updates": {
+        "keywords": "update, upgrade, new version, check for updates, release notes"
+      },
+      "licences": {
+        "keywords": "licence, license, open source, third party, notices, credits"
+      },
+      "diagnostics": {
+        "keywords": "copy diagnostics, report, log, support, bug, problem"
+      }
+    }
+  },
+  "shortcutGroups": {
+    "anywhere": "Anywhere",
+    "project": "In a project",
+    "tasks": "Board and List",
+    "dates": "Calendar and Timeline",
+    "library": "Library"
+  },
+  "markupShortcutsHeading": "Marking up a picture",
+  "markupShortcuts": {
+    "select": "Select, to move and change marks",
+    "arrow": "Arrow",
+    "box": "Box",
+    "highlight": "Highlight",
+    "text": "Text",
+    "blur": "Blur, for anything private",
+    "undo": "Undo",
+    "redo": "Redo",
+    "next-mark": "Move to the next mark",
+    "move": "Move the selected mark",
+    "move-far": "Move the selected mark further",
+    "resize": "Resize the selected mark",
+    "delete": "Delete the selected mark"
+  },
+  "whiteboardShortcutsHeading": "Whiteboards",
+  "whiteboardShortcuts": {
+    "select": "Select",
+    "hand": "Hand: move around the whiteboard",
+    "pan": "Move around the whiteboard with any tool",
+    "next-object": "Next object",
+    "previous-object": "Previous object",
+    "move": "Move the selection",
+    "move-far": "Move the selection 10 times as far",
+    "resize": "Resize the selected object",
+    "resize-far": "Resize 10 times as far",
+    "free-move": "Move without snapping to the grid",
+    "keep-ratio": "Resize and keep the shape",
+    "select-all": "Select everything",
+    "deselect": "Select nothing",
+    "delete": "Delete the selection",
+    "undo": "Undo",
+    "redo": "Redo",
+    "zoom-in": "Zoom in",
+    "zoom-out": "Zoom out",
+    "zoom-fit": "Fit the whole whiteboard",
+    "zoom-reset": "Zoom to 100%",
+    "note": "Sticky note",
+    "text": "Text",
+    "place": "Place the chosen tool's object in the middle of the view",
+    "edit-text": "Edit the selected object's text",
+    "finish-text": "Finish editing text",
+    "duplicate": "Duplicate",
+    "copy": "Copy",
+    "cut": "Cut",
+    "paste": "Paste",
+    "group": "Group",
+    "ungroup": "Ungroup",
+    "bring-forward": "Bring forward",
+    "send-backward": "Send backward",
+    "bring-to-front": "Bring to front",
+    "send-to-back": "Send to back",
+    "pen": "Pen",
+    "marker": "Marker",
+    "eraser": "Eraser: rub out drawings",
+    "shape": "Shape; press again for the next shape",
+    "frame": "Frame",
+    "draw-square": "Draw a square or a circle",
+    "connector": "Line or arrow",
+    "connect-to": "Connect the selected object to another",
+    "picture": "Insert a picture",
+    "paste-lines": "Paste each line as its own note",
+    "link": "Link to an item or web page",
+    "open-link": "Open the selected object’s link",
+    "make-tasks": "Make tasks from the selection",
+    "mindmap": "Mind map",
+    "mind-map-child": "Add a child idea (Tab while typing, Insert when selected)",
+    "mind-map-sibling": "Add the next idea (while typing)",
+    "mind-map-new-line": "New line in an idea",
+    "mind-map-navigate": "Move along a mind map’s branches",
+    "mind-map-move": "Move an idea and its branch (the central idea moves the whole map)",
+    "pick-in-group": "Pick one object inside a group",
+    "context-menu": "Open the menu for the selection",
+    "node": "Node: join objects at the middle of their sides"
+  },
+  "shortcuts": {
+    "palette": "Command palette and search",
+    "new-task": "Quick add, in the current project if there is one",
+    "quick-add": "Quick add from anywhere",
+    "settings": "Settings",
+    "sidebar": "Collapse or expand the sidebar",
+    "go-home": "Go to Home",
+    "go-inbox": "Go to Inbox",
+    "go-my-work": "Go to My work",
+    "focus-search": "Focus the view's search or filter",
+    "shortcut-help": "Show keyboard shortcuts",
+    "undo": "Undo your last change (a text field undoes its typing)",
+    "redo": "Redo the last change you undid",
+    "undo-history": "Open the undo history",
+    "escape": "Close the top layer, then clear the selection",
+    "project-view": "Project views, in order",
+    "next-task": "Move between tasks",
+    "plan-indent": "Make a row in a plan a subtask of the row above",
+    "plan-outdent": "Move a row in a plan up a level",
+    "open-task": "Open the focused task",
+    "move-task-order": "Move the focused task up or down, in Manual order (Board, List, a task's subtasks)",
+    "move-task-column": "Move the focused card to the previous or next column, in Manual order (Board)",
+    "move-task-matrix": "Move the focused card up or down a box, changing its priority (Matrix)",
+    "select-task": "Select or deselect the focused task",
+    "edit-title": "Edit the title inline",
+    "delete-task": "Move to the recycle bin",
+    "calendar-today": "Go to today",
+    "move-task-date": "Move the focused task a day (Left, Right) or a week (Up, Down) (Calendar); a day (Timeline)",
+    "move-task-due": "Move the focused task's due date a day (Timeline)",
+    "move-task-start": "Move the focused task's start date a day (Timeline)",
+    "library-search": "Search the Library",
+    "library-make-task": "Make a task from the selected lines (Library editor)",
+    "zoom-in": "Zoom in",
+    "zoom-out": "Zoom out",
+    "zoom-reset": "Reset zoom",
+    "find-replace": "Find and replace in the current project"
+  },
+  "app": {
+    "loading": "Loading"
+  },
+  "skipLink": {
+    "skipContent": "Skip to content"
+  },
+  "titleBar": {
+    "menu": "Menu",
+    "minimize": "Minimise",
+    "maximize": "Maximise",
+    "restore": "Restore",
+    "close": "Close"
+  },
+  "sidebar": {
+    "sidebar": "Sidebar",
+    "search": "Search",
+    "search2": "Search…",
+    "main": "Main",
+    "more": "More",
+    "projects": "Projects",
+    "newProject": "New project",
+    "actions": "{{projectName}} actions",
+    "unread": "{{unread}} unread",
+    "running": "{{running}} running",
+    "couldnTSaveProject": "Couldn't save the project order",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar"
+  },
+  "commandPalette": {
+    "commandPalette": "Command palette",
+    "move": "move",
+    "open": "open",
+    "close": "close",
+    "commandPaletteSearch": "Command palette search",
+    "goProjectViewSetting": "Go to a project, view or setting, or search everything…",
+    "results": "Results",
+    "noMatches": "No matches",
+    "newTask": "New task",
+    "create": "Create",
+    "quickAddTask": "Quick add task",
+    "newProject": "New project",
+    "openSampleProject": "Open the sample project",
+    "openAdvancedDemo": "Open the advanced demo project",
+    "go": "Go to",
+    "keyboardShortcuts": "Keyboard shortcuts",
+    "whatSNew": "What's new",
+    "reportProblem": "Report a problem…",
+    "copyDiagnostics": "Copy diagnostics",
+    "help": "Help",
+    "projects": "Projects",
+    "noFolder": "No folder",
+    "projectViews": "Project views",
+    "newTask2": "New task in {{projectName}}",
+    "newNote": "New note in {{projectName}}",
+    "settings": "Settings",
+    "settings2": "Settings: {{sectionLabel}}",
+    "settingsGroup": "{{sectionLabel}} › {{groupLabel}}",
+    "developer": "Developer",
+    "developerUiGallery": "Developer: UI gallery",
+    "savedViews": "Saved views",
+    "openView": "Open view: {{viewName}} · {{projectName}}",
+    "comment": "Comment on {{resultTitle}}",
+    "search": "Search",
+    "seeAllResults": "See all results for \"{{trimmed}}\"",
+    "keywords": {
+      "quickAdd": "add, create, task, capture",
+      "sampleProject": "tour, welcome, learn, example, tutorial",
+      "shortcuts": "keys, hotkeys",
+      "whatsNew": "changelog, release notes, version",
+      "report": "bug, issue, feedback",
+      "diagnostics": "log, support",
+      "create": "add, create",
+      "savedView": "saved view, filter",
+      "calendarFile": "ics, calendar, outlook, google calendar, export, due dates",
+      "printMyWeek": "print, paper, pdf, week, agenda, today, upcoming",
+      "printYearInReview": "print, paper, pdf, year, review, progress, finished, done",
+      "taskTemplate": "template, pattern, new task, repeat, checklist",
+      "findReplace": "rename, search, substitute, change text",
+      "snip": "screenshot, snip, capture, picture, screen",
+      "statusUpdate": "status, update, health, on track, at risk, off track, report",
+      "playbook": "playbook, agent, run, queue, template, repeat",
+      "tour": "walkthrough, tips, tutorial, learn, onboarding, guide"
+    },
+    "newTaskFromTemplate": "New task from template…",
+    "findTaskTemplate": "Find a task template",
+    "noTaskTemplates": "No task templates here yet. Save one from a task's menu: Save as task template…",
+    "move_comment": "Beside the arrow keys in the palette's key legend: what they do.",
+    "open_comment": "Beside the Enter key in the palette's key legend: opens the selected result.",
+    "close_comment": "Beside the Esc key in the palette's key legend: closes the palette.",
+    "planTasks": "Plan several tasks",
+    "exportCalendarFile": "Export to calendar file…",
+    "print": "Print",
+    "findReplace": "Find and replace…",
+    "projectsInArea": "Projects · {{area}}",
+    "snipToTask": "Snip to task",
+    "postUpdate": "Post a status update",
+    "runPlaybook": "Run playbook…",
+    "takeTheTour": "Take the tour"
+  },
+  "statusBar": {
+    "sharingSummary": "{{who}} · {{status}}",
+    "sharingStatus": {
+      "up-to-date": "up to date",
+      "catching-up": "catching up",
+      "cannot-reach-folder": "can't reach the folder",
+      "problems": "some files couldn't be read"
+    },
+    "sharedWithName": "Shared with {{name}}",
+    "sharedWithCount_one": "Shared with {{count}} person",
+    "sharedWithCount_other": "Shared with {{count}} people",
+    "sharedOnYourPcs": "Shared between your PCs",
+    "sharingDetail": "See who this project is shared with, or leave it",
+    "aiBusy": "AI busy",
+    "aiStoppedResume": "AI stopped · Resume",
+    "aiStoppedNoAgent": "AI is stopped: no agent runs start automatically. Click to resume.",
+    "cancelEveryAiRequest": "Cancel every AI request, stop all running agents, and hold queued tasks until you resume",
+    "stoppedAllAiRequests_one": "Stopped all AI requests and {{count}} agent run.",
+    "stoppedAllAiRequests_other": "Stopped all AI requests and {{count}} agent runs.",
+    "couldnTStopAll": "Couldn't stop all AI: {{error}}. Try again.",
+    "couldNotResume": "Could not resume: {{error}}",
+    "stopping": "Stopping…",
+    "stopAllAi": "Stop all AI",
+    "agentsRunning_one": "{{count}} agent running",
+    "agentsRunning_other": "{{count}} agents running",
+    "notifications": "In-app notifications",
+    "notificationsUnread_one": "In-app notifications, {{count}} unseen",
+    "notificationsUnread_other": "In-app notifications, {{count}} unseen",
+    "notificationsTitle": "In-app notifications: everything that popped up in the corner, with Undo",
+    "notificationsShort": "Notifications"
+  },
+  "helpMenu": {
+    "help": "Help",
+    "userGuide": "User guide",
+    "keyboardShortcuts": "Keyboard shortcuts",
+    "whatSNew": "What's new",
+    "reportProblem": "Report a problem…",
+    "opensIssuePageBrowser": "Opens the issue page in your browser and copies diagnostics for you to paste if you want to",
+    "copyDiagnostics": "Copy diagnostics",
+    "about": "About",
+    "takeTheTour": "Take the tour",
+    "takeTheTourHint": "A few short steps around the demo project"
+  },
+  "projectHeader": {
+    "branch": "Branch",
+    "newTask": "New task",
+    "moreProjectActions": "More project actions",
+    "projectName": "Project name",
+    "quickAddPress": "For quick add, press",
+    "quickAddPress_comment": "Followed by the keys, shown as keycaps: “For quick add, press Ctrl+N”.",
+    "rename": "Rename"
+  },
+  "projectWorkspace": {
+    "loadingProject": "Loading project",
+    "projectNotFound": "Project not found",
+    "mayHaveBeenRemoved": "It may have been removed or archived. Archived projects are listed in Settings › Projects.",
+    "goHome": "Go to Home",
+    "projectViews": "Project views",
+    "runningReview": "{{queueAttention}} running or to review",
+    "loading": "Loading",
+    "loading2": "Loading {{currentLabel}}",
+    "couldnTPrint": "Couldn't print",
+    "savedPdf": "Saved as PDF",
+    "list": "{{projectName}} - List",
+    "couldnTExport": "Couldn't export",
+    "exportedList": "Exported the List",
+    "exportViewCsv": "Export this view to CSV…",
+    "importExportGroup": "Import and export",
+    "printGroup": "Print",
+    "print": "Print…",
+    "savePdf": "Save as PDF…",
+    "didnTWorkTry": "That didn't work. Try again.",
+    "planTasks": "Plan several tasks",
+    "findReplace": "Find and replace…",
+    "moreViews": "More views",
+    "moreViewsMenu": "More views for this project",
+    "tabsInMore_one": "{{count}} tab that doesn't fit is here",
+    "tabsInMore_other": "{{count}} tabs that don't fit are here",
+    "tabsGroup": "Tabs",
+    "tabsApplyTo": "Tabs apply to",
+    "tabsAllProjects": "All projects",
+    "tabsThisProject": "This project only"
+  },
+  "boardTab": {
+    "generating": "Generating…",
+    "suggestTasks": "Suggest tasks…"
+  },
+  "listTab": {
+    "generating": "Generating…",
+    "suggestTasks": "Suggest tasks…"
+  },
+  "overviewTab": {
+    "softwareProject": "Software project?",
+    "canSuggestTasksBreak": "It can suggest tasks, break goals down and summarise this project. It's optional.",
+    "canHelpPlan": "{{aiName}} can help plan",
+    "notesChat": "Notes chat",
+    "linkFolder": "Link a folder…",
+    "linkFolderBrowseFiles": "Link its folder to browse files and Git activity here, and to hand tasks to agents.",
+    "linkFolderBrowseFiles2": "Link its folder to browse files and Git activity here.",
+    "setUpAi": "Set up AI",
+    "show": "Show",
+    "panes": {
+      "summary": "Summary",
+      "insights": "Insights",
+      "code": "Code"
+    }
+  },
+  "agentAnnouncements": {
+    "in": "\"{{runTitle}}\" in {{projectName}}",
+    "run": "a run in {{projectName}}",
+    "agentStarted": "Agent started {{runName}}.",
+    "agentBlocked": "Agent is blocked on {{runName}}.",
+    "agentResumed": "Agent resumed {{runName}}.",
+    "agentRunEnded": "Agent run ended: {{runName}}."
+  },
+  "useUpdateToast": {
+    "updateReadyRestartUpdate": "Update ready. Restart to update",
+    "agentsWorkingCanRestart": "Agents are working. You can restart when they finish.",
+    "versionInstallsWhenRestart": "Version {{version}} installs when you restart.",
+    "restartOptions": "Restart options",
+    "restartNow": "Restart now"
+  },
+  "popOut": {
+    "openInNewWindow": "Open in new window",
+    "paletteOpen": "Open {{view}} in new window",
+    "paletteKeywords": "pop out, second screen, monitor, window",
+    "fullTitle": "Eight windows are open",
+    "fullBody": "Close the oldest, {{oldest}}, and open this one?",
+    "closeOldest": "Close it and open",
+    "couldNotOpen": "Couldn't open a new window",
+    "windowMenu": "Window menu",
+    "reopenAtStart": "Reopen at start",
+    "reopenAtStartHint": "Open this window again at start if it is open when you quit",
+    "showMainWindow": "Show the main window",
+    "home": "Home",
+    "projectView": "{{projectName}} - {{view}}"
+  }
+}

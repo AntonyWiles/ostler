@@ -1,0 +1,3 @@
+Task ID,Created At,Completed At,Last Modified,Name,Section/Column,Assignee,Assignee Email,Start Date,Due Date,Tags,Notes,Projects,Parent task
+1201,2026-09-01,,2026-09-02,Book the venue,Planning,Alex Chen,alex@example.com,2026-10-01,2026-10-05,venue,Call three venues,Summer fair,
+1202,2026-09-01,2026-09-03,2026-09-03,Order cake,Done,,,,2026-10-10,"food,party",,Summer fair,

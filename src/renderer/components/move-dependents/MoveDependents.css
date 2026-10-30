@@ -1,0 +1,61 @@
+/* Move what waits on it (N7.1). Tokens only. */
+
+.move-dependents {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  min-width: 0;
+}
+
+.move-dependents__scroll {
+  max-height: calc(var(--space-1200) * 6);
+  overflow: auto;
+  scrollbar-gutter: stable;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.move-dependents__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+}
+
+.move-dependents__table th,
+.move-dependents__table td {
+  padding: var(--space-150);
+  border-bottom: var(--border-width) solid var(--color-border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.move-dependents__table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-surface-sunken);
+  font-weight: var(--weight-semibold);
+}
+
+.move-dependents__title {
+  overflow-wrap: anywhere;
+}
+
+.move-dependents__note {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.move-dependents__heading {
+  margin: 0 0 var(--space-100);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.move-dependents__skipped {
+  margin: 0;
+  padding-inline-start: var(--space-400);
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}

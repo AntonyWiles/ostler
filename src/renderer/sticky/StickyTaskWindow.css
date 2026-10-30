@@ -1,0 +1,112 @@
+/* Sticky task on the desktop (N5.8b): a small, frameless window. */
+.sticky-task {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--text-body-sm);
+  border: var(--border-width) solid var(--color-border-strong);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* The header drags the window; its controls stay clickable. */
+.sticky-task-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  padding: var(--space-100) var(--space-150);
+  background: var(--color-surface-sunken);
+  border-bottom: var(--border-width) solid var(--color-border);
+  app-region: drag;
+  -webkit-app-region: drag;
+}
+
+.sticky-task-header button {
+  app-region: no-drag;
+  -webkit-app-region: no-drag;
+}
+
+.sticky-task-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: inherit;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  text-align: left;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-control);
+  padding: var(--space-050);
+  cursor: pointer;
+}
+
+.sticky-task-title:hover {
+  text-decoration: underline;
+}
+
+.sticky-task-title:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.sticky-task-body {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  padding: var(--space-150);
+}
+
+.sticky-task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-150);
+  margin: 0 0 var(--space-100);
+  color: var(--color-text-secondary);
+}
+
+.sticky-task-due.is-overdue {
+  color: var(--color-danger);
+}
+
+.sticky-task-progress {
+  margin: 0 0 var(--space-050);
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.sticky-task-checklist ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-050);
+}
+
+.sticky-task-gone {
+  display: grid;
+  gap: var(--space-150);
+  justify-items: start;
+}
+
+.sticky-task-gone p {
+  margin: 0;
+}
+
+.sticky-task-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-100);
+  padding: var(--space-100) var(--space-150);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.sticky-task-clock {
+  margin-left: var(--space-100);
+  font-variant-numeric: tabular-nums;
+}

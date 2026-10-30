@@ -1,0 +1,10 @@
+/* Native spin buttons are hidden: arrow keys step, and the unit sits where they were. */
+.ui-number-field input::-webkit-inner-spin-button,
+.ui-number-field input::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.ui-number-field input {
+  text-align: right;
+}

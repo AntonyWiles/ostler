@@ -1,0 +1,201 @@
+{
+  "welcome": {
+    "goProjectSkipRest": "Zum Projekt gehen und den Rest überspringen.",
+    "closeWelcomeWithoutCreating": "Schließen Sie die Willkommensseite, ohne etwas anzulegen. Alles hier finden Sie auch in den Einstellungen.",
+    "skipNow": "Jetzt überspringen",
+    "welcome": "Willkommen bei {{brand}}",
+    "planProjectsTasksBoards": "Planen Sie Projekte mit Aufgaben, Boards, Kalendern und Zeitleisten. Alles bleibt auf diesem Computer. Zwei kurze Entscheidungen, dann Ihr erstes Projekt.",
+    "whatShouldWeCall": "Wie sollen wir Sie nennen?",
+    "tasksAssignYourselfShow": "Aufgaben, die Sie sich selbst zuweisen, zeigen diesen Namen. Sie können ihn unter Einstellungen › Personen ändern.",
+    "theme": "Design",
+    "continue": "Weiter",
+    "howDoWantStart": "Wie möchten Sie beginnen?",
+    "firstProject": "Ihr erstes Projekt",
+    "startWithDemos": "Mit den Demoprojekten beginnen",
+    "setUpFromOtherDevice": "Von meinem anderen Gerät einrichten",
+    "joinTitle": "Von meinem anderen Gerät einrichten",
+    "joinLead": "Wenn Sie {{brand}} bereits auf einem anderen PC nutzen, kann dieser PC dessen persönlichem Bereich beitreten: Ihre Projekte, persönlichen Daten und Einstellungen kommen dann auch hierher.",
+    "chooseTemplate": "Vorlage auswählen",
+    "next": "Weiter",
+    "progress": "Fortschritt der Willkommensseite",
+    "stepOf": "Schritt {{current}} von {{total}}",
+    "startTemplate": "Aus einer Vorlage beginnen",
+    "readyMadePlanSuch": "Ein fertiger Plan, etwa für eine Veranstaltung, einen Produktstart oder einen Lernplan.",
+    "blankProject": "Ein leeres Projekt",
+    "emptyProjectFillYourself": "Ein leeres Projekt, das Sie selbst füllen.",
+    "import": "Importieren",
+    "spreadsheetCsvTrelloBoard": "Aus einer Tabelle (CSV) oder einem Trello-Board.",
+    "projectName": "Projektname",
+    "websiteRelaunch": "Relaunch der Website",
+    "back": "Zurück",
+    "fewOptionalExtras": "Ein paar optionale Extras",
+    "eachTheseOptionalCan": "Jedes davon ist optional und kann später in den Einstellungen erledigt werden.",
+    "softwareProject": "Ist das ein Softwareprojekt?",
+    "linkedReadsNeverWrites": "Verknüpft mit {{folder}}. {{brand}} liest sie und schreibt nie hinein.",
+    "linkFolderBrowseFiles": "Verknüpfen Sie den Ordner, um Dateien zu durchsuchen und Git-Aktivitäten zu sehen. {{brand}} liest ihn nur.",
+    "linkFolder": "Ordner verknüpfen…",
+    "wantAiHelp": "Möchten Sie KI-Unterstützung?",
+    "setUp": "{{aiName}} ist eingerichtet.",
+    "canSuggestTasksBreak": "{{aiName}} kann Aufgaben vorschlagen, Ziele aufteilen und zusammenfassen. Nutzen Sie ein kostenloses Modell auf diesem PC oder ein KI-Konto.",
+    "setUpAi": "KI einrichten…",
+    "useAiAgents": "KI-Agenten verwenden?",
+    "agents": "Agenten sind eingeschaltet.",
+    "agentsWorkThroughTasks": "Agenten arbeiten Aufgaben in Ihrem Ordner ab, jede in einer eigenen Kopie. Nichts ändert sich, bis Sie es übernehmen.",
+    "setUpAgents": "Agenten einrichten…",
+    "system": "System",
+    "followsWindows": "Folgt Windows",
+    "light": "Hell",
+    "lightAllTime": "Immer hell",
+    "dark": "Dunkel",
+    "darkAllTime": "Immer dunkel",
+    "chooseProjectFolder": "Projektordner auswählen",
+    "couldntLinkFolder": "Der Ordner konnte nicht verknüpft werden. {{error}}",
+    "chooseFile": "Datei auswählen…",
+    "createProject": "Projekt erstellen",
+    "openProject": "Projekt öffnen",
+    "finish": "Fertigstellen",
+    "readyOptional": "„{{projectName}}“ ist bereit. Jedes davon ist optional und kann später in den Einstellungen erledigt werden."
+  },
+  "gettingStarted": {
+    "createTask": "Eine Aufgabe anlegen",
+    "giveTaskDueDate": "Einer Aufgabe ein Fälligkeitsdatum geben",
+    "tryAnotherViewList": "Probieren Sie eine andere Ansicht: Liste, Kalender oder Zeitleiste",
+    "findSomethingCommandPalette": "Etwas mit der Befehlspalette finden",
+    "seeWhereBackups": "Sehen Sie nach, wo Ihre Sicherungen liegen",
+    "setUpAi": "KI einrichten"
+  },
+  "tips": {
+    "tipEyebrow": "Tipp",
+    "tourEyebrow": "Rundgang",
+    "stepOf": "{{step}} von {{count}}",
+    "steps": "Schritte des Rundgangs",
+    "goToStep": "Zu Schritt {{step}} gehen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "done": "Fertig",
+    "gotIt": "Verstanden",
+    "notNow": "Nicht jetzt",
+    "close": "Schließen",
+    "showMeAround": "Rundgang starten",
+    "dontShowAgain": "Nicht mehr anzeigen",
+    "dontShowTipAgain": "Diesen Tipp nicht mehr anzeigen",
+    "turnOffTips": "Tipps ausschalten",
+    "closeTour": "Rundgang schließen",
+    "announce": "Tipp: {{title}}",
+    "tourDone": "Das war der Rundgang",
+    "tourClosed": "Rundgang geschlossen",
+    "tourAgain": "Sie können ihn jederzeit unter Hilfe › Rundgang starten erneut aufrufen.",
+    "turnedOff": "Tipps sind ausgeschaltet",
+    "turnedOffBody": "Schalten Sie sie unter Einstellungen › Allgemein › Tipps und Rundgänge wieder ein.",
+    "turnBackOn": "Wieder einschalten",
+    "openSettings": "Einstellungen",
+    "invite": {
+      "title": "Neu hier? Machen Sie einen kurzen Rundgang",
+      "body": "Dieses Demoprojekt ist ein erfundenes Wochenende, mit Inhalten gefüllt, damit Sie gefahrlos alles ausprobieren können. Der Rundgang besucht nacheinander jede Ansicht und zeigt Ihnen in {{count}} kurzen Schritten, was Sie dort ausprobieren können."
+    },
+    "tour": {
+      "welcome": {
+        "title": "Das Demoprojekt",
+        "body": "Alles hier ist erfunden. Ändern, verschieben oder löschen Sie also, was Sie möchten. Die Aufgaben sind von oben nach unten geordnet: Die ersten zeigen die Grundlagen, spätere zeigen mehr. Was Sie hier tun, betrifft Ihre eigenen Projekte nicht."
+      },
+      "views": {
+        "title": "Ein Projekt, viele Ansichten",
+        "body": "Jede Registerkarte zeigt dieses Projekt auf eine andere Weise, und alle teilen sich dieselben Aufgaben: Ändern Sie eine Aufgabe in einer Ansicht, zeigt jede andere Ansicht die Änderung. Die nächsten Schritte besuchen nacheinander jede Registerkarte."
+      },
+      "board": {
+        "title": "Board: Arbeit in Bewegung",
+        "body": "Jede Spalte steht für einen Status. Aufgaben wandern von links nach rechts, wenn die Arbeit von Offen über In Arbeit bis Erledigt vorankommt. Die Zahl neben dem Namen jeder Spalte zeigt, wie viele Aufgaben darin liegen."
+      },
+      "card": {
+        "title": "Eine Aufgabe öffnen",
+        "body": "Klicken Sie auf eine Karte, um alles dazu zu sehen: Status, Priorität, Fälligkeitsdatum, zugewiesene Person, eine Checkliste und Kommentare. Ziehen Sie eine Karte in eine andere Spalte, um sie weiterzuschieben."
+      },
+      "newTask": {
+        "title": "Fügen Sie eigene hinzu",
+        "body": "Neue Aufgabe fügt dem Projekt eine hinzu. {{keys}} tut dasselbe von überall im Projekt aus."
+      },
+      "search": {
+        "title": "Alles finden",
+        "body": "Die Suche findet Aufgaben, Projekte und Dokumente und führt jeden Befehl über seinen Namen aus. Drücken Sie {{keys}} von überall."
+      },
+      "help": {
+        "title": "Hilfe ist immer da",
+        "body": "Das Benutzerhandbuch, die Tastenkombinationen und dieser Rundgang finden Sie unter Hilfe. Tipps wie dieser lassen sich unter Einstellungen › Allgemein ausschalten."
+      },
+      "overview": {
+        "title": "Übersicht: das Projekt auf einen Blick",
+        "body": "Wie viele Aufgaben offen sind, wie viele diese Woche erledigt wurden und wie viele überfällig sind, dann was Ihre Aufmerksamkeit braucht, was in Arbeit ist und was als Nächstes ansteht. Veröffentlichen Sie eine Aktualisierung, damit alle in ein oder zwei Sätzen wissen, wie das Projekt läuft."
+      },
+      "list": {
+        "title": "Liste: jede Aufgabe in Zeilen",
+        "body": "Wie eine Tabelle: Klicken Sie auf eine Überschrift, um zu sortieren, wählen Sie mit Spalten, was angezeigt wird, und markieren Sie Zeilen, um mehrere Aufgaben gleichzeitig zu ändern. Unteraufgaben stehen unter ihrer übergeordneten Aufgabe, wie die Mahlzeiten unter „Plan the meals“."
+      },
+      "calendar": {
+        "title": "Kalender: Aufgaben nach Fälligkeit",
+        "body": "Jede Aufgabe steht an dem Tag, an dem sie fällig ist, Meilensteine sind markiert. Wechseln Sie zwischen Monat, Woche, Jahr und Agenda, ziehen Sie eine Aufgabe auf einen anderen Tag, um ihr Fälligkeitsdatum zu ändern, und finden Sie Aufgaben ohne Datum unter Ohne Termin."
+      },
+      "timeline": {
+        "title": "Zeitleiste: über Wochen planen",
+        "body": "Jeder Balken läuft vom Start bis zum Fälligkeitsdatum einer Aufgabe und ist unter ihrem Meilenstein gruppiert. Ziehen Sie einen Balken, um ihn zu verschieben, oder ein Ende, um ihn in der Länge anzupassen. Schalten Sie Kritischen Pfad anzeigen ein, um zu sehen, welche Aufgaben nicht rutschen dürfen."
+      },
+      "milestones": {
+        "title": "Meilensteine und Ziele",
+        "body": "Ein Ziel ist der Zweck des Projekts. Meilensteine sind die großen Etappen auf dem Weg, jeweils mit einem Datum und den Aufgaben, die dorthin führen. Der Balken eines Meilensteins füllt sich, wenn seine Aufgaben erledigt sind."
+      },
+      "library": {
+        "title": "Bibliothek: Dokumente neben der Arbeit",
+        "body": "Briefings, Notizen und Dokumente für dieses Projekt werden hier aufbewahrt. Öffnen Sie „Trip plan“, um es zu lesen, fügen Sie eigene mit Hinzufügen hinzu und hängen Sie eines davon an eine Aufgabe an, dann erscheint es in deren Details."
+      },
+      "decisions": {
+        "title": "Entscheidungen: was gewählt wurde und warum",
+        "body": "Halten Sie fest, was entschieden wurde, den Zusammenhang, was sonst abgewogen wurde und welche Folgen daraus entstehen, damit sich später niemand daran erinnern muss. Eine Entscheidung verlinkt die Aufgaben, die sie betrifft, wie diese hier mit „Book the cabin“ verlinkt ist."
+      }
+    },
+    "drawer": {
+      "title": "Änderungen werden automatisch gespeichert",
+      "body": "Es gibt keine Speichern-Schaltfläche: Jede Änderung wird sofort festgehalten. Drücken Sie Strg+Z, um die letzte rückgängig zu machen."
+    },
+    "drawerResize": {
+      "title": "Diesen Bereich breiter machen",
+      "body": "Ziehen Sie den linken Rand des Bereichs, um ihm mehr oder weniger Platz zu geben. Jeder Bereich behält die Breite, die Sie ihm geben."
+    },
+    "boardDrag": {
+      "title": "Ziehen, um eine Aufgabe weiterzuschieben",
+      "body": "Ziehen Sie eine Karte in eine andere Spalte, um ihren Status zu ändern. Sie können auch eine Karte öffnen und oben einen neuen Status wählen."
+    },
+    "list": {
+      "title": "Sortieren und vergleichen",
+      "body": "Klicken Sie auf eine Spaltenüberschrift, um danach zu sortieren. Umschalt+Klick auf eine andere Überschrift sortiert danach als Nächstes."
+    },
+    "calendar": {
+      "title": "Fälligkeitsdaten auf einen Blick",
+      "body": "Aufgaben erscheinen an dem Tag, an dem sie fällig sind. Ziehen Sie eine auf einen anderen Tag, um ihr Fälligkeitsdatum zu ändern."
+    },
+    "timeline": {
+      "title": "Über Wochen planen",
+      "body": "Jeder Balken läuft vom Start bis zum Fälligkeitsdatum einer Aufgabe. Ziehen Sie einen Balken, um ihn zu verschieben, oder ziehen Sie ein Ende, um die Dauer zu ändern."
+    },
+    "library": {
+      "title": "Dokumente neben der Arbeit",
+      "body": "Bewahren Sie hier Briefings, Notizen und Dokumente für dieses Projekt auf. Öffnen Sie eines, um es zu lesen oder zu bearbeiten, oder hängen Sie es an eine Aufgabe an, dann erscheint es in deren Details."
+    },
+    "pointers": {
+      "clickToOpen": "Klicken, um zu öffnen",
+      "clickToAdd": "Klicken, um eine Aufgabe hinzuzufügen",
+      "clickOrPress": "Klicken oder {{keys}} drücken",
+      "clickForHelp": "Klicken für Hilfe",
+      "changeStatus": "Versuchen Sie, den Status zu ändern",
+      "dragToColumn": "Zur nächsten Spalte ziehen",
+      "dragToDay": "Auf einen anderen Tag ziehen",
+      "dragToMove": "Zum Verschieben ziehen",
+      "dragToResize": "Ziehen, um die Größe zu ändern",
+      "addDocument": "Ein Dokument hinzufügen",
+      "postUpdate": "Teilen Sie mit, wie es läuft",
+      "chooseColumns": "Spalten wählen",
+      "changeRange": "Monat, Woche, Jahr oder Agenda",
+      "criticalPath": "Sehen Sie, was nicht rutschen darf",
+      "clickToRead": "Klicken, um zu lesen",
+      "recordDecision": "Entscheidung festhalten"
+    }
+  }
+}

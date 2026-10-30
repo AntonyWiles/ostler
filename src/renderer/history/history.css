@@ -1,0 +1,192 @@
+/* Undo history: the title bar's Undo, Redo and History buttons, and its page. */
+
+.undo-redo-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-050);
+}
+
+.undo-history {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  max-width: 960px;
+  padding: var(--space-500) var(--space-600);
+}
+
+.undo-history__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-300);
+}
+
+.undo-history__filters > :first-child {
+  flex: 1 1 220px;
+  min-width: 180px;
+}
+
+.undo-history__days {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+}
+
+.undo-history__day-title {
+  margin: 0 0 var(--space-150);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.undo-history__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.undo-history__entry {
+  display: grid;
+  grid-template-columns: 4.5em minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-300);
+  padding: var(--space-200) var(--space-300);
+}
+
+.undo-history__entry + .undo-history__entry {
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.undo-history__time {
+  padding-top: 2px;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.undo-history__body {
+  min-width: 0;
+}
+
+.undo-history__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-150);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.undo-history__kind-icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
+.undo-history__entry.is-undone .undo-history__title > span {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+.undo-history__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-100) var(--space-300);
+  margin: var(--space-050) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.undo-history__project {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.undo-history__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.undo-history__details {
+  margin-top: var(--space-200);
+}
+
+.undo-history__changes {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+  table-layout: fixed;
+}
+
+.undo-history__changes th,
+.undo-history__changes td {
+  padding: var(--space-100) var(--space-200);
+  border-top: var(--border-width) solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.undo-history__changes thead th {
+  border-top: none;
+  color: var(--color-text-muted);
+  font-weight: var(--weight-semibold);
+}
+
+.undo-history__changes tbody th {
+  width: 9em;
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-regular);
+}
+
+.undo-history__none {
+  color: var(--color-text-muted);
+}
+
+.undo-history__more {
+  display: flex;
+  justify-content: center;
+}
+
+.undo-history__keep {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-400);
+  padding-top: var(--space-400);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.undo-history__keep-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  max-width: 560px;
+}
+
+.undo-history__keep-fields .ui-field {
+  max-width: 240px;
+}
+
+.undo-history__keep-summary {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.undo-history__keep-actions {
+  display: flex;
+  gap: var(--space-200);
+}
+
+@media (forced-colors: active) {
+  .undo-history__list {
+    border-color: CanvasText;
+  }
+}

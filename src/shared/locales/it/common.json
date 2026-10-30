@@ -1,0 +1,391 @@
+{
+  "time": {
+    "justNow": "poco fa"
+  },
+  "date": {
+    "today": "Oggi",
+    "tomorrow": "Domani",
+    "yesterday": "Ieri",
+    "overdueBy_one": "In ritardo di {{count}} giorno",
+    "overdueBy_many": "In ritardo di {{count}} giorni",
+    "overdueBy_other": "In ritardo di {{count}} giorni",
+    "daysAgo_one": "{{count}} giorno fa",
+    "daysAgo_many": "{{count}} giorni fa",
+    "daysAgo_other": "{{count}} giorni fa",
+    "inDays_one": "Tra {{count}} giorno",
+    "inDays_many": "Tra {{count}} giorni",
+    "inDays_other": "Tra {{count}} giorni"
+  },
+  "count": {
+    "task_one": "{{count}} attività",
+    "task_many": "{{count}} attività",
+    "task_other": "{{count}} attività",
+    "agent_one": "{{count}} agente",
+    "agent_many": "{{count}} agenti",
+    "agent_other": "{{count}} agenti",
+    "run_one": "{{count}} esecuzione",
+    "run_many": "{{count}} esecuzioni",
+    "run_other": "{{count}} esecuzioni",
+    "goal_one": "{{count}} obiettivo",
+    "goal_many": "{{count}} obiettivi",
+    "goal_other": "{{count}} obiettivi",
+    "milestone_one": "{{count}} traguardo",
+    "milestone_many": "{{count}} traguardi",
+    "milestone_other": "{{count}} traguardi",
+    "fileEvent_one": "{{count}} evento file",
+    "fileEvent_many": "{{count}} eventi file",
+    "fileEvent_other": "{{count}} eventi file",
+    "commit_one": "{{count}} commit",
+    "commit_many": "{{count}} commit",
+    "commit_other": "{{count}} commit",
+    "agentEvent_one": "{{count}} evento dell’agente",
+    "agentEvent_many": "{{count}} eventi dell’agente",
+    "agentEvent_other": "{{count}} eventi dell’agente",
+    "day_one": "{{count}} giorno",
+    "day_many": "{{count}} giorni",
+    "day_other": "{{count}} giorni",
+    "libraryFile_one": "{{count}} documento della Libreria",
+    "libraryFile_many": "{{count}} documenti della Libreria",
+    "libraryFile_other": "{{count}} documenti della Libreria",
+    "list_one": "{{count}} elenco",
+    "list_many": "{{count}} elenchi",
+    "list_other": "{{count}} elenchi",
+    "label_one": "{{count}} etichetta",
+    "label_many": "{{count}} etichette",
+    "label_other": "{{count}} etichette",
+    "member_one": "{{count}} membro",
+    "member_many": "{{count}} membri",
+    "member_other": "{{count}} membri",
+    "file_one": "{{count}} file",
+    "file_many": "{{count}} file",
+    "file_other": "{{count}} file",
+    "phase_one": "{{count}} fase",
+    "phase_many": "{{count}} fasi",
+    "phase_other": "{{count}} fasi"
+  },
+  "keys": {
+    "plus": "più",
+    "then": "poi",
+    "or": "o",
+    "Ctrl": "Ctrl",
+    "Shift": "Maiusc",
+    "Alt": "Alt",
+    "Esc": "Esc",
+    "Enter": "Invio",
+    "Delete": "Canc",
+    "Tab": "Tab",
+    "Space": "Spazio",
+    "Backspace": "Backspace",
+    "Left": "Sinistra",
+    "Right": "Destra",
+    "Up": "Su",
+    "Down": "Giù",
+    "ArrowKeys": "Tasti freccia",
+    "Home": "Home",
+    "End": "Fine",
+    "PageUp": "Pag Su",
+    "PageDown": "Pag Giù"
+  },
+  "chip": {
+    "item": "elemento",
+    "remove": "Rimuovi {{name}}"
+  },
+  "sentenceSeparator": ". ",
+  "errorBoundary": {
+    "detailsLogCopyDiagnostics": "I dettagli sono nel registro. Copia la diagnostica per includerli in una segnalazione di errore.",
+    "viewCrashed": "La vista si è bloccata: {{message}}",
+    "appCrashed": "L’app si è bloccata: {{message}}",
+    "somethingWentWrongView": "Qualcosa non ha funzionato in questa vista",
+    "somethingWentWrong": "Qualcosa non ha funzionato",
+    "reloadView": "Ricarica la vista",
+    "reload": "Ricarica"
+  },
+  "ostlerContext": {
+    "unknownError": "Errore sconosciuto"
+  },
+  "useConfig": {
+    "unknownError": "Errore sconosciuto"
+  },
+  "avatarGroup": {
+    "people": "{{peopleCount}} persone",
+    "more_one": "{{count}} in più: {{names}}",
+    "more_many": "{{count}} in più: {{names}}",
+    "more_other": "{{count}} in più: {{names}}"
+  },
+  "daysOff": {
+    "note": "{{name}}: giorno libero",
+    "notePerson": "{{name}}: giorno libero per {{person}}",
+    "dayOffLabel": "giorno libero: {{name}}",
+    "personOff": "{{person}} assente",
+    "peopleOff": "{{people}} assenti"
+  },
+  "calendarGrid": {
+    "more": "+{{moreCount}} altri",
+    "more2": "{{moreCount}} altri il {{longDate}}",
+    "n1Item": "1 elemento",
+    "items": "{{total}} elementi"
+  },
+  "combobox": {
+    "create": "Crea “{{text}}”",
+    "noMatches": "Nessuna corrispondenza"
+  },
+  "confirm": {
+    "cancel": "Annulla",
+    "useconfirmNeedsAboveApp": "useConfirm richiede un <ConfirmProvider> sopra di sé (App.tsx)."
+  },
+  "dataTable": {
+    "deselectAllRows": "Deseleziona tutte le righe",
+    "selectAllRows": "Seleziona tutte le righe",
+    "sortShiftClickAdds": "Ordina per {{header}}. Maiusc+clic lo aggiunge come un altro ordinamento.",
+    "select": "Seleziona {{entryLabel}}",
+    "sortedAscending": "Ordinata per {{header}}, crescente",
+    "sortedDescending": "Ordinata per {{header}}, decrescente",
+    "noLongerSorted": "{{header}} non è più ordinata",
+    "movedColumn": "{{header}} spostata nella colonna {{to}} di {{columnCount}}",
+    "pixelsWide": "{{header}} è larga {{width}} pixel",
+    "selected": "{{rowIdCount}} selezionate",
+    "movedColumn2": "{{header}} spostata nella colonna {{number}} di {{columnCount}}",
+    "sortRankAscending": "ordinamento {{rank}}, crescente",
+    "sortRankDescending": "ordinamento {{rank}}, decrescente"
+  },
+  "dateField": {
+    "quickDates": "Date rapide",
+    "today": "Oggi",
+    "tomorrow": "Domani",
+    "nextWeek": "Settimana prossima",
+    "clear": "Svuota",
+    "notADate": "Non è una data valida. Controlla giorno, mese e anno."
+  },
+  "dialog": {
+    "close": "Chiudi"
+  },
+  "drawer": {
+    "close": "Chiudi",
+    "resizePanel": "Ridimensiona pannello"
+  },
+  "errorText": {
+    "details": "Dettagli"
+  },
+  "filterBuilder": {
+    "filters": "Filtri",
+    "match": "Corrispondenza",
+    "editFilter": "Modifica filtro: {{words}}",
+    "removeFilter": "Rimuovi filtro: {{words}}",
+    "removeFilter2": "Rimuovi filtro",
+    "addFilter": "Aggiungi filtro",
+    "clear": "Svuota",
+    "remove": "Rimuovi",
+    "done": "Fine",
+    "words": "Parole",
+    "noTaskProjectHas": "Nessuna attività di questo progetto ha ancora un’etichetta.",
+    "when": "Quando",
+    "date": "Data",
+    "estimate": "Stima",
+    "checklist": "Elenco di controllo",
+    "allFilters": "Tutti i filtri",
+    "anyFilter": "Qualsiasi filtro",
+    "me": "Io",
+    "nobody": "Nessuno",
+    "noMilestone": "Nessun traguardo",
+    "noGoal": "Nessun obiettivo",
+    "editFilterField": "Modifica filtro: {{field}}",
+    "customFields": "Campi personalizzati",
+    "findField": "Trova un campo",
+    "noFieldMatches": "Nessun campo corrisponde.",
+    "fieldDeleted": "Questo campo è stato eliminato. Rimuovi il filtro.",
+    "from": "Da",
+    "to": "A",
+    "isEmpty": "è vuoto",
+    "isSet": "è impostato",
+    "currentIteration": "L’iterazione corrente",
+    "noIteration": "Nessuna iterazione",
+    "noType": "Nessun tipo",
+    "noSubproject": "Nessun flusso di lavoro"
+  },
+  "inlineAlert": {
+    "dismiss": "Ignora"
+  },
+  "priorityIcon": {
+    "priority": "Priorità {{taskPriorityLabel}}"
+  },
+  "textField": {
+    "clear": "Svuota"
+  },
+  "toast": {
+    "notifications": "Notifiche",
+    "dismissNotification": "Ignora notifica",
+    "undo": "Annulla",
+    "available": "{{actionLabel}} è disponibile.",
+    "availableBoth": "{{firstLabel}} e {{secondLabel}} sono disponibili.",
+    "keptInCenter": "Ti è sfuggito qualcosa? Sono tutte raccolte sotto la campanella"
+  },
+  "toolbar": {
+    "moreActions": "Altre azioni"
+  },
+  "chartFrame": {
+    "table": "{{title}} come tabella",
+    "legend": "Legenda",
+    "showChart": "Mostra come grafico",
+    "showTable": "Mostra come tabella"
+  },
+  "chartCore": {
+    "total": "Totale",
+    "noData": "{{kind}} senza dati.",
+    "noValues": "{{series}}: nessun valore",
+    "kind": {
+      "bar": "Grafico a barre",
+      "line": "Grafico a linee",
+      "stackedArea": "Grafico ad area sovrapposta"
+    },
+    "bars_one": "{{count}} barra",
+    "bars_many": "{{count}} barre",
+    "bars_other": "{{count}} barre",
+    "points_one": "{{count}} punto da {{first}} a {{last}}",
+    "points_many": "{{count}} punti da {{first}} a {{last}}",
+    "points_other": "{{count}} punti da {{first}} a {{last}}",
+    "barValues": "{{series}}: {{values}}",
+    "categoryValue": "{{category}} {{value}}",
+    "categoryNoValue": "{{category}} nessun valore",
+    "staysAt": "{{series}} resta a {{value}}",
+    "staysAtPeaking": "{{series}} resta a {{value}}, con un picco a {{peak}}",
+    "goesFrom": "{{series}} va da {{from}} a {{to}}",
+    "goesFromPeaking": "{{series}} va da {{from}} a {{to}}, con un picco a {{peak}}",
+    "summary": "{{kind}}, {{span}}. {{details}}."
+  },
+  "timelineScale": {
+    "week": "Settimana del {{format}}"
+  },
+  "unit": {
+    "files": "file",
+    "days": "giorni",
+    "seconds": "secondi",
+    "ms": "ms",
+    "MB": "MB",
+    "minutes": "minuti",
+    "tokens": "token"
+  },
+  "itemLinks": {
+    "deletedItem": "Elemento eliminato",
+    "kinds": {
+      "task": "Attività",
+      "milestone": "Traguardo",
+      "decision": "Decisione",
+      "library": "Elemento della Libreria"
+    },
+    "picker": "Collega un elemento",
+    "pickerHint": "Scrivi per trovare un’attività, un traguardo, una decisione o un elemento della Libreria",
+    "noMatches": "Nessuna corrispondenza",
+    "linkedFrom": "Collegato da",
+    "sources": {
+      "task": "Attività: {{title}}",
+      "comment": "Commento su “{{title}}”",
+      "decision": "Decisione: {{title}}",
+      "library": "Libreria: {{title}}"
+    }
+  },
+  "pins": {
+    "pinned": "Fissato",
+    "pinnedCount_one": "{{count}} elemento fissato",
+    "pinnedCount_many": "{{count}} elementi fissati",
+    "pinnedCount_other": "{{count}} elementi fissati",
+    "pinToSidebar": "Fissa nella barra laterale",
+    "unpinFromSidebar": "Rimuovi fissaggio dalla barra laterale",
+    "pinToOverview": "Fissa in Panoramica",
+    "unpinFromOverview": "Rimuovi fissaggio da Panoramica",
+    "sidebarFull": "La barra laterale contiene al massimo {{max}} elementi fissati. Rimuovine uno per fare spazio.",
+    "unpin": "Rimuovi fissaggio",
+    "actions": "Azioni per {{title}}",
+    "gone": "Non più disponibile",
+    "archived": "Archiviato",
+    "pinnedToSidebar": "{{title}} fissato nella barra laterale",
+    "pinnedToOverview": "{{title}} fissato in Panoramica",
+    "unpinned": "Fissaggio rimosso da {{title}}",
+    "couldntPin": "Impossibile fissarlo",
+    "couldntUnpin": "Impossibile rimuovere il fissaggio",
+    "couldntMove": "Impossibile spostare il fissaggio",
+    "couldntOpen": "Impossibile aprirlo",
+    "kinds": {
+      "task": "Attività",
+      "milestone": "Traguardo",
+      "decision": "Decisione",
+      "library": "Elemento della Libreria",
+      "saved-view": "Vista salvata",
+      "project-view": "Vista",
+      "personal-goal": "Obiettivo"
+    },
+    "openLinkTitle": "Aprire questo link?",
+    "openLinkBody": "{{url}}\n\n“{{name}}” si apre nel browser.",
+    "openLinkConfirm": "Apri link",
+    "openFileTitle": "Aprire {{name}} nella sua app?",
+    "openFileBody": "Il file si apre fuori da {{appName}}, nell’app che Windows usa per questo tipo di file.",
+    "openFileConfirm": "Apri",
+    "shortcuts": "Scorciatoie",
+    "noShortcuts": "Fissa qui le cose che apri più spesso in questo progetto, come un traguardo, una vista salvata o la pagina di amministrazione del negozio.",
+    "shortcutActions": "Azioni scorciatoia per {{title}}",
+    "moveLeft": "Sposta a sinistra",
+    "moveRight": "Sposta a destra",
+    "addShortcut": "Aggiungi una scorciatoia",
+    "addShortcutExisting": "Un elemento",
+    "addShortcutLink": "Un nuovo link",
+    "findItem": "Trova un’attività, un traguardo, una decisione, un elemento della Libreria o una vista",
+    "findItemPlaceholder": "Scrivi per trovare…",
+    "nothingToPin": "Nessuna corrispondenza",
+    "linkName": "Nome",
+    "linkAddress": "Indirizzo",
+    "linkAddressHint": "Un indirizzo https. Viene conservato come link nella Libreria.",
+    "enterHttpsAddress": "Inserisci un indirizzo https.",
+    "enterName": "Inserisci un nome.",
+    "add": "Aggiungi scorciatoia",
+    "cancel": "Annulla",
+    "palettePin": "Fissa…",
+    "palettePinHint": "Fissa un’attività, un traguardo, una decisione, un elemento della Libreria o una vista nella barra laterale",
+    "paletteFindToPin": "Trova qualcosa da fissare nella barra laterale",
+    "paletteKeywords": "fissa, fissato, scorciatoia, preferito, segnalibro",
+    "thisView": "{{view}}"
+  },
+  "countdowns": {
+    "daysTo_one": "{{count}} giorno a {{title}}",
+    "daysTo_many": "{{count}} giorni a {{title}}",
+    "daysTo_other": "{{count}} giorni a {{title}}",
+    "tomorrow": "{{title}} è domani",
+    "today": "{{title}} è oggi",
+    "yesterday": "{{title}} era ieri",
+    "daysAgo_one": "{{title}} era {{count}} giorno fa",
+    "daysAgo_many": "{{title}} era {{count}} giorni fa",
+    "daysAgo_other": "{{title}} era {{count}} giorni fa",
+    "done": "{{title}}: fatto",
+    "withWorkingDays": "{{words}} ({{workingDays}})",
+    "workingDays_one": "{{count}} giorno lavorativo",
+    "workingDays_many": "{{count}} giorni lavorativi",
+    "workingDays_other": "{{count}} giorni lavorativi",
+    "show": "Mostra come conto alla rovescia",
+    "hide": "Interrompi il conto alla rovescia",
+    "shown": "{{title}} è mostrato come conto alla rovescia",
+    "hidden": "{{title}} non fa più il conto alla rovescia",
+    "couldntChange": "Impossibile modificare il conto alla rovescia",
+    "offerAfterPin": "Mostrarlo come conto alla rovescia in Home?",
+    "limitTitle": "Disattivare un conto alla rovescia?",
+    "limitBody": "Al massimo {{max}} conti alla rovescia possono essere mostrati insieme. Scegline uno da disattivare per {{title}}.",
+    "turnOff": "Disattiva {{title}}",
+    "turnOffShort": "Disattiva",
+    "turnOffDone": "Disattiva il conto alla rovescia per {{title}}",
+    "cancel": "Annulla",
+    "heading": "Conti alla rovescia",
+    "open": "Apri {{title}}, {{words}}, {{date}}",
+    "progress": "Tempo trascorso dal fissaggio"
+  },
+  "notificationCenter": {
+    "title": "Notifiche nell’app",
+    "intro": "Messaggi da {{brand}} mentre lavori, conservati qui fino alla chiusura dell’app, con Annulla ancora disponibile. Promemoria e avvisi degli agenti vanno anche alle notifiche di Windows, nel Centro notifiche di Windows (tasto Windows + N).",
+    "empty": "Nessuna notifica per ora. Le notifiche che ti sfuggono resteranno qui.",
+    "clearAll": "Svuota tutto",
+    "settings": "Impostazioni delle notifiche",
+    "remove": "Rimuovi “{{title}}”",
+    "undone": "Annullata",
+    "done": "Fatto"
+  },
+  "mentions": {
+    "noLongerHere": "Qualcuno che non c’è più",
+    "picker": "Menziona qualcuno"
+  }
+}

@@ -1,0 +1,37 @@
+.ui-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.ui-status-badge .ostler-icon {
+  color: var(--status-color);
+}
+
+.ui-status-badge--backlog {
+  --status-color: var(--status-backlog);
+}
+
+.ui-status-badge--ready {
+  --status-color: var(--status-ready);
+}
+
+.ui-status-badge--active {
+  --status-color: var(--status-active);
+}
+
+.ui-status-badge--blocked {
+  --status-color: var(--status-blocked);
+}
+
+.ui-status-badge--review {
+  --status-color: var(--status-review);
+}
+
+.ui-status-badge--done {
+  --status-color: var(--status-done);
+}

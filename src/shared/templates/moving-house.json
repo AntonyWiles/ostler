@@ -1,0 +1,178 @@
+{
+  "format": "ostler-project-package",
+  "version": 1,
+  "template": {
+    "description": "A personal project: everything for a smooth move to a new home.",
+    "icon": "home"
+  },
+  "project": {
+    "name": "Moving house",
+    "color": "#22c55e",
+    "estimateUnit": "points"
+  },
+  "people": [],
+  "labels": [
+    {
+      "name": "admin",
+      "color": "#3b82f6"
+    },
+    {
+      "name": "packing",
+      "color": "#f59e0b"
+    }
+  ],
+  "fields": [
+    {
+      "ref": "cost",
+      "name": "Cost",
+      "type": "number",
+      "options": []
+    }
+  ],
+  "goals": [],
+  "milestones": [
+    {
+      "ref": "m1",
+      "name": "Ready to pack",
+      "targetDate": "+14d"
+    },
+    {
+      "ref": "m2",
+      "name": "Moving day",
+      "targetDate": "+30d"
+    },
+    {
+      "ref": "m3",
+      "name": "Settled in",
+      "targetDate": "+45d"
+    }
+  ],
+  "tasks": [
+    {
+      "ref": "t1",
+      "title": "Book the removal van",
+      "milestoneRef": "m1",
+      "priority": "high",
+      "dueDate": "+5d"
+    },
+    {
+      "ref": "t2",
+      "title": "Collect boxes and tape",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["packing"],
+      "dueDate": "+10d"
+    },
+    {
+      "ref": "t3",
+      "title": "Give notice to the landlord or agent",
+      "milestoneRef": "m1",
+      "priority": "high",
+      "labels": ["admin"],
+      "dueDate": "+7d"
+    },
+    {
+      "ref": "t4",
+      "title": "Sort and give away what you no longer need",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["packing"],
+      "dueDate": "+14d"
+    },
+    {
+      "ref": "t5",
+      "title": "Pack room by room",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["packing"],
+      "checklist": [
+        {
+          "text": "Kitchen",
+          "checked": false
+        },
+        {
+          "text": "Living room",
+          "checked": false
+        },
+        {
+          "text": "Bedrooms",
+          "checked": false
+        },
+        {
+          "text": "Bathroom",
+          "checked": false
+        },
+        {
+          "text": "Garage or shed",
+          "checked": false
+        }
+      ],
+      "dueDate": "+28d",
+      "dependsOnRefs": ["t2", "t4"]
+    },
+    {
+      "ref": "t6",
+      "title": "Change your address",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["admin"],
+      "checklist": [
+        {
+          "text": "Bank",
+          "checked": false
+        },
+        {
+          "text": "Doctor",
+          "checked": false
+        },
+        {
+          "text": "Employer",
+          "checked": false
+        },
+        {
+          "text": "Post redirection",
+          "checked": false
+        }
+      ],
+      "dueDate": "+25d"
+    },
+    {
+      "ref": "t7",
+      "title": "Set up electricity, water and internet",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["admin"],
+      "dueDate": "+28d"
+    },
+    {
+      "ref": "t8",
+      "title": "Moving day",
+      "milestoneRef": "m2",
+      "priority": "critical",
+      "dueDate": "+30d",
+      "dependsOnRefs": ["t1", "t5"]
+    },
+    {
+      "ref": "t9",
+      "title": "Unpack the essentials",
+      "milestoneRef": "m3",
+      "priority": "medium",
+      "dueDate": "+32d",
+      "dependsOnRefs": ["t8"]
+    },
+    {
+      "ref": "t10",
+      "title": "Meet the neighbours",
+      "milestoneRef": "m3",
+      "priority": "low",
+      "dueDate": "+45d",
+      "dependsOnRefs": ["t8"]
+    }
+  ],
+  "decisions": [],
+  "comments": [],
+  "columns": {
+    "hidden": ["ready", "review"]
+  },
+  "library": []
+}

@@ -1,0 +1,467 @@
+/* The Files view: file tree, Monaco editor and a quiet command runner, and
+   the reconciliation editor that opens in its place. Tokens only. */
+
+.code-workspace {
+  display: flex;
+  flex-direction: column;
+  /* Fills the Files view rather than guessing at the chrome above it. */
+  height: 100%;
+  min-height: 30rem;
+  overflow: hidden;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.code-workspace__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-100) var(--space-200);
+  padding: var(--space-200) var(--space-300);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.code-workspace__breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-100);
+  min-width: 0;
+  margin-left: var(--space-200);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.code-workspace__breadcrumb span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.code-workspace__breadcrumb button {
+  padding: 0 var(--space-050);
+  border-radius: var(--radius-control);
+  color: inherit;
+  overflow-wrap: anywhere;
+}
+
+.code-workspace__breadcrumb button:hover:not(:disabled) {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.code-workspace__breadcrumb button[aria-current] {
+  color: var(--color-text);
+  font-weight: var(--weight-medium);
+}
+
+.code-workspace__breadcrumb button:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.code-workspace__body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.code-workspace__tree {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: var(--space-200);
+  width: 15rem;
+  padding: var(--space-200);
+  overflow: auto;
+  scrollbar-gutter: stable;
+  border-right: var(--border-width) solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.code-workspace__tree ul {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.code-workspace__entry {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  width: 100%;
+  min-height: var(--control-height-sm);
+  padding: 0 var(--space-200);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  font-size: var(--text-body-sm);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.code-workspace__entry span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.code-workspace__entry .ostler-icon {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
+.code-workspace__entry .code-workspace__folder-icon {
+  color: var(--color-link);
+}
+
+.code-workspace__entry:hover {
+  background: var(--color-surface-hover);
+}
+
+.code-workspace__entry[aria-current] {
+  background: var(--color-surface-selected);
+  color: var(--color-link);
+}
+
+.code-workspace__entry:focus-visible,
+.code-workspace__breadcrumb button:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(-1 * var(--focus-ring-width));
+}
+
+.code-workspace__muted {
+  margin: 0;
+  padding: var(--space-200);
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.code-workspace__editor {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.code-workspace__editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-300);
+  padding: var(--space-200) var(--space-300);
+  border-bottom: var(--border-width) solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: var(--text-body-sm);
+}
+
+.code-workspace__editor-header > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.code-workspace__dirty {
+  color: var(--color-warning);
+  font-family: var(--font-sans);
+}
+
+.code-workspace__monaco {
+  flex: 1;
+  min-height: 0;
+}
+
+/* The command runner: quiet, a footer to the workspace rather than a
+   terminal window. */
+.code-workspace__runner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  padding: var(--space-200) var(--space-300);
+  border-top: var(--border-width) solid var(--color-border);
+  background: var(--color-surface-sunken);
+}
+
+.code-workspace__runner form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.code-workspace__command {
+  flex: 1 1 16rem;
+}
+
+.code-workspace__output {
+  max-height: 10rem;
+  min-height: 3rem;
+  margin: 0;
+  padding: var(--space-200) var(--space-300);
+  overflow: auto;
+  scrollbar-gutter: stable;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.code-workspace__danger {
+  color: var(--color-danger);
+}
+
+/* The reconciliation editor */
+
+.reconcile,
+.reconcile__empty {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-height: 0;
+  padding: var(--space-400);
+  overflow: auto;
+}
+
+.reconcile__empty {
+  align-items: flex-start;
+  color: var(--color-text-secondary);
+}
+
+.reconcile__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-300);
+}
+
+.reconcile__header h3 {
+  margin: var(--space-050) 0;
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.reconcile__header p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.reconcile__eyebrow {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+}
+
+.reconcile__progress {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-050);
+  font-size: var(--text-body-sm);
+}
+
+.reconcile__progress span {
+  color: var(--color-text-secondary);
+}
+
+.reconcile__body {
+  display: grid;
+  grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+  gap: var(--space-400);
+  min-height: 0;
+}
+
+.reconcile__files {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  font-size: var(--text-body-sm);
+}
+
+.reconcile__files ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reconcile__file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-200);
+  width: 100%;
+  padding: var(--space-150) var(--space-200);
+  border-radius: var(--radius-control);
+  text-align: left;
+}
+
+.reconcile__file span:first-child {
+  overflow-wrap: anywhere;
+}
+
+.reconcile__file:hover {
+  background: var(--color-surface-hover);
+}
+
+.reconcile__file[aria-current] {
+  background: var(--color-surface-selected);
+}
+
+.reconcile__file:focus-visible,
+.reconcile__choice:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.reconcile__editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+}
+
+.reconcile__decision {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.reconcile__decision h4 {
+  margin: 0;
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-semibold);
+}
+
+.reconcile__decision p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.reconcile__choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--space-200);
+}
+
+.reconcile__choice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-100);
+  padding: var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  text-align: left;
+}
+
+.reconcile__choice span {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.reconcile__choice:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  background: var(--color-surface-hover);
+}
+
+.reconcile__technical {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.reconcile__versions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--space-200);
+}
+
+.reconcile__versions article {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  min-width: 0;
+  font-size: var(--text-body-sm);
+}
+
+.reconcile__versions pre {
+  max-height: 16rem;
+  margin: 0;
+  padding: var(--space-200);
+  overflow: auto;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-sunken);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+}
+
+.reconcile__result-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-200);
+}
+
+.reconcile__result-header > div:first-child {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--text-body-sm);
+}
+
+.reconcile__result-header span {
+  color: var(--color-text-secondary);
+}
+
+.reconcile__actions {
+  display: flex;
+  gap: var(--space-200);
+}
+
+.reconcile__result-editor {
+  height: 20rem;
+  overflow: hidden;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.reconcile__next {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-200);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.reconcile__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-200);
+  padding-top: var(--space-300);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+@media (width < 1000px) {
+  .code-workspace__tree {
+    width: 12rem;
+  }
+
+  .reconcile__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

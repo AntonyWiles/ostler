@@ -1,0 +1,66 @@
+.ui-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  width: 100%;
+}
+
+.ui-progress__labels {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-200);
+  font-size: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+
+.ui-progress__track {
+  position: relative;
+  height: var(--space-150);
+  overflow: hidden;
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-full);
+}
+
+.ui-progress__fill {
+  display: block;
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: inherit;
+  transition: width var(--motion-normal) var(--ease-standard);
+}
+
+.ui-progress--success .ui-progress__fill {
+  background: var(--color-success);
+}
+
+.ui-progress--warning .ui-progress__fill {
+  background: var(--color-warning);
+}
+
+.ui-progress--danger .ui-progress__fill {
+  background: var(--color-danger);
+}
+
+.is-indeterminate .ui-progress__fill {
+  width: 30%;
+  animation: ui-progress-slide calc(var(--motion-slow) * 5) var(--ease-standard) infinite;
+}
+
+@keyframes ui-progress-slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(340%);
+  }
+}
+
+@media (forced-colors: active) {
+  .ui-progress__track {
+    border: var(--border-width) solid CanvasText;
+  }
+
+  .ui-progress__fill {
+    background: Highlight;
+  }
+}

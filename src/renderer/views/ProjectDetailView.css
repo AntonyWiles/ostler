@@ -1,0 +1,33 @@
+/* The Files and Library views' layout: one column that takes the remaining
+   height of the project workspace. Tokens only. */
+
+.ostler-project-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-200);
+  width: 100%;
+  min-width: 0;
+}
+
+.ostler-project-detail-column {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ostler-project-detail-grid--code,
+.ostler-project-detail-grid--library {
+  flex: 1;
+  min-height: 0;
+}
+
+.ostler-project-detail-grid--code .ostler-project-detail-column,
+.ostler-project-detail-grid--library .ostler-project-detail-column {
+  height: 100%;
+  min-height: 0;
+}
+
+@container project-detail (max-width: 900px) {
+  .ostler-project-detail-column > * {
+    min-width: 0;
+  }
+}

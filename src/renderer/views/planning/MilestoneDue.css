@@ -1,0 +1,15 @@
+/* A milestone's due date: toned like a card's (card-due.ts). Tokens only. */
+
+.milestone-due {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  white-space: nowrap;
+}
+
+.milestone-due[data-tone='overdue'] {
+  color: var(--color-danger);
+}
+
+.milestone-due[data-tone='soon'] {
+  color: var(--color-warning);
+}

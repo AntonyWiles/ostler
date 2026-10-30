@@ -1,0 +1,24 @@
+.ui-priority {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  font-size: var(--text-body-sm);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.ui-priority--low .ostler-icon {
+  color: var(--priority-low);
+}
+
+.ui-priority--medium .ostler-icon {
+  color: var(--priority-medium);
+}
+
+.ui-priority--high .ostler-icon {
+  color: var(--priority-high);
+}
+
+.ui-priority--critical .ostler-icon {
+  color: var(--priority-critical);
+}

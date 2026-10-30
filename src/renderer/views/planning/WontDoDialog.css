@@ -1,0 +1,12 @@
+/* The Won't do dialog (N1.2). Tokens only. */
+
+.wont-do-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.wont-do-dialog > p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}

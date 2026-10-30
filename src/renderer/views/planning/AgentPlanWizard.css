@@ -1,0 +1,136 @@
+/* The plan and split wizard: step indicator, sources, phases and the task
+   tree. Tokens only. */
+
+.plan-wizard__code {
+  display: inline-block;
+  margin-right: var(--space-100);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-body-sm);
+}
+
+.plan-wizard__phases {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-wizard__phases li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--row-height);
+  padding: var(--space-100) var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.plan-wizard__phase-state {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.plan-wizard__phases [data-status='done'] .plan-wizard__phase-state {
+  color: var(--color-success);
+}
+
+.plan-wizard__phases [data-status='failed'] .plan-wizard__phase-state {
+  color: var(--color-danger);
+}
+
+/* Sources */
+
+.plan-sources {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-sources li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--control-height);
+}
+
+.plan-sources__title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.plan-sources__add {
+  position: relative;
+  display: flex;
+}
+
+/* Task tree */
+
+.plan-tree {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+}
+
+.plan-tree__phase-title {
+  margin: 0 0 var(--space-200);
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.plan-tree__nodes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-tree__children {
+  margin-top: var(--space-200);
+  padding-inline-start: var(--space-600);
+  border-inline-start: var(--border-width) solid var(--color-border);
+}
+
+.plan-tree__spacer {
+  flex: 0 0 auto;
+  width: var(--control-height-sm);
+}
+
+.plan-tree__relies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+}
+
+.plan-tree__briefing {
+  max-height: calc(var(--space-1200) * 5);
+  margin: 0;
+  padding: var(--space-200) var(--space-300);
+  overflow: auto;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  white-space: pre-wrap;
+}
+
+@media (forced-colors: active) {
+  .plan-wizard__phases li,
+  .plan-wizard__step-number {
+    border-color: CanvasText;
+  }
+}

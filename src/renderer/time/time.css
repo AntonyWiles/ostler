@@ -1,0 +1,63 @@
+/* Time tracking (R2.3): the entry editor and the drawer's Time section. Tokens only. */
+
+.time-entry-editor {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-300);
+}
+
+.time-entry-editor > .ui-inline-alert,
+.time-entry-editor__wide {
+  grid-column: 1 / -1;
+}
+
+.task-time__summary {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.task-time__summary--over {
+  color: var(--color-warning);
+}
+
+.task-time__over {
+  font-weight: var(--weight-medium);
+}
+
+.task-time__entries {
+  display: flex;
+  flex-direction: column;
+  margin: var(--space-200) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-time__entry {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--control-height-sm);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.task-time__when {
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.task-time__length {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--weight-medium);
+}
+
+.task-time__note {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-secondary);
+}
+
+.task-time__actions {
+  display: inline-flex;
+}

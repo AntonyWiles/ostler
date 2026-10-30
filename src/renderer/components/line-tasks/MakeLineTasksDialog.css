@@ -1,0 +1,35 @@
+.ostler-line-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin: var(--space-300) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ostler-line-tasks__row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  padding: var(--space-200) var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.ostler-line-tasks__title {
+  font-weight: var(--weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.ostler-line-tasks__fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.ostler-line-tasks__more,
+.ostler-line-tasks-empty {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}

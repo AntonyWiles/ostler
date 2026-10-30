@@ -1,0 +1,54 @@
+.ui-date-field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-100) var(--space-300);
+}
+
+.ui-date-field > .ui-input-box {
+  padding-right: var(--space-050);
+}
+
+.ui-date-field input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+.ui-date-field__picker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-100);
+  border-radius: var(--radius-control);
+  color: var(--color-text-muted);
+}
+
+.ui-date-field__picker:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.ui-date-field__relative {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.ui-date-field__note {
+  margin: var(--space-100) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.ui-date-field__relative.is-overdue {
+  color: var(--color-danger);
+}
+
+.ui-date-field__quick {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-050);
+}
+
+.ui-date-field__quick .ui-button {
+  justify-content: flex-start;
+}

@@ -1,0 +1,21 @@
+{
+  "format": "ostler-project-package",
+  "version": 1,
+  "template": {
+    "description": "An empty project: add your own tasks, milestones and notes.",
+    "icon": "file"
+  },
+  "project": {
+    "name": "Blank project",
+    "color": "#3b82f6",
+    "estimateUnit": "points"
+  },
+  "people": [],
+  "labels": [],
+  "goals": [],
+  "milestones": [],
+  "tasks": [],
+  "decisions": [],
+  "comments": [],
+  "library": []
+}

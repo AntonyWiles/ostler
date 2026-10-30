@@ -1,0 +1,12 @@
+/* The quiet line under a form that leaves something out: secondary text, and
+   the button that shows what is hidden. */
+
+.hidden-fields-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-150);
+  margin: var(--space-200) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}

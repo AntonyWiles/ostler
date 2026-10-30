@@ -1,0 +1,107 @@
+.ui-gallery {
+  height: 100%;
+  overflow-y: auto;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.ui-gallery__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-800);
+  padding: var(--space-300) var(--space-600) var(--space-1200);
+}
+
+.ui-gallery__specimen {
+  padding-bottom: var(--space-600);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.ui-gallery__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-300);
+}
+
+.ui-gallery__grid,
+.ui-gallery__stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.ui-gallery__fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--space-1000) * 6), 1fr));
+  gap: var(--space-400);
+  width: 100%;
+}
+
+.ui-gallery__wide {
+  width: 100%;
+}
+
+.ui-gallery__card {
+  width: calc(var(--space-1000) * 5);
+}
+
+.ui-gallery__context {
+  padding: var(--space-300);
+}
+
+.ui-gallery__note {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.ui-gallery__table {
+  display: flex;
+  height: calc(var(--space-1200) * 6);
+}
+
+.ui-gallery__calendar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.ui-gallery__timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.ui-gallery__timeline-grid {
+  height: calc(var(--space-1200) * 5);
+}
+
+.ui-gallery__timeline-label {
+  padding: 0 var(--space-300);
+  font-size: var(--text-body-sm);
+}
+
+.ui-gallery__timeline-bar {
+  fill: var(--color-accent-subtle);
+  stroke: var(--color-accent);
+}
+
+.ui-gallery__event {
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--space-150);
+  border: none;
+  border-radius: var(--radius-control);
+  background: var(--color-accent-subtle);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-caption);
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ui-gallery__event:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+}

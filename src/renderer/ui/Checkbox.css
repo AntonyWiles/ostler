@@ -1,0 +1,40 @@
+/* Shared by Checkbox, Radio and Switch: input, label, then hint under the label. */
+
+.ui-check {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: var(--space-200);
+  row-gap: var(--space-050);
+}
+
+.ui-check__label {
+  color: var(--color-text);
+  font-size: var(--text-body);
+  cursor: pointer;
+}
+
+.ui-check__hint {
+  grid-column: 2;
+  font-size: var(--text-caption);
+  color: var(--color-text-muted);
+}
+
+.ui-check.is-disabled .ui-check__label {
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* The box. accent-color restyles the native control and keeps its semantics. */
+.ui-check__input {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  margin: 0;
+  padding: 0;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+.ui-check__input:disabled {
+  cursor: not-allowed;
+}

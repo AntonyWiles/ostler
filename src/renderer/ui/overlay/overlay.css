@@ -1,0 +1,55 @@
+/* Shared by every overlay in src/renderer/ui/. Values come from tokens.css. */
+
+/* Starts below the app's own title bar when it draws one (useReserveTitleBar):
+   Windows' buttons sit over that strip and cannot be covered or dimmed. */
+.ui-backdrop {
+  position: fixed;
+  inset: var(--title-bar-height, 0px) 0 0;
+  display: flex;
+  background: var(--color-overlay);
+  animation: ui-fade-in var(--motion-fast) var(--ease-standard);
+}
+
+/* A floating surface: popovers, menus, combobox lists. */
+.ui-floating {
+  position: fixed;
+  z-index: var(--z-dropdown);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  font-size: var(--text-body);
+  animation: ui-fade-in var(--motion-fast) var(--ease-standard);
+}
+
+@keyframes ui-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* The last frame of a closed overlay (exit.ts): fades out, then is removed. */
+.ui-backdrop.is-leaving,
+.ui-floating.is-leaving {
+  pointer-events: none;
+  animation: ui-fade-out var(--motion-fast) var(--ease-standard) forwards;
+}
+
+@keyframes ui-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media (forced-colors: active) {
+  .ui-floating {
+    border-color: CanvasText;
+  }
+}

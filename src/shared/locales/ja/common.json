@@ -1,0 +1,341 @@
+{
+  "time": {
+    "justNow": "たった今"
+  },
+  "date": {
+    "today": "今日",
+    "tomorrow": "明日",
+    "yesterday": "昨日",
+    "overdueBy_other": "期限を{{count}}日過ぎています。",
+    "daysAgo_other": "{{count}}日前",
+    "inDays_other": "{{count}}日後"
+  },
+  "count": {
+    "task_other": "{{count}}件のタスク",
+    "agent_other": "{{count}}件のエージェント",
+    "run_other": "{{count}}件の実行",
+    "goal_other": "{{count}}件の目標",
+    "milestone_other": "{{count}}件のマイルストーン",
+    "fileEvent_other": "{{count}}件のファイルイベント",
+    "commit_other": "{{count}}件のコミット",
+    "agentEvent_other": "{{count}}件のエージェントイベント",
+    "day_other": "{{count}}日",
+    "libraryFile_other": "{{count}}個のライブラリファイル",
+    "list_other": "{{count}}件のリスト",
+    "label_other": "{{count}}件のラベル",
+    "member_other": "{{count}}人のメンバー",
+    "file_other": "{{count}}個のファイル",
+    "phase_other": "{{count}}件のフェーズ"
+  },
+  "keys": {
+    "plus": "+",
+    "then": "次に",
+    "or": "または",
+    "Ctrl": "Ctrl",
+    "Shift": "Shift",
+    "Alt": "Alt",
+    "Esc": "Esc",
+    "Enter": "Enter",
+    "Delete": "Delete",
+    "Tab": "Tab",
+    "Space": "Space",
+    "Backspace": "Backspace",
+    "Left": "Left",
+    "Right": "Right",
+    "Up": "Up",
+    "Down": "Down",
+    "ArrowKeys": "矢印キー",
+    "Home": "Home",
+    "End": "End",
+    "PageUp": "Page Up",
+    "PageDown": "Page Down"
+  },
+  "chip": {
+    "item": "項目",
+    "remove": "{{name}}を外す"
+  },
+  "sentenceSeparator": "。",
+  "errorBoundary": {
+    "detailsLogCopyDiagnostics": "詳細はログにあります。バグ報告に含めるには、診断情報をコピーしてください。",
+    "viewCrashed": "ビューがクラッシュしました: {{message}}",
+    "appCrashed": "アプリがクラッシュしました: {{message}}",
+    "somethingWentWrongView": "このビューで問題が発生しました",
+    "somethingWentWrong": "問題が発生しました",
+    "reloadView": "ビューを再読み込み",
+    "reload": "再読み込み"
+  },
+  "ostlerContext": {
+    "unknownError": "不明なエラー"
+  },
+  "useConfig": {
+    "unknownError": "不明なエラー"
+  },
+  "avatarGroup": {
+    "people": "{{peopleCount}}人",
+    "more_other": "ほか{{count}}人: {{names}}"
+  },
+  "daysOff": {
+    "note": "{{name}}: 休み",
+    "notePerson": "{{name}}: {{person}}の休み",
+    "dayOffLabel": "休み: {{name}}",
+    "personOff": "{{person}}休み",
+    "peopleOff": "{{people}}休み"
+  },
+  "calendarGrid": {
+    "more": "+{{moreCount}}件",
+    "more2": "{{longDate}}にほか{{moreCount}}件",
+    "n1Item": "1件",
+    "items": "{{total}}件"
+  },
+  "combobox": {
+    "create": "「{{text}}」を作成",
+    "noMatches": "一致するものはありません"
+  },
+  "confirm": {
+    "cancel": "キャンセル",
+    "useconfirmNeedsAboveApp": "useConfirmには、その上位に<ConfirmProvider>が必要です（App.tsx）。"
+  },
+  "dataTable": {
+    "deselectAllRows": "すべての行の選択を解除",
+    "selectAllRows": "すべての行を選択",
+    "sortShiftClickAdds": "{{header}}で並べ替えます。Shift+クリックで、別の並べ替えとして追加します。",
+    "select": "{{entryLabel}}を選択",
+    "sortedAscending": "{{header}}で並べ替え済み、昇順",
+    "sortedDescending": "{{header}}で並べ替え済み、降順",
+    "noLongerSorted": "{{header}}は並べ替えられていません",
+    "movedColumn": "{{header}}は、{{columnCount}}列中{{to}}列目に移動しました",
+    "pixelsWide": "{{header}}の幅は{{width}}ピクセルです",
+    "selected": "{{rowIdCount}}件を選択中",
+    "movedColumn2": "{{header}}は、{{columnCount}}列中{{number}}列目に移動しました",
+    "sortRankAscending": "並べ替え {{rank}}、昇順",
+    "sortRankDescending": "並べ替え {{rank}}、降順"
+  },
+  "dateField": {
+    "quickDates": "すばやく日付を選ぶ",
+    "today": "今日",
+    "tomorrow": "明日",
+    "nextWeek": "来週",
+    "clear": "クリア",
+    "notADate": "正しい日付ではありません。日、月、年を確認してください。"
+  },
+  "dialog": {
+    "close": "閉じる"
+  },
+  "drawer": {
+    "close": "閉じる",
+    "resizePanel": "パネルの大きさを変更"
+  },
+  "errorText": {
+    "details": "詳細"
+  },
+  "filterBuilder": {
+    "filters": "フィルター",
+    "match": "一致",
+    "editFilter": "フィルターを編集: {{words}}",
+    "removeFilter": "フィルターを外す: {{words}}",
+    "removeFilter2": "フィルターを外す",
+    "addFilter": "フィルターを追加",
+    "clear": "クリア",
+    "remove": "外す",
+    "done": "完了",
+    "words": "単語",
+    "noTaskProjectHas": "このプロジェクトのタスクには、まだラベルがありません。",
+    "when": "期間",
+    "date": "日付",
+    "estimate": "見積もり",
+    "checklist": "チェックリスト",
+    "allFilters": "すべてのフィルター",
+    "anyFilter": "いずれかのフィルター",
+    "me": "自分",
+    "nobody": "担当者なし",
+    "noMilestone": "マイルストーンなし",
+    "noGoal": "目標なし",
+    "editFilterField": "フィルターを編集: {{field}}",
+    "customFields": "カスタムフィールド",
+    "findField": "フィールドを検索",
+    "noFieldMatches": "一致するフィールドはありません。",
+    "fieldDeleted": "このフィールドは削除されました。フィルターを外してください。",
+    "from": "開始",
+    "to": "終了",
+    "isEmpty": "空",
+    "isSet": "入力あり",
+    "currentIteration": "現在のイテレーション",
+    "noIteration": "イテレーションなし",
+    "noType": "種類なし",
+    "noSubproject": "ワークストリームなし"
+  },
+  "inlineAlert": {
+    "dismiss": "閉じる"
+  },
+  "priorityIcon": {
+    "priority": "{{taskPriorityLabel}}の優先度"
+  },
+  "textField": {
+    "clear": "クリア"
+  },
+  "toast": {
+    "notifications": "通知",
+    "dismissNotification": "通知を閉じる",
+    "undo": "元に戻す",
+    "available": "{{actionLabel}}が使えます。",
+    "availableBoth": "{{firstLabel}}と{{secondLabel}}が使えます。",
+    "keptInCenter": "見逃した場合も、すべてベルの下に残っています"
+  },
+  "toolbar": {
+    "moreActions": "その他の操作"
+  },
+  "chartFrame": {
+    "table": "{{title}}を表で表示",
+    "legend": "凡例",
+    "showChart": "グラフで表示",
+    "showTable": "表で表示"
+  },
+  "chartCore": {
+    "total": "合計",
+    "noData": "{{kind}}。データがありません。",
+    "noValues": "{{series}}: 値なし",
+    "kind": {
+      "bar": "棒グラフ",
+      "line": "折れ線グラフ",
+      "stackedArea": "積み上げ面グラフ"
+    },
+    "bars_other": "{{count}}本の棒",
+    "points_other": "{{first}}から{{last}}までの{{count}}点",
+    "barValues": "{{series}}: {{values}}",
+    "categoryValue": "{{category}} {{value}}",
+    "categoryNoValue": "{{category}} 値なし",
+    "staysAt": "{{series}}は{{value}}のまま",
+    "staysAtPeaking": "{{series}}は{{value}}のまま、ピークは{{peak}}",
+    "goesFrom": "{{series}}は{{from}}から{{to}}へ",
+    "goesFromPeaking": "{{series}}は{{from}}から{{to}}へ、ピークは{{peak}}",
+    "summary": "{{kind}}、{{span}}。{{details}}。"
+  },
+  "timelineScale": {
+    "week": "{{format}}の週"
+  },
+  "unit": {
+    "files": "個",
+    "days": "日",
+    "seconds": "秒",
+    "ms": "ms",
+    "MB": "MB",
+    "minutes": "分",
+    "tokens": "トークン"
+  },
+  "itemLinks": {
+    "deletedItem": "削除された項目",
+    "kinds": {
+      "task": "タスク",
+      "milestone": "マイルストーン",
+      "decision": "意思決定",
+      "library": "ライブラリの項目"
+    },
+    "picker": "項目にリンク",
+    "pickerHint": "タスク、マイルストーン、意思決定、ライブラリの項目を入力して検索",
+    "noMatches": "一致するものはありません",
+    "linkedFrom": "リンク元",
+    "sources": {
+      "task": "タスク: {{title}}",
+      "comment": "「{{title}}」へのコメント",
+      "decision": "意思決定: {{title}}",
+      "library": "ライブラリ: {{title}}"
+    }
+  },
+  "pins": {
+    "pinned": "ピン留め済み",
+    "pinnedCount_other": "{{count}}件のピン留め",
+    "pinToSidebar": "サイドバーにピン留め",
+    "unpinFromSidebar": "サイドバーからピン留めを外す",
+    "pinToOverview": "概要にピン留め",
+    "unpinFromOverview": "概要からピン留めを外す",
+    "sidebarFull": "サイドバーにピン留めできるのは最大{{max}}件です。空きを作るには、どれかのピン留めを外してください。",
+    "unpin": "ピン留めを外す",
+    "actions": "{{title}}の操作",
+    "gone": "削除済み",
+    "archived": "アーカイブ済み",
+    "pinnedToSidebar": "{{title}}をサイドバーにピン留めしました",
+    "pinnedToOverview": "{{title}}を概要にピン留めしました",
+    "unpinned": "{{title}}のピン留めを外しました",
+    "couldntPin": "ピン留めできませんでした",
+    "couldntUnpin": "ピン留めを外せませんでした",
+    "couldntMove": "ピン留めを移動できませんでした",
+    "couldntOpen": "開けませんでした",
+    "kinds": {
+      "task": "タスク",
+      "milestone": "マイルストーン",
+      "decision": "意思決定",
+      "library": "ライブラリの項目",
+      "saved-view": "保存したビュー",
+      "project-view": "ビュー",
+      "personal-goal": "目標"
+    },
+    "openLinkTitle": "このリンクを開きますか？",
+    "openLinkBody": "{{url}}\n\n「{{name}}」がブラウザーで開きます。",
+    "openLinkConfirm": "リンクを開く",
+    "openFileTitle": "{{name}}を関連付けられたアプリで開きますか？",
+    "openFileBody": "ファイルは{{appName}}の外で、Windowsがこの種類のファイルに使うアプリで開きます。",
+    "openFileConfirm": "開く",
+    "shortcuts": "ショートカット",
+    "noShortcuts": "マイルストーン、保存したビュー、店舗の管理ページなど、このプロジェクトでよく開くものをピン留めしてください。",
+    "shortcutActions": "{{title}}のショートカット操作",
+    "moveLeft": "左へ移動",
+    "moveRight": "右へ移動",
+    "addShortcut": "ショートカットを追加",
+    "addShortcutExisting": "項目",
+    "addShortcutLink": "新しいリンク",
+    "findItem": "タスク、マイルストーン、意思決定、ライブラリの項目、ビューを検索",
+    "findItemPlaceholder": "入力して検索…",
+    "nothingToPin": "一致するものはありません",
+    "linkName": "名前",
+    "linkAddress": "アドレス",
+    "linkAddressHint": "https のアドレス。ライブラリにリンクとして保存されます。",
+    "enterHttpsAddress": "https のアドレスを入力してください。",
+    "enterName": "名前を入力してください。",
+    "add": "ショートカットを追加",
+    "cancel": "キャンセル",
+    "palettePin": "ピン留め…",
+    "palettePinHint": "タスク、マイルストーン、意思決定、ライブラリの項目、ビューをサイドバーにピン留め",
+    "paletteFindToPin": "サイドバーにピン留めするものを検索",
+    "paletteKeywords": "ピン, ピン留め, ショートカット, お気に入り, ブックマーク",
+    "thisView": "{{view}}"
+  },
+  "countdowns": {
+    "daysTo_other": "{{title}}まであと{{count}}日",
+    "tomorrow": "{{title}}は明日です",
+    "today": "{{title}}は今日です",
+    "yesterday": "{{title}}は昨日でした",
+    "daysAgo_other": "{{title}}は{{count}}日前でした",
+    "done": "{{title}}: 完了",
+    "withWorkingDays": "{{words}}（{{workingDays}}）",
+    "workingDays_other": "{{count}}稼働日",
+    "show": "カウントダウンで表示",
+    "hide": "カウントダウンを停止",
+    "shown": "{{title}}はカウントダウンで表示されます",
+    "hidden": "{{title}}はもうカウントダウンしません",
+    "couldntChange": "カウントダウンを変更できませんでした",
+    "offerAfterPin": "ホームにカウントダウンとして表示しますか？",
+    "limitTitle": "カウントダウンをオフにしますか？",
+    "limitBody": "同時に表示できるカウントダウンは最大{{max}}件です。{{title}}の分をオフにするものを選んでください。",
+    "turnOff": "{{title}}をオフ",
+    "turnOffShort": "オフ",
+    "turnOffDone": "{{title}}のカウントダウンをオフ",
+    "cancel": "キャンセル",
+    "heading": "カウントダウン",
+    "open": "{{title}}を開く、{{words}}、{{date}}",
+    "progress": "ピン留めしてからの経過時間"
+  },
+  "notificationCenter": {
+    "title": "アプリ内通知",
+    "intro": "作業中に{{brand}}から届くメッセージは、アプリを閉じるまでここに残ります。元に戻す操作もここから使えます。リマインダーとエージェントの通知は、Windowsの通知センター（Windowsキー + N）にも送られます。",
+    "empty": "まだ通知はありません。見逃した通知はここに残ります。",
+    "clearAll": "すべて消去",
+    "settings": "通知の設定",
+    "remove": "「{{title}}」を削除",
+    "undone": "元に戻しました",
+    "done": "完了"
+  },
+  "mentions": {
+    "noLongerHere": "すでにいない人",
+    "picker": "メンションする相手"
+  }
+}

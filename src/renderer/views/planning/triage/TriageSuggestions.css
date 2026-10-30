@@ -1,0 +1,48 @@
+/* Triage suggestions (N4.3b): what Ostler AI suggests under a task in To triage. */
+
+.triage-suggestion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  padding: var(--space-200);
+  background: var(--color-surface-sunken);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+}
+
+.triage-suggestion__text {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.triage-suggestion__lead {
+  font-weight: var(--weight-semibold);
+}
+
+.triage-suggestion__duplicate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-100);
+}
+
+.triage-suggestion__reason {
+  min-width: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+  overflow-wrap: anywhere;
+}
+
+.triage-suggestion__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+}
+
+.triage-suggestion__drawer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-100);
+}

@@ -1,0 +1,361 @@
+/* TimelineGrid: one scroll container holding a sticky two-row scale and the
+   rows. Each row's label is sticky on the left, so labels and bars scroll
+   together vertically and the labels stay put horizontally. Arrows, weekend
+   shading and the today line sit in one SVG behind the rows. */
+
+.ui-timeline {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.ui-timeline__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+.ui-timeline__canvas {
+  position: relative;
+}
+
+.ui-timeline__header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  border-bottom: var(--border-width) solid var(--color-border-strong);
+  background: var(--color-surface-sunken);
+}
+
+.ui-timeline__corner {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  flex: none;
+  align-items: flex-end;
+  padding: var(--space-150) var(--space-300);
+  border-right: var(--border-width) solid var(--color-border-strong);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-caption);
+}
+
+.ui-timeline__scale {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+}
+
+.ui-timeline__tier {
+  position: relative;
+  flex: 1;
+}
+
+.ui-timeline__tier--major {
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.ui-timeline__tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 0 var(--space-100);
+  border-left: var(--border-width) solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  line-height: var(--control-height-sm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  /* clip, not hidden: a hidden overflow would trap the sticky month name. */
+  overflow: clip;
+}
+
+.ui-timeline__tier--major .ui-timeline__tick-text {
+  position: sticky;
+  left: calc(var(--timeline-label-width) + var(--space-100));
+}
+
+.ui-timeline__tier--major .ui-timeline__tick {
+  font-weight: var(--weight-medium);
+  line-height: calc(var(--space-500) + var(--space-100));
+}
+
+.ui-timeline__tier--minor .ui-timeline__tick {
+  line-height: calc(var(--space-500) - var(--space-100));
+}
+
+.ui-timeline[data-zoom='week'] .ui-timeline__tier--minor .ui-timeline__tick {
+  padding: 0;
+  text-align: center;
+}
+
+.ui-timeline__tick.is-today {
+  color: var(--color-link);
+  font-weight: var(--weight-semibold);
+}
+
+.ui-timeline__body {
+  position: relative;
+}
+
+.ui-timeline__backdrop {
+  position: absolute;
+  top: 0;
+}
+
+.ui-timeline__weekend {
+  fill: var(--color-surface-sunken);
+}
+
+/* A day off (N3.2): a weekend's tint with an outline, so it reads apart. */
+.ui-timeline__day-off {
+  fill: var(--color-surface-sunken);
+  stroke: var(--color-border-strong);
+  stroke-dasharray: 4 4;
+  stroke-width: 1;
+}
+
+.ui-timeline__today {
+  stroke: var(--color-accent);
+  stroke-width: 2;
+}
+
+.ui-timeline__arrow {
+  fill: none;
+  stroke: var(--color-text-muted);
+  stroke-width: 1.5;
+  pointer-events: stroke;
+}
+
+.ui-timeline__arrow--warning {
+  stroke: var(--color-warning);
+  stroke-width: 2;
+}
+
+.ui-timeline__arrow--strong {
+  stroke-width: 3;
+}
+
+.ui-timeline__arrowhead--default {
+  fill: var(--color-text-muted);
+}
+
+.ui-timeline__arrowhead--warning {
+  fill: var(--color-warning);
+}
+
+/* Rows let the arrows behind them take the pointer, except on labels and bars. */
+.ui-timeline__row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  border-bottom: var(--border-width) solid var(--color-border);
+  pointer-events: none;
+}
+
+.ui-timeline__label {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  flex: none;
+  align-items: center;
+  min-width: 0;
+  border-right: var(--border-width) solid var(--color-border-strong);
+  background: var(--color-surface);
+  pointer-events: auto;
+  user-select: text;
+}
+
+.ui-timeline__bars {
+  flex: none;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.ui-timeline__bar {
+  cursor: pointer;
+  pointer-events: auto;
+  outline: none;
+  transition: opacity var(--motion-fast) var(--ease-standard);
+}
+
+.ui-timeline__bar.is-editable {
+  cursor: grab;
+}
+
+.ui-timeline__bar.is-dragging {
+  cursor: grabbing;
+  opacity: 0.85;
+}
+
+.ui-timeline__bar:focus-visible .ui-timeline__focus {
+  stroke: var(--color-focus);
+  stroke-width: var(--focus-ring-width);
+}
+
+.ui-timeline__handle {
+  fill: transparent;
+  cursor: ew-resize;
+}
+
+.ui-timeline__bar:hover .ui-timeline__handle,
+.ui-timeline__bar:focus-visible .ui-timeline__handle {
+  fill: color-mix(in srgb, var(--color-text) 18%, transparent);
+}
+
+/* Links (N7.2b): their own layer behind the rows, focusable when they can be
+   edited, with a wide invisible stroke so they are easy to hit. */
+.ui-timeline__links {
+  position: absolute;
+  top: 0;
+  z-index: 0;
+  overflow: visible;
+}
+
+.ui-timeline__link {
+  outline: none;
+}
+
+.ui-timeline__link.is-interactive {
+  cursor: pointer;
+}
+
+.ui-timeline__link-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 12;
+  pointer-events: stroke;
+}
+
+.ui-timeline__link.is-interactive:hover .ui-timeline__arrow,
+.ui-timeline__link.is-selected .ui-timeline__arrow {
+  stroke-width: 3;
+}
+
+.ui-timeline__link:focus-visible .ui-timeline__link-hit,
+.ui-timeline__link.is-selected .ui-timeline__link-hit {
+  stroke: color-mix(in srgb, var(--color-focus) 28%, transparent);
+}
+
+.ui-timeline__link:focus-visible .ui-timeline__arrow {
+  stroke: var(--color-focus);
+}
+
+.ui-timeline__lag {
+  fill: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: var(--color-surface);
+  stroke-width: 3;
+}
+
+.ui-timeline__link-draft {
+  stroke: var(--color-focus);
+  stroke-width: 2;
+  stroke-dasharray: 4 3;
+  pointer-events: none;
+}
+
+/* Link handles: just outside each end, so they never get in the way of
+   dragging the bar or its resize edges. */
+.ui-timeline__link-handle {
+  cursor: crosshair;
+  opacity: 0;
+}
+
+.ui-timeline__link-handle-hit {
+  fill: transparent;
+}
+
+.ui-timeline__link-handle-dot {
+  fill: var(--color-surface);
+  stroke: var(--color-focus);
+  stroke-width: 2;
+}
+
+.ui-timeline__bar:hover .ui-timeline__link-handle,
+.ui-timeline__bar:focus-visible .ui-timeline__link-handle,
+.ui-timeline__body.is-linking .ui-timeline__link-handle {
+  opacity: 1;
+}
+
+@media (forced-colors: active) {
+  .ui-timeline__link-handle-dot {
+    stroke: Highlight;
+  }
+
+  .ui-timeline__lag {
+    fill: CanvasText;
+  }
+
+  .ui-timeline__arrow,
+  .ui-timeline__today {
+    stroke: CanvasText;
+  }
+
+  .ui-timeline__arrow--warning {
+    stroke: Highlight;
+  }
+}
+
+/* Axis marks (N5.4): a strip under the scale, one button per marked span. */
+.ui-timeline__marks {
+  position: absolute;
+  bottom: 0;
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.ui-timeline__mark {
+  position: absolute;
+  top: var(--space-050);
+  bottom: var(--space-050);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 0 var(--space-100);
+  border: var(--border-width) solid var(--color-warning);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.ui-timeline__mark {
+  cursor: pointer;
+}
+
+.ui-timeline__mark:hover {
+  background: var(--color-surface-sunken);
+}
+
+.ui-timeline__mark:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.ui-timeline__mark-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

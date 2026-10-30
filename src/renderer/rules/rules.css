@@ -1,0 +1,97 @@
+/* A project's rules in its settings (R6.2): the labels list's rows, and the sentence builder. */
+
+.project-rules {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.project-rules__row {
+  padding-top: var(--space-200);
+  padding-bottom: var(--space-200);
+}
+
+.project-rules__switch {
+  flex: 1;
+  min-width: 0;
+}
+
+.project-rules__new {
+  padding: var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.project-rules__editor {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+}
+
+.project-rules__part {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.project-rules__part legend {
+  margin-bottom: var(--space-100);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.project-rules__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* One part of the sentence: its controls side by side, wrapping when narrow. */
+.project-rules__line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-200);
+}
+
+.project-rules__line > .ui-field {
+  min-width: 0;
+}
+
+.project-rules__sentence {
+  margin: 0;
+  padding: var(--space-200) var(--space-300);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  font-size: var(--text-body-sm);
+}
+
+.project-rules__try {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.project-rules__result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  font-size: var(--text-body-sm);
+}
+
+.project-rules__result p,
+.project-rules__result ul {
+  margin: 0;
+}
+
+.project-rules__result ul {
+  padding-left: var(--space-400);
+}

@@ -1,0 +1,246 @@
+/* CalendarGrid: weekday headers, then one row per week of seven day cells.
+   An item's bar sits in the cell of its first day and reaches across the
+   next ones, so a day's rows (lanes) are fixed heights. */
+
+.ui-calendar {
+  --calendar-head: var(--control-height-sm);
+  --calendar-chip: calc(var(--space-500) + var(--space-100));
+  --calendar-gap: var(--space-050);
+  --calendar-row: calc(var(--calendar-chip) + var(--calendar-gap));
+
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.ui-calendar__head,
+.ui-calendar__week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.ui-calendar__head {
+  border-bottom: var(--border-width) solid var(--color-border-strong);
+  background: var(--color-surface-sunken);
+}
+
+.ui-calendar__weekday {
+  padding: var(--space-150) var(--space-200);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-caption);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ui-calendar__weekday.is-today {
+  color: var(--color-link);
+  font-weight: var(--weight-semibold);
+}
+
+.ui-calendar__weekday-date {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.ui-calendar__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.ui-calendar__week {
+  flex: 1;
+  min-height: calc(
+    var(--calendar-head) + var(--calendar-lanes) * var(--calendar-row) + var(--space-200)
+  );
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.ui-calendar__week:last-child {
+  border-bottom: none;
+}
+
+.ui-calendar--week .ui-calendar__week {
+  min-height: calc(var(--calendar-head) + 6 * var(--calendar-row));
+}
+
+.ui-calendar__day {
+  position: relative;
+  min-width: 0;
+  border-right: var(--border-width) solid var(--color-border);
+  outline: none;
+  transition: background-color var(--motion-fast) var(--ease-standard);
+}
+
+.ui-calendar__day:last-child {
+  border-right: none;
+}
+
+.ui-calendar__day.is-weekend,
+.ui-calendar__weekday.is-weekend {
+  background: var(--color-surface-sunken);
+}
+
+/* A day off (N3.2): striped, not just tinted, so it reads apart from a
+   weekend; its name is on the day and in its accessible name. */
+.ui-calendar__day.is-day-off {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--color-surface-sunken) 0 var(--space-100),
+    transparent var(--space-100) var(--space-200)
+  );
+}
+
+.ui-calendar__day-off {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0 var(--space-100);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ui-calendar__day-off--person {
+  font-weight: var(--weight-regular);
+  font-style: italic;
+}
+
+.ui-calendar__day.is-drop-target {
+  background: var(--color-accent-subtle);
+}
+
+.ui-calendar__day:focus-visible {
+  box-shadow: inset 0 0 0 var(--focus-ring-width) var(--color-focus);
+}
+
+.ui-calendar__day-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--calendar-head);
+  padding: 0 var(--space-100) 0 var(--space-200);
+}
+
+.ui-calendar__day-number {
+  display: inline-grid;
+  place-items: center;
+  min-width: var(--space-500);
+  height: var(--space-500);
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.ui-calendar__day.is-outside .ui-calendar__day-number {
+  /* Muted, not disabled: the date is still read (P9.2, contrast). */
+  color: var(--color-text-muted);
+}
+
+.ui-calendar__day.is-today .ui-calendar__day-number {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-weight: var(--weight-semibold);
+}
+
+.ui-calendar--week .ui-calendar__day.is-today {
+  box-shadow: inset 0 var(--space-050) 0 var(--color-accent);
+}
+
+.ui-calendar--week .ui-calendar__day.is-today:focus-visible {
+  box-shadow: inset 0 0 0 var(--focus-ring-width) var(--color-focus);
+}
+
+/* Paints above the later day cells it reaches across (they make no stacking
+   context of their own). */
+.ui-calendar__item {
+  position: absolute;
+  z-index: 1;
+  top: calc(var(--calendar-head) + var(--calendar-lane) * var(--calendar-row));
+  left: var(--space-050);
+  width: calc(
+    var(--calendar-span) * (100% + var(--border-width)) - var(--border-width) - 2 * var(--space-050)
+  );
+  height: var(--calendar-chip);
+}
+
+.ui-calendar__more {
+  position: absolute;
+  top: calc(var(--calendar-head) + (var(--calendar-lanes) - 1) * var(--calendar-row));
+  left: var(--space-050);
+  height: var(--calendar-chip);
+  padding: 0 var(--space-150);
+  border: none;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font: inherit;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+}
+
+.ui-calendar__more:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.ui-calendar__more:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: 0;
+}
+
+.ui-calendar__popover {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  width: calc(var(--space-1000) * 7);
+}
+
+.ui-calendar__popover-title {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+}
+
+.ui-calendar__popover-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ui-calendar__popover-list > li {
+  height: var(--calendar-chip, calc(var(--space-500) + var(--space-100)));
+}
+
+/* Windows high contrast removes background images and box-shadows: a day
+   off keeps a dashed outline (as on the Timeline), and the focused day an
+   outline in place of its inset ring. */
+@media (forced-colors: active) {
+  .ui-calendar__day.is-day-off {
+    outline: var(--border-width) dashed CanvasText;
+    outline-offset: calc(-1 * var(--space-100));
+  }
+
+  .ui-calendar__day:focus-visible,
+  .ui-calendar--week .ui-calendar__day.is-today:focus-visible {
+    outline: var(--focus-ring-width) solid Highlight;
+    outline-offset: calc(-1 * var(--focus-ring-width));
+  }
+}

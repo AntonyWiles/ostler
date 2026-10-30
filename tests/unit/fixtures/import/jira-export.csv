@@ -1,0 +1,5 @@
+Summary,Issue key,Issue id,Issue Type,Status,Priority,Assignee,Reporter,Created,Updated,Resolved,Due Date,Labels,Labels,Sprint,Parent id,Inward issue link (Blocks),Outward issue link (Blocks),Custom field (Story Points),Description
+Set up the build,NEX-1,10001,Story,In Progress,High,Alex Chen,Sam Lee,01/Oct/26 9:30 AM,02/Oct/26 4:00 PM,,20/Oct/26 12:00 AM,backend,ci,Sprint 1,,,NEX-2,3,Pipeline for every branch
+Deploy to staging,NEX-2,10002,Story,To Do,Highest,,Sam Lee,01/Oct/26 9:35 AM,01/Oct/26 9:35 AM,,,backend,,Sprint 1,,NEX-1,,5,
+Write the build script,NEX-3,10003,Sub-task,Done,Medium,Alex Chen,Sam Lee,01/Oct/26 9:40 AM,05/Oct/26 11:00 AM,05/Oct/26 11:00 AM,,,,Sprint 1,10001,,,1,
+Fix the flaky test,NEX-4,10004,Bug,Selected for Development,Lowest,Sam Lee,Alex Chen,02/Oct/26 10:00 AM,02/Oct/26 10:00 AM,,03/Nov/26 12:00 AM,tests,,,,NEX-99,,,

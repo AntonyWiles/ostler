@@ -1,0 +1,331 @@
+/* Contacts (N6.5): the Contacts view, its form, the import preview and the drawer's section. Tokens only. */
+
+.contacts-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  height: 100%;
+  padding: var(--space-400);
+}
+
+.contacts-view .ui-page-header {
+  margin: 0;
+}
+
+.contacts-view__body {
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
+  gap: var(--space-400);
+  min-height: 0;
+  flex: 1;
+}
+
+@media (max-width: 900px) {
+  .contacts-view__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.contacts-view__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-height: 0;
+}
+
+.contacts-view__entries {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.contacts-view__entry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  width: 100%;
+  padding: var(--space-200) var(--space-300);
+  border: none;
+  border-bottom: var(--border-width) solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.contacts-view__entry:hover {
+  background: var(--color-surface-hover);
+}
+
+.contacts-view__entry.is-selected {
+  background: var(--color-surface-selected);
+}
+
+.contacts-view__entry:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(-1 * var(--focus-ring-width));
+}
+
+.contacts-view__name {
+  font-weight: var(--weight-medium);
+}
+
+.contacts-view__subtitle,
+.contacts-view__none,
+.contacts-view__hint,
+.contact-detail__subtitle,
+.contact-detail__label,
+.contact-detail__task-meta,
+.contact-import__note,
+.task-contacts__meta,
+.task-contacts__empty {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.contacts-view__none {
+  padding: var(--space-300);
+}
+
+.contacts-view__detail {
+  min-width: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.contacts-view__heading {
+  margin: 0 0 var(--space-200);
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+}
+
+/* The form */
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  max-width: 640px;
+}
+
+.contact-form__pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-300);
+}
+
+.contact-form__group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.contact-form__group legend {
+  margin-bottom: var(--space-100);
+  font-weight: var(--weight-medium);
+}
+
+.contact-form__row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-200);
+  width: 100%;
+}
+
+.contact-form__row > :not(button) {
+  flex: 1;
+}
+
+.contact-form__row > .contact-form__label {
+  flex: 0 1 160px;
+}
+
+.contact-form__error {
+  margin: 0;
+  color: var(--color-danger);
+}
+
+.contact-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-200);
+}
+
+/* The detail */
+
+.contact-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  max-width: 720px;
+}
+
+.contact-detail__header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-300);
+}
+
+.contact-detail__subtitle {
+  margin: 0;
+}
+
+.contact-detail__actions {
+  display: flex;
+  gap: var(--space-200);
+}
+
+.contact-detail__fields {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-200) var(--space-400);
+  margin: 0;
+}
+
+.contact-detail__fields dt {
+  font-weight: var(--weight-medium);
+}
+
+.contact-detail__fields dd {
+  margin: 0;
+  min-width: 0;
+}
+
+.contact-detail__lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-detail__lines li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  overflow-wrap: anywhere;
+}
+
+.contact-detail__label {
+  margin-inline-end: var(--space-150);
+}
+
+.contact-detail__text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.contact-detail__tasks h3 {
+  margin: 0 0 var(--space-200);
+  font-size: var(--text-heading-sm);
+}
+
+.contact-detail__task-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-detail__task-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-100) var(--space-300);
+}
+
+.contact-detail__task-list li.is-closed a {
+  color: var(--color-text-muted);
+}
+
+.contact-detail__task-meta,
+.contact-detail__project {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-150);
+}
+
+/* The import preview */
+
+.contact-import__cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  max-height: 60vh;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  list-style: none;
+}
+
+.contact-import__card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-300);
+}
+
+/* The drawer's section */
+
+.task-contacts__all {
+  font-size: var(--text-body-sm);
+}
+
+.task-contacts__empty {
+  margin: 0;
+}
+
+.task-contacts__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-contacts__entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.task-contacts__who {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.task-contacts__actions {
+  display: flex;
+  flex: none;
+  gap: var(--space-050);
+}
+
+.task-contacts__add {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.task-contacts__add-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-200);
+}

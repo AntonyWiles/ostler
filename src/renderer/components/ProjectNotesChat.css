@@ -1,0 +1,271 @@
+/* The project notes chat and its suggestion cards. Tokens only. */
+
+.notes-chat {
+  display: flex;
+  min-height: calc(var(--space-1200) * 7.5);
+  overflow: hidden;
+}
+
+.notes-chat__history {
+  display: flex;
+  flex: 0 0 calc(var(--space-1200) * 3.5);
+  flex-direction: column;
+  gap: var(--space-200);
+  padding: var(--space-300) var(--space-200);
+  border-right: var(--border-width) solid var(--color-border);
+  background: var(--color-surface-sunken);
+}
+
+.notes-chat__history-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  list-style: none;
+}
+
+.notes-chat__history-item {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-control);
+}
+
+.notes-chat__history-item:hover,
+.notes-chat__history-item.is-active {
+  background: var(--color-surface-hover);
+}
+
+.notes-chat__history-item.is-active {
+  background: var(--color-surface-selected);
+}
+
+.notes-chat__history-open {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-150) var(--space-200);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-body-sm);
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.notes-chat__history-open:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+}
+
+.notes-chat__main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+  padding: var(--space-300);
+}
+
+.notes-chat__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-400);
+  padding-bottom: var(--space-300);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.notes-chat__heading h3 {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.notes-chat__muted {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.notes-chat__messages {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-300);
+  max-height: calc(var(--space-1200) * 8);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.notes-chat__message {
+  display: flex;
+}
+
+.notes-chat__message--user {
+  justify-content: flex-end;
+}
+
+.notes-chat__bubble {
+  max-width: 85%;
+  padding: var(--space-200) var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.notes-chat__message--user .notes-chat__bubble {
+  border-color: transparent;
+  background: var(--color-accent-subtle);
+}
+
+.notes-chat__bubble > :first-child {
+  margin-top: 0;
+}
+
+.notes-chat__bubble > :last-child {
+  margin-bottom: 0;
+}
+
+.notes-chat__message-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-100);
+}
+
+.notes-chat__attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-150);
+  margin: var(--space-200) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notes-chat__attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-150);
+  max-width: calc(var(--space-1200) * 4.5);
+  padding: var(--space-050) var(--space-200) var(--space-050) var(--space-050);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font-size: var(--text-caption);
+  white-space: normal;
+}
+
+.notes-chat__attachment img {
+  width: var(--space-600);
+  height: var(--space-600);
+  border-radius: var(--radius-control);
+  object-fit: cover;
+}
+
+.notes-chat__attachment span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notes-chat__composer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  padding-top: var(--space-300);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.notes-chat__composer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-200);
+}
+
+.notes-chat__attach {
+  position: relative;
+  display: flex;
+}
+
+@media (width < 1000px) {
+  .notes-chat {
+    flex-direction: column;
+  }
+
+  .notes-chat__history {
+    flex-basis: auto;
+    max-height: calc(var(--space-1200) * 3);
+    border-right: 0;
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+}
+
+/* Suggestion cards under a reply */
+
+.chat-proposals {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin: var(--space-300) 0 0;
+  padding: 0;
+  list-style: none;
+  white-space: normal;
+}
+
+.chat-proposal {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-300);
+  padding: var(--space-200) var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.chat-proposal__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  min-width: 0;
+}
+
+.chat-proposal__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.chat-proposal__main p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.chat-proposal__main .chat-proposal__meta {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.chat-proposal__actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+@media (forced-colors: active) {
+  .notes-chat__bubble,
+  .chat-proposal {
+    border-color: CanvasText;
+  }
+}

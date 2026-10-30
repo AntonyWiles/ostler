@@ -1,0 +1,132 @@
+/* Year (N3.1a): twelve small months, four across when wide and fewer as the
+   view narrows. A day's mark strength comes from the accent tokens only. */
+
+.calendar-year {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-400);
+  padding: var(--space-400);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+@container project-detail (max-width: 1100px) {
+  .calendar-year {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@container project-detail (max-width: 900px) {
+  .calendar-year {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.calendar-year__month-name {
+  margin: 0 0 var(--space-100);
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.calendar-year__grid {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.calendar-year__grid th {
+  padding: var(--space-050) 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-regular);
+  text-align: center;
+}
+
+.calendar-year__grid td {
+  padding: var(--space-050);
+  text-align: center;
+}
+
+.calendar-year__grid .is-weekend {
+  background: var(--color-surface-sunken);
+}
+
+/* A day off (N3.2): striped apart from weekends, and named in the day's label. */
+.calendar-year__grid .is-day-off {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--color-surface-sunken) 0 var(--space-050),
+    transparent var(--space-050) var(--space-100)
+  );
+}
+
+.calendar-year__day {
+  display: inline-grid;
+  place-items: center;
+  width: 100%;
+  min-width: var(--space-600);
+  height: var(--space-600);
+  padding: 0;
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-caption);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.calendar-year__day:hover {
+  border-color: var(--color-border-strong);
+}
+
+.calendar-year__day:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* One thing, a few, many: a stronger accent each step. */
+.calendar-year__day--1 {
+  background: var(--color-accent-subtle);
+}
+
+.calendar-year__day--2 {
+  background: color-mix(in srgb, var(--color-accent) 35%, var(--color-surface));
+}
+
+.calendar-year__day--3 {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-weight: var(--weight-semibold);
+}
+
+.calendar-year__day.is-today {
+  border-color: var(--color-accent);
+  font-weight: var(--weight-semibold);
+}
+
+@media (forced-colors: active) {
+  .calendar-year__day--1,
+  .calendar-year__day--2 {
+    border-color: CanvasText;
+  }
+
+  .calendar-year__day--3 {
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .calendar-year__day.is-today {
+    border-width: var(--focus-ring-width);
+  }
+
+  /* The stripes are a background image, which high contrast removes. */
+  .calendar-year__grid .is-day-off {
+    outline: var(--border-width) dashed CanvasText;
+    outline-offset: calc(-1 * var(--border-width));
+  }
+}

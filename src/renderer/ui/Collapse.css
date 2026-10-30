@@ -1,0 +1,22 @@
+/* A disclosure's content (Collapse.tsx): its row grows from 0 to its height. */
+.ui-collapse {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows var(--motion-normal) var(--ease-standard),
+    opacity var(--motion-normal) var(--ease-standard);
+}
+
+.ui-collapse.is-shut {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+.ui-collapse__content {
+  min-height: 0;
+}
+
+.ui-collapse.is-moving > .ui-collapse__content {
+  overflow: hidden;
+}

@@ -1,0 +1,114 @@
+/* The priority matrix (N7.5): four boxes in two rows (important, then not) and two columns (urgent, then not). */
+
+.matrix {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+}
+
+.matrix__hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.matrix__note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+  font-size: var(--text-body-sm);
+}
+
+.matrix__note:empty {
+  display: none;
+}
+
+.matrix__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-300);
+  border-radius: var(--radius-md);
+}
+
+.matrix__grid:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.matrix__axis {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.matrix-box {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: calc(var(--space-1200) * 3);
+  background: var(--color-surface-sunken);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-md);
+}
+
+.matrix-box--urgentImportant {
+  border-color: var(--color-border);
+}
+
+.matrix-box.is-drop-target {
+  background: var(--color-accent-subtle);
+  border-color: var(--color-accent);
+}
+
+.matrix-box__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--control-height);
+  padding: var(--space-200) var(--space-300);
+}
+
+.matrix-box__title {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.matrix-box__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  padding: 0 var(--space-200) var(--space-200);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.matrix-box__empty {
+  margin: 0;
+  padding: var(--space-200);
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+/* High contrast flattens the boxes' fills: every box keeps an edge. */
+@media (forced-colors: active) {
+  .matrix-box {
+    border-color: CanvasText;
+  }
+
+  .matrix-box.is-drop-target {
+    border-color: Highlight;
+  }
+}
+
+@media (max-width: 900px) {
+  .matrix__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .matrix__axis {
+    display: none;
+  }
+}

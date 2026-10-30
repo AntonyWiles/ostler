@@ -1,0 +1,78 @@
+/* Turned down (N1.1b): the ideas closed as won't do from Someday, under the view. */
+
+.turned-down {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  padding-top: var(--space-300);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.turned-down__heading {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.turned-down__hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.turned-down__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.turned-down__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-300);
+  padding: var(--space-100) var(--space-200);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-control);
+}
+
+.turned-down__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.turned-down__title {
+  padding: 0;
+  color: var(--color-text);
+  font: inherit;
+  text-align: start;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-control);
+}
+
+button.turned-down__title {
+  cursor: pointer;
+}
+
+button.turned-down__title:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.turned-down__reason {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+/* The Someday view: its List or Grid, then Turned down. */
+.someday-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+}

@@ -1,0 +1,648 @@
+{
+  "globalViews": {
+    "home": {
+      "label": "首页",
+      "keywords": "开始，总览，需要你处理"
+    },
+    "inbox": {
+      "label": "收件箱",
+      "keywords": "通知，更新，提醒，未读"
+    },
+    "myWork": {
+      "label": "我的工作",
+      "keywords": "分配给我，任务，我的，成员，跨项目，全部"
+    },
+    "search": {
+      "label": "搜索",
+      "keywords": "查找，结果，评论，决策，资料库"
+    },
+    "agents": {
+      "label": "智能体",
+      "keywords": "队列，会话，运行环境"
+    },
+    "help": {
+      "label": "用户指南",
+      "keywords": "帮助，文档，如何，手册，指南"
+    },
+    "settings": {
+      "label": "设置",
+      "keywords": "偏好，选项"
+    },
+    "timesheet": {
+      "label": "工时表",
+      "keywords": "时间，小时，计时器，记录，日志，周"
+    },
+    "workload": {
+      "label": "工作量",
+      "keywords": "容量，成员，团队，小时，分配，超负荷，周，资源"
+    },
+    "weeklyReview": {
+      "label": "每周回顾",
+      "keywords": "回顾，周，逾期，受阻，陈旧，以后再做，整理，规划"
+    },
+    "timelineOverview": {
+      "label": "跨项目时间线",
+      "keywords": "时间线，甘特图，里程碑，项目，总览，冲突，截止日期，路线图"
+    },
+    "contacts": {
+      "label": "联系人",
+      "keywords": "人员，客户，供应商，电话，邮箱，地址，vCard，致电"
+    },
+    "goals": {
+      "label": "目标",
+      "keywords": "个人目标，指标，目标值，储蓄，衡量，检查，进度"
+    },
+    "undoHistory": {
+      "label": "撤销历史",
+      "keywords": "历史，撤销，重做，更改，日志，时间线，恢复，我改过什么，活动"
+    },
+    "team": {
+      "label": "团队",
+      "keywords": "团队, 成员, 负责人, 逾期, 阻塞, 工作量"
+    }
+  },
+  "views": {
+    "overview": {
+      "label": "概览",
+      "keywords": "今天，简报，摘要，需要决策",
+      "description": "项目进展如何，以及哪些事项需要你处理。"
+    },
+    "plan": {
+      "label": "计划",
+      "keywords": "规划，目标，里程碑，日程，开始，启动项目",
+      "description": "逐步规划项目：目标、里程碑、任务和日期。"
+    },
+    "board": {
+      "label": "看板",
+      "keywords": "kanban，任务，列",
+      "description": "以列的形式显示任务，从待办到已完成。"
+    },
+    "list": {
+      "label": "列表",
+      "keywords": "表格，任务，行，电子表格",
+      "description": "所有任务都显示在一个可排序、可筛选的表格中。"
+    },
+    "calendar": {
+      "label": "日历",
+      "keywords": "日期，截止，月，周，日程",
+      "description": "任务显示在截止的日期上。"
+    },
+    "timeline": {
+      "label": "时间线",
+      "keywords": "甘特图，日程，依赖项，计划，日期",
+      "description": "带开始和截止日期的任务，按时间并排显示。"
+    },
+    "milestones": {
+      "label": "里程碑",
+      "keywords": "目标，就绪度",
+      "description": "目标，以及通往目标的里程碑。"
+    },
+    "library": {
+      "label": "资料库",
+      "keywords": "简报，文档，笔记，链接",
+      "description": "简报、文档、笔记、图片和链接。"
+    },
+    "decisions": {
+      "label": "决策",
+      "keywords": "决策日志",
+      "description": "已做出的决定，以及原因。"
+    },
+    "files": {
+      "label": "文件",
+      "keywords": "代码，编辑器，副本",
+      "description": "项目文件夹中的文件。"
+    },
+    "history": {
+      "label": "历史",
+      "keywords": "撤销，恢复，版本，更改，已丢弃",
+      "description": "撤销、恢复，以及找回文件夹中的工作。"
+    },
+    "agents": {
+      "label": "智能体",
+      "keywords": "队列，任务，审阅，应用",
+      "description": "编程智能体的队列、运行和审阅。"
+    },
+    "matrix": {
+      "label": "矩阵",
+      "keywords": "优先级，紧急，重要，艾森豪威尔，象限，先做什么",
+      "description": "按影响和投入排列的想法：先做什么。"
+    },
+    "triage": {
+      "label": "待分拣",
+      "keywords": "分拣，捕获，快速添加，收件箱，排序，接受，新",
+      "description": "需要先分拣才会计入的新条目。"
+    },
+    "someday": {
+      "label": "以后再做",
+      "keywords": "想法，稍后，也许，搁置，隐藏",
+      "description": "搁置留待以后的想法。"
+    },
+    "costs": {
+      "label": "成本",
+      "keywords": "预算，钱，开支，花费，已付，计划",
+      "description": "预算，以及已花费或计划中的金额。"
+    },
+    "shopping": {
+      "label": "购物清单",
+      "keywords": "购买，采购，物资，材料，购物，订单，供应商",
+      "description": "待购买的物品，以及已买到的物品。"
+    },
+    "timeReport": {
+      "label": "工时报告",
+      "keywords": "可计费，计费，小时，费率，发票，收费，客户",
+      "description": "按任务和成员汇总的工时，可直接开具账单。"
+    },
+    "archive": {
+      "label": "归档",
+      "keywords": "已归档的任务",
+      "description": "已收起、留作记录的任务。"
+    },
+    "bin": {
+      "label": "回收站",
+      "keywords": "已删除，废纸篓，恢复",
+      "description": "已删除的任务，可在 30 天内恢复。"
+    }
+  },
+  "settings": {
+    "general": {
+      "label": "常规",
+      "keywords": "外观，主题，密度，强调色，启动"
+    },
+    "projects": {
+      "label": "项目",
+      "keywords": "文件夹，颜色，归档，移除"
+    },
+    "people": {
+      "label": "成员",
+      "keywords": "我，负责人，分配，团队"
+    },
+    "notifications": {
+      "label": "通知",
+      "keywords": "提醒"
+    },
+    "ai": {
+      "label": "AI",
+      "keywords": "提供方，模型，密钥，设置 AI"
+    },
+    "agents": {
+      "label": "智能体",
+      "keywords": "运行环境，已连接的智能体，智能体令牌"
+    },
+    "connections": {
+      "label": "连接",
+      "keywords": "自动化 API，MCP，AI 助手，Claude，ChatGPT，令牌，连接"
+    },
+    "devices": {
+      "label": "设备",
+      "keywords": "电脑，计算机，配对，加入，同步，个人空间，另一台电脑，移除设备"
+    },
+    "data": {
+      "label": "数据",
+      "keywords": "数据库，备份，恢复，大小"
+    },
+    "advanced": {
+      "label": "高级",
+      "keywords": "文件活动，监视器，Git，端口，开发者"
+    },
+    "git": {
+      "label": "Git",
+      "keywords": "提交，仓库，历史，轮询"
+    },
+    "about": {
+      "label": "关于",
+      "keywords": "版本，更新，诊断"
+    },
+    "groups": {
+      "appearance": {
+        "keywords": "主题, 深色模式, 浅色模式, 颜色, 强调色, 密度, 字号, 文字大小"
+      },
+      "startUp": {
+        "keywords": "启动, 打开页面, 起始页, 主页, 开始"
+      },
+      "language": {
+        "keywords": "语言, 翻译, 显示语言"
+      },
+      "workingHours": {
+        "keywords": "工作时间, 小时, 工作日, 周, 天, 日程, 开始, 结束"
+      },
+      "windows": {
+        "keywords": "窗口, 托盘, 最小化, 任务栏, 置顶, 关闭"
+      },
+      "calendars": {
+        "keywords": "ics, 订阅, 源, 链接, Outlook, Google 日历"
+      },
+      "progress": {
+        "keywords": "年度回顾, 连续记录, 统计, 显示我的进度"
+      },
+      "boardAllProjects": {
+        "keywords": "看板, 列, 默认设置, 所有项目, 布局"
+      },
+      "reminders": {
+        "keywords": "提醒, 到期, 每天, 稍后提醒, 免打扰时间, 逾期"
+      },
+      "desktopNotifications": {
+        "keywords": "通知弹窗, 横幅, Windows 通知, 声音, 弹出窗口"
+      },
+      "aiPrivacy": {
+        "keywords": "数据, 隐去, 发送, 共享, 敏感, 隐私"
+      },
+      "builtInAgent": {
+        "keywords": "opencode, 模型, 提供商, 内置智能体, API 密钥"
+      },
+      "usagePrices": {
+        "keywords": "费用, 价格, 令牌, 支出, 预算, 账单"
+      },
+      "accounts": {
+        "keywords": "google, microsoft, outlook, 登录, 日历, 连接, 账户"
+      },
+      "syncServer": {
+        "keywords": "共享, 协作, 服务器, 同步, 邀请, 团队"
+      },
+      "emailServer": {
+        "keywords": "电子邮件, SMTP, 邮件, 邀请, 发件, 服务器"
+      },
+      "automationApi": {
+        "keywords": "API, 端口, 自动化, Webhook, 集成, 本地服务器"
+      },
+      "githubToken": {
+        "keywords": "GitHub, 令牌, 个人访问令牌, 议题, 拉取请求"
+      },
+      "storage": {
+        "keywords": "磁盘, 空间, 大小, 数据库, 位置, 数据文件夹, 删除旧数据"
+      },
+      "agentCopies": {
+        "keywords": "工作树, 副本, 保留, 智能体历史, 清理"
+      },
+      "import": {
+        "keywords": "CSV, Trello, Jira, Asana, 导入, 上传, 电子表格"
+      },
+      "backups": {
+        "keywords": "备份, 还原, 第二位置, 计划, 副本, 安全"
+      },
+      "versionHistory": {
+        "keywords": "git, 快照, 还原点, 我的编辑, 历史"
+      },
+      "developer": {
+        "keywords": "开发者工具, devtools, 调试, 控制台, 检查"
+      },
+      "updates": {
+        "keywords": "更新, 升级, 新版本, 检查更新, 发行说明"
+      },
+      "licences": {
+        "keywords": "许可证, 开源, 第三方, 声明, 致谢"
+      },
+      "diagnostics": {
+        "keywords": "复制诊断信息, 报告, 日志, 支持, 错误, 问题"
+      }
+    }
+  },
+  "shortcutGroups": {
+    "anywhere": "任何位置",
+    "project": "项目内",
+    "tasks": "看板和列表",
+    "dates": "日历和时间线",
+    "library": "资料库"
+  },
+  "markupShortcutsHeading": "标注图片",
+  "markupShortcuts": {
+    "select": "选择，用于移动和修改标记",
+    "arrow": "箭头",
+    "box": "方框",
+    "highlight": "高亮",
+    "text": "文字",
+    "blur": "模糊，用于遮盖隐私内容",
+    "undo": "撤销",
+    "redo": "重做",
+    "next-mark": "移到下一个标记",
+    "move": "移动所选标记",
+    "move-far": "将所选标记移动得更远",
+    "resize": "调整所选标记的大小",
+    "delete": "删除所选标记"
+  },
+  "whiteboardShortcutsHeading": "白板",
+  "whiteboardShortcuts": {
+    "select": "选择",
+    "hand": "抓手：在白板中移动",
+    "pan": "使用任意工具在白板中移动",
+    "next-object": "下一个对象",
+    "previous-object": "上一个对象",
+    "move": "移动所选内容",
+    "move-far": "将所选内容移动 10 倍距离",
+    "resize": "调整所选对象的大小",
+    "resize-far": "以 10 倍幅度调整大小",
+    "free-move": "移动时不对齐网格",
+    "keep-ratio": "调整大小并保持形状",
+    "select-all": "全选",
+    "deselect": "取消选择",
+    "delete": "删除所选内容",
+    "undo": "撤销",
+    "redo": "重做",
+    "zoom-in": "放大",
+    "zoom-out": "缩小",
+    "zoom-fit": "显示整个白板",
+    "zoom-reset": "缩放到 100%",
+    "note": "便签",
+    "text": "文字",
+    "place": "将所选工具的对象放在视图中央",
+    "edit-text": "编辑所选对象的文字",
+    "finish-text": "完成文字编辑",
+    "duplicate": "创建副本",
+    "copy": "复制",
+    "cut": "剪切",
+    "paste": "粘贴",
+    "group": "组合",
+    "ungroup": "取消组合",
+    "bring-forward": "上移一层",
+    "send-backward": "下移一层",
+    "bring-to-front": "置于顶层",
+    "send-to-back": "置于底层",
+    "pen": "钢笔",
+    "marker": "马克笔",
+    "eraser": "橡皮擦：擦除绘图",
+    "shape": "形状；再按一次切换到下一个形状",
+    "frame": "框架",
+    "draw-square": "绘制正方形或圆形",
+    "connector": "线条或箭头",
+    "connect-to": "将所选对象连接到另一个对象",
+    "picture": "插入图片",
+    "paste-lines": "将每一行粘贴为单独的便笺",
+    "link": "链接到条目或网页",
+    "open-link": "打开所选对象的链接",
+    "make-tasks": "从所选内容创建任务",
+    "mindmap": "思维导图",
+    "mind-map-child": "添加子想法（输入时按 Tab，选中时按 Insert）",
+    "mind-map-sibling": "添加下一个想法（输入时）",
+    "mind-map-new-line": "在想法中换行",
+    "mind-map-navigate": "沿思维导图的分支移动",
+    "mind-map-move": "移动想法及其分支（中心想法会移动整个导图）",
+    "pick-in-group": "选中组合内的一个对象",
+    "context-menu": "打开所选对象的菜单",
+    "node": "节点：在对象各边中点处连接"
+  },
+  "shortcuts": {
+    "palette": "命令面板和搜索",
+    "new-task": "快速添加，若当前有项目则添加到该项目中",
+    "quick-add": "在任何位置快速添加",
+    "settings": "设置",
+    "sidebar": "收起或展开侧边栏",
+    "go-home": "前往首页",
+    "go-inbox": "前往收件箱",
+    "go-my-work": "前往我的工作",
+    "focus-search": "聚焦视图的搜索或筛选框",
+    "shortcut-help": "显示键盘快捷键",
+    "undo": "撤销上一次更改（文本框内则撤销输入的内容）",
+    "redo": "重做刚撤销的更改",
+    "undo-history": "打开撤销历史",
+    "escape": "关闭最上层的内容，然后清除选择",
+    "project-view": "按顺序切换项目视图",
+    "next-task": "在任务之间移动",
+    "plan-indent": "将计划中的一行设为上一行的子任务",
+    "plan-outdent": "将计划中的一行提升一级",
+    "open-task": "打开当前任务",
+    "move-task-order": "在手动排序中上移或下移当前任务（看板、列表、任务的子任务）",
+    "move-task-column": "在手动排序中将当前卡片移到上一列或下一列（看板）",
+    "move-task-matrix": "将当前卡片上移或下移一格，改变其优先级（矩阵）",
+    "select-task": "选择或取消选择当前任务",
+    "edit-title": "直接编辑标题",
+    "delete-task": "移到回收站",
+    "calendar-today": "前往今天",
+    "move-task-date": "将当前任务移动一天（左、右）或一周（上、下）（日历）；移动一天（时间线）",
+    "move-task-due": "将当前任务的截止日期移动一天（时间线）",
+    "move-task-start": "将当前任务的开始日期移动一天（时间线）",
+    "library-search": "搜索资料库",
+    "library-make-task": "用所选行创建任务（资料库编辑器）",
+    "zoom-in": "放大",
+    "zoom-out": "缩小",
+    "zoom-reset": "重置缩放",
+    "find-replace": "在当前项目中查找和替换"
+  },
+  "app": {
+    "loading": "加载中"
+  },
+  "skipLink": {
+    "skipContent": "跳到内容"
+  },
+  "titleBar": {
+    "menu": "菜单",
+    "minimize": "最小化",
+    "maximize": "最大化",
+    "restore": "还原",
+    "close": "关闭"
+  },
+  "sidebar": {
+    "sidebar": "侧边栏",
+    "search": "搜索",
+    "search2": "搜索…",
+    "main": "主要",
+    "more": "更多",
+    "projects": "项目",
+    "newProject": "新建项目",
+    "actions": "{{projectName}} 操作",
+    "unread": "{{unread}} 未读",
+    "running": "{{running}} 运行中",
+    "couldnTSaveProject": "无法保存项目顺序",
+    "moveUp": "上移",
+    "moveDown": "下移",
+    "expandSidebar": "展开侧边栏",
+    "collapseSidebar": "收起侧边栏"
+  },
+  "commandPalette": {
+    "commandPalette": "命令面板",
+    "move": "移动",
+    "open": "打开",
+    "close": "关闭",
+    "commandPaletteSearch": "命令面板搜索",
+    "goProjectViewSetting": "前往项目、视图或设置，或搜索所有内容…",
+    "results": "结果",
+    "noMatches": "没有匹配项",
+    "newTask": "新任务",
+    "create": "创建",
+    "quickAddTask": "快速添加任务",
+    "newProject": "新建项目",
+    "openSampleProject": "打开示例项目",
+    "openAdvancedDemo": "打开进阶演示项目",
+    "go": "前往",
+    "keyboardShortcuts": "键盘快捷键",
+    "whatSNew": "新功能",
+    "reportProblem": "报告问题…",
+    "copyDiagnostics": "复制诊断信息",
+    "help": "帮助",
+    "projects": "项目",
+    "noFolder": "无文件夹",
+    "projectViews": "项目视图",
+    "newTask2": "在 {{projectName}} 中新建任务",
+    "newNote": "在 {{projectName}} 中新建笔记",
+    "settings": "设置",
+    "settings2": "设置：{{sectionLabel}}",
+    "settingsGroup": "{{sectionLabel}} › {{groupLabel}}",
+    "developer": "开发者",
+    "developerUiGallery": "开发者：界面样例",
+    "savedViews": "已保存的视图",
+    "openView": "打开视图：{{viewName}} · {{projectName}}",
+    "comment": "评论于 {{resultTitle}}",
+    "search": "搜索",
+    "seeAllResults": "查看“{{trimmed}}”的所有结果",
+    "keywords": {
+      "quickAdd": "添加，创建，任务，捕获",
+      "sampleProject": "导览，欢迎，学习，示例，教程",
+      "shortcuts": "按键，热键",
+      "whatsNew": "更新日志，发行说明，版本",
+      "report": "bug，问题，反馈",
+      "diagnostics": "日志，支持",
+      "create": "添加，创建",
+      "savedView": "已保存的视图，筛选",
+      "calendarFile": "ics，日历，outlook，Google Calendar，导出，截止日期",
+      "printMyWeek": "打印，纸质，pdf，周，议程，今天，即将到来",
+      "printYearInReview": "打印，纸质，pdf，年，回顾，进展，已完成，完成",
+      "taskTemplate": "模板，样式，新任务，重复，检查清单",
+      "findReplace": "重命名，搜索，替换，更改文本",
+      "snip": "截图，截取，捕获，图片，屏幕",
+      "statusUpdate": "状态，更新，健康，进展正常，有风险，偏离，报告",
+      "playbook": "操作手册，智能体，运行，队列，模板，重复",
+      "tour": "导览，提示，教程，学习，入门，指南"
+    },
+    "newTaskFromTemplate": "从模板新建任务…",
+    "findTaskTemplate": "查找任务模板",
+    "noTaskTemplates": "这里还没有任务模板。请在任务的菜单中选择“另存为任务模板…”。",
+    "planTasks": "规划多个任务",
+    "exportCalendarFile": "导出为日历文件…",
+    "print": "打印",
+    "findReplace": "查找和替换…",
+    "projectsInArea": "项目 · {{area}}",
+    "snipToTask": "截图到任务",
+    "postUpdate": "发布状态更新",
+    "runPlaybook": "运行操作手册…",
+    "takeTheTour": "开始导览"
+  },
+  "statusBar": {
+    "sharingSummary": "{{who}} · {{status}}",
+    "sharingStatus": {
+      "up-to-date": "已是最新",
+      "catching-up": "正在同步",
+      "cannot-reach-folder": "无法访问文件夹",
+      "problems": "部分文件无法读取"
+    },
+    "sharedWithName": "已与 {{name}} 共享",
+    "sharedWithCount_other": "已与 {{count}} 人共享",
+    "sharedOnYourPcs": "在你的电脑之间共享",
+    "sharingDetail": "查看此项目与谁共享，或退出项目",
+    "aiBusy": "AI 忙碌中",
+    "aiStoppedResume": "AI 已停止 · 继续",
+    "aiStoppedNoAgent": "AI 已停止：不会自动启动任何智能体运行。点击即可继续。",
+    "cancelEveryAiRequest": "取消所有 AI 请求，停止所有运行中的智能体，并保留排队中的任务，直到你继续",
+    "stoppedAllAiRequests_other": "已停止所有 AI 请求和 {{count}} 次智能体运行。",
+    "couldnTStopAll": "无法停止所有 AI：{{error}}。请重试。",
+    "couldNotResume": "无法继续：{{error}}",
+    "stopping": "正在停止…",
+    "stopAllAi": "停止所有 AI",
+    "agentsRunning_other": "{{count}} 个智能体运行中",
+    "notifications": "应用内通知",
+    "notificationsUnread_other": "应用内通知，{{count}} 条未查看",
+    "notificationsTitle": "应用内通知：弹出在屏幕角落的所有内容，可撤销",
+    "notificationsShort": "通知"
+  },
+  "helpMenu": {
+    "help": "帮助",
+    "userGuide": "用户指南",
+    "keyboardShortcuts": "键盘快捷键",
+    "whatSNew": "新功能",
+    "reportProblem": "报告问题…",
+    "opensIssuePageBrowser": "在浏览器中打开问题页面，并复制诊断信息，你可按需粘贴",
+    "copyDiagnostics": "复制诊断信息",
+    "about": "关于",
+    "takeTheTour": "开始导览",
+    "takeTheTourHint": "演示项目中的几个简短步骤"
+  },
+  "projectHeader": {
+    "branch": "分支",
+    "newTask": "新任务",
+    "moreProjectActions": "更多项目操作",
+    "projectName": "项目名称",
+    "quickAddPress": "快速添加请按",
+    "rename": "重命名"
+  },
+  "projectWorkspace": {
+    "loadingProject": "正在加载项目",
+    "projectNotFound": "找不到项目",
+    "mayHaveBeenRemoved": "它可能已被移除或归档。已归档的项目列在“设置 › 项目”中。",
+    "goHome": "前往首页",
+    "projectViews": "项目视图",
+    "runningReview": "{{queueAttention}} 运行中或待审阅",
+    "loading": "加载中",
+    "loading2": "正在加载 {{currentLabel}}",
+    "couldnTPrint": "无法打印",
+    "savedPdf": "已另存为 PDF",
+    "list": "{{projectName}} - 列表",
+    "couldnTExport": "无法导出",
+    "exportedList": "已导出列表",
+    "exportViewCsv": "将此视图导出为 CSV…",
+    "importExportGroup": "导入和导出",
+    "printGroup": "打印",
+    "print": "打印…",
+    "savePdf": "另存为 PDF…",
+    "didnTWorkTry": "操作未成功，请重试。",
+    "planTasks": "规划多个任务",
+    "findReplace": "查找和替换…",
+    "moreViews": "更多视图",
+    "moreViewsMenu": "此项目的更多视图",
+    "tabsInMore_other": "{{count}} 个放不下的标签页在此",
+    "tabsGroup": "标签页",
+    "tabsApplyTo": "标签页应用于",
+    "tabsAllProjects": "所有项目",
+    "tabsThisProject": "仅此项目"
+  },
+  "boardTab": {
+    "generating": "生成中…",
+    "suggestTasks": "建议任务…"
+  },
+  "listTab": {
+    "generating": "生成中…",
+    "suggestTasks": "建议任务…"
+  },
+  "overviewTab": {
+    "softwareProject": "软件项目？",
+    "canSuggestTasksBreak": "它可以建议任务、拆分目标并总结此项目。这是可选功能。",
+    "canHelpPlan": "{{aiName}} 可以帮你规划",
+    "notesChat": "笔记对话",
+    "linkFolder": "关联文件夹…",
+    "linkFolderBrowseFiles": "关联其文件夹，即可在此浏览文件和 Git 活动，并将任务交给智能体。",
+    "linkFolderBrowseFiles2": "关联其文件夹，即可在此浏览文件和 Git 活动。",
+    "setUpAi": "设置 AI",
+    "show": "显示",
+    "panes": {
+      "summary": "摘要",
+      "insights": "洞察",
+      "code": "代码"
+    }
+  },
+  "agentAnnouncements": {
+    "in": "{{projectName}} 中的“{{runTitle}}”",
+    "run": "{{projectName}} 中的一次运行",
+    "agentStarted": "智能体已开始 {{runName}}。",
+    "agentBlocked": "智能体在 {{runName}} 上受阻。",
+    "agentResumed": "智能体已恢复 {{runName}}。",
+    "agentRunEnded": "智能体运行已结束：{{runName}}。"
+  },
+  "useUpdateToast": {
+    "updateReadyRestartUpdate": "更新已就绪。重启即可更新",
+    "agentsWorkingCanRestart": "智能体正在工作。它们完成后，你可以重启。",
+    "versionInstallsWhenRestart": "版本 {{version}} 将在你重启时安装。",
+    "restartOptions": "重启选项",
+    "restartNow": "立即重启"
+  },
+  "popOut": {
+    "openInNewWindow": "在新窗口中打开",
+    "paletteOpen": "在新窗口中打开 {{view}}",
+    "paletteKeywords": "弹出，第二块屏幕，显示器，窗口",
+    "fullTitle": "已打开八个窗口",
+    "fullBody": "关闭最早的窗口“{{oldest}}”，并打开此窗口吗？",
+    "closeOldest": "关闭它并打开",
+    "couldNotOpen": "无法打开新窗口",
+    "windowMenu": "窗口菜单",
+    "reopenAtStart": "启动时重新打开",
+    "reopenAtStartHint": "如果退出时此窗口处于打开状态，下次启动时将再次打开",
+    "showMainWindow": "显示主窗口",
+    "home": "首页",
+    "projectView": "{{projectName}} - {{view}}"
+  }
+}

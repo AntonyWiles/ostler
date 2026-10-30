@@ -1,0 +1,169 @@
+/* The print route (P6.1): paper first. Everything flows; nothing scrolls. */
+
+html:has(.print-page),
+body:has(.print-page),
+#root:has(.print-page) {
+  height: auto;
+  overflow: visible;
+  background: var(--color-surface);
+}
+
+.print-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  padding: var(--space-400);
+  color: var(--color-text);
+  font-size: var(--text-body-sm);
+}
+
+.print-page h1 {
+  margin: 0;
+  font-size: var(--text-title);
+}
+
+.print-page h2 {
+  margin: var(--space-400) 0 var(--space-200);
+  font-size: var(--text-heading-sm);
+  break-after: avoid;
+}
+
+.print-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  padding-bottom: var(--space-300);
+  border-bottom: var(--border-width) solid var(--color-border-strong);
+}
+
+.print-page__header p,
+.print-page__range {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.print-page__footer {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.print-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.print-table th,
+.print-table td {
+  padding: var(--space-100) var(--space-200);
+  border-bottom: var(--border-width) solid var(--color-border);
+  text-align: start;
+  vertical-align: top;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.print-table thead th {
+  border-bottom-color: var(--color-border-strong);
+  font-weight: var(--weight-semibold);
+}
+
+/* The header repeats on each printed page; a row never splits across two. */
+.print-table thead {
+  display: table-header-group;
+}
+
+.print-table tr {
+  break-inside: avoid;
+}
+
+.print-table__group th {
+  padding-top: var(--space-300);
+  background: var(--color-surface-sunken);
+  font-weight: var(--weight-semibold);
+}
+
+.print-timeline__dates {
+  white-space: nowrap;
+}
+
+.print-timeline__track-head {
+  width: 45%;
+}
+
+.print-timeline__track {
+  position: relative;
+}
+
+.print-timeline__bar {
+  position: absolute;
+  top: var(--space-150);
+  bottom: var(--space-150);
+  border-radius: var(--radius-control);
+  background: var(--status-ready);
+  print-color-adjust: exact;
+}
+
+.print-timeline__bar.is-backlog {
+  background: var(--status-backlog);
+}
+
+.print-timeline__bar.is-active {
+  background: var(--status-active);
+}
+
+.print-timeline__bar.is-blocked {
+  background: var(--status-blocked);
+}
+
+.print-timeline__bar.is-review {
+  background: var(--status-review);
+}
+
+.print-timeline__bar.is-done {
+  background: var(--status-done);
+}
+
+/* The Timeline across projects (N5.4): a milestone's line and its mark. */
+.print-timeline__milestone {
+  padding-inline-start: var(--space-400);
+}
+
+.print-timeline__milestone::before {
+  content: '◆ ';
+}
+
+.print-timeline__bar.is-milestone {
+  background: var(--color-accent);
+}
+
+.print-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-300);
+  margin: 0;
+}
+
+.print-stats div {
+  padding: var(--space-200) var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.print-stats dt {
+  color: var(--color-text-muted);
+}
+
+.print-stats dd {
+  margin: 0;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+}
+
+/* A whiteboard (plan docs/plans/whiteboards/, prompt 17): the whole board at the page's width. */
+.whiteboard-print__board {
+  width: 100%;
+}
+
+.whiteboard-print__board > svg {
+  display: block;
+}

@@ -1,0 +1,41 @@
+.ui-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--control-height-sm);
+  height: var(--control-height-sm);
+  border-radius: var(--radius-full);
+  color: var(--color-surface);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  user-select: none;
+}
+
+/* Initials on a person's own colour: black or white by its luminance (Avatar.tsx). */
+.ui-avatar--ink-light {
+  color: var(--color-on-fill-light);
+}
+
+.ui-avatar--ink-dark {
+  color: var(--color-on-fill-dark);
+}
+
+.ui-avatar--sm {
+  width: var(--space-500);
+  height: var(--space-500);
+  font-size: var(--text-caption);
+}
+
+.ui-avatar--lg {
+  width: var(--control-height-lg);
+  height: var(--control-height-lg);
+  font-size: var(--text-body);
+}
+
+@media (forced-colors: active) {
+  .ui-avatar {
+    border: var(--border-width) solid CanvasText;
+  }
+}

@@ -1,0 +1,293 @@
+/*
+ * The whiteboard drawing (docs/plans/whiteboards, prompt 04a). Every colour is a
+ * --whiteboard-* token (D9): the board is paper, the same in every theme, and
+ * high contrast has its own values in tokens.css. WhiteboardScene.tsx sets
+ * these classes on SVG elements; nothing in the scene holds a colour.
+ */
+
+.wb-paper {
+  fill: var(--whiteboard-paper);
+}
+
+.wb-grid {
+  fill: var(--whiteboard-grid);
+}
+
+/* Text on paper and on light fills. */
+.wb-ink {
+  fill: var(--whiteboard-ink);
+}
+
+.wb-dashed {
+  stroke-dasharray: 8 6;
+}
+
+/* A sticky note (scene-parts.tsx): the shadow it casts, its sticky strip and turned-up corner. */
+.wb-note-shadow {
+  fill: var(--whiteboard-ink);
+  opacity: 0.12;
+}
+
+.wb-note-strip {
+  opacity: 0.14;
+}
+
+.wb-note-fold {
+  opacity: 0.3;
+}
+
+/* A frame's area is a faint wash of its colour; its title is bold on the tab. */
+.wb-frame-area {
+  fill-opacity: 0.35;
+}
+
+.wb-frame-title {
+  font-weight: var(--weight-semibold);
+}
+
+@media (forced-colors: active) {
+  .wb-note-shadow,
+  .wb-note-strip,
+  .wb-note-fold {
+    display: none;
+  }
+}
+
+/* A highlighter stroke, as the mark-up editor draws one. */
+.wb-marker {
+  opacity: 0.35;
+}
+
+.wb-fill-black {
+  fill: var(--whiteboard-black);
+}
+
+.wb-fill-light-black {
+  fill: var(--whiteboard-black-light);
+}
+
+.wb-stroke-black {
+  stroke: var(--whiteboard-black);
+}
+
+.wb-text-black {
+  fill: var(--whiteboard-black);
+}
+
+.wb-text-on-black {
+  fill: var(--whiteboard-on-black);
+}
+
+.wb-fill-grey {
+  fill: var(--whiteboard-grey);
+}
+
+.wb-fill-light-grey {
+  fill: var(--whiteboard-grey-light);
+}
+
+.wb-stroke-grey {
+  stroke: var(--whiteboard-grey);
+}
+
+.wb-text-grey {
+  fill: var(--whiteboard-grey);
+}
+
+.wb-text-on-grey {
+  fill: var(--whiteboard-on-grey);
+}
+
+.wb-fill-red {
+  fill: var(--whiteboard-red);
+}
+
+.wb-fill-light-red {
+  fill: var(--whiteboard-red-light);
+}
+
+.wb-stroke-red {
+  stroke: var(--whiteboard-red);
+}
+
+.wb-text-red {
+  fill: var(--whiteboard-red);
+}
+
+.wb-text-on-red {
+  fill: var(--whiteboard-on-red);
+}
+
+.wb-fill-orange {
+  fill: var(--whiteboard-orange);
+}
+
+.wb-fill-light-orange {
+  fill: var(--whiteboard-orange-light);
+}
+
+.wb-stroke-orange {
+  stroke: var(--whiteboard-orange);
+}
+
+.wb-text-orange {
+  fill: var(--whiteboard-orange);
+}
+
+.wb-text-on-orange {
+  fill: var(--whiteboard-on-orange);
+}
+
+.wb-fill-yellow {
+  fill: var(--whiteboard-yellow);
+}
+
+.wb-fill-light-yellow {
+  fill: var(--whiteboard-yellow-light);
+}
+
+.wb-stroke-yellow {
+  stroke: var(--whiteboard-yellow);
+}
+
+.wb-text-yellow {
+  fill: var(--whiteboard-yellow);
+}
+
+.wb-text-on-yellow {
+  fill: var(--whiteboard-on-yellow);
+}
+
+.wb-fill-green {
+  fill: var(--whiteboard-green);
+}
+
+.wb-fill-light-green {
+  fill: var(--whiteboard-green-light);
+}
+
+.wb-stroke-green {
+  stroke: var(--whiteboard-green);
+}
+
+.wb-text-green {
+  fill: var(--whiteboard-green);
+}
+
+.wb-text-on-green {
+  fill: var(--whiteboard-on-green);
+}
+
+.wb-fill-teal {
+  fill: var(--whiteboard-teal);
+}
+
+.wb-fill-light-teal {
+  fill: var(--whiteboard-teal-light);
+}
+
+.wb-stroke-teal {
+  stroke: var(--whiteboard-teal);
+}
+
+.wb-text-teal {
+  fill: var(--whiteboard-teal);
+}
+
+.wb-text-on-teal {
+  fill: var(--whiteboard-on-teal);
+}
+
+.wb-fill-blue {
+  fill: var(--whiteboard-blue);
+}
+
+.wb-fill-light-blue {
+  fill: var(--whiteboard-blue-light);
+}
+
+.wb-stroke-blue {
+  stroke: var(--whiteboard-blue);
+}
+
+.wb-text-blue {
+  fill: var(--whiteboard-blue);
+}
+
+.wb-text-on-blue {
+  fill: var(--whiteboard-on-blue);
+}
+
+.wb-fill-purple {
+  fill: var(--whiteboard-purple);
+}
+
+.wb-fill-light-purple {
+  fill: var(--whiteboard-purple-light);
+}
+
+.wb-stroke-purple {
+  stroke: var(--whiteboard-purple);
+}
+
+.wb-text-purple {
+  fill: var(--whiteboard-purple);
+}
+
+.wb-text-on-purple {
+  fill: var(--whiteboard-on-purple);
+}
+
+.wb-fill-pink {
+  fill: var(--whiteboard-pink);
+}
+
+.wb-fill-light-pink {
+  fill: var(--whiteboard-pink-light);
+}
+
+.wb-stroke-pink {
+  stroke: var(--whiteboard-pink);
+}
+
+.wb-text-pink {
+  fill: var(--whiteboard-pink);
+}
+
+.wb-text-on-pink {
+  fill: var(--whiteboard-on-pink);
+}
+
+/* A card's task status dot. */
+.wb-status-backlog {
+  fill: var(--status-backlog);
+}
+
+.wb-status-ready {
+  fill: var(--status-ready);
+}
+
+.wb-status-active {
+  fill: var(--status-active);
+}
+
+.wb-status-blocked {
+  fill: var(--status-blocked);
+}
+
+.wb-status-review {
+  fill: var(--status-review);
+}
+
+.wb-status-done {
+  fill: var(--status-done);
+}
+
+/* Icons draw in currentColor: a card's kind icon, the missing-picture icon. */
+.wb-icon-ink {
+  color: var(--whiteboard-ink);
+}
+
+.wb-icon-grey {
+  color: var(--whiteboard-grey);
+}

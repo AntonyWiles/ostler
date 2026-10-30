@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="%APP_LANGUAGE%">
+  <head>
+    <meta charset="UTF-8" />
+    <!--
+      Tight by design (P1.2). Two relaxations, each proven needed: Monaco's
+      codicon font is a data: URL (font-src data:), and its editor worker
+      starts from a blob: URL (worker-src blob:). AI calls run in main, so the
+      renderer connects to nothing but itself. Violations are logged to
+      main.log (src/renderer/lib/report-renderer-errors.ts).
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: ostler-library: ostler-report-picture:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>%BRAND_FULL_NAME%</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/renderer/main.tsx"></script>
+  </body>
+</html>

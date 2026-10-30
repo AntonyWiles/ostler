@@ -1,0 +1,201 @@
+{
+  "welcome": {
+    "goProjectSkipRest": "Go to the project and skip the rest.",
+    "closeWelcomeWithoutCreating": "Close the welcome without creating anything. Everything here is in Settings too.",
+    "skipNow": "Skip for now",
+    "welcome": "Welcome to {{brand}}",
+    "planProjectsTasksBoards": "Plan projects with tasks, boards, calendars and timelines. Everything stays on this computer. Two quick choices, then your first project.",
+    "whatShouldWeCall": "What should we call you?",
+    "tasksAssignYourselfShow": "Tasks you assign to yourself show this name. You can change it in Settings › People.",
+    "theme": "Theme",
+    "continue": "Continue",
+    "howDoWantStart": "How do you want to start?",
+    "firstProject": "Your first project",
+    "startWithDemos": "Start with the demo projects",
+    "setUpFromOtherDevice": "Set up from my other device",
+    "joinTitle": "Set up from my other device",
+    "joinLead": "If you already keep {{brand}} on another PC, this PC can join its personal space: your projects, personal data and settings come here too.",
+    "chooseTemplate": "Choose a template",
+    "next": "Next",
+    "progress": "Welcome progress",
+    "stepOf": "Step {{current}} of {{total}}",
+    "startTemplate": "Start from a template",
+    "readyMadePlanSuch": "A ready-made plan, such as an event, a product launch or a study plan.",
+    "blankProject": "A blank project",
+    "emptyProjectFillYourself": "An empty project to fill in yourself.",
+    "import": "Import",
+    "spreadsheetCsvTrelloBoard": "From a spreadsheet (CSV) or a Trello board.",
+    "projectName": "Project name",
+    "websiteRelaunch": "Website relaunch",
+    "back": "Back",
+    "fewOptionalExtras": "A few optional extras",
+    "eachTheseOptionalCan": "Each of these is optional, and you can do them later in Settings.",
+    "softwareProject": "Is this a software project?",
+    "linkedReadsNeverWrites": "Linked to {{folder}}. {{brand}} reads it and never writes into it.",
+    "linkFolderBrowseFiles": "Link its folder to browse files and see Git activity. {{brand}} only reads it.",
+    "linkFolder": "Link a folder…",
+    "wantAiHelp": "Want AI help?",
+    "setUp": "{{aiName}} is set up.",
+    "canSuggestTasksBreak": "{{aiName}} can suggest tasks, break goals down and summarise. Use a free model on this PC or an AI account.",
+    "setUpAi": "Set up AI…",
+    "useAiAgents": "Use AI agents?",
+    "agents": "Agents are on.",
+    "agentsWorkThroughTasks": "Agents work through tasks in your folder, each on its own copy, and nothing changes until you accept it.",
+    "setUpAgents": "Set up agents…",
+    "system": "System",
+    "followsWindows": "Follows Windows",
+    "light": "Light",
+    "lightAllTime": "Light all the time",
+    "dark": "Dark",
+    "darkAllTime": "Dark all the time",
+    "chooseProjectFolder": "Choose the project folder",
+    "couldntLinkFolder": "Couldn't link the folder. {{error}}",
+    "chooseFile": "Choose a file…",
+    "createProject": "Create project",
+    "openProject": "Open the project",
+    "finish": "Finish",
+    "readyOptional": "“{{projectName}}” is ready. Each of these is optional, and you can do them later in Settings."
+  },
+  "gettingStarted": {
+    "createTask": "Create a task",
+    "giveTaskDueDate": "Give a task a due date",
+    "tryAnotherViewList": "Try another view: List, Calendar or Timeline",
+    "findSomethingCommandPalette": "Find something with the command palette",
+    "seeWhereBackups": "See where your backups are",
+    "setUpAi": "Set up AI"
+  },
+  "tips": {
+    "tipEyebrow": "Tip",
+    "tourEyebrow": "Tour",
+    "stepOf": "{{step}} of {{count}}",
+    "steps": "Tour steps",
+    "goToStep": "Go to step {{step}}",
+    "back": "Back",
+    "next": "Next",
+    "done": "Done",
+    "gotIt": "Got it",
+    "notNow": "Not now",
+    "close": "Close",
+    "showMeAround": "Show me around",
+    "dontShowAgain": "Don't show this again",
+    "dontShowTipAgain": "Don't show this tip again",
+    "turnOffTips": "Turn off tips",
+    "closeTour": "Close the tour",
+    "announce": "Tip: {{title}}",
+    "tourDone": "That's the tour",
+    "tourClosed": "Tour closed",
+    "tourAgain": "Take it again any time from Help › Take the tour.",
+    "turnedOff": "Tips are off",
+    "turnedOffBody": "Turn them on again in Settings › General › Tips and tours.",
+    "turnBackOn": "Turn back on",
+    "openSettings": "Settings",
+    "invite": {
+      "title": "New here? Take a quick tour",
+      "body": "This demo project is a pretend weekend away, filled in so you can try things safely. The tour visits each view in turn and points out what to try there, in {{count}} short steps."
+    },
+    "tour": {
+      "welcome": {
+        "title": "The demo project",
+        "body": "Everything here is made up, so change, move or delete anything you like. Its tasks read top to bottom: the first use the basics, later ones show more. Nothing you do here touches your own projects."
+      },
+      "views": {
+        "title": "One project, many views",
+        "body": "Each tab shows this project another way, and they all share the same tasks: change a task in one view and every other view shows the change. The next few steps visit each tab in turn."
+      },
+      "board": {
+        "title": "Board: work moving along",
+        "body": "Each column is a status, and tasks move left to right as the work goes from to do, to in progress, to done. The number beside each column's name says how many tasks it holds."
+      },
+      "card": {
+        "title": "Open a task",
+        "body": "Click a card to see everything about it: status, priority, due date, who it's assigned to, a checklist and comments. Drag a card into another column to move it on."
+      },
+      "newTask": {
+        "title": "Add your own",
+        "body": "New task adds one to this project. {{keys}} does the same from anywhere in the project."
+      },
+      "search": {
+        "title": "Find anything",
+        "body": "Search finds tasks, projects and documents, and runs any command by name. Press {{keys}} from anywhere."
+      },
+      "help": {
+        "title": "Help is always here",
+        "body": "The user guide, keyboard shortcuts and this tour are in Help. Tips like this one can be turned off in Settings › General."
+      },
+      "overview": {
+        "title": "Overview: the project at a glance",
+        "body": "How many tasks are open, done this week and overdue, then what needs you, what's in progress and what's up next. Post an update to tell everyone how the project is going in a sentence or two."
+      },
+      "list": {
+        "title": "List: every task in rows",
+        "body": "Like a spreadsheet: click a heading to sort, choose what shows with Columns, and tick rows to change several tasks at once. Subtasks sit under their parent, like the meals under Plan the meals."
+      },
+      "calendar": {
+        "title": "Calendar: tasks by due date",
+        "body": "Each task sits on the day it's due, with milestones flagged. Switch between Month, Week, Year and Agenda, drag a task to another day to change its due date, and find tasks with no date under Unscheduled."
+      },
+      "timeline": {
+        "title": "Timeline: plan across weeks",
+        "body": "Each bar runs from a task's start to its due date, grouped under its milestone. Drag a bar to move it or an end to resize it, and turn on Show critical path to see which tasks can't slip."
+      },
+      "milestones": {
+        "title": "Milestones and goals",
+        "body": "A goal is what the project is for; milestones are the big moments on the way, each with a date and the tasks that lead to it. A milestone's bar fills in as its tasks are done."
+      },
+      "library": {
+        "title": "Library: documents beside the work",
+        "body": "Briefs, notes and documents for this project live here. Open Trip plan to read it, add your own with Add, and attach any of them to a task so it shows in that task's details."
+      },
+      "decisions": {
+        "title": "Decisions: what was chosen and why",
+        "body": "Record what was decided, the context, what else was weighed and what follows from it, so nobody has to remember later. A decision links to the tasks it affects, as this one links to Book the cabin."
+      }
+    },
+    "drawer": {
+      "title": "Changes save as you go",
+      "body": "There's no Save button: every change is kept as you make it. Press Ctrl+Z to undo the last one."
+    },
+    "drawerResize": {
+      "title": "Make this panel wider",
+      "body": "Drag the panel's left edge to give it more room or less. Each panel keeps the width you give it."
+    },
+    "boardDrag": {
+      "title": "Drag to move a task on",
+      "body": "Drag a card into another column to change its status. You can also open a card and pick a new status at the top."
+    },
+    "list": {
+      "title": "Sort and compare",
+      "body": "Click a column heading to sort by it. Shift+click another heading to sort by that one next."
+    },
+    "calendar": {
+      "title": "Due dates at a glance",
+      "body": "Tasks show on the day they're due. Drag one to another day to change its due date."
+    },
+    "timeline": {
+      "title": "Plan across weeks",
+      "body": "Each bar runs from a task's start to its due date. Drag a bar to move it, or drag either end to change how long it takes."
+    },
+    "library": {
+      "title": "Documents next to the work",
+      "body": "Keep briefs, notes and documents for this project here. Open one to read or edit it, or attach it to a task and it shows in that task's details."
+    },
+    "pointers": {
+      "clickToOpen": "Click to open",
+      "clickToAdd": "Click to add a task",
+      "clickOrPress": "Click, or press {{keys}}",
+      "clickForHelp": "Click for Help",
+      "changeStatus": "Try changing the status",
+      "dragToColumn": "Drag to the next column",
+      "dragToDay": "Drag to another day",
+      "dragToMove": "Drag to move",
+      "dragToResize": "Drag to resize",
+      "addDocument": "Add a document",
+      "postUpdate": "Share how it's going",
+      "chooseColumns": "Choose columns",
+      "changeRange": "Month, week, year or agenda",
+      "criticalPath": "See what can't slip",
+      "clickToRead": "Click to read",
+      "recordDecision": "Record a decision"
+    }
+  }
+}

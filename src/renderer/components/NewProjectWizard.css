@@ -1,0 +1,110 @@
+.ostler-newproject-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.ostler-newproject-body p {
+  margin: 0;
+}
+
+/* A path field with its Browse button beside the input, not the label. */
+.ostler-newproject-row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-200);
+}
+
+.ostler-newproject-row > :first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ostler-newproject-colors {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.ostler-newproject-colors legend {
+  width: 100%;
+  margin-bottom: var(--space-100);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+}
+
+.ostler-newproject-color {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+/* The native radio stays for keyboard and screen readers; the dot is drawn. */
+.ostler-newproject-color input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.ostler-newproject-color span {
+  width: var(--space-500);
+  height: var(--space-500);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+}
+
+.ostler-newproject-color input:checked + span {
+  outline: var(--focus-ring-width) solid var(--color-text);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.ostler-newproject-color input:focus-visible + span {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.ostler-newproject-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+}
+
+.ostler-newproject-table th {
+  width: 25%;
+  padding: var(--space-200) var(--space-200) var(--space-200) 0;
+  border-bottom: var(--border-width) solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-regular);
+  text-align: left;
+  vertical-align: top;
+}
+
+.ostler-newproject-table td {
+  padding: var(--space-200) 0;
+  border-bottom: var(--border-width) solid var(--color-border);
+  overflow-wrap: anywhere;
+}
+
+.ostler-newproject-swatch {
+  display: inline-block;
+  width: var(--space-300);
+  height: var(--space-300);
+  margin-right: var(--space-200);
+  border-radius: var(--radius-full);
+}
+
+.ostler-newproject-list {
+  margin: 0;
+  padding-left: var(--space-400);
+  font-size: var(--text-body-sm);
+}
+
+.ostler-newproject-body code {
+  overflow-wrap: anywhere;
+}

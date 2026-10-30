@@ -1,0 +1,111 @@
+/* Overview's Insights (P6.2): key numbers, then the charts in a grid that
+   folds to one column on narrow windows. Tokens only. */
+
+.insights__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.insights__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  min-width: 0;
+}
+
+.insights__numbers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(var(--space-1000) * 2.8), 1fr));
+  gap: var(--space-300);
+  margin: 0;
+}
+
+.insights__tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  min-width: 0;
+  padding: var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.insights__tile dt {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+}
+
+.insights__tile dd {
+  margin: 0;
+}
+
+.insights__value {
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+  font-variant-numeric: tabular-nums;
+}
+
+.insights__tile[data-tone='danger'] .insights__value {
+  color: var(--color-danger);
+}
+
+.insights__hint {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+}
+
+.insights__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-400);
+}
+
+@media (width >= 1200px) {
+  .insights__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+.insights-risk {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-width: 0;
+  padding: var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.insights-risk__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.insights-risk__label {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-body-sm);
+}
+
+@media (forced-colors: active) {
+  .insights__tile,
+  .insights-risk {
+    border-color: CanvasText;
+  }
+}
+
+/* Split by type (N2.7b): each type's sentence after the chart's own. */
+.insights__type-summary {
+  display: block;
+}

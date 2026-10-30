@@ -1,0 +1,138 @@
+.ui-select {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.ui-select > select {
+  width: 100%;
+  height: var(--control-height);
+  padding: 0 calc(var(--space-200) + var(--icon-size) + var(--space-100)) 0 var(--space-200);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  font-size: var(--text-body);
+  appearance: none;
+  cursor: pointer;
+}
+
+.ui-select--sm > select {
+  height: var(--control-height-sm);
+  font-size: var(--text-body-sm);
+}
+
+.ui-select > select:hover {
+  border-color: var(--color-text-muted);
+}
+
+.ui-select > select:focus {
+  border-color: var(--color-focus);
+}
+
+.is-invalid .ui-select > select {
+  border-color: var(--color-danger);
+}
+
+.ui-select > select:disabled {
+  background: var(--color-surface-sunken);
+  border-color: var(--color-border);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.ui-select__chevron {
+  position: absolute;
+  right: var(--space-200);
+  display: inline-flex;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+/*
+ * The list that opens is drawn like every other menu in Ostler (MOP-33), not
+ * by Windows: same surface, border, corners, shadow and rows as .ui-menu. The
+ * select stays native, so the keyboard, forms and screen readers are as before.
+ */
+@supports (appearance: base-select) {
+  .ui-select > select,
+  .ui-select > select::picker(select) {
+    appearance: base-select;
+  }
+
+  .ui-select > select {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* The chevron is .ui-select__chevron's, as before. */
+  .ui-select > select::picker-icon {
+    display: none;
+  }
+
+  .ui-select > select::picker(select) {
+    max-height: min(
+      calc(var(--space-1000) * 12),
+      calc(100vh - var(--title-bar-height, 0px) - var(--space-400))
+    );
+    margin-block: var(--space-100);
+    padding: var(--space-100);
+    background: var(--color-surface-raised);
+    color: var(--color-text);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+  }
+
+  .ui-select option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-200);
+    min-height: var(--control-height);
+    padding: 0 var(--space-200);
+    border-radius: var(--radius-control);
+    color: var(--color-text);
+    font-size: var(--text-body);
+    cursor: pointer;
+  }
+
+  .ui-select option:hover,
+  .ui-select option:focus {
+    background: var(--color-surface-hover);
+    outline: none;
+  }
+
+  .ui-select option:focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-focus);
+    outline-offset: calc(-1 * var(--focus-ring-width));
+  }
+
+  .ui-select option:checked {
+    font-weight: var(--weight-semibold);
+  }
+
+  .ui-select option::checkmark {
+    color: var(--color-accent);
+  }
+
+  .ui-select option:disabled {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .ui-select optgroup {
+    padding-top: var(--space-100);
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
+  }
+}
+
+@media (forced-colors: active) {
+  .ui-select > select {
+    border-color: CanvasText;
+  }
+}

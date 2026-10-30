@@ -1,0 +1,92 @@
+/* Improve writing (N8.2): the suggestion beside the text, below it when narrow. */
+.writing-help {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-300);
+  min-height: 0;
+}
+
+.writing-help__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.writing-help__text > * {
+  flex: 1;
+}
+
+@container (min-width: 640px) {
+  .writing-help--open {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.writing-help__suggestion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-width: 0;
+  max-height: 32rem;
+  overflow: auto;
+  padding: var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  color: var(--color-text);
+}
+
+.writing-help__title {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+
+.writing-help__muted {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  color: var(--color-text-muted);
+}
+
+.writing-help__diff {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: var(--text-body);
+}
+
+.writing-help__added {
+  background: var(--color-success-subtle);
+  color: var(--color-success);
+  text-decoration: underline;
+}
+
+.writing-help__removed {
+  background: var(--color-danger-subtle);
+  color: var(--color-danger);
+  text-decoration: line-through;
+}
+
+.writing-help__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+}
+
+/* Summarise comments (N8.2): above the thread. */
+.comment-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  padding: var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+}
+
+.comment-summary__bar {
+  display: flex;
+  justify-content: flex-end;
+}

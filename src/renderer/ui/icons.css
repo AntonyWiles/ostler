@@ -1,0 +1,25 @@
+.ostler-icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  flex-shrink: 0;
+  vertical-align: middle;
+  stroke-width: var(--icon-stroke);
+}
+
+.ostler-icon--lg {
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+}
+
+/* A disclosure's chevron (chevronClass): turns as it opens. */
+.ui-chevron {
+  transition: transform var(--motion-fast) var(--ease-standard);
+}
+
+.ui-chevron.is-open {
+  transform: rotate(90deg);
+}
+
+.ui-chevron--down.is-open {
+  transform: rotate(180deg);
+}

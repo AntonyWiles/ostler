@@ -1,0 +1,24 @@
+/* A project's colour dot, or its icon in its colour (N5.1). */
+.project-mark {
+  flex: 0 0 auto;
+}
+
+.project-mark--dot {
+  display: inline-block;
+  width: var(--space-200);
+  height: var(--space-200);
+  border-radius: var(--radius-full);
+}
+
+.project-mark--icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+@media (forced-colors: active) {
+  .project-mark--dot {
+    forced-color-adjust: none;
+  }
+}

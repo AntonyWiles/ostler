@@ -1,0 +1,70 @@
+- main:
+  - heading /^Good (morning|afternoon|evening)/ [level=1]
+  - text: No review yet
+  - button "Weekly review"
+  - button "Home options"
+  - region "Getting started":
+    - heading "Getting started" [level=2]
+    - paragraph: Each step ticks itself off when you do it.
+    - button "Hide getting started"
+    - text: Steps done 0 of 5
+    - progressbar "Steps done"
+    - list:
+      - listitem:
+        - text: Create a task , not done yet
+        - button "Add a task"
+      - listitem: Give a task a due date , not done yet Open a task and set its due date
+      - listitem: "Try another view: List, Calendar or Timeline , not done yet Use the tabs at the top of a project"
+      - listitem: Find something with Ctrl plus K , not done yet
+      - listitem:
+        - text: See where your backups are , not done yet
+        - link "Settings › Data":
+          - /url: /settings/data
+      - listitem:
+        - text: Set up AI (optional) , not done yet
+        - link "Settings › AI":
+          - /url: /settings/ai
+  - text: Quick add a task
+  - textbox "Quick add a task":
+    - /placeholder: "Add a task, like: Pay invoice tomorrow #admin !high"
+  - text: Project
+  - combobox "Project":
+    - option "Sample project" [selected]
+  - checkbox "Add to My day"
+  - text: Add to My day
+  - button "Add task"
+  - text: Type
+  - combobox "Type":
+    - option "No type" [selected]
+    - option "Booking"
+    - option "Errand"
+  - region "Today":
+    - heading "Today" [level=2]
+    - button "Plan my day"
+    - link "See all my work":
+      - /url: /my-work
+    - paragraph: Nothing due today. Tasks with due dates show up here.
+  - region "Upcoming":
+    - heading "Upcoming" [level=2]
+    - paragraph: Due in the next 7 days and assigned to you.
+    - paragraph: Nothing due in the next 7 days. Assign tasks to yourself to see them here.
+  - region "Needs you":
+    - heading "Needs you" [level=2]
+    - paragraph: Nothing is waiting for you.
+  - region "Projects":
+    - heading "Projects" [level=2]
+    - radiogroup "Show projects as":
+      - radio "Cards" [checked]
+      - radio "Board"
+    - link "Timeline":
+      - /url: /timeline
+    - link "Goals of your own":
+      - /url: /goals
+    - list "Projects":
+      - listitem:
+        - article "Sample project":
+          - heading "Sample project" [level=3]
+          - list "Goals with numbers":
+            - listitem: "/A relaxed weekend away together: 0 of \\d+/"
+          - progressbar "Sample project progress"
+          - paragraph: /\d+ open tasks · \d+ done/

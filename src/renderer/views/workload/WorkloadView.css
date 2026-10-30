@@ -1,0 +1,232 @@
+/* Workload (R3.2). Tokens only. "Over" is said in words too, never by colour alone. */
+
+.workload {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  background: var(--color-bg);
+}
+
+.workload__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-400);
+  min-width: 0;
+  min-height: 0;
+  padding: 0 var(--space-600) var(--space-500);
+}
+
+.workload__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-300);
+}
+
+.workload__scroll {
+  min-height: 0;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.workload__grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+}
+
+.workload__grid th,
+.workload__grid td {
+  padding: var(--space-150);
+  border-bottom: var(--border-width) solid var(--color-border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.workload__grid thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-surface-sunken);
+  font-weight: var(--weight-semibold);
+}
+
+.workload__grid .is-current {
+  background: var(--color-accent-subtle);
+}
+
+.workload__week,
+.workload__week-note {
+  display: block;
+}
+
+.workload__week-note {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-regular);
+}
+
+.workload__person-head,
+.workload__person {
+  position: sticky;
+  left: 0;
+  min-width: calc(var(--space-1200) * 3);
+  background: var(--color-surface);
+}
+
+.workload__grid thead .workload__person-head {
+  z-index: 2;
+  background: var(--color-surface-sunken);
+}
+
+.workload__person {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-200);
+  font-weight: var(--weight-regular);
+}
+
+.workload__person-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.workload__person-name {
+  font-weight: var(--weight-medium);
+}
+
+.workload__cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  width: 100%;
+  min-width: calc(var(--space-1200) * 2.5);
+  padding: var(--space-150) var(--space-200);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.workload__cell:hover {
+  background: var(--color-surface-hover);
+}
+
+.workload__cell:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.workload__cell.is-over {
+  border-color: var(--color-danger);
+}
+
+.workload__bar {
+  display: block;
+  height: var(--space-150);
+  overflow: hidden;
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-sunken);
+}
+
+.workload__bar-fill {
+  display: block;
+  height: 100%;
+  background: var(--color-accent);
+}
+
+.is-over .workload__bar-fill {
+  background: var(--color-danger);
+}
+
+.workload__main {
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+}
+
+.workload__over {
+  color: var(--color-danger);
+  font-weight: var(--weight-semibold);
+}
+
+.workload__minor {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.workload__tasks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.workload__task {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  padding-bottom: var(--space-300);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.workload__task-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-300);
+}
+
+.workload__task-title {
+  flex: 1 1 12rem;
+  min-width: 0;
+  color: var(--color-link);
+  font-weight: var(--weight-medium);
+  text-decoration: underline;
+}
+
+.workload__task-project {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-150);
+  color: var(--color-text-secondary);
+}
+
+.workload__dot {
+  flex: none;
+  width: var(--space-200);
+  height: var(--space-200);
+  border-radius: var(--radius-full);
+}
+
+.workload__task-share {
+  color: var(--color-text-secondary);
+}
+
+.workload__task-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-300);
+}
+
+@media (max-width: 900px) {
+  .workload__task-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.workload__team-link {
+  color: var(--color-accent);
+  font-size: var(--text-body-sm);
+}

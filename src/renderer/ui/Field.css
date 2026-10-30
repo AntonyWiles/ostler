@@ -1,0 +1,121 @@
+/* The shared form layout and input box used by every text-like field. */
+
+.ui-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  min-width: 0;
+}
+
+.ui-field__label {
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.ui-field__hint {
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--color-text-muted);
+}
+
+.ui-field__error {
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  color: var(--color-danger);
+}
+
+/* The box: wraps the input with its prefix, suffix and clear button. */
+.ui-input-box {
+  display: flex;
+  align-items: center;
+  gap: var(--space-150);
+  min-height: var(--control-height);
+  padding: 0 var(--space-200);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  transition: border-color var(--motion-fast) var(--ease-standard);
+}
+
+.ui-input-box:hover {
+  border-color: var(--color-text-muted);
+}
+
+.ui-input-box:focus-within {
+  border-color: var(--color-focus);
+  outline: var(--border-width) solid var(--color-focus);
+}
+
+.is-invalid .ui-input-box {
+  border-color: var(--color-danger);
+}
+
+.ui-input-box.is-disabled {
+  background: var(--color-surface-sunken);
+  border-color: var(--color-border);
+  /* Muted, not disabled grey: a value shown in a disabled field is still
+     read (P9.2, contrast); the sunken fill marks it as unavailable. */
+  color: var(--color-text-muted);
+}
+
+/* The control itself is borderless: the box draws the border and focus. */
+.ui-input-box > input,
+.ui-input-box > textarea {
+  flex: 1;
+  min-width: 0;
+  height: calc(var(--control-height) - 2 * var(--border-width));
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  color: inherit;
+  font-size: var(--text-body);
+  outline: none;
+}
+
+.ui-input-box > textarea {
+  height: auto;
+  padding: var(--space-150) 0;
+  line-height: var(--leading-body);
+  resize: vertical;
+}
+
+.ui-input-box > input:focus,
+.ui-input-box > textarea:focus {
+  border: none;
+}
+
+.ui-input-box__affix {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.ui-input-box__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: var(--space-050);
+  border-radius: var(--radius-control);
+  color: var(--color-text-muted);
+}
+
+.ui-input-box__clear:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+@media (forced-colors: active) {
+  .ui-input-box {
+    border-color: CanvasText;
+  }
+
+  .ui-input-box:focus-within {
+    outline-color: Highlight;
+  }
+}

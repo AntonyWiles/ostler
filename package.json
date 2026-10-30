@@ -1,0 +1,217 @@
+{
+  "name": "ostler",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A local-first project manager for Windows, with AI agents as an optional layer.",
+  "author": "Ostler",
+  "main": "out/main/main.js",
+  "scripts": {
+    "postinstall": "npm run rebuild:native",
+    "dev": "node scripts/dev.cjs",
+    "dev:fresh": "node scripts/dev.cjs --fresh",
+    "dev:scratch": "node scripts/dev-scratch.cjs",
+    "scratch:project": "node scripts/scratch-project.cjs",
+    "seed:scale": "node scripts/seed-scale.cjs",
+    "build": "electron-vite build && node scripts/generate-third-party-notices.cjs",
+    "build:analyze": "node scripts/build-analyze.cjs",
+    "rebuild:native": "electron-rebuild --force --only better-sqlite3",
+    "rebuild:test": "node scripts/rebuild-test.cjs && npm rebuild better-sqlite3",
+    "package:dir": "npm run rebuild:native && npm run build && electron-builder --dir --publish never",
+    "package:win": "npm run rebuild:native && npm run build && electron-builder --win --x64 --publish never",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json && tsc --noEmit -p tsconfig.test.json && tsc --noEmit -p tsconfig.monkey.json && tsc --noEmit -p tsconfig.e2e.json",
+    "i18n:stamp": "node scripts/check-i18n.cjs --stamp",
+    "lint": "node scripts/check-brand.cjs && node scripts/check-workflows.cjs && node scripts/check-sync-core.cjs && node scripts/check-design-tokens.cjs && node scripts/check-i18n.cjs && node scripts/generate-shortcuts-doc.cjs --check && node scripts/generate-third-party-notices.cjs --check && eslint .",
+    "docs:shortcuts": "node scripts/generate-shortcuts-doc.cjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "extract:codex": "node scripts/extract-codex-session.cjs",
+    "extract:agent": "node scripts/extract-agent-session.cjs",
+    "test": "npm run rebuild:test && vitest run tests/unit",
+    "test:components": "vitest run tests/renderer",
+    "test:integration": "npm run rebuild:test && vitest run tests/integration/automation/ tests/integration/harness-workflow.test.ts tests/integration/harness-http-server.test.ts tests/integration/reports.test.ts tests/integration/ai-settings.test.ts tests/integration/agent-guidance-events.test.ts tests/integration/mcp-server.test.ts tests/integration/reschedule.test.ts tests/integration/find-replace.test.ts tests/integration/move-dependents.test.ts tests/integration/dependency-types.test.ts tests/integration/baselines.test.ts tests/integration/plan-first.test.ts tests/integration/reviewer-runs.test.ts tests/integration/reviewer-notes.test.ts tests/integration/matrix.test.ts tests/integration/areas-and-icons.test.ts tests/integration/weekly-review.test.ts tests/integration/keep-reminding.test.ts tests/integration/task-types.test.ts tests/integration/release-notes.test.ts tests/integration/days-off.test.ts tests/integration/outside-calendars.test.ts tests/integration/calendar-links.test.ts tests/integration/time-blocks.test.ts tests/integration/block-moves.test.ts tests/integration/item-links.test.ts tests/integration/pins.test.ts tests/integration/countdowns.test.ts tests/integration/project-stages.test.ts tests/integration/status-updates.test.ts tests/integration/goal-check-ins.test.ts tests/integration/milestone-rounds.test.ts tests/integration/round-comparison tests/integration/budgets-and-costs.test.ts tests/integration/shopping-list.test.ts tests/integration/billable-time.test.ts tests/integration/contacts.test.ts tests/integration/approve-the-plan.test.ts tests/integration/project-lessons-routes.test.ts tests/integration/task-ids.test.ts tests/integration/smart-commits.test.ts tests/integration/idea-scores.test.ts tests/integration/triage.test.ts tests/integration/task-type-fields.test.ts tests/integration/focus.test.ts tests/integration/progress.test.ts tests/integration/personal-goals.test.ts tests/integration/ai-fields.test.ts tests/integration/playbooks.test.ts tests/integration/scheduled-agent-tasks.test.ts tests/integration/queue-exit.test.ts tests/integration/automation-routes.test.ts",
+    "test:startup": "npm run build && npm run rebuild:native && vitest run tests/integration/startup-smoke.test.ts",
+    "test:e2e": "playwright test",
+    "setup:linux": "sh scripts/linux-setup.sh",
+    "test:linux": "sh scripts/linux-test.sh",
+    "test:e2e:linux": "sh scripts/linux-headless.sh npx playwright test",
+    "test:e2e:clean": "npm run build && npm run rebuild:native && playwright test",
+    "monkey": "node scripts/monkey.cjs",
+    "perf": "node scripts/perf.cjs",
+    "verify": "node scripts/verify.cjs",
+    "check:changed": "node scripts/check-changed.cjs",
+    "preview": "electron-vite preview",
+    "icons": "node scripts/generate-icons.cjs",
+    "notices": "node scripts/generate-third-party-notices.cjs",
+    "privacy:page": "node scripts/build-privacy-page.cjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "@monaco-editor/react": "^4.7.0",
+    "@tanstack/react-virtual": "^3.14.13",
+    "better-sqlite3": "12.11.1",
+    "chokidar": "^4.0.0",
+    "electron-updater": "6.8.9",
+    "fflate": "^0.8.3",
+    "i18next": "^26.4.2",
+    "lucide-react": "^0.577.0",
+    "monaco-editor": "^0.56.0",
+    "nodemailer": "^10.2.1",
+    "opencode-ai": "1.18.23",
+    "papaparse": "^5.5.3",
+    "pdf-parse": "^2.4.5",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-i18next": "^17.0.16",
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.6.0",
+    "rehype-sanitize": "^6.0.0",
+    "simple-git": "^3.27.0",
+    "undici": "^7.29.0",
+    "uuid": "^11.1.0"
+  },
+  "build": {
+    "appId": "com.ostler.app",
+    "productName": "Ostler",
+    "asar": true,
+    "npmRebuild": true,
+    "afterPack": "scripts/check-packed-sqlite.cjs",
+    "directories": {
+      "output": "dist/ostler",
+      "buildResources": "build"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icons/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": false,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false,
+      "installerIcon": "build/icons/icon.ico",
+      "uninstallerIcon": "build/icons/icon.ico",
+      "installerHeaderIcon": "build/icons/icon.ico",
+      "include": "build/installer.nsh",
+      "artifactName": "Ostler-Setup-${version}.${ext}",
+      "license": "LICENSE"
+    },
+    "portable": {
+      "artifactName": "Ostler-${version}-${arch}-portable.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ]
+    },
+    "extraResources": [
+      {
+        "from": "build/icons",
+        "to": "icons",
+        "filter": [
+          "icon.ico",
+          "*x*.png",
+          "badge-*.png"
+        ]
+      },
+      {
+        "from": "out/THIRD_PARTY_NOTICES.md",
+        "to": "THIRD_PARTY_NOTICES.md"
+      },
+      {
+        "from": "LICENSE",
+        "to": "LICENSE"
+      }
+    ],
+    "protocols": [
+      {
+        "name": "Ostler link",
+        "schemes": [
+          "ostler"
+        ]
+      }
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "AntonyWiles",
+        "repo": "ostler",
+        "releaseType": "draft"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@electron/rebuild": "^4.2.0",
+    "@eslint/js": "^9.0.0",
+    "@playwright/test": "^1.62.1",
+    "@resvg/resvg-js": "^2.6.2",
+    "@testing-library/jest-dom": "^6.6.0",
+    "@testing-library/react": "^16.3.0",
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/nodemailer": "^8.0.2",
+    "@types/papaparse": "^5.5.2",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@types/uuid": "^10.0.0",
+    "@vitejs/plugin-react": "^4.5.0",
+    "electron": "^43.0.0",
+    "electron-builder": "^26.0.0",
+    "electron-vite": "^3.1.0",
+    "eslint": "^9.0.0",
+    "jsdom": "^26.1.0",
+    "marked": "^14.0.0",
+    "playwright": "^1.62.1",
+    "png-to-ico": "^3.0.2",
+    "prettier": "^3.4.0",
+    "rollup-plugin-visualizer": "^5.14.0",
+    "typescript": "~5.8.0",
+    "typescript-eslint": "^8.18.0",
+    "vite": "^6.3.0",
+    "vitest": "^3.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AntonyWiles/ostler.git"
+  },
+  "keywords": [
+    "project-management",
+    "kanban",
+    "electron",
+    "windows",
+    "local-first",
+    "ai-agents",
+    "desktop-app"
+  ],
+  "license": "GPL-3.0-only",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/AntonyWiles/ostler/issues"
+  },
+  "homepage": "https://github.com/AntonyWiles/ostler#readme"
+}

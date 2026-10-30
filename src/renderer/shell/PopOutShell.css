@@ -1,0 +1,17 @@
+/*
+ * A pop-out window (N5.8a): the slim title bar spans the window (Windows'
+ * own buttons sit over its right end when the custom title bar is on), and
+ * the view fills the rest.
+ */
+
+.ostler-popout-titlebar {
+  width: env(titlebar-area-width, 100%);
+}
+
+.ostler-popout-titlebar .ostler-titlebar-title {
+  flex: 1;
+}
+
+.ostler-popout .ostler-content {
+  min-height: 0;
+}

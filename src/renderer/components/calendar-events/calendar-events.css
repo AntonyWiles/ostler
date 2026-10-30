@@ -1,0 +1,156 @@
+/*
+ * Outside calendar events (N3.3a): quieter than tasks. Outlined, no fill,
+ * the calendar's colour only as a thin mark, the time first.
+ */
+
+.calendar-event {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  width: 100%;
+  min-width: 0;
+  padding: 0 var(--space-150) 0 0;
+  overflow: hidden;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-caption);
+  text-align: left;
+  cursor: pointer;
+}
+
+.calendar-event::before {
+  content: '';
+  flex: none;
+  align-self: stretch;
+  width: calc(var(--space-050) + var(--border-width));
+  background: var(--event-color, var(--color-border));
+}
+
+/* The mark is the calendar's own colour, kept in high contrast (as a project's dot is). */
+@media (forced-colors: active) {
+  .calendar-event::before {
+    forced-color-adjust: none;
+  }
+}
+
+.calendar-event:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.calendar-event:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.calendar-event__time {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.calendar-event__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-events {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+  margin-bottom: var(--space-300);
+  padding-bottom: var(--space-300);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.home-events__summary {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.home-events__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-150);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-events__list .calendar-event {
+  width: auto;
+  max-width: 16rem;
+  padding-block: var(--space-100);
+}
+
+.calendar-event-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  max-width: 22rem;
+  padding: var(--space-300);
+}
+
+.calendar-event-card p,
+.calendar-event-card h3 {
+  margin: 0;
+}
+
+.calendar-event-card__title {
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.calendar-event-card__when,
+.calendar-event-card__location,
+.calendar-event-card__calendar,
+.calendar-event-card__note {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.calendar-event-card__description {
+  max-height: 12rem;
+  overflow-y: auto;
+  font-size: var(--text-body-sm);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.calendar-event-card__calendar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-150);
+}
+
+.calendar-event-card__mark {
+  width: var(--space-200);
+  height: var(--space-200);
+  border-radius: var(--radius-full);
+}
+
+.calendar-event-card__make {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.calendar-event-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-200);
+}
+
+/* A calendar link that has not updated for a day (N3.3b): a quiet note beside the switch. */
+.calendar-stale-note {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}

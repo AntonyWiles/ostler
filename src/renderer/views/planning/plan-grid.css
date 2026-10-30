@@ -1,0 +1,130 @@
+/* The plan grid (R1.1): a table of rows, each a task or a subtask. */
+
+.plan-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-height: 0;
+}
+
+.plan-grid__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-200);
+}
+
+.plan-grid__summary {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.plan-grid__count-errors {
+  margin: 0;
+  color: var(--color-danger);
+  font-size: var(--text-body-sm);
+}
+
+.plan-grid__scroll {
+  overflow: auto;
+  scrollbar-gutter: stable;
+  max-height: 60vh;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.plan-grid__table {
+  width: 100%;
+  min-width: 60rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--text-body-sm);
+}
+
+.plan-grid__table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: var(--space-150) var(--space-200);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-semibold);
+  text-align: start;
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.plan-grid__table td {
+  padding: var(--space-100) var(--space-150);
+  vertical-align: top;
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.plan-grid__table tr:last-child td {
+  border-bottom: none;
+}
+
+.plan-grid__title {
+  padding-inline-start: calc(var(--space-300) * var(--plan-depth, 0));
+}
+
+.plan-grid__waits {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  margin: 0 0 var(--space-050);
+  padding: 0;
+  list-style: none;
+}
+
+.plan-grid__wait {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  min-width: 0;
+}
+
+.plan-grid__wait > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.plan-grid__wait-missing {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.plan-grid__error {
+  margin: var(--space-050) 0 0;
+  color: var(--color-danger);
+  font-size: var(--text-caption);
+}
+
+.plan-grid__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-200);
+}
+
+.plan-grid__hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+/* Custom field columns (R2.2): added from the picker, removed from their header. */
+.plan-grid__field-columns {
+  display: flex;
+  max-width: calc(var(--space-1000) * 3);
+}
+
+.plan-grid__field-head {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+}

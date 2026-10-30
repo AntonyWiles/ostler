@@ -1,0 +1,634 @@
+/*
+ * The whiteboard editor (docs/plans/whiteboards, prompt 05): a top bar, a
+ * vertical tool bar on the left and the board filling the rest. The board's
+ * own colours are in WhiteboardScene.css; the selection uses theme tokens.
+ */
+
+.wb-editor {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+  background: var(--color-surface);
+}
+
+.wb-editor__bar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-300);
+  padding: var(--space-100) var(--space-200);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.wb-editor__bar-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.wb-editor__bar-end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  margin-left: auto;
+}
+
+.wb-editor__divider {
+  align-self: stretch;
+  width: var(--border-width);
+  margin: var(--space-100) var(--space-100);
+  background: var(--color-border);
+}
+
+.wb-editor__zoom {
+  min-width: calc(var(--space-1000) + var(--space-400));
+  font-variant-numeric: tabular-nums;
+}
+
+.wb-editor__tools {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  padding: var(--space-200) var(--space-100);
+  border-right: var(--border-width) solid var(--color-border);
+}
+
+.wb-editor__stage {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Undo and redo, floating at the board's lower right. */
+.wb-editor__history {
+  position: absolute;
+  right: var(--space-300);
+  bottom: var(--space-300);
+  z-index: var(--z-sticky);
+  display: flex;
+  gap: var(--space-100);
+  padding: var(--space-100);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+/* "Skip past the whiteboard": off the board until it has focus (WCAG 2.4.1). */
+.wb-editor__skip {
+  position: absolute;
+  top: var(--space-200);
+  left: var(--space-200);
+  z-index: var(--z-tooltip);
+  padding: var(--space-200) var(--space-300);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-link);
+  font-weight: var(--weight-semibold);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wb-editor__skip:focus {
+  opacity: 1;
+  pointer-events: auto;
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.wb-editor__board {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* Pen and touch drags pan, select and move here, not the page. */
+  touch-action: none;
+  user-select: none;
+  outline: none;
+}
+
+.wb-editor__board:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(-1 * var(--focus-ring-width));
+}
+
+.wb-editor__board > svg {
+  display: block;
+}
+
+.wb-editor__board--select {
+  cursor: default;
+}
+
+.wb-editor__board--select:not(.wb-editor__board--read-only) .wb-object {
+  cursor: move;
+}
+
+.wb-editor__board--hand,
+.wb-editor__board--hand .wb-object {
+  cursor: grab;
+}
+
+.wb-editor__board--note,
+.wb-editor__board--note .wb-object,
+.wb-editor__board--text,
+.wb-editor__board--text .wb-object,
+.wb-editor__board--shape,
+.wb-editor__board--shape .wb-object,
+.wb-editor__board--frame,
+.wb-editor__board--frame .wb-object,
+.wb-editor__board--pen,
+.wb-editor__board--pen .wb-object,
+.wb-editor__board--marker,
+.wb-editor__board--marker .wb-object,
+.wb-editor__board--eraser,
+.wb-editor__board--eraser .wb-object,
+.wb-editor__board--connector,
+.wb-editor__board--connector .wb-object,
+.wb-editor__board--node,
+.wb-editor__board--node .wb-object,
+.wb-editor__board--mindmap,
+.wb-editor__board--mindmap .wb-object {
+  cursor: crosshair;
+}
+
+/* A drawing tool over an object's border: a press moves the object (MOP-34). */
+.wb-editor__board--on-border,
+.wb-editor__board--on-border .wb-object {
+  cursor: move;
+}
+
+/* A stroke the eraser has touched, until the drag ends and it goes. */
+.wb-object--erasing {
+  opacity: 0.25;
+}
+
+/* A stroke, shape or frame being drawn: not yet an object. */
+.wb-editor__drawing {
+  pointer-events: none;
+}
+
+.wb-editor__board--panning,
+.wb-editor__board--panning .wb-object {
+  cursor: grabbing;
+}
+
+.wb-editor__after {
+  position: absolute;
+  outline: none;
+}
+
+.wb-object {
+  outline: none;
+}
+
+.wb-object:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* The selection overlay (SelectionOverlay.tsx): widths are set in board units there. */
+.wb-selection-layer {
+  pointer-events: none;
+}
+
+.wb-selection {
+  fill: none;
+  stroke: var(--color-focus);
+}
+
+/* While focus is on the board, the selection is solid, so it reads as focus too. */
+.wb-editor__board:focus-within .wb-selection {
+  stroke-dasharray: none;
+}
+
+.wb-selection-box {
+  fill: var(--color-accent-subtle);
+  fill-opacity: 0.4;
+  stroke: var(--color-accent);
+}
+
+.wb-handle {
+  fill: var(--color-surface-raised);
+  stroke: var(--color-focus);
+  pointer-events: all;
+}
+
+.wb-handle--nw,
+.wb-handle--se {
+  cursor: nwse-resize;
+}
+
+.wb-handle--ne,
+.wb-handle--sw {
+  cursor: nesw-resize;
+}
+
+.wb-handle--n,
+.wb-handle--s {
+  cursor: ns-resize;
+}
+
+.wb-handle--e,
+.wb-handle--w {
+  cursor: ew-resize;
+}
+
+/* A selected connector's end handles (prompt 10): drag one to stick it elsewhere. */
+.wb-end-handle {
+  cursor: move;
+}
+
+/* The object a connector end being dragged would stick to. */
+.wb-attach-target {
+  fill: none;
+  stroke: var(--color-accent);
+}
+
+/* An object's node points while the node tool is out or a line end is dragged (MOP-27). */
+.wb-node {
+  fill: var(--color-surface-raised);
+  stroke: var(--color-accent);
+  pointer-events: none;
+}
+
+.wb-node--hot {
+  fill: var(--color-accent);
+}
+
+/* The Connect to dialog's list of objects: scrolls when the board is busy. */
+/* Shown while files are dragged over the board (prompt 11). */
+.wb-editor__drop-hint {
+  position: absolute;
+  inset: var(--space-400);
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: var(--border-width) dashed var(--color-focus);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-selected);
+  color: var(--color-text);
+  pointer-events: none;
+}
+
+/* Picture › From the Library… (PictureLibraryDialog.tsx): thumbnails with their titles. */
+.wb-pictures {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--space-1200) * 3), 1fr));
+  gap: var(--space-300);
+  max-height: 50vh;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.wb-pictures__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-width: 0;
+}
+
+.wb-pictures__thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-sunken);
+  object-fit: contain;
+}
+
+.wb-connect-to__list {
+  max-height: 50vh;
+  margin-top: var(--space-300);
+  overflow-y: auto;
+}
+
+/* The Link dialog (LinkDialog.tsx, prompt 12): its results use the [[ picker's option classes. */
+.wb-link-dialog__search {
+  margin-bottom: var(--space-300);
+}
+
+.wb-link-dialog__results {
+  max-height: 40vh;
+  margin: var(--space-100) 0 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.wb-link-dialog__empty {
+  margin: var(--space-100) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+/* A link badge on the board shows the pointer it opens with. */
+.wb-editor__board--select .wb-link-badge {
+  cursor: pointer;
+}
+
+/*
+ * The property bar (PropertyBar.tsx): the style controls fixed in the top bar.
+ * Every control is always there at a set width, so nothing moves or resizes
+ * as the selection changes; one that does not apply is disabled.
+ */
+.wb-props {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-100);
+  min-width: 0;
+}
+
+.wb-props__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.wb-prop {
+  justify-content: flex-start;
+  gap: var(--space-050);
+  padding: 0 var(--space-100);
+}
+
+/* The two controls that show their value in words keep one width, whatever it is;
+   a longer word is cut short, and the tooltip has it whole. */
+.wb-prop--textSize,
+.wb-prop--stroke {
+  width: calc(var(--space-1200) * 2 + var(--space-200));
+}
+
+.wb-prop__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wb-prop__toggle[aria-pressed='true'] {
+  background: var(--color-accent-subtle);
+}
+
+/* The colour button's popover: the ten swatches in two rows. */
+.wb-colour-popover__swatches {
+  display: grid;
+  grid-template-columns: repeat(5, var(--space-600));
+  gap: var(--space-200);
+  padding: var(--space-200);
+}
+
+.wb-colour-popover__swatches .wb-swatch {
+  width: var(--space-600);
+  height: var(--space-600);
+}
+
+.wb-swatch {
+  width: var(--space-500);
+  height: var(--space-500);
+  padding: 0;
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  /* The swatch is the colour it draws, in high contrast too. */
+  forced-color-adjust: none;
+}
+
+.wb-swatch--chip {
+  display: inline-block;
+  width: var(--space-400);
+  height: var(--space-400);
+}
+
+/* No colour shared: a split swatch. */
+.wb-swatch--mixed {
+  background: linear-gradient(135deg, var(--whiteboard-red) 50%, var(--whiteboard-blue) 50%);
+}
+
+.wb-swatch[aria-pressed='true'] {
+  outline: var(--focus-ring-width) solid var(--color-text);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.wb-swatch:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.wb-swatch--black {
+  background: var(--whiteboard-black);
+}
+
+/* What a note, an idea or a lightly filled shape will look like: its light fill, ringed in its colour. */
+.wb-swatch--light {
+  border-width: calc(var(--border-width) * 2);
+}
+
+.wb-swatch--grey {
+  background: var(--whiteboard-grey);
+}
+
+.wb-swatch--red {
+  background: var(--whiteboard-red);
+}
+
+.wb-swatch--orange {
+  background: var(--whiteboard-orange);
+}
+
+.wb-swatch--yellow {
+  background: var(--whiteboard-yellow);
+}
+
+.wb-swatch--green {
+  background: var(--whiteboard-green);
+}
+
+.wb-swatch--teal {
+  background: var(--whiteboard-teal);
+}
+
+.wb-swatch--blue {
+  background: var(--whiteboard-blue);
+}
+
+.wb-swatch--purple {
+  background: var(--whiteboard-purple);
+}
+
+.wb-swatch--pink {
+  background: var(--whiteboard-pink);
+}
+
+/*
+ * The text box over an object being edited (TextEditor.tsx): the object's own
+ * fill and text colours are set there; the focus ring is the app's.
+ */
+.wb-text-editor {
+  position: absolute;
+  z-index: var(--z-sticky);
+  box-sizing: border-box;
+  margin: 0;
+  border: var(--border-width) solid var(--color-focus);
+  border-radius: var(--radius-control);
+  outline: var(--border-width) solid var(--color-focus);
+  font-family: inherit;
+  overflow: hidden;
+  resize: none;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (forced-colors: active) {
+  .wb-selection,
+  .wb-handle,
+  .wb-attach-target,
+  .wb-node {
+    stroke: Highlight;
+  }
+
+  .wb-node--hot {
+    fill: Highlight;
+  }
+
+  .wb-selection-box {
+    fill: none;
+    stroke: Highlight;
+  }
+}
+
+.wb-swatch--light.wb-swatch--black {
+  border-color: var(--whiteboard-black);
+  background: var(--whiteboard-black-light);
+}
+
+.wb-swatch--light.wb-swatch--grey {
+  border-color: var(--whiteboard-grey);
+  background: var(--whiteboard-grey-light);
+}
+
+.wb-swatch--light.wb-swatch--red {
+  border-color: var(--whiteboard-red);
+  background: var(--whiteboard-red-light);
+}
+
+.wb-swatch--light.wb-swatch--orange {
+  border-color: var(--whiteboard-orange);
+  background: var(--whiteboard-orange-light);
+}
+
+.wb-swatch--light.wb-swatch--yellow {
+  border-color: var(--whiteboard-yellow);
+  background: var(--whiteboard-yellow-light);
+}
+
+.wb-swatch--light.wb-swatch--green {
+  border-color: var(--whiteboard-green);
+  background: var(--whiteboard-green-light);
+}
+
+.wb-swatch--light.wb-swatch--teal {
+  border-color: var(--whiteboard-teal);
+  background: var(--whiteboard-teal-light);
+}
+
+.wb-swatch--light.wb-swatch--blue {
+  border-color: var(--whiteboard-blue);
+  background: var(--whiteboard-blue-light);
+}
+
+.wb-swatch--light.wb-swatch--purple {
+  border-color: var(--whiteboard-purple);
+  background: var(--whiteboard-purple-light);
+}
+
+.wb-swatch--light.wb-swatch--pink {
+  border-color: var(--whiteboard-pink);
+  background: var(--whiteboard-pink-light);
+}
+
+/* The tool bar: tools in groups, each drawing tool marked with the colour it makes next. */
+.wb-editor__tool {
+  position: relative;
+  display: flex;
+}
+
+.wb-editor__tool-dot {
+  position: absolute;
+  right: var(--space-100);
+  bottom: var(--space-100);
+  width: var(--space-200);
+  height: var(--space-200);
+  border: var(--border-width) solid var(--color-surface);
+  border-radius: var(--radius-full);
+  pointer-events: none;
+  forced-color-adjust: none;
+}
+
+.wb-editor__tool-divider {
+  height: var(--border-width);
+  margin: var(--space-100) var(--space-100);
+  background: var(--color-border);
+}
+
+/* The group a selection belongs to: dashed round the whole group, with its tag. */
+.wb-group-outline {
+  fill: none;
+  stroke: var(--color-accent);
+}
+
+.wb-group-tag {
+  fill: var(--color-accent);
+}
+
+.wb-group-tag-text {
+  fill: var(--color-on-fill-light);
+  font-weight: var(--weight-semibold);
+}
+
+/* A selected line's bend points, and the handles that add one halfway along. */
+.wb-bend-handle {
+  fill: var(--color-surface-raised);
+  stroke: var(--color-focus);
+  pointer-events: all;
+  cursor: move;
+}
+
+.wb-split-handle {
+  fill: var(--color-focus);
+  fill-opacity: 0.35;
+  stroke: var(--color-focus);
+  pointer-events: all;
+  cursor: copy;
+}
+
+.wb-split-handle:hover {
+  fill-opacity: 0.8;
+}
+
+.wb-colour-popover__extra {
+  padding: 0 var(--space-200) var(--space-200);
+}
+
+/* The Link dialog's filter: everything, one kind, or the cloud files. */
+.wb-link-dialog__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+  margin-top: var(--space-200);
+}
+
+.wb-link-dialog__filter[aria-pressed='true'] {
+  background: var(--color-accent-subtle);
+}

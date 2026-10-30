@@ -1,0 +1,71 @@
+/* Reschedule overdue tasks (N1.3). Tokens only; a warning is said in words, not by colour alone. */
+
+.reschedule {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  min-width: 0;
+}
+
+.reschedule__options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-400);
+}
+
+.reschedule__quiet {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.reschedule__scroll {
+  max-height: calc(var(--space-1200) * 6);
+  overflow: auto;
+  scrollbar-gutter: stable;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.reschedule__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+}
+
+.reschedule__table th,
+.reschedule__table td {
+  padding: var(--space-150);
+  border-bottom: var(--border-width) solid var(--color-border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.reschedule__table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-surface-sunken);
+  font-weight: var(--weight-semibold);
+}
+
+.reschedule__table tr.is-left td:not(:first-child) {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+.reschedule__title {
+  overflow-wrap: anywhere;
+}
+
+.reschedule__note {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.reschedule__note--warning {
+  color: var(--color-text);
+  border-inline-start: calc(var(--border-width) * 3) solid var(--color-warning);
+  padding-inline-start: var(--space-100);
+}

@@ -1,0 +1,100 @@
+/* Quick add (P5.6). Tokens only. */
+
+.quick-add {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-width: 0;
+}
+
+.quick-add__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-200);
+  min-width: 0;
+}
+
+.quick-add__input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.quick-add__project {
+  flex: 0 1 12rem;
+  min-width: 8rem;
+}
+
+/* The task template picker (N2.1), only when the project has templates. */
+.quick-add__template {
+  flex: 0 1 11rem;
+  min-width: 8rem;
+}
+
+.quick-add__preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.quick-add__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.quick-add__chip-kind {
+  color: var(--color-text-secondary);
+}
+
+.quick-add__unknown {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+@media (width < 1000px) {
+  .quick-add__row {
+    flex-wrap: wrap;
+  }
+
+  .quick-add__input {
+    flex-basis: 100%;
+  }
+
+  .quick-add__project {
+    flex: 1 1 auto;
+  }
+}
+
+/* Add to My day (N1.4): sits on the row, level with the fields. */
+.quick-add__my-day {
+  flex: 0 0 auto;
+  align-self: center;
+  white-space: nowrap;
+}
+
+/* The task type picker (N2.7a): no syntax to learn, so it sits in the preview. */
+.quick-add__type {
+  max-width: calc(var(--space-800) * 4);
+}
+
+/* Snip to task (N4.2a): the picture Add attaches, as a thumbnail. */
+/* The snip and its Mark up button (N4.2b). */
+.quick-add__snip-row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-200);
+  min-width: 0;
+}
+
+.quick-add__snip {
+  align-self: flex-start;
+  max-width: 100%;
+  max-height: 12rem;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  object-fit: contain;
+}

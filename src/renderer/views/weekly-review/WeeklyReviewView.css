@@ -1,0 +1,154 @@
+/* Weekly review (N1.5). Tokens only. */
+
+.ostler-weekly-review {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  min-width: 0;
+  max-width: 960px;
+  padding: var(--space-500) var(--space-600);
+  background: var(--color-bg);
+}
+
+.ostler-weekly-review-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+}
+
+.ostler-weekly-review-steps li {
+  padding: var(--space-100) var(--space-200);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+/* No heavier weight: it would widen the pill and push the later steps along. */
+.ostler-weekly-review-steps li[aria-current='step'] {
+  border-color: var(--color-accent);
+  color: var(--color-text);
+  background: var(--color-accent-subtle);
+}
+
+.ostler-weekly-review-steps li[data-skipped] {
+  text-decoration: line-through;
+}
+
+.ostler-weekly-review-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.ostler-weekly-review-step h2 {
+  margin: 0;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+}
+
+.ostler-weekly-review-describe,
+.ostler-weekly-review-empty {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.ostler-weekly-review-inbox {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-300);
+}
+
+.ostler-weekly-review-inbox p {
+  margin: 0;
+}
+
+.ostler-weekly-review-step-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ostler-weekly-review-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ostler-weekly-review-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-300);
+  padding: var(--space-200) 0;
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.ostler-weekly-review-mark {
+  flex: none;
+}
+
+.ostler-weekly-review-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ostler-weekly-review-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ostler-weekly-review-meta {
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+}
+
+.ostler-weekly-review-actions {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+  justify-content: flex-end;
+}
+
+.ostler-weekly-review-days {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.ostler-weekly-review-days h3 {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.ostler-weekly-review-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-300);
+  padding-top: var(--space-300);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.ostler-weekly-review-forward {
+  display: flex;
+  gap: var(--space-200);
+}
+
+@media (width < 1000px) {
+  .ostler-weekly-review {
+    padding: var(--space-400);
+  }
+
+  .ostler-weekly-review-row {
+    flex-wrap: wrap;
+  }
+}

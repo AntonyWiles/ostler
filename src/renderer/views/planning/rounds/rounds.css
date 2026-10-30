@@ -1,0 +1,207 @@
+/* Repeating rounds (N5.7a). */
+.round-repeat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.round-repeat__preview {
+  margin: 0;
+  padding: var(--space-200) var(--space-300);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-secondary);
+}
+
+.milestone-card__repeat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+}
+
+.milestone-series {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.milestone-series__earlier > summary {
+  width: fit-content;
+  border-radius: var(--radius-control);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  cursor: pointer;
+}
+
+.milestone-series__earlier[open] > summary {
+  margin-bottom: var(--space-200);
+}
+
+/* Compare rounds (N5.7b). */
+.compare-rounds {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+}
+
+.compare-rounds__heading {
+  margin: 0 0 var(--space-200);
+  font-size: var(--text-heading-sm);
+}
+
+.compare-rounds__chart {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-400);
+  align-items: flex-end;
+}
+
+.compare-rounds__bars {
+  display: flex;
+  gap: var(--space-300);
+  align-items: flex-end;
+  /* Many rounds in a 900 px window wrap rather than overflow; each round
+     keeps its label under its own pair of bars. */
+  flex-wrap: wrap;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.compare-rounds__round {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-100);
+  max-width: var(--space-1200);
+}
+
+.compare-rounds__pair {
+  display: flex;
+  gap: var(--space-050);
+  align-items: flex-end;
+  height: calc(var(--space-1200) * 2);
+}
+
+.compare-rounds__bar {
+  display: block;
+  width: var(--space-200);
+  min-height: var(--border-width);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+/* Planned is an outline, took is solid: shape tells them apart, not colour alone. */
+.compare-rounds__bar.is-planned {
+  border: var(--border-width) dashed var(--color-border-strong);
+}
+
+.compare-rounds__bar.is-took {
+  background: var(--chart-1);
+}
+
+/* High contrast removes fills: the solid bar stays solid in CanvasText. */
+@media (forced-colors: active) {
+  .compare-rounds__bar.is-took {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+}
+
+.compare-rounds__label {
+  overflow: hidden;
+  max-width: 100%;
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.compare-rounds__sentences {
+  flex: 1 1 calc(var(--space-1200) * 6);
+  margin: 0;
+  padding-inline-start: var(--space-400);
+  color: var(--color-text-secondary);
+}
+
+.compare-rounds__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+  align-items: center;
+  margin-bottom: var(--space-200);
+}
+
+.compare-rounds__toolbar .compare-rounds__heading {
+  flex: 1;
+  margin: 0;
+}
+
+.compare-rounds__scroll {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+}
+
+.compare-rounds__scroll:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.compare-rounds__table {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--text-body-sm);
+}
+
+.compare-rounds__table th,
+.compare-rounds__table td {
+  padding: var(--space-100) var(--space-200);
+  border-bottom: var(--border-width) solid var(--color-border);
+  text-align: start;
+  white-space: nowrap;
+}
+
+.compare-rounds__table thead th {
+  font-weight: var(--weight-semibold);
+}
+
+/* The task column stays in view while the rounds scroll across (200% zoom too). */
+.compare-rounds__task {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 1;
+  max-width: calc(var(--space-1200) * 5);
+  overflow: hidden;
+  background: var(--color-surface-raised);
+  font-weight: var(--weight-medium);
+  text-overflow: ellipsis;
+}
+
+.compare-rounds__cell.is-absent {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.compare-rounds__cell.is-slowest {
+  font-weight: var(--weight-semibold);
+}
+
+.compare-rounds__slowest {
+  padding: 0 var(--space-100);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+}
+
+.compare-rounds__empty {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.milestone-series__compare {
+  align-self: flex-start;
+}

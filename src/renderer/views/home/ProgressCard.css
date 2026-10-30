@@ -1,0 +1,19 @@
+/* Home's progress card (N3.6): a sentence and a small chart, side by side when there is room. */
+
+.ostler-home-progress__body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-300);
+}
+
+.ostler-home-progress__sentence {
+  flex: 1 1 14rem;
+  margin: 0;
+  font-size: var(--text-body-lg);
+}
+
+.ostler-home-progress__chart {
+  flex: 2 1 18rem;
+  min-width: 0;
+}

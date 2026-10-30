@@ -1,0 +1,85 @@
+- main:
+  - navigation "Settings sections":
+    - heading "Settings" [level=1]
+    - list:
+      - listitem:
+        - link "General":
+          - /url: "#/settings/general"
+      - listitem:
+        - link "Projects":
+          - /url: "#/settings/projects"
+      - listitem:
+        - link "People":
+          - /url: "#/settings/people"
+      - listitem:
+        - link "Notifications":
+          - /url: "#/settings/notifications"
+      - listitem:
+        - link "AI":
+          - /url: "#/settings/ai"
+      - listitem:
+        - link "Agents":
+          - /url: "#/settings/agents"
+      - listitem:
+        - link "Data":
+          - /url: "#/settings/data"
+      - listitem:
+        - link "Advanced":
+          - /url: "#/settings/advanced"
+      - listitem:
+        - link "About":
+          - /url: "#/settings/about"
+  - region "General":
+    - heading "General" [level=2]
+    - status
+    - region "Appearance":
+      - heading "Appearance" [level=3]
+      - group "Theme":
+        - text: ""
+        - radio "System"
+        - text: System
+        - radio "Light" [checked]
+        - text: Light
+        - radio "Dark"
+        - text: Dark
+      - paragraph: System follows Windows' light or dark mode.
+      - group "Density":
+        - text: ""
+        - radio "Comfortable" [checked]
+        - text: Comfortable
+        - radio "Compact"
+        - text: Compact
+      - paragraph: Compact makes text and controls smaller so more fits on screen.
+      - group "Accent colour":
+        - text: ""
+        - radio "Ostler blue" [checked]
+        - text: Ostler blue
+        - radio "Windows accent colour"
+        - text: Windows accent colour
+      - paragraph: The Windows accent colour is darkened or lightened where needed so text on it stays readable.
+    - region "Start-up":
+      - heading "Start-up" [level=3]
+      - group "When Ostler starts, open":
+        - text: ""
+        - radio "Home" [checked]
+        - text: Home
+        - radio "The project you had open last"
+        - text: The project you had open last
+      - paragraph: An archived or removed project opens Home instead.
+    - region "Windows":
+      - heading "Windows" [level=3]
+      - switch "Use the standard Windows title bar"
+      - text: Use the standard Windows title bar
+      - paragraph: Shows Windows' own title bar and menu bar instead of Ostler's. Applies the next time Ostler starts.
+      - switch "Keep Ostler running in the background, for reminders"
+      - text: Keep Ostler running in the background, for reminders
+      - paragraph: Closing the window hides Ostler in the notification area. To quit, use its icon there or File › Exit.
+      - switch "Start Ostler when I sign in"
+      - text: Start Ostler when I sign in
+      - paragraph: Ostler opens its window when you sign in to Windows.
+      - switch "Quick add from anywhere"
+      - text: Quick add from anywhere
+      - paragraph: A key that opens Quick add from any app, while Ostler is running.
+      - text: Quick add key
+      - textbox "Quick add key" [disabled]: Ctrl+Alt+N
+      - paragraph: Select the box and press the keys you want, such as Ctrl+Alt+N.

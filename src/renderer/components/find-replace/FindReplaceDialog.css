@@ -1,0 +1,124 @@
+/* Find and replace (N2.5). Tokens only; old and new text are told apart by strike-through and underline, not by colour alone. */
+
+.find-replace {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+}
+
+.find-replace__fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(var(--space-1200) * 3), 1fr));
+  gap: var(--space-300);
+}
+
+.find-replace__options,
+.find-replace__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200) var(--space-400);
+}
+
+.find-replace__count {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.find-replace__quiet {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.find-replace__tasks {
+  max-height: calc(var(--space-1200) * 6);
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  list-style: none;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.find-replace__task {
+  padding: var(--space-200);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.find-replace__task:last-child {
+  border-bottom: none;
+}
+
+.find-replace__task-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  font-weight: var(--weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.find-replace__matches {
+  margin: var(--space-100) 0 0;
+  padding: 0 0 0 var(--space-500);
+  list-style: none;
+}
+
+.find-replace__match {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-200);
+  padding: var(--space-100) 0;
+  font-size: var(--text-body-sm);
+}
+
+.find-replace__match-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  min-width: 0;
+}
+
+.find-replace__field {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.find-replace__snippet {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.find-replace__snippet del {
+  background: var(--color-danger-subtle);
+  color: var(--color-text);
+  text-decoration: line-through;
+}
+
+.find-replace__snippet ins {
+  background: var(--color-success-subtle);
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.find-replace__match.is-left .find-replace__snippet ins {
+  display: none;
+}
+
+.find-replace__match.is-left .find-replace__snippet {
+  color: var(--color-text-muted);
+}
+
+.find-replace__match.is-left .find-replace__snippet del {
+  background: none;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.find-replace__problem {
+  color: var(--color-text);
+  border-inline-start: calc(var(--border-width) * 3) solid var(--color-warning);
+  padding-inline-start: var(--space-100);
+  font-size: var(--text-caption);
+}

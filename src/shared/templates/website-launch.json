@@ -1,0 +1,176 @@
+{
+  "format": "ostler-project-package",
+  "version": 1,
+  "template": {
+    "description": "Take a new website from content and design to a public launch.",
+    "icon": "globe"
+  },
+  "project": {
+    "name": "Website launch",
+    "color": "#14b8a6",
+    "estimateUnit": "points"
+  },
+  "people": [],
+  "labels": [
+    {
+      "name": "content",
+      "color": "#f59e0b"
+    },
+    {
+      "name": "design",
+      "color": "#ec4899"
+    },
+    {
+      "name": "dev",
+      "color": "#8b5cf6"
+    }
+  ],
+  "goals": [],
+  "milestones": [
+    {
+      "ref": "m1",
+      "name": "Content and design ready",
+      "targetDate": "+21d",
+      "outcome": "Every page has its words and a design"
+    },
+    {
+      "ref": "m2",
+      "name": "Site built",
+      "targetDate": "+42d"
+    },
+    {
+      "ref": "m3",
+      "name": "Launch",
+      "targetDate": "+56d",
+      "outcome": "The site is live and announced",
+      "successCriteria": ["All pages reviewed", "Analytics working"]
+    }
+  ],
+  "tasks": [
+    {
+      "ref": "t1",
+      "title": "List the pages the site needs",
+      "milestoneRef": "m1",
+      "priority": "high",
+      "labels": ["content"],
+      "dueDate": "+3d"
+    },
+    {
+      "ref": "t2",
+      "title": "Write the home page copy",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["content"],
+      "dueDate": "+10d",
+      "dependsOnRefs": ["t1"]
+    },
+    {
+      "ref": "t3",
+      "title": "Write the about and contact pages",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["content"],
+      "dueDate": "+14d",
+      "dependsOnRefs": ["t1"]
+    },
+    {
+      "ref": "t4",
+      "title": "Design the page layouts",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["design"],
+      "dueDate": "+18d",
+      "dependsOnRefs": ["t1"]
+    },
+    {
+      "ref": "t5",
+      "title": "Choose photos and graphics",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["design"],
+      "dueDate": "+21d",
+      "dependsOnRefs": ["t4"]
+    },
+    {
+      "ref": "t6",
+      "title": "Build the page templates",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["dev"],
+      "dueDate": "+32d",
+      "dependsOnRefs": ["t4"]
+    },
+    {
+      "ref": "t7",
+      "title": "Add the content to the site",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["content", "dev"],
+      "dueDate": "+38d",
+      "dependsOnRefs": ["t2", "t3", "t6"]
+    },
+    {
+      "ref": "t8",
+      "title": "Test on phones and tablets",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["dev"],
+      "checklist": [
+        {
+          "text": "Phone",
+          "checked": false
+        },
+        {
+          "text": "Tablet",
+          "checked": false
+        },
+        {
+          "text": "Desktop",
+          "checked": false
+        },
+        {
+          "text": "Slow connection",
+          "checked": false
+        }
+      ],
+      "dueDate": "+42d",
+      "dependsOnRefs": ["t7"]
+    },
+    {
+      "ref": "t9",
+      "title": "Set up the domain and hosting",
+      "milestoneRef": "m3",
+      "priority": "medium",
+      "labels": ["dev"],
+      "dueDate": "+48d"
+    },
+    {
+      "ref": "t10",
+      "title": "Final review of every page",
+      "milestoneRef": "m3",
+      "priority": "high",
+      "dueDate": "+52d",
+      "dependsOnRefs": ["t8"]
+    },
+    {
+      "ref": "t11",
+      "title": "Go live",
+      "milestoneRef": "m3",
+      "priority": "critical",
+      "dueDate": "+56d",
+      "dependsOnRefs": ["t9", "t10"]
+    },
+    {
+      "ref": "t12",
+      "title": "Announce the new site",
+      "milestoneRef": "m3",
+      "priority": "medium",
+      "labels": ["content"],
+      "dueDate": "+57d",
+      "dependsOnRefs": ["t11"]
+    }
+  ],
+  "decisions": [],
+  "comments": [],
+  "library": []
+}

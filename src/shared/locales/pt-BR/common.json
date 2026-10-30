@@ -1,0 +1,391 @@
+{
+  "time": {
+    "justNow": "agora mesmo"
+  },
+  "date": {
+    "today": "Hoje",
+    "tomorrow": "Amanhã",
+    "yesterday": "Ontem",
+    "overdueBy_one": "Atrasada em {{count}} dia",
+    "overdueBy_many": "Atrasada em {{count}} dias",
+    "overdueBy_other": "Atrasada em {{count}} dias",
+    "daysAgo_one": "Há {{count}} dia",
+    "daysAgo_many": "Há {{count}} dias",
+    "daysAgo_other": "Há {{count}} dias",
+    "inDays_one": "Em {{count}} dia",
+    "inDays_many": "Em {{count}} dias",
+    "inDays_other": "Em {{count}} dias"
+  },
+  "count": {
+    "task_one": "{{count}} tarefa",
+    "task_many": "{{count}} tarefas",
+    "task_other": "{{count}} tarefas",
+    "agent_one": "{{count}} agente",
+    "agent_many": "{{count}} agentes",
+    "agent_other": "{{count}} agentes",
+    "run_one": "{{count}} execução",
+    "run_many": "{{count}} execuções",
+    "run_other": "{{count}} execuções",
+    "goal_one": "{{count}} meta",
+    "goal_many": "{{count}} metas",
+    "goal_other": "{{count}} metas",
+    "milestone_one": "{{count}} marco",
+    "milestone_many": "{{count}} marcos",
+    "milestone_other": "{{count}} marcos",
+    "fileEvent_one": "{{count}} evento de arquivo",
+    "fileEvent_many": "{{count}} eventos de arquivo",
+    "fileEvent_other": "{{count}} eventos de arquivo",
+    "commit_one": "{{count}} commit",
+    "commit_many": "{{count}} commits",
+    "commit_other": "{{count}} commits",
+    "agentEvent_one": "{{count}} evento de agente",
+    "agentEvent_many": "{{count}} eventos de agente",
+    "agentEvent_other": "{{count}} eventos de agente",
+    "day_one": "{{count}} dia",
+    "day_many": "{{count}} dias",
+    "day_other": "{{count}} dias",
+    "libraryFile_one": "{{count}} arquivo da Biblioteca",
+    "libraryFile_many": "{{count}} arquivos da Biblioteca",
+    "libraryFile_other": "{{count}} arquivos da Biblioteca",
+    "list_one": "{{count}} lista",
+    "list_many": "{{count}} listas",
+    "list_other": "{{count}} listas",
+    "label_one": "{{count}} rótulo",
+    "label_many": "{{count}} rótulos",
+    "label_other": "{{count}} rótulos",
+    "member_one": "{{count}} membro",
+    "member_many": "{{count}} membros",
+    "member_other": "{{count}} membros",
+    "file_one": "{{count}} arquivo",
+    "file_many": "{{count}} arquivos",
+    "file_other": "{{count}} arquivos",
+    "phase_one": "{{count}} fase",
+    "phase_many": "{{count}} fases",
+    "phase_other": "{{count}} fases"
+  },
+  "keys": {
+    "plus": "mais",
+    "then": "depois",
+    "or": "ou",
+    "Ctrl": "Ctrl",
+    "Shift": "Shift",
+    "Alt": "Alt",
+    "Esc": "Esc",
+    "Enter": "Enter",
+    "Delete": "Del",
+    "Tab": "Tab",
+    "Space": "Espaço",
+    "Backspace": "Backspace",
+    "Left": "Esquerda",
+    "Right": "Direita",
+    "Up": "Cima",
+    "Down": "Baixo",
+    "ArrowKeys": "Teclas de seta",
+    "Home": "Home",
+    "End": "End",
+    "PageUp": "Page Up",
+    "PageDown": "Page Down"
+  },
+  "chip": {
+    "item": "item",
+    "remove": "Remover {{name}}"
+  },
+  "sentenceSeparator": ". ",
+  "errorBoundary": {
+    "detailsLogCopyDiagnostics": "Os detalhes estão no registro. Copie o diagnóstico para incluí-los em um relatório de erro.",
+    "viewCrashed": "A exibição parou: {{message}}",
+    "appCrashed": "O aplicativo parou: {{message}}",
+    "somethingWentWrongView": "Algo deu errado nesta exibição",
+    "somethingWentWrong": "Algo deu errado",
+    "reloadView": "Recarregar exibição",
+    "reload": "Recarregar"
+  },
+  "ostlerContext": {
+    "unknownError": "Erro desconhecido"
+  },
+  "useConfig": {
+    "unknownError": "Erro desconhecido"
+  },
+  "avatarGroup": {
+    "people": "{{peopleCount}} pessoas",
+    "more_one": "Mais {{count}}: {{names}}",
+    "more_many": "Mais {{count}}: {{names}}",
+    "more_other": "Mais {{count}}: {{names}}"
+  },
+  "daysOff": {
+    "note": "{{name}}: um dia de folga",
+    "notePerson": "{{name}}: um dia de folga para {{person}}",
+    "dayOffLabel": "dia de folga: {{name}}",
+    "personOff": "{{person}} de folga",
+    "peopleOff": "{{people}} de folga"
+  },
+  "calendarGrid": {
+    "more": "+{{moreCount}} mais",
+    "more2": "mais {{moreCount}} em {{longDate}}",
+    "n1Item": "1 item",
+    "items": "{{total}} itens"
+  },
+  "combobox": {
+    "create": "Criar “{{text}}”",
+    "noMatches": "Nenhum resultado"
+  },
+  "confirm": {
+    "cancel": "Cancelar",
+    "useconfirmNeedsAboveApp": "useConfirm precisa de um <ConfirmProvider> acima dele (App.tsx)."
+  },
+  "dataTable": {
+    "deselectAllRows": "Desmarcar todas as linhas",
+    "selectAllRows": "Marcar todas as linhas",
+    "sortShiftClickAdds": "Classificar por {{header}}. Shift+clique adiciona como outra classificação.",
+    "select": "Selecionar {{entryLabel}}",
+    "sortedAscending": "Classificado por {{header}}, em ordem crescente",
+    "sortedDescending": "Classificado por {{header}}, em ordem decrescente",
+    "noLongerSorted": "{{header}} não está mais classificado",
+    "movedColumn": "{{header}} movido para a coluna {{to}} de {{columnCount}}",
+    "pixelsWide": "{{header}} tem {{width}} pixels de largura",
+    "selected": "{{rowIdCount}} selecionados",
+    "movedColumn2": "{{header}} movido para a coluna {{number}} de {{columnCount}}",
+    "sortRankAscending": "classificação {{rank}}, crescente",
+    "sortRankDescending": "classificação {{rank}}, decrescente"
+  },
+  "dateField": {
+    "quickDates": "Datas rápidas",
+    "today": "Hoje",
+    "tomorrow": "Amanhã",
+    "nextWeek": "Próxima semana",
+    "clear": "Limpar",
+    "notADate": "Não é uma data válida. Confira o dia, o mês e o ano."
+  },
+  "dialog": {
+    "close": "Fechar"
+  },
+  "drawer": {
+    "close": "Fechar",
+    "resizePanel": "Redimensionar painel"
+  },
+  "errorText": {
+    "details": "Detalhes"
+  },
+  "filterBuilder": {
+    "filters": "Filtros",
+    "match": "Combinar",
+    "editFilter": "Editar filtro: {{words}}",
+    "removeFilter": "Remover filtro: {{words}}",
+    "removeFilter2": "Remover filtro",
+    "addFilter": "Adicionar filtro",
+    "clear": "Limpar",
+    "remove": "Remover",
+    "done": "Concluído",
+    "words": "Palavras",
+    "noTaskProjectHas": "Nenhuma tarefa deste projeto tem um rótulo ainda.",
+    "when": "Quando",
+    "date": "Data",
+    "estimate": "Estimativa",
+    "checklist": "Lista de verificação",
+    "allFilters": "Todos os filtros",
+    "anyFilter": "Qualquer filtro",
+    "me": "Eu",
+    "nobody": "Ninguém",
+    "noMilestone": "Nenhum marco",
+    "noGoal": "Nenhuma meta",
+    "editFilterField": "Editar filtro: {{field}}",
+    "customFields": "Campos personalizados",
+    "findField": "Pesquisar um campo",
+    "noFieldMatches": "Nenhum campo corresponde.",
+    "fieldDeleted": "Este campo foi excluído. Remova o filtro.",
+    "from": "De",
+    "to": "Até",
+    "isEmpty": "está vazio",
+    "isSet": "está preenchido",
+    "currentIteration": "A iteração atual",
+    "noIteration": "Nenhuma iteração",
+    "noType": "Nenhum tipo",
+    "noSubproject": "Sem fluxo de trabalho"
+  },
+  "inlineAlert": {
+    "dismiss": "Dispensar"
+  },
+  "priorityIcon": {
+    "priority": "Prioridade {{taskPriorityLabel}}"
+  },
+  "textField": {
+    "clear": "Limpar"
+  },
+  "toast": {
+    "notifications": "Notificações",
+    "dismissNotification": "Dispensar notificação",
+    "undo": "Desfazer",
+    "available": "{{actionLabel}} está disponível.",
+    "availableBoth": "{{firstLabel}} e {{secondLabel}} estão disponíveis.",
+    "keptInCenter": "Perdeu alguma? Todas ficam reunidas sob o sino"
+  },
+  "toolbar": {
+    "moreActions": "Mais ações"
+  },
+  "chartFrame": {
+    "table": "{{title}} como tabela",
+    "legend": "Legenda",
+    "showChart": "Mostrar como gráfico",
+    "showTable": "Mostrar como tabela"
+  },
+  "chartCore": {
+    "total": "Total",
+    "noData": "{{kind}} sem dados.",
+    "noValues": "{{series}}: sem valores",
+    "kind": {
+      "bar": "Gráfico de barras",
+      "line": "Gráfico de linhas",
+      "stackedArea": "Gráfico de áreas empilhadas"
+    },
+    "bars_one": "{{count}} barra",
+    "bars_many": "{{count}} barras",
+    "bars_other": "{{count}} barras",
+    "points_one": "{{count}} ponto de {{first}} até {{last}}",
+    "points_many": "{{count}} pontos de {{first}} até {{last}}",
+    "points_other": "{{count}} pontos de {{first}} até {{last}}",
+    "barValues": "{{series}}: {{values}}",
+    "categoryValue": "{{category}} {{value}}",
+    "categoryNoValue": "{{category}} sem valor",
+    "staysAt": "{{series}} permanece em {{value}}",
+    "staysAtPeaking": "{{series}} permanece em {{value}}, com pico em {{peak}}",
+    "goesFrom": "{{series}} vai de {{from}} a {{to}}",
+    "goesFromPeaking": "{{series}} vai de {{from}} a {{to}}, com pico em {{peak}}",
+    "summary": "{{kind}}, {{span}}. {{details}}."
+  },
+  "timelineScale": {
+    "week": "Semana de {{format}}"
+  },
+  "unit": {
+    "files": "arquivos",
+    "days": "dias",
+    "seconds": "segundos",
+    "ms": "ms",
+    "MB": "MB",
+    "minutes": "minutos",
+    "tokens": "tokens"
+  },
+  "itemLinks": {
+    "deletedItem": "Item excluído",
+    "kinds": {
+      "task": "Tarefa",
+      "milestone": "Marco",
+      "decision": "Decisão",
+      "library": "Item da Biblioteca"
+    },
+    "picker": "Vincular a um item",
+    "pickerHint": "Digite para encontrar uma tarefa, marco, decisão ou item da Biblioteca",
+    "noMatches": "Nada corresponde",
+    "linkedFrom": "Vinculado a partir de",
+    "sources": {
+      "task": "Tarefa: {{title}}",
+      "comment": "Comentário em “{{title}}”",
+      "decision": "Decisão: {{title}}",
+      "library": "Biblioteca: {{title}}"
+    }
+  },
+  "pins": {
+    "pinned": "Fixado",
+    "pinnedCount_one": "{{count}} fixado",
+    "pinnedCount_many": "{{count}} fixados",
+    "pinnedCount_other": "{{count}} fixados",
+    "pinToSidebar": "Fixar na barra lateral",
+    "unpinFromSidebar": "Desafixar da barra lateral",
+    "pinToOverview": "Fixar na Visão geral",
+    "unpinFromOverview": "Desafixar da Visão geral",
+    "sidebarFull": "A barra lateral comporta no máximo {{max}} fixados. Desafixe um para liberar espaço.",
+    "unpin": "Desafixar",
+    "actions": "Ações para {{title}}",
+    "gone": "Não existe mais",
+    "archived": "Arquivado",
+    "pinnedToSidebar": "{{title}} fixado na barra lateral",
+    "pinnedToOverview": "{{title}} fixado na Visão geral",
+    "unpinned": "{{title}} desafixado",
+    "couldntPin": "Não foi possível fixar",
+    "couldntUnpin": "Não foi possível desafixar",
+    "couldntMove": "Não foi possível mover o fixado",
+    "couldntOpen": "Não foi possível abrir",
+    "kinds": {
+      "task": "Tarefa",
+      "milestone": "Marco",
+      "decision": "Decisão",
+      "library": "Item da Biblioteca",
+      "saved-view": "Exibição salva",
+      "project-view": "Exibição",
+      "personal-goal": "Meta"
+    },
+    "openLinkTitle": "Abrir este link?",
+    "openLinkBody": "{{url}}\n\n“{{name}}” será aberto no seu navegador.",
+    "openLinkConfirm": "Abrir link",
+    "openFileTitle": "Abrir {{name}} no seu aplicativo?",
+    "openFileBody": "O arquivo será aberto fora do {{appName}}, no aplicativo que o Windows usa para ele.",
+    "openFileConfirm": "Abrir",
+    "shortcuts": "Atalhos",
+    "noShortcuts": "Fixe o que você mais abre neste projeto, como um marco, uma exibição salva ou a página de administração da loja.",
+    "shortcutActions": "Ações de atalho para {{title}}",
+    "moveLeft": "Mover para a esquerda",
+    "moveRight": "Mover para a direita",
+    "addShortcut": "Adicionar um atalho",
+    "addShortcutExisting": "Um item",
+    "addShortcutLink": "Um novo link",
+    "findItem": "Encontre uma tarefa, marco, decisão, item da Biblioteca ou exibição",
+    "findItemPlaceholder": "Digite para pesquisar…",
+    "nothingToPin": "Nada corresponde",
+    "linkName": "Nome",
+    "linkAddress": "Endereço",
+    "linkAddressHint": "Um endereço https. Ele é mantido como link na Biblioteca.",
+    "enterHttpsAddress": "Digite um endereço https.",
+    "enterName": "Digite um nome.",
+    "add": "Adicionar atalho",
+    "cancel": "Cancelar",
+    "palettePin": "Fixar…",
+    "palettePinHint": "Fixe uma tarefa, marco, decisão, item da Biblioteca ou exibição na barra lateral",
+    "paletteFindToPin": "Encontre algo para fixar na barra lateral",
+    "paletteKeywords": "fixar, fixado, atalho, favorito, favoritos, marcador",
+    "thisView": "{{view}}"
+  },
+  "countdowns": {
+    "daysTo_one": "{{count}} dia até {{title}}",
+    "daysTo_many": "{{count}} dias até {{title}}",
+    "daysTo_other": "{{count}} dias até {{title}}",
+    "tomorrow": "{{title}} é amanhã",
+    "today": "{{title}} é hoje",
+    "yesterday": "{{title}} foi ontem",
+    "daysAgo_one": "{{title}} foi há {{count}} dia",
+    "daysAgo_many": "{{title}} foi há {{count}} dias",
+    "daysAgo_other": "{{title}} foi há {{count}} dias",
+    "done": "{{title}}: concluído",
+    "withWorkingDays": "{{words}} ({{workingDays}})",
+    "workingDays_one": "{{count}} dia útil",
+    "workingDays_many": "{{count}} dias úteis",
+    "workingDays_other": "{{count}} dias úteis",
+    "show": "Mostrar como contagem regressiva",
+    "hide": "Parar a contagem regressiva",
+    "shown": "{{title}} agora aparece como contagem regressiva",
+    "hidden": "{{title}} não faz mais contagem regressiva",
+    "couldntChange": "Não foi possível alterar a contagem regressiva",
+    "offerAfterPin": "Mostrar como contagem regressiva no Início?",
+    "limitTitle": "Desligar uma contagem regressiva?",
+    "limitBody": "No máximo {{max}} contagens regressivas aparecem ao mesmo tempo. Escolha uma para desligar e mostrar {{title}}.",
+    "turnOff": "Desligar {{title}}",
+    "turnOffShort": "Desligar",
+    "turnOffDone": "Desligar a contagem regressiva de {{title}}",
+    "cancel": "Cancelar",
+    "heading": "Contagens regressivas",
+    "open": "Abrir {{title}}, {{words}}, {{date}}",
+    "progress": "Tempo decorrido desde que foi fixado"
+  },
+  "notificationCenter": {
+    "title": "Notificações no aplicativo",
+    "intro": "Mensagens do {{brand}} enquanto você trabalha, mantidas aqui até ele ser fechado, com o Desfazer ainda disponível. Lembretes e alertas de agentes também vão para as notificações do Windows, que ficam na Central de Notificações do Windows (tecla Windows + N).",
+    "empty": "Nada por enquanto. As notificações que você perder ficarão aqui.",
+    "clearAll": "Dispensar tudo",
+    "settings": "Configurações de notificação",
+    "remove": "Remover \"{{title}}\"",
+    "undone": "Desfeito",
+    "done": "Concluído"
+  },
+  "mentions": {
+    "noLongerHere": "Alguém que não está mais aqui",
+    "picker": "Mencionar alguém"
+  }
+}

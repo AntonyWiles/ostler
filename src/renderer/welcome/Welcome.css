@@ -1,0 +1,245 @@
+/* The first-run welcome: a centred panel over the whole window. */
+
+.ostler-firstrun {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.ostler-welcome {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  padding: var(--space-800) var(--space-400);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.ostler-welcome-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  width: 100%;
+  max-width: 44rem;
+  padding: var(--space-600);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.ostler-welcome-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ostler-welcome-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-200);
+  color: var(--color-link);
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.ostler-welcome-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+}
+
+.ostler-welcome-step h1 {
+  margin: 0;
+  font-size: var(--text-title);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-title);
+}
+
+.ostler-welcome-lead {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-body-lg);
+}
+
+.ostler-welcome-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-200);
+}
+
+.ostler-welcome-themes {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.ostler-welcome-themes legend {
+  margin-bottom: var(--space-200);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+}
+
+.ostler-welcome-theme-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-300);
+}
+
+.ostler-welcome-theme {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  padding: var(--space-200);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.ostler-welcome-theme:hover {
+  background: var(--color-surface-hover);
+}
+
+.ostler-welcome-theme.is-selected {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 var(--border-width) var(--color-accent);
+}
+
+/* The radio itself is visually hidden; the card shows the choice. */
+.ostler-welcome-theme input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ostler-welcome-theme:has(input:focus-visible) {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.ostler-welcome-theme-label {
+  font-weight: var(--weight-medium);
+}
+
+.ostler-welcome-theme-hint {
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+}
+
+.ostler-theme-preview {
+  display: flex;
+  height: calc(var(--space-1200) + var(--space-600));
+  overflow: hidden;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+}
+
+.ostler-theme-preview__picture {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  background: var(--color-bg);
+}
+
+.ostler-theme-preview__sidebar {
+  flex: 0 0 22%;
+  background: var(--color-surface-sunken);
+  border-right: var(--border-width) solid var(--color-border);
+}
+
+.ostler-theme-preview__main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--space-150);
+  padding: var(--space-150);
+}
+
+.ostler-theme-preview__bar {
+  height: var(--space-200);
+  width: 60%;
+  border-radius: var(--radius-full);
+  background: var(--color-text-muted);
+}
+
+.ostler-theme-preview__cards {
+  display: flex;
+  flex: 1 1 auto;
+  gap: var(--space-100);
+}
+
+.ostler-theme-preview__card {
+  flex: 1 1 0;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+}
+
+.ostler-theme-preview__card.is-accent {
+  border-color: var(--color-accent);
+  background: var(--color-accent-subtle);
+}
+
+.ostler-welcome-extras {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ostler-welcome-extra {
+  display: flex;
+  align-items: center;
+  gap: var(--space-300);
+  padding: var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.ostler-welcome-extra-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  color: var(--color-link);
+}
+
+.ostler-welcome-extra-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ostler-welcome-extra-text h2 {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.ostler-welcome-extra-text p {
+  margin: var(--space-050) 0 0;
+  color: var(--color-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+/* The demo projects: a side road out of the welcome, set apart by a hairline. */
+.ostler-welcome-demos {
+  display: flex;
+  padding-top: var(--space-400);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+@media (max-width: 720px) {
+  .ostler-welcome {
+    padding: var(--space-400) var(--space-200);
+  }
+
+  .ostler-welcome-panel {
+    padding: var(--space-400);
+  }
+}

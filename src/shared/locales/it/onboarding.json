@@ -1,0 +1,201 @@
+{
+  "welcome": {
+    "goProjectSkipRest": "Vai al progetto e salta il resto.",
+    "closeWelcomeWithoutCreating": "Chiudi la schermata di benvenuto senza creare nulla. Tutto ciò che è qui è disponibile anche in Impostazioni.",
+    "skipNow": "Salta per ora",
+    "welcome": "Benvenuto in {{brand}}",
+    "planProjectsTasksBoards": "Pianifica progetti con attività, board, calendari e timeline. Tutto resta su questo computer. Due scelte veloci, poi il tuo primo progetto.",
+    "whatShouldWeCall": "Come ti chiamiamo?",
+    "tasksAssignYourselfShow": "Le attività che assegni a te mostrano questo nome. Puoi cambiarlo in Impostazioni › Persone.",
+    "theme": "Tema",
+    "continue": "Continua",
+    "howDoWantStart": "Come vuoi iniziare?",
+    "firstProject": "Il tuo primo progetto",
+    "startWithDemos": "Inizia con i progetti dimostrativi",
+    "setUpFromOtherDevice": "Configura dal mio altro dispositivo",
+    "joinTitle": "Configura dal mio altro dispositivo",
+    "joinLead": "Se usi già {{brand}} su un altro PC, questo PC può unirsi al suo spazio personale: anche i tuoi progetti, i dati personali e le impostazioni arrivano qui.",
+    "chooseTemplate": "Scegli un modello",
+    "next": "Avanti",
+    "progress": "Avanzamento",
+    "stepOf": "Passo {{current}} di {{total}}",
+    "startTemplate": "Parti da un modello",
+    "readyMadePlanSuch": "Un piano già pronto, come quello per un evento, il lancio di un prodotto o un piano di studio.",
+    "blankProject": "Un progetto vuoto",
+    "emptyProjectFillYourself": "Un progetto vuoto da riempire da solo.",
+    "import": "Importa",
+    "spreadsheetCsvTrelloBoard": "Da un foglio di calcolo (CSV) o da una board di Trello.",
+    "projectName": "Nome del progetto",
+    "websiteRelaunch": "Rilancio del sito web",
+    "back": "Indietro",
+    "fewOptionalExtras": "Qualche extra facoltativo",
+    "eachTheseOptionalCan": "Ognuno di questi è facoltativo e puoi farlo più tardi in Impostazioni.",
+    "softwareProject": "È un progetto software?",
+    "linkedReadsNeverWrites": "Collegato a {{folder}}. {{brand}} lo legge e non scrive mai al suo interno.",
+    "linkFolderBrowseFiles": "Collega la cartella del progetto per sfogliare i file e vedere l’attività di Git. {{brand}} la legge soltanto.",
+    "linkFolder": "Collega una cartella…",
+    "wantAiHelp": "Vuoi l’aiuto dell’IA?",
+    "setUp": "{{aiName}} è configurata.",
+    "canSuggestTasksBreak": "{{aiName}} può suggerire attività, scomporre gli obiettivi e riassumere. Usa un modello gratuito su questo PC o un account IA.",
+    "setUpAi": "Configura l’IA…",
+    "useAiAgents": "Usare agenti IA?",
+    "agents": "Gli agenti sono attivi.",
+    "agentsWorkThroughTasks": "Gli agenti lavorano sulle attività nella tua cartella, ognuno sulla propria copia, e non cambia nulla finché non lo accetti.",
+    "setUpAgents": "Configura gli agenti…",
+    "system": "Come Windows",
+    "followsWindows": "Segue Windows",
+    "light": "Chiaro",
+    "lightAllTime": "Sempre chiaro",
+    "dark": "Scuro",
+    "darkAllTime": "Sempre scuro",
+    "chooseProjectFolder": "Scegli la cartella del progetto",
+    "couldntLinkFolder": "Impossibile collegare la cartella. {{error}}",
+    "chooseFile": "Scegli un file…",
+    "createProject": "Crea progetto",
+    "openProject": "Apri il progetto",
+    "finish": "Fine",
+    "readyOptional": "“{{projectName}}” è pronto. Ognuno di questi è facoltativo e puoi farlo più tardi in Impostazioni."
+  },
+  "gettingStarted": {
+    "createTask": "Crea un’attività",
+    "giveTaskDueDate": "Dai a un’attività una scadenza",
+    "tryAnotherViewList": "Prova un’altra vista: Elenco, Calendario o Timeline",
+    "findSomethingCommandPalette": "Trova qualcosa con il riquadro dei comandi",
+    "seeWhereBackups": "Scopri dove sono i tuoi backup",
+    "setUpAi": "Configura l’IA"
+  },
+  "tips": {
+    "tipEyebrow": "Suggerimento",
+    "tourEyebrow": "Tour",
+    "stepOf": "{{step}} di {{count}}",
+    "steps": "Passi del tour",
+    "goToStep": "Vai al passo {{step}}",
+    "back": "Indietro",
+    "next": "Avanti",
+    "done": "Fine",
+    "gotIt": "Ho capito",
+    "notNow": "Non ora",
+    "close": "Chiudi",
+    "showMeAround": "Mostrami l’app",
+    "dontShowAgain": "Non mostrare più",
+    "dontShowTipAgain": "Non mostrare più questo suggerimento",
+    "turnOffTips": "Disattiva i suggerimenti",
+    "closeTour": "Chiudi il tour",
+    "announce": "Suggerimento: {{title}}",
+    "tourDone": "Il tour è finito",
+    "tourClosed": "Tour chiuso",
+    "tourAgain": "Puoi rifarlo quando vuoi da Guida › Fai il tour guidato.",
+    "turnedOff": "I suggerimenti sono disattivati",
+    "turnedOffBody": "Riattivali in Impostazioni › Generale › Suggerimenti e tour.",
+    "turnBackOn": "Riattiva",
+    "openSettings": "Impostazioni",
+    "invite": {
+      "title": "Sei nuovo? Fai un tour rapido",
+      "body": "Questo progetto dimostrativo è un finto fine settimana fuori, riempito perché tu possa provare le cose senza rischi. Il tour visita ogni vista a turno e indica che cosa provare, in {{count}} brevi passi."
+    },
+    "tour": {
+      "welcome": {
+        "title": "Il progetto dimostrativo",
+        "body": "Tutto qui è inventato, quindi cambia, sposta o elimina ciò che vuoi. Le sue attività si leggono dall’alto in basso: le prime mostrano le basi, le successive ne mostrano di più. Quello che fai qui non tocca i tuoi progetti."
+      },
+      "views": {
+        "title": "Un progetto, molte viste",
+        "body": "Ogni scheda mostra questo progetto in un altro modo, e tutte condividono le stesse attività: cambia un’attività in una vista e tutte le altre mostrano la modifica. I prossimi passi visitano ogni scheda a turno."
+      },
+      "board": {
+        "title": "Board: il lavoro che avanza",
+        "body": "Ogni colonna è uno stato, e le attività si spostano da sinistra a destra man mano che il lavoro passa da Da fare a In corso a Fatto. Il numero accanto al nome di ogni colonna indica quante attività contiene."
+      },
+      "card": {
+        "title": "Apri un’attività",
+        "body": "Fai clic su una scheda per vedere tutto: stato, priorità, scadenza, a chi è assegnata, l’elenco di controllo e i commenti. Trascina una scheda in un’altra colonna per farla avanzare."
+      },
+      "newTask": {
+        "title": "Aggiungine una tua",
+        "body": "Nuova attività ne aggiunge una a questo progetto. {{keys}} fa lo stesso da qualsiasi punto del progetto."
+      },
+      "search": {
+        "title": "Trova qualsiasi cosa",
+        "body": "Ricerca trova attività, progetti e documenti, ed esegue qualsiasi comando per nome. Premi {{keys}} da qualsiasi punto."
+      },
+      "help": {
+        "title": "L’aiuto è sempre qui",
+        "body": "La guida utente, le scorciatoie da tastiera e questo tour si trovano in Guida. I suggerimenti come questo si possono disattivare in Impostazioni › Generale."
+      },
+      "overview": {
+        "title": "Panoramica: il progetto a colpo d’occhio",
+        "body": "Quante attività sono aperte, quante completate questa settimana e quante in ritardo, poi che cosa ha bisogno di te, che cosa è in corso e che cosa viene dopo. Pubblica un aggiornamento per far sapere a tutti come va il progetto in una o due frasi."
+      },
+      "list": {
+        "title": "Elenco: ogni attività in righe",
+        "body": "Come un foglio di calcolo: fai clic su un’intestazione per ordinare, scegli che cosa mostrare con Colonne e seleziona le righe per modificare più attività insieme. Le sottoattività stanno sotto la loro attività principale, come i pasti sotto Plan the meals."
+      },
+      "calendar": {
+        "title": "Calendario: attività per scadenza",
+        "body": "Ogni attività sta nel giorno in cui scade, con i traguardi segnalati. Passa da Mese, Settimana, Anno e Agenda, trascina un’attività in un altro giorno per cambiarne la scadenza e trova le attività senza data in Senza data."
+      },
+      "timeline": {
+        "title": "Timeline: pianifica su più settimane",
+        "body": "Ogni barra va dalla data di inizio di un’attività alla sua scadenza, raggruppata sotto il suo traguardo. Trascina una barra per spostarla o un’estremità per ridimensionarla, e attiva Mostra percorso critico per vedere quali attività non possono slittare."
+      },
+      "milestones": {
+        "title": "Traguardi e obiettivi",
+        "body": "Un obiettivo è lo scopo del progetto; i traguardi sono i momenti importanti lungo la strada, ognuno con una data e le attività che vi portano. La barra di un traguardo si riempie man mano che le sue attività vengono completate."
+      },
+      "library": {
+        "title": "Libreria: documenti accanto al lavoro",
+        "body": "Brief, note e documenti di questo progetto stanno qui. Apri Trip plan per leggerlo, aggiungine di tuoi con Aggiungi e collegane uno a un’attività: comparirà nei dettagli di quell’attività."
+      },
+      "decisions": {
+        "title": "Decisioni: che cosa è stato scelto e perché",
+        "body": "Registra che cosa è stato deciso, il contesto, le altre opzioni valutate e ciò che ne deriva, così nessuno deve ricordarlo in seguito. Una decisione è collegata alle attività che tocca, come questa è collegata a Book the cabin."
+      }
+    },
+    "drawer": {
+      "title": "Le modifiche si salvano man mano",
+      "body": "Non c’è un pulsante Salva: ogni modifica viene conservata mentre la fai. Premi Ctrl+Z per annullare l’ultima."
+    },
+    "drawerResize": {
+      "title": "Allarga questo pannello",
+      "body": "Trascina il bordo sinistro del pannello per dargli più o meno spazio. Ogni pannello mantiene la larghezza che gli dai."
+    },
+    "boardDrag": {
+      "title": "Trascina per far avanzare un’attività",
+      "body": "Trascina una scheda in un’altra colonna per cambiarne lo stato. Puoi anche aprire una scheda e scegliere un nuovo stato in alto."
+    },
+    "list": {
+      "title": "Ordina e confronta",
+      "body": "Fai clic su un’intestazione di colonna per ordinare in base a quella. Maiusc+clic su un’altra intestazione per ordinare poi in base a quella."
+    },
+    "calendar": {
+      "title": "Scadenze a colpo d’occhio",
+      "body": "Le attività compaiono nel giorno in cui scadono. Trascinane una in un altro giorno per cambiarne la scadenza."
+    },
+    "timeline": {
+      "title": "Pianifica su più settimane",
+      "body": "Ogni barra va dalla data di inizio di un’attività alla sua scadenza. Trascina una barra per spostarla, oppure trascina una delle estremità per cambiarne la durata."
+    },
+    "library": {
+      "title": "Documenti accanto al lavoro",
+      "body": "Conserva qui brief, note e documenti di questo progetto. Aprine uno per leggerlo o modificarlo, oppure collegalo a un’attività: comparirà nei dettagli di quell’attività."
+    },
+    "pointers": {
+      "clickToOpen": "Fai clic per aprire",
+      "clickToAdd": "Fai clic per aggiungere un’attività",
+      "clickOrPress": "Fai clic o premi {{keys}}",
+      "clickForHelp": "Fai clic per la guida",
+      "changeStatus": "Prova a cambiare lo stato",
+      "dragToColumn": "Trascina nella colonna successiva",
+      "dragToDay": "Trascina in un altro giorno",
+      "dragToMove": "Trascina per spostare",
+      "dragToResize": "Trascina per ridimensionare",
+      "addDocument": "Aggiungi un documento",
+      "postUpdate": "Condividi come va",
+      "chooseColumns": "Scegli le colonne",
+      "changeRange": "Mese, settimana, anno o agenda",
+      "criticalPath": "Vedi che cosa non può slittare",
+      "clickToRead": "Fai clic per leggere",
+      "recordDecision": "Registra una decisione"
+    }
+  }
+}

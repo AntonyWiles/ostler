@@ -1,0 +1,35 @@
+.ui-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  visibility: hidden;
+}
+
+.ui-skeleton[data-visible='true'] {
+  visibility: visible;
+}
+
+.ui-skeleton__bone {
+  display: block;
+  width: 100%;
+  height: var(--text-body);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-control);
+}
+
+.ui-skeleton--block .ui-skeleton__bone {
+  height: var(--control-height-lg);
+  border-radius: var(--radius-md);
+}
+
+.ui-skeleton--circle .ui-skeleton__bone {
+  width: var(--control-height);
+  height: var(--control-height);
+  border-radius: var(--radius-full);
+}
+
+@media (forced-colors: active) {
+  .ui-skeleton__bone {
+    border: var(--border-width) solid GrayText;
+  }
+}

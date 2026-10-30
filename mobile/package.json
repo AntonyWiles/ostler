@@ -1,0 +1,41 @@
+{
+  "name": "ostler-mobile",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "dependencies": {
+    "@op-engineering/op-sqlite": "^19.0.2",
+    "@react-native-google-signin/google-signin": "^16.2.0",
+    "buffer": "^6.0.3",
+    "expo": "~58.0.21",
+    "expo-secure-store": "~58.0.2",
+    "expo-splash-screen": "~58.0.12",
+    "expo-status-bar": "~58.0.4",
+    "i18next": "^26.5.11",
+    "marked": "^14.1.4",
+    "pako": "^3.0.3",
+    "react": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-nitro-modules": "^0.37.1",
+    "react-native-quick-crypto": "^1.1.9",
+    "react-native-svg": "15.16.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/pako": "^2.0.4",
+    "@types/react": "~19.3.0",
+    "jest": "^30.5.2",
+    "jest-expo": "^58.0.13",
+    "react-dom": "^19.3.0",
+    "react-native-web": "^0.21.4",
+    "sql.js": "^1.15.2",
+    "typescript": "~6.0.3"
+  },
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "lint": "expo lint",
+    "test": "jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "private": true
+}

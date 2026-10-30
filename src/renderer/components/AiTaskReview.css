@@ -1,0 +1,84 @@
+/* The shared review of tasks Ostler AI drafted (R1.3). Tokens only. */
+
+.ai-review {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.ai-review__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ai-review__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  padding: var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.ai-review__item.is-excluded {
+  background: var(--color-surface-sunken);
+  color: var(--color-text-secondary);
+}
+
+.ai-review__row {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-200) var(--space-300);
+}
+
+.ai-review__title {
+  flex: 1 1 calc(var(--space-1200) * 4);
+  min-width: 0;
+}
+
+.ai-review__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+/* A tree row: no card, labels hidden, the body indented under the title. */
+.ai-review__item--compact {
+  gap: var(--space-200);
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.ai-review__item--compact.is-excluded {
+  background: none;
+}
+
+.ai-review__item--compact > .ai-review__row {
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: var(--space-200);
+}
+
+.ai-review__item--compact > .ai-review__body {
+  padding-inline-start: calc(var(--control-height-sm) + var(--space-200));
+}
+
+.ai-review__item--compact.is-excluded > .ai-review__row,
+.ai-review__item--compact.is-excluded > .ai-review__body {
+  /* Still read: muted and struck through, not disabled grey (P9.2). */
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+@media (forced-colors: active) {
+  .ai-review__item {
+    border-color: CanvasText;
+  }
+}

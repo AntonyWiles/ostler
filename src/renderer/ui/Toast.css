@@ -1,0 +1,123 @@
+.ui-toaster {
+  position: fixed;
+  right: var(--space-400);
+  /* Above the status bar, which stays visible under the stack. */
+  bottom: calc(var(--app-statusbar-height) + var(--space-300));
+  z-index: var(--z-toast);
+  pointer-events: none;
+}
+
+.ui-toaster__list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-200);
+  list-style: none;
+}
+
+.ui-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-200);
+  width: calc(var(--space-1000) * 9);
+  max-width: calc(100vw - var(--space-800));
+  padding: var(--space-200) var(--space-200) var(--space-200) var(--space-300);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  pointer-events: auto;
+  animation: ui-fade-in var(--motion-normal) var(--ease-standard);
+}
+
+/* Gone from the stack (exit.ts): slides a little toward the edge and fades. */
+.ui-toast.is-leaving {
+  pointer-events: none;
+  animation: ui-toast-out var(--motion-fast) var(--ease-standard) forwards;
+}
+
+@keyframes ui-toast-out {
+  to {
+    transform: translateX(var(--space-300));
+    opacity: 0;
+  }
+}
+
+.ui-toast__icon {
+  display: inline-flex;
+  padding-top: var(--space-150);
+  color: var(--color-info);
+}
+
+.ui-toast--success .ui-toast__icon {
+  color: var(--color-success);
+}
+
+.ui-toast--warning .ui-toast__icon {
+  color: var(--color-warning);
+}
+
+.ui-toast--danger .ui-toast__icon {
+  color: var(--color-danger);
+}
+
+.ui-toast__text {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-100) 0;
+}
+
+.ui-toast__title {
+  color: var(--color-text);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  overflow-wrap: anywhere;
+}
+
+.ui-toast__body {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  overflow-wrap: anywhere;
+}
+
+.ui-toast__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+}
+
+/* Under the text, the first button's label lines up with the text's edge. */
+.ui-toast__actions--below {
+  margin: var(--space-100) 0 0 calc(var(--space-200) * -1);
+}
+
+.ui-button.ui-toast__action {
+  color: var(--color-link);
+}
+
+@media (forced-colors: active) {
+  .ui-toast {
+    border-color: CanvasText;
+  }
+}
+
+/* Under the stack: says where toasts go once they leave the screen. */
+.ui-toaster__all {
+  display: block;
+  margin: var(--space-100) 0 0 auto;
+  padding: var(--space-050) var(--space-150);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  color: var(--color-link);
+  font: inherit;
+  font-size: var(--text-caption);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.ui-toaster__all:hover {
+  text-decoration: underline;
+}

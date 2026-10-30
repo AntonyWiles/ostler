@@ -1,0 +1,187 @@
+/* Ask Ostler (N8.3a, N8.3b): the conversation, progress and the follow-up box. Tokens only. */
+
+.ask-ostler {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+}
+
+.ask-ostler__form {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-200);
+}
+
+.ask-ostler__question {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ask-ostler__progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.ask-ostler__progress-text {
+  flex: 1 1 auto;
+}
+
+.ask-ostler__note {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.ask-ostler__answer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-width: 0;
+}
+
+.ask-ostler__markdown {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: var(--text-body);
+}
+
+.ask-ostler__markdown > :first-child {
+  margin-top: 0;
+}
+
+.ask-ostler__markdown > :last-child {
+  margin-bottom: 0;
+}
+
+.ask-ostler__cite {
+  padding: 0 var(--space-050);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: var(--color-accent-subtle);
+  color: var(--color-link);
+  font: inherit;
+  font-size: var(--text-body-sm);
+  cursor: pointer;
+}
+
+.ask-ostler__cite:hover {
+  background: var(--color-surface-hover);
+}
+
+.ask-ostler__cite:focus-visible,
+.ask-ostler__source:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.ask-ostler__heading {
+  margin: var(--space-200) 0 0;
+  color: var(--color-text);
+  font-size: var(--text-heading-sm);
+}
+
+.ask-ostler__sources {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ask-ostler__source {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-200);
+  width: 100%;
+  padding: var(--space-100) var(--space-200);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-body-sm);
+  text-align: start;
+  cursor: pointer;
+}
+
+.ask-ostler__source:hover {
+  background: var(--color-surface-hover);
+}
+
+.ask-ostler__number {
+  min-width: var(--space-400);
+  color: var(--color-text-muted);
+  text-align: end;
+}
+
+.ask-ostler__icon {
+  color: var(--color-text-secondary);
+}
+
+.ask-ostler__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ask-ostler__meta {
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+/* The conversation (N8.3b): each turn below the last, newest at the bottom. */
+.ask-ostler__conversation {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  min-width: 0;
+}
+
+.ask-ostler__conversation > .ask-ostler__answer + .ask-ostler__answer {
+  padding-top: var(--space-300);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.ask-ostler__asked {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: var(--text-heading-sm);
+}
+
+.ask-ostler__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-200);
+}
+
+.ask-ostler__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+}
+
+.ask-ostler__save {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+@media (max-width: 900px) {
+  .ask-ostler__source {
+    grid-template-columns: auto auto minmax(0, 1fr);
+  }
+
+  .ask-ostler__meta {
+    grid-column: 3;
+    white-space: normal;
+  }
+}

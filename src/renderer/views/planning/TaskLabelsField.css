@@ -1,0 +1,42 @@
+/* A task's labels: the project's most used ones a click each, then the others it has. */
+
+.task-labels {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+}
+
+.task-labels__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+}
+
+/* The one-click labels: a chip that says whether the task has it. */
+.task-labels__toggle {
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--ease-standard),
+    border-color var(--motion-fast) var(--ease-standard);
+}
+
+.task-labels__toggle:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.task-labels__toggle .ostler-icon {
+  width: var(--space-300);
+  height: var(--space-300);
+}
+
+.task-labels__toggle:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+@media (forced-colors: active) {
+  .task-labels__toggle[aria-pressed='true'] {
+    border-color: Highlight;
+  }
+}

@@ -1,0 +1,6 @@
+Task ID,Created At,Completed At,Last Modified,Name,Section/Column,Assignee,Assignee Email,Start Date,Due Date,Tags,Notes,Projects,Parent task,Blocked By (Dependencies),Blocking (Dependencies),Priority
+1201,2026-09-01,,2026-09-02,Plan the fair,To do,Alex Chen,alex@example.com,2026-10-01,2026-10-20,"planning,fair",Kick-off with the committee,Summer fair,,,,High
+1202,2026-09-01,2026-09-10,2026-09-10,Book the venue,Doing,Sam Lee,sam@example.com,,2026-10-05,venue,,Summer fair,,,Send the invitations,Medium
+1203,2026-09-02,,2026-09-02,Send the invitations,To do,alex chen,alex@example.com,,2026-10-12,,,Summer fair,,Book the venue,,Low
+1204,2026-09-02,,2026-09-02,Write the running order,To do,,,,,,,Summer fair,Plan the fair,,,
+1205,2026-09-03,,2026-09-03,Print the posters,Doing,,,,,,,Summer fair,,Choose a printer,,

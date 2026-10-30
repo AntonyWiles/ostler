@@ -1,0 +1,119 @@
+/* Iterations (R6.1): the Milestones tab's section, the Finish dialog and the
+   iteration field. Tokens only. */
+
+.iterations {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.iterations__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.iterations__quiet {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.iteration-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-200) var(--space-400);
+  padding: var(--space-300) var(--space-400);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.iteration-row[data-status='active'] {
+  border-color: var(--color-border-strong);
+}
+
+.iteration-row__main {
+  display: flex;
+  flex: 1 1 calc(var(--space-1200) * 6);
+  flex-direction: column;
+  gap: var(--space-100);
+  min-width: 0;
+}
+
+.iteration-row__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-width: 0;
+}
+
+.iteration-row__name {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-body-lg);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iteration-row__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100) var(--space-200);
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.iteration-row__goal {
+  margin: 0;
+}
+
+.iteration-row__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.iteration-finish {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+}
+
+.iteration-finish__heading {
+  margin: 0 0 var(--space-100);
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.iteration-finish__tasks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  max-height: calc(var(--space-1200) * 3);
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  list-style: none;
+}
+
+.iteration-finish__tasks li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-200);
+}
+
+.iteration-finish__estimate {
+  flex: none;
+  color: var(--color-text-secondary);
+}

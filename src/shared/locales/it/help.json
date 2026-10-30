@@ -1,0 +1,42 @@
+{
+  "shortcutOverlay": {
+    "title": "Scorciatoie da tastiera",
+    "description": "Le scorciatoie con un solo tasto funzionano quando non stai scrivendo in un campo.",
+    "search": "Cerca scorciatoie",
+    "noMatch": "Nessuna scorciatoia corrisponde a “{{query}}”."
+  },
+  "helpProvider": {
+    "diagnosticsCopied": "Diagnostica copiata",
+    "versionsCountsEndLog": "Versioni, conteggi e fine del registro, senza nomi, chiavi e token.",
+    "couldntCopyDiagnostics": "Impossibile copiare la diagnostica",
+    "issuePageOpenBrowser": "La pagina delle segnalazioni di {{brand}} è aperta nel browser e la diagnostica è negli appunti: incollala nella segnalazione solo se vuoi.",
+    "couldntOpenIssuePage": "Impossibile aprire la pagina delle segnalazioni"
+  },
+  "whatsNewDialog": {
+    "whatsNew": "Novità in {{brand}}",
+    "version": "Versione {{version}}",
+    "close": "Chiudi",
+    "thereNoNotesVersion": "Non ci sono note per questa versione."
+  },
+  "guide": {
+    "version": "Versione {{version}}"
+  },
+  "helpView": {
+    "userGuidePages": "Pagine della guida utente",
+    "userGuide": "Guida utente",
+    "searchGuide": "Cerca nella guida",
+    "matches_one": "{{count}} risultato",
+    "matches_many": "{{count}} risultati",
+    "matches_other": "{{count}} risultati",
+    "userGuideIsntBuild": "La guida utente non è inclusa in questa versione",
+    "readOnlineRepositoryDocs": "Leggila online nel repository di {{brand}}, nella cartella docs/user-guide.",
+    "noPageMentions": "Nessuna pagina ne parla.",
+    "foundPages_one": "Trovato in {{count}} pagina.",
+    "foundPages_many": "Trovato in {{count}} pagine.",
+    "foundPages_other": "Trovato in {{count}} pagine.",
+    "notPage": "Non in questa pagina.",
+    "matchesPageHighlighted_one": "{{count}} risultato in questa pagina, evidenziato.",
+    "matchesPageHighlighted_many": "{{count}} risultati in questa pagina, evidenziati.",
+    "matchesPageHighlighted_other": "{{count}} risultati in questa pagina, evidenziati."
+  }
+}

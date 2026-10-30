@@ -1,0 +1,226 @@
+{
+  "format": "ostler-project-package",
+  "version": 1,
+  "template": {
+    "description": "Plan, build, test and release a piece of software in short iterations.",
+    "icon": "code"
+  },
+  "project": {
+    "name": "Software project",
+    "color": "#3b82f6",
+    "estimateUnit": "points"
+  },
+  "people": [],
+  "labels": [
+    {
+      "name": "frontend",
+      "color": "#ec4899"
+    },
+    {
+      "name": "backend",
+      "color": "#8b5cf6"
+    },
+    {
+      "name": "bug",
+      "color": "#ef4444"
+    },
+    {
+      "name": "docs",
+      "color": "#14b8a6"
+    }
+  ],
+  "goals": [
+    {
+      "ref": "g1",
+      "title": "Ship a first version people can use",
+      "outcome": "A stable release that covers the core workflow."
+    }
+  ],
+  "milestones": [
+    {
+      "ref": "m1",
+      "name": "Design agreed",
+      "targetDate": "+14d",
+      "goalRef": "g1",
+      "outcome": "Scope and architecture settled",
+      "successCriteria": ["Requirements reviewed", "Architecture sketched"]
+    },
+    {
+      "ref": "m2",
+      "name": "First working build",
+      "targetDate": "+42d",
+      "goalRef": "g1",
+      "outcome": "The core workflow runs end to end"
+    },
+    {
+      "ref": "m3",
+      "name": "Release 1.0",
+      "targetDate": "+70d",
+      "goalRef": "g1",
+      "outcome": "Released and announced",
+      "successCriteria": ["No open critical bugs", "Release notes written"]
+    }
+  ],
+  "taskTypes": [
+    {
+      "ref": "y1",
+      "name": "Bug",
+      "icon": "bug",
+      "color": "#ef4444"
+    },
+    {
+      "ref": "y2",
+      "name": "Feature",
+      "icon": "sparkles",
+      "color": "#3b82f6"
+    },
+    {
+      "ref": "y3",
+      "name": "Chore",
+      "icon": "wrench",
+      "color": "#f59e0b"
+    }
+  ],
+  "tasks": [
+    {
+      "ref": "t1",
+      "title": "Write down the requirements",
+      "milestoneRef": "m1",
+      "priority": "high",
+      "checklist": [
+        {
+          "text": "List the main user goals",
+          "checked": false
+        },
+        {
+          "text": "Note what is out of scope",
+          "checked": false
+        },
+        {
+          "text": "Agree on success measures",
+          "checked": false
+        }
+      ],
+      "dueDate": "+5d"
+    },
+    {
+      "ref": "t2",
+      "title": "Sketch the architecture",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["backend"],
+      "dueDate": "+10d",
+      "dependsOnRefs": ["t1"]
+    },
+    {
+      "ref": "t3",
+      "title": "Set up the repository and build",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["backend"],
+      "dueDate": "+12d",
+      "dependsOnRefs": ["t2"],
+      "typeRef": "y3"
+    },
+    {
+      "ref": "t4",
+      "title": "Build the data model",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["backend"],
+      "dueDate": "+21d",
+      "dependsOnRefs": ["t3"],
+      "typeRef": "y2"
+    },
+    {
+      "ref": "t5",
+      "title": "Build the main screen",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["frontend"],
+      "dueDate": "+30d",
+      "dependsOnRefs": ["t3"],
+      "typeRef": "y2"
+    },
+    {
+      "ref": "t6",
+      "title": "Connect the screen to the data",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["frontend", "backend"],
+      "dueDate": "+40d",
+      "dependsOnRefs": ["t4", "t5"],
+      "typeRef": "y2"
+    },
+    {
+      "ref": "t7",
+      "title": "Write automated tests",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "dueDate": "+42d",
+      "dependsOnRefs": ["t6"],
+      "typeRef": "y3"
+    },
+    {
+      "ref": "t8",
+      "title": "Fix bugs found in testing",
+      "milestoneRef": "m3",
+      "priority": "high",
+      "labels": ["bug"],
+      "dueDate": "+60d",
+      "dependsOnRefs": ["t7"],
+      "typeRef": "y1"
+    },
+    {
+      "ref": "t9",
+      "title": "Write the user guide",
+      "milestoneRef": "m3",
+      "priority": "medium",
+      "labels": ["docs"],
+      "dueDate": "+63d"
+    },
+    {
+      "ref": "t10",
+      "title": "Write release notes",
+      "milestoneRef": "m3",
+      "priority": "medium",
+      "labels": ["docs"],
+      "dueDate": "+68d",
+      "dependsOnRefs": ["t8"],
+      "typeRef": "y3"
+    },
+    {
+      "ref": "t11",
+      "title": "Publish the release",
+      "milestoneRef": "m3",
+      "priority": "critical",
+      "checklist": [
+        {
+          "text": "Tag the version",
+          "checked": false
+        },
+        {
+          "text": "Upload the installer",
+          "checked": false
+        },
+        {
+          "text": "Announce it",
+          "checked": false
+        }
+      ],
+      "dueDate": "+70d",
+      "dependsOnRefs": ["t10"],
+      "typeRef": "y3"
+    }
+  ],
+  "decisions": [
+    {
+      "title": "Release in short iterations",
+      "decision": "Ship a working build every two weeks and adjust the plan after each one.",
+      "context": "Requirements will change as people try the software.",
+      "date": "+0d"
+    }
+  ],
+  "comments": [],
+  "library": []
+}

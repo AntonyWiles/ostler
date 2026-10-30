@@ -1,0 +1,51 @@
+/* The step indicator of a stepped Dialog. Tokens only. */
+
+.wizard-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200) var(--space-400);
+  margin: 0;
+  padding: 0 0 var(--space-300);
+  border-bottom: var(--border-width) solid var(--color-border);
+  list-style: none;
+}
+
+.wizard-steps__step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+/* Colour and the filled number mark the current step, not a heavier
+   weight, which would widen its label and push the later steps along. */
+.wizard-steps__step.is-current {
+  color: var(--color-text);
+}
+
+.wizard-steps__step.is-done {
+  color: var(--color-text-secondary);
+}
+
+.wizard-steps__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-600);
+  height: var(--space-600);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  font-variant-numeric: tabular-nums;
+}
+
+.wizard-steps__step.is-current .wizard-steps__number {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+.wizard-steps__step.is-done .wizard-steps__number {
+  border-color: var(--color-success);
+  color: var(--color-success);
+}

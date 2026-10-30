@@ -1,0 +1,143 @@
+{
+  "format": "ostler-project-package",
+  "version": 1,
+  "template": {
+    "description": "Plan and publish regular content, with weekly recurring posts.",
+    "icon": "pen"
+  },
+  "project": {
+    "name": "Content calendar",
+    "color": "#8b5cf6",
+    "estimateUnit": "points"
+  },
+  "people": [],
+  "labels": [
+    {
+      "name": "blog",
+      "color": "#3b82f6"
+    },
+    {
+      "name": "social",
+      "color": "#ec4899"
+    },
+    {
+      "name": "newsletter",
+      "color": "#f59e0b"
+    }
+  ],
+  "goals": [],
+  "milestones": [
+    {
+      "ref": "m1",
+      "name": "First month published",
+      "targetDate": "+30d"
+    }
+  ],
+  "tasks": [
+    {
+      "ref": "t1",
+      "title": "Choose the themes for this quarter",
+      "milestoneRef": "m1",
+      "priority": "high",
+      "dueDate": "+3d"
+    },
+    {
+      "ref": "t2",
+      "title": "Write the style guide",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "dueDate": "+7d",
+      "dependsOnRefs": ["t1"]
+    },
+    {
+      "ref": "t3",
+      "title": "Publish the weekly blog post",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["blog"],
+      "checklist": [
+        {
+          "text": "Draft",
+          "checked": false
+        },
+        {
+          "text": "Edit",
+          "checked": false
+        },
+        {
+          "text": "Add images",
+          "checked": false
+        },
+        {
+          "text": "Publish",
+          "checked": false
+        }
+      ],
+      "dueDate": "+5d",
+      "recurrence": {
+        "rule": {
+          "every": "week",
+          "interval": 1,
+          "weekdays": [2]
+        },
+        "endsOn": null,
+        "remaining": null
+      }
+    },
+    {
+      "ref": "t4",
+      "title": "Post on social media",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["social"],
+      "dueDate": "+3d",
+      "recurrence": {
+        "rule": {
+          "every": "week",
+          "interval": 1,
+          "weekdays": [4]
+        },
+        "endsOn": null,
+        "remaining": null
+      }
+    },
+    {
+      "ref": "t5",
+      "title": "Send the newsletter",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["newsletter"],
+      "dueDate": "+7d",
+      "recurrence": {
+        "rule": {
+          "every": "week",
+          "interval": 2,
+          "weekdays": [5]
+        },
+        "endsOn": null,
+        "remaining": null
+      }
+    },
+    {
+      "ref": "t6",
+      "title": "Review what performed best",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "dueDate": "+30d",
+      "dependsOnRefs": ["t3"]
+    }
+  ],
+  "decisions": [],
+  "comments": [],
+  "columns": {
+    "hidden": ["ready", "blocked"]
+  },
+  "library": [
+    {
+      "kind": "guide",
+      "title": "Content style guide",
+      "summary": "Tone and format for every post",
+      "body": "## Tone\nFriendly and plain.\n\n## Format\nShort paragraphs, one idea each, a clear title."
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+.ostler-project-settings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-500);
+}
+
+/* As tall as its tallest section, capped at the window less a gutter above and below.
+   Wider than a large dialog: the Remove tab sets its choices side by side (960 px). */
+.ui-dialog.ostler-project-settings-dialog {
+  max-width: calc(var(--space-1000) * 24);
+  max-height: calc(100% - 2 * var(--space-600));
+}
+
+/* Every section shares one cell, so the panel is as tall as the tallest and switching never resizes the dialog. */
+.ostler-project-settings .ui-tabs__panel {
+  display: grid;
+}
+
+/* A section's groups, one under the other. */
+.ostler-project-settings-section {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-500);
+}
+
+/* Hidden sections keep their space, unseen and unfocusable. */
+.ostler-project-settings-section[hidden] {
+  display: flex;
+  visibility: hidden;
+}
+
+.ostler-project-settings-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  max-width: 40rem;
+}
+
+.ostler-project-settings-folder {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.ostler-project-settings-path {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+
+.ostler-project-settings-muted {
+  font-size: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+
+.ostler-project-settings-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--space-300);
+}
+
+.ostler-project-settings-code textarea {
+  font-family: var(--font-mono);
+  font-size: var(--text-body-sm);
+}
+
+.ostler-project-settings-code code {
+  font-family: var(--font-mono);
+  overflow-wrap: anywhere;
+}
+
+.ostler-project-settings-saved {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  margin-right: auto;
+  font-size: var(--text-body-sm);
+  color: var(--color-success);
+}
+
+.ostler-project-columns {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.ostler-project-columns__row {
+  display: grid;
+  grid-template-columns: minmax(10rem, 1fr) minmax(10rem, 1fr);
+  align-items: end;
+  gap: var(--space-300);
+}
+
+.ostler-project-columns__row > :last-child {
+  padding-bottom: var(--space-200);
+}
+
+/* A column of the project's own (MOP-26): set in under the status it counts as. */
+.ostler-project-columns__own {
+  padding-left: var(--space-400);
+  border-left: var(--border-width) solid var(--color-border);
+}
+
+.ostler-project-columns__own-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.ostler-project-columns__own-actions > :first-child {
+  margin-right: auto;
+}
+
+.ostler-project-columns__add {
+  display: grid;
+  grid-template-columns: minmax(10rem, 1fr) minmax(8rem, auto) auto;
+  align-items: end;
+  gap: var(--space-200);
+  padding-top: var(--space-200);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.ostler-project-columns__add-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+/* Name, colour and icon: one group a Viewer of a shared project sees but can't change. */
+.project-settings-shared {
+  display: contents;
+}

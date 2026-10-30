@@ -1,0 +1,95 @@
+.ui-dialog-backdrop {
+  z-index: var(--z-dialog);
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-600);
+}
+
+.ui-dialog {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 100%;
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  outline: none;
+}
+
+.ui-dialog:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+}
+
+/* Widths on the 4 px grid: 400, 560, 800 px. */
+.ui-dialog--sm {
+  max-width: calc(var(--space-1000) * 10);
+}
+
+.ui-dialog--md {
+  max-width: calc(var(--space-1000) * 14);
+}
+
+.ui-dialog--lg {
+  max-width: calc(var(--space-1000) * 20);
+}
+
+.ui-dialog--full {
+  max-width: none;
+  height: 100%;
+}
+
+.ui-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-300);
+  padding: var(--space-500) var(--space-600) var(--space-300);
+}
+
+.ui-dialog__titles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  min-width: 0;
+}
+
+.ui-dialog__title {
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+  overflow-wrap: anywhere;
+}
+
+.ui-dialog__description {
+  font-size: var(--text-body);
+  color: var(--color-text-secondary);
+}
+
+.ui-dialog__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  /* Room for the scrollbar is kept whether it shows or not, so content that
+     grows past the fold does not push everything sideways; the right padding
+     gives that room back. */
+  scrollbar-gutter: stable;
+  padding: var(--space-100) calc(var(--space-600) - var(--scrollbar-size)) var(--space-400)
+    var(--space-600);
+  color: var(--color-text-secondary);
+}
+
+.ui-dialog__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-200);
+  padding: var(--space-300) var(--space-600) var(--space-500);
+}
+
+@media (forced-colors: active) {
+  .ui-dialog {
+    border-color: CanvasText;
+  }
+}

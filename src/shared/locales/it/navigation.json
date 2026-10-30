@@ -1,0 +1,658 @@
+{
+  "globalViews": {
+    "home": {
+      "label": "Home",
+      "keywords": "inizio, portafoglio, ha bisogno di te"
+    },
+    "inbox": {
+      "label": "Posta in arrivo",
+      "keywords": "notifiche, aggiornamenti, promemoria, non letti"
+    },
+    "myWork": {
+      "label": "Il mio lavoro",
+      "keywords": "assegnate, attività, mie, persona, tra i progetti, tutto"
+    },
+    "search": {
+      "label": "Ricerca",
+      "keywords": "trova, risultati, commenti, decisioni, libreria"
+    },
+    "agents": {
+      "label": "Agenti",
+      "keywords": "coda, sessioni, harness"
+    },
+    "help": {
+      "label": "Guida utente",
+      "keywords": "aiuto, documentazione, come fare, manuale, guida"
+    },
+    "settings": {
+      "label": "Impostazioni",
+      "keywords": "preferenze, opzioni"
+    },
+    "timesheet": {
+      "label": "Foglio ore",
+      "keywords": "tempo, ore, timer, registrazione, registro, settimana"
+    },
+    "workload": {
+      "label": "Carico di lavoro",
+      "keywords": "capacità, persone, squadra, ore, allocazione, sovraccarico, settimana, risorse"
+    },
+    "weeklyReview": {
+      "label": "Revisione settimanale",
+      "keywords": "revisione, settimana, in ritardo, bloccate, ferme, un giorno, ordine, piano"
+    },
+    "timelineOverview": {
+      "label": "Timeline tra progetti",
+      "keywords": "timeline, gantt, traguardi, progetti, portafoglio, conflitti, scadenze, roadmap"
+    },
+    "contacts": {
+      "label": "Contatti",
+      "keywords": "persone, clienti, fornitori, telefono, email, indirizzo, vcard, chiama"
+    },
+    "goals": {
+      "label": "Obiettivi",
+      "keywords": "obiettivi personali, traguardi personali, target, mire, risparmi, misure, verifica, avanzamento"
+    },
+    "undoHistory": {
+      "label": "Cronologia annullamenti",
+      "keywords": "cronologia, annulla, ripeti, modifiche, registro, linea del tempo, ripristina, cosa ho cambiato, attività"
+    },
+    "team": {
+      "label": "Squadra",
+      "keywords": "squadra, persone, responsabile, in ritardo, bloccate, carico"
+    }
+  },
+  "views": {
+    "overview": {
+      "label": "Panoramica",
+      "keywords": "oggi, riepilogo, sintesi, serve una decisione",
+      "description": "Come va il progetto e che cosa ha bisogno di te."
+    },
+    "plan": {
+      "label": "Piano",
+      "keywords": "pianificazione, obiettivi, traguardi, calendario, iniziare, avviare il progetto",
+      "description": "Pianifica il progetto passo per passo: obiettivo, traguardi, attività e date."
+    },
+    "board": {
+      "label": "Board",
+      "keywords": "kanban, attività, colonne",
+      "description": "Attività in colonne, da Da fare a Fatto."
+    },
+    "list": {
+      "label": "Elenco",
+      "keywords": "tabella, attività, righe, foglio di calcolo",
+      "description": "Ogni attività in una tabella che puoi ordinare e filtrare."
+    },
+    "calendar": {
+      "label": "Calendario",
+      "keywords": "date, scadenza, mese, settimana, programma",
+      "description": "Attività nei giorni in cui scadono."
+    },
+    "timeline": {
+      "label": "Timeline",
+      "keywords": "gantt, programma, dipendenze, piano, date",
+      "description": "Attività con date di inizio e di scadenza, affiancate nel tempo."
+    },
+    "milestones": {
+      "label": "Traguardi",
+      "keywords": "obiettivi, prontezza",
+      "description": "Obiettivi e i traguardi che portano a essi."
+    },
+    "library": {
+      "label": "Libreria",
+      "keywords": "brief, documenti, note, link",
+      "description": "Brief, documenti, note, immagini e link."
+    },
+    "decisions": {
+      "label": "Decisioni",
+      "keywords": "registro delle decisioni",
+      "description": "Che cosa è stato deciso, e perché."
+    },
+    "files": {
+      "label": "File",
+      "keywords": "codice, editor, copie",
+      "description": "I file nella cartella del progetto."
+    },
+    "history": {
+      "label": "Cronologia",
+      "keywords": "annulla, ripristina, versioni, modifiche, scartate",
+      "description": "Annulla, ripristina e recupera il lavoro nella cartella."
+    },
+    "agents": {
+      "label": "Agenti",
+      "keywords": "coda, attività, revisione, applica",
+      "description": "Coda, esecuzioni e revisioni degli agenti di programmazione."
+    },
+    "matrix": {
+      "label": "Matrice",
+      "keywords": "priorità, urgente, importante, eisenhower, quadranti, da fare per primo",
+      "description": "Idee per impatto e sforzo: che cosa fare per primo."
+    },
+    "triage": {
+      "label": "Da smistare",
+      "keywords": "smistamento, catture, aggiunta rapida, posta in arrivo, ordina, accetta, nuova",
+      "description": "Nuove catture da smistare prima che contino."
+    },
+    "someday": {
+      "label": "Un giorno",
+      "keywords": "idee, dopo, forse, messe da parte, nascoste",
+      "description": "Idee messe da parte per più avanti."
+    },
+    "costs": {
+      "label": "Costi",
+      "keywords": "budget, denaro, spese, uscite, pagato, previsto",
+      "description": "Il budget e quanto è stato speso o previsto."
+    },
+    "shopping": {
+      "label": "Lista della spesa",
+      "keywords": "acquisti, forniture, materiali, negozio, ordine, fornitore",
+      "description": "Cose da acquistare, e che cosa è già stato acquistato."
+    },
+    "timeReport": {
+      "label": "Report del tempo",
+      "keywords": "fatturabile, fatturazione, ore, tariffa, fattura, addebito, cliente",
+      "description": "Tempo registrato, per attività e persona, pronto da fatturare."
+    },
+    "archive": {
+      "label": "Archivio",
+      "keywords": "attività archiviate",
+      "description": "Attività messe da parte e conservate come documentazione."
+    },
+    "bin": {
+      "label": "Cestino",
+      "keywords": "eliminate, cestino, ripristina",
+      "description": "Attività eliminate, ripristinabili per 30 giorni."
+    }
+  },
+  "settings": {
+    "general": {
+      "label": "Generale",
+      "keywords": "aspetto, tema, densità, colore d’accento, avvio"
+    },
+    "projects": {
+      "label": "Progetti",
+      "keywords": "cartelle, colore, archivio, rimuovi"
+    },
+    "people": {
+      "label": "Persone",
+      "keywords": "io, assegnatari, assegna, squadra"
+    },
+    "notifications": {
+      "label": "Notifiche",
+      "keywords": "avvisi"
+    },
+    "ai": {
+      "label": "IA",
+      "keywords": "fornitore, modello, chiave, configura IA"
+    },
+    "agents": {
+      "label": "Agenti",
+      "keywords": "harness, agenti collegati, token degli agenti"
+    },
+    "connections": {
+      "label": "Connessioni",
+      "keywords": "API di automazione, MCP, assistente IA, Claude, ChatGPT, token, connetti"
+    },
+    "devices": {
+      "label": "Dispositivi",
+      "keywords": "PC, computer, associare, unirsi, sincronizzare, spazio personale, altro PC, rimuovere dispositivo"
+    },
+    "data": {
+      "label": "Dati",
+      "keywords": "database, backup, ripristina, dimensione"
+    },
+    "advanced": {
+      "label": "Avanzate",
+      "keywords": "attività sui file, osservatore, git, porte, sviluppatore"
+    },
+    "git": {
+      "label": "Git",
+      "keywords": "commit, repository, cronologia, controllo"
+    },
+    "about": {
+      "label": "Info su",
+      "keywords": "versione, aggiornamenti, diagnostica"
+    },
+    "groups": {
+      "appearance": {
+        "keywords": "tema, modalità scura, modalità chiara, colore, accento, densità, dimensione carattere, dimensione testo"
+      },
+      "startUp": {
+        "keywords": "avvio, pagina iniziale, pagina di apertura, home, inizio"
+      },
+      "language": {
+        "keywords": "lingua, traduzione, lingua di visualizzazione"
+      },
+      "workingHours": {
+        "keywords": "orario, ore, giornata lavorativa, settimana, giorni, programma, inizio, fine"
+      },
+      "windows": {
+        "keywords": "finestra, area di notifica, riduci, barra delle applicazioni, sempre in primo piano, chiudi"
+      },
+      "calendars": {
+        "keywords": "ics, iscriversi, feed, collegamento, Outlook, Google Calendar"
+      },
+      "progress": {
+        "keywords": "riepilogo dell’anno, serie, statistiche, mostra i miei progressi"
+      },
+      "boardAllProjects": {
+        "keywords": "bacheca, colonne, kanban, impostazioni predefinite, tutti i progetti, layout"
+      },
+      "reminders": {
+        "keywords": "promemoria, scadenza, giornaliero, posticipa, ore di silenzio, in ritardo"
+      },
+      "desktopNotifications": {
+        "keywords": "toast, banner, notifiche di Windows, suono, popup"
+      },
+      "aiPrivacy": {
+        "keywords": "dati, oscurare, inviare, condividere, sensibile, privato"
+      },
+      "builtInAgent": {
+        "keywords": "opencode, modello, provider, agente integrato, chiave API"
+      },
+      "usagePrices": {
+        "keywords": "costo, prezzo, token, spesa, budget, fatturazione"
+      },
+      "accounts": {
+        "keywords": "google, microsoft, outlook, accedere, calendario, collegare, account"
+      },
+      "syncServer": {
+        "keywords": "condividere, condivisione, collaborare, server, sincronizzazione, invitare, team"
+      },
+      "emailServer": {
+        "keywords": "e-mail, SMTP, posta, invito, in uscita, server"
+      },
+      "automationApi": {
+        "keywords": "API, porta, automazione, webhook, integrazione, server locale"
+      },
+      "githubToken": {
+        "keywords": "GitHub, token, token di accesso personale, issue, pull request"
+      },
+      "storage": {
+        "keywords": "disco, spazio, dimensione, database, posizione, cartella dei dati, elimina vecchi"
+      },
+      "agentCopies": {
+        "keywords": "worktree, copie, conservazione, cronologia degli agenti, pulizia"
+      },
+      "import": {
+        "keywords": "CSV, Trello, Jira, Asana, importare, caricare, foglio di calcolo"
+      },
+      "backups": {
+        "keywords": "backup, ripristinare, secondo luogo, pianificazione, copia, sicurezza"
+      },
+      "versionHistory": {
+        "keywords": "git, snapshot, punti di ripristino, mie modifiche, cronologia"
+      },
+      "developer": {
+        "keywords": "strumenti per sviluppatori, devtools, debug, console, ispezionare"
+      },
+      "updates": {
+        "keywords": "aggiornamento, aggiornare, nuova versione, cerca aggiornamenti, note di rilascio"
+      },
+      "licences": {
+        "keywords": "licenza, open source, terze parti, avvisi, crediti"
+      },
+      "diagnostics": {
+        "keywords": "copia diagnostica, segnalazione, registro, assistenza, bug, problema"
+      }
+    }
+  },
+  "shortcutGroups": {
+    "anywhere": "Ovunque",
+    "project": "In un progetto",
+    "tasks": "Board ed Elenco",
+    "dates": "Calendario e Timeline",
+    "library": "Libreria"
+  },
+  "markupShortcutsHeading": "Annotare un’immagine",
+  "markupShortcuts": {
+    "select": "Seleziona, per spostare e modificare i segni",
+    "arrow": "Freccia",
+    "box": "Riquadro",
+    "highlight": "Evidenzia",
+    "text": "Testo",
+    "blur": "Sfoca, per ciò che è privato",
+    "undo": "Annulla",
+    "redo": "Ripeti",
+    "next-mark": "Vai al segno successivo",
+    "move": "Sposta il segno selezionato",
+    "move-far": "Sposta più lontano il segno selezionato",
+    "resize": "Ridimensiona il segno selezionato",
+    "delete": "Elimina il segno selezionato"
+  },
+  "whiteboardShortcutsHeading": "Lavagne",
+  "whiteboardShortcuts": {
+    "select": "Seleziona",
+    "hand": "Mano: spostarsi nella lavagna",
+    "pan": "Spostarsi nella lavagna con qualsiasi strumento",
+    "next-object": "Oggetto successivo",
+    "previous-object": "Oggetto precedente",
+    "move": "Sposta la selezione",
+    "move-far": "Sposta la selezione 10 volte di più",
+    "resize": "Ridimensiona l’oggetto selezionato",
+    "resize-far": "Ridimensiona 10 volte di più",
+    "free-move": "Sposta senza agganciare alla griglia",
+    "keep-ratio": "Ridimensiona mantenendo la forma",
+    "select-all": "Seleziona tutto",
+    "deselect": "Non selezionare nulla",
+    "delete": "Elimina la selezione",
+    "undo": "Annulla",
+    "redo": "Ripeti",
+    "zoom-in": "Ingrandisci",
+    "zoom-out": "Riduci",
+    "zoom-fit": "Adatta tutta la lavagna",
+    "zoom-reset": "Zoom al 100%",
+    "note": "Nota adesiva",
+    "text": "Testo",
+    "place": "Posiziona l'oggetto dello strumento scelto al centro della vista",
+    "edit-text": "Modifica il testo dell'oggetto selezionato",
+    "finish-text": "Termina la modifica del testo",
+    "duplicate": "Duplica",
+    "copy": "Copia",
+    "cut": "Taglia",
+    "paste": "Incolla",
+    "group": "Raggruppa",
+    "ungroup": "Separa",
+    "bring-forward": "Porta avanti",
+    "send-backward": "Porta indietro",
+    "bring-to-front": "Porta in primo piano",
+    "send-to-back": "Porta in secondo piano",
+    "pen": "Penna",
+    "marker": "Evidenziatore",
+    "eraser": "Gomma: cancella i disegni",
+    "shape": "Forma; premi di nuovo per la forma successiva",
+    "frame": "Cornice",
+    "draw-square": "Disegna un quadrato o un cerchio",
+    "connector": "Linea o freccia",
+    "connect-to": "Collega l’oggetto selezionato a un altro",
+    "picture": "Inserisci un’immagine",
+    "paste-lines": "Incolla ogni riga come nota separata",
+    "link": "Collega a un elemento o a una pagina web",
+    "open-link": "Apri il collegamento dell’oggetto selezionato",
+    "make-tasks": "Crea attività dalla selezione",
+    "mindmap": "Mappa mentale",
+    "mind-map-child": "Aggiungi un’idea figlia (Tab mentre scrivi, Ins quando è selezionata)",
+    "mind-map-sibling": "Aggiungi l’idea successiva (mentre scrivi)",
+    "mind-map-new-line": "Nuova riga in un’idea",
+    "mind-map-navigate": "Spostati lungo i rami di una mappa mentale",
+    "mind-map-move": "Sposta un’idea e il suo ramo (l’idea centrale sposta tutta la mappa)",
+    "pick-in-group": "Scegli un oggetto dentro un gruppo",
+    "context-menu": "Apri il menu della selezione",
+    "node": "Nodo: collega oggetti al centro dei loro lati"
+  },
+  "shortcuts": {
+    "palette": "Riquadro dei comandi e ricerca",
+    "new-task": "Aggiunta rapida, nel progetto corrente se c’è",
+    "quick-add": "Aggiunta rapida da qualsiasi punto",
+    "settings": "Impostazioni",
+    "sidebar": "Comprimi o espandi la barra laterale",
+    "go-home": "Vai a Home",
+    "go-inbox": "Vai a Posta in arrivo",
+    "go-my-work": "Vai a Il mio lavoro",
+    "focus-search": "Porta il focus sulla ricerca o sul filtro della vista",
+    "shortcut-help": "Mostra le scorciatoie da tastiera",
+    "undo": "Annulla l’ultima modifica (in un campo di testo annulla la digitazione)",
+    "redo": "Ripeti l’ultima modifica annullata",
+    "undo-history": "Apri la cronologia degli annullamenti",
+    "escape": "Chiudi il livello in primo piano, poi deseleziona",
+    "project-view": "Viste del progetto, in ordine",
+    "next-task": "Spostati tra le attività",
+    "plan-indent": "Rendi una riga di un piano una sottoattività della riga sopra",
+    "plan-outdent": "Sposta una riga di un piano di un livello in su",
+    "open-task": "Apri l’attività attiva",
+    "move-task-order": "Sposta l’attività attiva in su o in giù, in ordine manuale (Board, Elenco, sottoattività di un’attività)",
+    "move-task-column": "Sposta la scheda attiva alla colonna precedente o successiva, in ordine manuale (Board)",
+    "move-task-matrix": "Sposta la scheda attiva in su o in giù di un riquadro, cambiandone la priorità (Matrice)",
+    "select-task": "Seleziona o deseleziona l’attività attiva",
+    "edit-title": "Modifica il titolo sul posto",
+    "delete-task": "Sposta nel Cestino",
+    "calendar-today": "Vai a oggi",
+    "move-task-date": "Sposta l’attività attiva di un giorno (Sinistra, Destra) o di una settimana (Su, Giù) nel Calendario; di un giorno nella Timeline",
+    "move-task-due": "Sposta la scadenza dell’attività attiva di un giorno (Timeline)",
+    "move-task-start": "Sposta la data di inizio dell’attività attiva di un giorno (Timeline)",
+    "library-search": "Cerca nella Libreria",
+    "library-make-task": "Crea un’attività dalle righe selezionate (editor della Libreria)",
+    "zoom-in": "Ingrandisci",
+    "zoom-out": "Riduci",
+    "zoom-reset": "Ripristina zoom",
+    "find-replace": "Trova e sostituisci nel progetto corrente"
+  },
+  "app": {
+    "loading": "Caricamento"
+  },
+  "skipLink": {
+    "skipContent": "Vai al contenuto"
+  },
+  "titleBar": {
+    "menu": "Menu",
+    "minimize": "Riduci a icona",
+    "maximize": "Ingrandisci",
+    "restore": "Ripristina",
+    "close": "Chiudi"
+  },
+  "sidebar": {
+    "sidebar": "Barra laterale",
+    "search": "Cerca",
+    "search2": "Cerca…",
+    "main": "Principale",
+    "more": "Altro",
+    "projects": "Progetti",
+    "newProject": "Nuovo progetto",
+    "actions": "Azioni per {{projectName}}",
+    "unread": "{{unread}} non letti",
+    "running": "{{running}} in esecuzione",
+    "couldnTSaveProject": "Impossibile salvare l’ordine dei progetti",
+    "moveUp": "Sposta su",
+    "moveDown": "Sposta giù",
+    "expandSidebar": "Espandi la barra laterale",
+    "collapseSidebar": "Comprimi la barra laterale"
+  },
+  "commandPalette": {
+    "commandPalette": "Riquadro dei comandi",
+    "move": "sposta",
+    "open": "apri",
+    "close": "chiudi",
+    "commandPaletteSearch": "Ricerca nel riquadro dei comandi",
+    "goProjectViewSetting": "Vai a un progetto, a una vista o a un’impostazione, oppure cerca tutto…",
+    "results": "Risultati",
+    "noMatches": "Nessuna corrispondenza",
+    "newTask": "Nuova attività",
+    "create": "Crea",
+    "quickAddTask": "Aggiunta rapida di un’attività",
+    "newProject": "Nuovo progetto",
+    "openSampleProject": "Apri il progetto di esempio",
+    "openAdvancedDemo": "Apri il progetto dimostrativo avanzato",
+    "go": "Vai a",
+    "keyboardShortcuts": "Scorciatoie da tastiera",
+    "whatSNew": "Novità",
+    "reportProblem": "Segnala un problema…",
+    "copyDiagnostics": "Copia la diagnostica",
+    "help": "Guida",
+    "projects": "Progetti",
+    "noFolder": "Nessuna cartella",
+    "projectViews": "Viste del progetto",
+    "newTask2": "Nuova attività in {{projectName}}",
+    "newNote": "Nuova nota in {{projectName}}",
+    "settings": "Impostazioni",
+    "settings2": "Impostazioni: {{sectionLabel}}",
+    "settingsGroup": "{{sectionLabel}} › {{groupLabel}}",
+    "developer": "Sviluppatore",
+    "developerUiGallery": "Sviluppatore: galleria UI",
+    "savedViews": "Viste salvate",
+    "openView": "Apri vista: {{viewName}} · {{projectName}}",
+    "comment": "Commento su {{resultTitle}}",
+    "search": "Cerca",
+    "seeAllResults": "Vedi tutti i risultati per “{{trimmed}}”",
+    "keywords": {
+      "quickAdd": "aggiungi, crea, attività, cattura",
+      "sampleProject": "tour, benvenuto, impara, esempio, tutorial",
+      "shortcuts": "tasti, scorciatoie",
+      "whatsNew": "changelog, note di rilascio, versione",
+      "report": "bug, problema, segnalazione, feedback",
+      "diagnostics": "registro, supporto",
+      "create": "aggiungi, crea",
+      "savedView": "vista salvata, filtro",
+      "calendarFile": "ics, calendario, outlook, google calendar, esporta, scadenze",
+      "printMyWeek": "stampa, carta, pdf, settimana, agenda, oggi, prossime",
+      "printYearInReview": "stampa, carta, pdf, anno, revisione, progressi, finite, fatte",
+      "taskTemplate": "modello, schema, nuova attività, ripeti, elenco di controllo",
+      "findReplace": "rinomina, cerca, sostituisci, cambia testo",
+      "snip": "screenshot, cattura, immagine, schermo",
+      "statusUpdate": "stato, aggiornamento, salute, in corso, a rischio, fuori rotta, report",
+      "playbook": "playbook, agente, esecuzione, coda, modello, ripeti",
+      "tour": "percorso guidato, suggerimenti, tutorial, impara, introduzione, guida"
+    },
+    "newTaskFromTemplate": "Nuova attività da modello…",
+    "findTaskTemplate": "Trova un modello di attività",
+    "noTaskTemplates": "Non ci sono ancora modelli di attività. Salvane uno dal menu di un’attività: Salva come modello di attività…",
+    "planTasks": "Pianifica più attività",
+    "exportCalendarFile": "Esporta in file di calendario…",
+    "print": "Stampa",
+    "findReplace": "Trova e sostituisci…",
+    "projectsInArea": "Progetti · {{area}}",
+    "snipToTask": "Cattura nell’attività",
+    "postUpdate": "Pubblica un aggiornamento di stato",
+    "runPlaybook": "Esegui playbook…",
+    "takeTheTour": "Fai il tour guidato"
+  },
+  "statusBar": {
+    "sharingSummary": "{{who}} · {{status}}",
+    "sharingStatus": {
+      "up-to-date": "aggiornato",
+      "catching-up": "in aggiornamento",
+      "cannot-reach-folder": "cartella non raggiungibile",
+      "problems": "alcuni file non sono stati letti"
+    },
+    "sharedWithName": "Condiviso con {{name}}",
+    "sharedWithCount_one": "Condiviso con {{count}} persona",
+    "sharedWithCount_other": "Condiviso con {{count}} persone",
+    "sharedWithCount_many": "Condiviso con {{count}} persone",
+    "sharedOnYourPcs": "Condiviso tra i tuoi PC",
+    "sharingDetail": "Vedi con chi è condiviso questo progetto, o lascialo",
+    "aiBusy": "IA occupata",
+    "aiStoppedResume": "IA ferma · Riprendi",
+    "aiStoppedNoAgent": "L’IA è ferma: nessuna esecuzione di agenti parte da sola. Fai clic per riprendere.",
+    "cancelEveryAiRequest": "Annulla ogni richiesta all’IA, ferma tutti gli agenti in esecuzione e tieni in coda le attività finché non riprendi",
+    "stoppedAllAiRequests_one": "Tutte le richieste all’IA sono ferme e {{count}} esecuzione di agente è stata interrotta.",
+    "stoppedAllAiRequests_many": "Tutte le richieste all’IA sono ferme e {{count}} esecuzioni di agenti sono state interrotte.",
+    "stoppedAllAiRequests_other": "Tutte le richieste all’IA sono ferme e {{count}} esecuzioni di agenti sono state interrotte.",
+    "couldnTStopAll": "Impossibile fermare tutta l’IA: {{error}}. Riprova.",
+    "couldNotResume": "Impossibile riprendere: {{error}}",
+    "stopping": "Interruzione…",
+    "stopAllAi": "Ferma tutta l’IA",
+    "agentsRunning_one": "{{count}} agente in esecuzione",
+    "agentsRunning_many": "{{count}} agenti in esecuzione",
+    "agentsRunning_other": "{{count}} agenti in esecuzione",
+    "notifications": "Notifiche nell’app",
+    "notificationsUnread_one": "Notifiche nell’app, {{count}} non visualizzata",
+    "notificationsUnread_many": "Notifiche nell’app, {{count}} non visualizzate",
+    "notificationsUnread_other": "Notifiche nell’app, {{count}} non visualizzate",
+    "notificationsTitle": "Notifiche nell’app: tutto ciò che è comparso nell’angolo, con Annulla",
+    "notificationsShort": "Notifiche"
+  },
+  "helpMenu": {
+    "help": "Guida",
+    "userGuide": "Guida utente",
+    "keyboardShortcuts": "Scorciatoie da tastiera",
+    "whatSNew": "Novità",
+    "reportProblem": "Segnala un problema…",
+    "opensIssuePageBrowser": "Apre la pagina delle segnalazioni nel browser e copia la diagnostica, da incollare se vuoi",
+    "copyDiagnostics": "Copia la diagnostica",
+    "about": "Info su",
+    "takeTheTour": "Fai il tour guidato",
+    "takeTheTourHint": "Pochi brevi passaggi nel progetto dimostrativo"
+  },
+  "projectHeader": {
+    "branch": "Branch",
+    "newTask": "Nuova attività",
+    "moreProjectActions": "Altre azioni del progetto",
+    "projectName": "Nome del progetto",
+    "quickAddPress": "Per l’aggiunta rapida, premi",
+    "rename": "Rinomina"
+  },
+  "projectWorkspace": {
+    "loadingProject": "Caricamento del progetto",
+    "projectNotFound": "Progetto non trovato",
+    "mayHaveBeenRemoved": "Potrebbe essere stato rimosso o archiviato. I progetti archiviati sono elencati in Impostazioni › Progetti.",
+    "goHome": "Vai a Home",
+    "projectViews": "Viste del progetto",
+    "runningReview": "{{queueAttention}} in esecuzione o da rivedere",
+    "loading": "Caricamento",
+    "loading2": "Caricamento di {{currentLabel}}",
+    "couldnTPrint": "Impossibile stampare",
+    "savedPdf": "Salvato come PDF",
+    "list": "{{projectName}} - Elenco",
+    "couldnTExport": "Impossibile esportare",
+    "exportedList": "Elenco esportato",
+    "exportViewCsv": "Esporta questa vista in CSV…",
+    "importExportGroup": "Importa ed esporta",
+    "printGroup": "Stampa",
+    "print": "Stampa…",
+    "savePdf": "Salva come PDF…",
+    "didnTWorkTry": "Non ha funzionato. Riprova.",
+    "planTasks": "Pianifica più attività",
+    "findReplace": "Trova e sostituisci…",
+    "moreViews": "Altre viste",
+    "moreViewsMenu": "Altre viste per questo progetto",
+    "tabsInMore_one": "{{count}} scheda che non entra è qui",
+    "tabsInMore_many": "{{count}} schede che non entrano sono qui",
+    "tabsInMore_other": "{{count}} schede che non entrano sono qui",
+    "tabsGroup": "Schede",
+    "tabsApplyTo": "Le schede valgono per",
+    "tabsAllProjects": "Tutti i progetti",
+    "tabsThisProject": "Solo questo progetto"
+  },
+  "boardTab": {
+    "generating": "Generazione…",
+    "suggestTasks": "Suggerisci attività…"
+  },
+  "listTab": {
+    "generating": "Generazione…",
+    "suggestTasks": "Suggerisci attività…"
+  },
+  "overviewTab": {
+    "softwareProject": "Progetto software?",
+    "canSuggestTasksBreak": "Può suggerire attività, scomporre gli obiettivi e riassumere questo progetto. È facoltativo.",
+    "canHelpPlan": "{{aiName}} può aiutarti a pianificare",
+    "notesChat": "Chat delle note",
+    "linkFolder": "Collega una cartella…",
+    "linkFolderBrowseFiles": "Collega la cartella del progetto per sfogliare qui i file e l’attività di Git, e per affidare attività agli agenti.",
+    "linkFolderBrowseFiles2": "Collega la cartella del progetto per sfogliare qui i file e l’attività di Git.",
+    "setUpAi": "Configura l’IA",
+    "show": "Mostra",
+    "panes": {
+      "summary": "Riepilogo",
+      "insights": "Approfondimenti",
+      "code": "Codice"
+    }
+  },
+  "agentAnnouncements": {
+    "in": "“{{runTitle}}” in {{projectName}}",
+    "run": "un’esecuzione in {{projectName}}",
+    "agentStarted": "L’agente ha avviato {{runName}}.",
+    "agentBlocked": "L’agente è bloccato su {{runName}}.",
+    "agentResumed": "L’agente ha ripreso {{runName}}.",
+    "agentRunEnded": "Esecuzione dell’agente terminata: {{runName}}."
+  },
+  "useUpdateToast": {
+    "updateReadyRestartUpdate": "Aggiornamento pronto. Riavvia per aggiornare",
+    "agentsWorkingCanRestart": "Gli agenti stanno lavorando. Puoi riavviare quando hanno finito.",
+    "versionInstallsWhenRestart": "La versione {{version}} si installa al riavvio.",
+    "restartOptions": "Opzioni di riavvio",
+    "restartNow": "Riavvia ora"
+  },
+  "popOut": {
+    "openInNewWindow": "Apri in una nuova finestra",
+    "paletteOpen": "Apri {{view}} in una nuova finestra",
+    "paletteKeywords": "finestra separata, secondo schermo, monitor, finestra",
+    "fullTitle": "Sono aperte otto finestre",
+    "fullBody": "Vuoi chiudere la più vecchia, {{oldest}}, e aprire questa?",
+    "closeOldest": "Chiudi e apri",
+    "couldNotOpen": "Impossibile aprire una nuova finestra",
+    "windowMenu": "Menu Finestra",
+    "reopenAtStart": "Riapri all’avvio",
+    "reopenAtStartHint": "Riapri questa finestra all’avvio se è aperta quando esci",
+    "showMainWindow": "Mostra la finestra principale",
+    "home": "Home",
+    "projectView": "{{projectName}} - {{view}}"
+  }
+}

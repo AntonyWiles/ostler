@@ -1,0 +1,628 @@
+/* A project's Overview: stat tiles, the work lists, milestones at a glance,
+   the brief, the AI summary and the folder's Git status. Tokens only. */
+
+.overview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-500);
+  min-width: 0;
+}
+
+.overview__panes {
+  display: flex;
+  align-items: center;
+}
+
+/* Setup tips: offers, not news, so they sit last and stay quiet. */
+.overview__tips {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.overview__tips:empty {
+  display: none;
+}
+
+.overview__tips .ui-inline-alert {
+  background: transparent;
+  border-style: dashed;
+}
+
+.overview__tips .ui-inline-alert__icon {
+  color: var(--color-text-muted);
+}
+
+.overview__tips .ui-inline-alert__text {
+  font-size: var(--text-body-sm);
+}
+
+.overview__tips .ui-inline-alert__title {
+  font-weight: var(--weight-medium);
+}
+
+.overview__tips .ui-inline-alert__body {
+  color: var(--color-text-secondary);
+}
+
+.overview__columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-500);
+}
+
+.overview__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-500);
+  min-width: 0;
+}
+
+/* Two columns once the workspace has the room, beside a drawer or not. */
+@container project-detail (min-width: 1000px) {
+  /* Setup tips: offers, not news, so they sit last and stay quiet. */
+  .overview__tips {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+  }
+
+  .overview__tips:empty {
+    display: none;
+  }
+
+  .overview__tips .ui-inline-alert {
+    background: transparent;
+    border-style: dashed;
+  }
+
+  .overview__tips .ui-inline-alert__icon {
+    color: var(--color-text-muted);
+  }
+
+  .overview__tips .ui-inline-alert__text {
+    font-size: var(--text-body-sm);
+  }
+
+  .overview__tips .ui-inline-alert__title {
+    font-weight: var(--weight-medium);
+  }
+
+  .overview__tips .ui-inline-alert__body {
+    color: var(--color-text-secondary);
+  }
+
+  .overview__columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+.overview-muted {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+}
+
+.overview-quiet {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+/* Stat tiles */
+
+.overview-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-300);
+}
+
+.overview-stats__tiles {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-300);
+  /* Four numbers read together; on a wide screen they do not spread apart. */
+  max-width: 56rem;
+  margin: 0;
+}
+
+/*
+ * The numbers read as one quiet strip; a tile takes a box and colour only
+ * when it needs attention (overdue work), and a count of nothing is muted.
+ */
+.overview-stats__tile {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-050);
+  min-width: 0;
+  padding: var(--space-200) var(--space-300);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-md);
+}
+
+.overview-stats__tile + .overview-stats__tile {
+  border-left-color: var(--color-border);
+  border-radius: 0;
+}
+
+.overview-stats__tile[data-tone='danger'] {
+  background: var(--color-danger-subtle);
+  border-color: var(--color-danger);
+  border-radius: var(--radius-md);
+}
+
+.overview-stats__tile[data-tone='danger'] + .overview-stats__tile {
+  border-left-color: transparent;
+}
+
+.overview-stats__tile[data-empty] dd {
+  color: var(--color-text-muted);
+  font-weight: var(--weight-regular);
+}
+
+.overview-stats__tile dt {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.overview-stats__tile dd {
+  margin: 0;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+  font-variant-numeric: tabular-nums;
+}
+
+.overview-stats__tile[data-tone='danger'] dd {
+  color: var(--color-danger);
+}
+
+@media (width < 800px) {
+  .overview-stats__tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Lists */
+
+.overview-rows,
+.overview-milestones,
+.overview-panel__list,
+.overview-actions,
+.overview-commits,
+.overview-commit__files {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.overview-row,
+.overview-commit {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-200);
+  width: 100%;
+  min-height: var(--row-height);
+  padding: var(--space-150) var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.overview-row:hover,
+.overview-commit:hover {
+  background: var(--color-surface-hover);
+}
+
+.overview-row:focus-visible,
+.overview-commit:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.overview-row__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.overview-row__hint {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  text-align: end;
+}
+
+@media (width < 1000px) {
+  .overview-row {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .overview-row__hint {
+    grid-column: 2;
+    text-align: start;
+  }
+}
+
+/* Agent questions and reported blockers */
+
+.overview-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.overview-panel__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.overview-panel__list {
+  gap: var(--space-300);
+}
+
+.overview-question,
+.overview-blocker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.overview-question p,
+.overview-blocker p {
+  margin: 0;
+}
+
+.overview-question__form {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-200);
+}
+
+.overview-question__field {
+  flex: 1;
+}
+
+.overview-blocker__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-200);
+}
+
+.overview-blocker__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+}
+
+/* Milestones at a glance */
+
+.overview-milestone {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.overview-milestone__head,
+.overview-milestone__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-200);
+}
+
+.overview-milestone__name {
+  overflow: hidden;
+  font-weight: var(--weight-medium);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.overview-milestone__meta {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+/* Project brief */
+
+.overview-brief {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.overview-brief__title {
+  margin: 0;
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-semibold);
+}
+
+.overview-brief__preview {
+  max-height: calc(var(--space-1200) * 3);
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  mask-image: linear-gradient(to bottom, var(--color-text) 70%, transparent);
+}
+
+.overview-brief__preview :is(h1, h2, h3, h4) {
+  margin: var(--space-200) 0 var(--space-100);
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.overview-brief__preview :is(p, ul, ol) {
+  margin: 0 0 var(--space-200);
+}
+
+/* AI summary */
+
+.overview-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.overview-summary p {
+  margin: 0;
+}
+
+.overview-summary__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-300);
+}
+
+.overview-summary__head h3 {
+  margin: 0;
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-body-lg);
+}
+
+.overview-summary__label {
+  margin: 0 0 var(--space-100);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.overview-summary__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  margin: 0;
+  padding-inline-start: var(--space-400);
+}
+
+.overview-disclosure {
+  padding-top: var(--space-300);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.overview-disclosure > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  font-weight: var(--weight-semibold);
+  cursor: pointer;
+}
+
+.overview-disclosure > summary:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.overview-disclosure[open] > summary {
+  margin-bottom: var(--space-300);
+}
+
+.overview-disclosure > * + * {
+  margin-top: var(--space-300);
+}
+
+.overview-actions {
+  gap: var(--space-400);
+}
+
+.overview-action {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.overview-action__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-200);
+}
+
+.overview-action__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+/* Git */
+
+.overview-git {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.overview-git__branch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  margin: 0;
+  font-family: var(--font-mono);
+}
+
+.overview-git__counts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-200);
+  margin: 0;
+}
+
+.overview-git__counts div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-050);
+}
+
+.overview-git__counts dt {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.overview-git__counts dd {
+  margin: 0;
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.overview-git__counts [data-tone='danger'] dd {
+  color: var(--color-danger);
+}
+
+.overview-commit {
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+}
+
+.overview-commit code {
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--text-body-sm);
+}
+
+.overview-commit__files {
+  padding: var(--space-100) 0 var(--space-100) var(--space-600);
+}
+
+@media (forced-colors: active) {
+  .overview-stats__tile,
+  .overview-row,
+  .overview-commit {
+    border-color: CanvasText;
+  }
+}
+
+.overview-disclosure > summary {
+  list-style: none;
+}
+
+.overview-disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
+.overview-disclosure__chevron {
+  transition: transform var(--motion-fast) var(--ease-standard);
+}
+
+.overview-disclosure[open] .overview-disclosure__chevron {
+  transform: rotate(90deg);
+}
+
+/* Workstreams */
+
+.overview-workstreams {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.overview-workstream {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: var(--space-150, var(--space-100));
+}
+
+.overview-workstreams__archived .overview-workstreams {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.overview-workstream--archived {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.overview-workstream__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.overview-workstream__name {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.overview-workstream__head .overview-workstream__name {
+  flex: 1 1 auto;
+}
+
+.overview-workstream--archived .overview-workstream__name {
+  flex: 1 1 auto;
+  font-weight: var(--weight-regular);
+}
+
+.overview-workstream__status,
+.overview-workstream__meta {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.overview-workstream__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100) var(--space-300);
+}
+
+.overview-workstreams__archived {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin-top: var(--space-200);
+}
+
+.overview-workstream-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150, var(--space-100));
+  margin-bottom: var(--space-300);
+}

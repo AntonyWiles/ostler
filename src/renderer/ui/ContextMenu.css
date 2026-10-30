@@ -1,0 +1,4 @@
+/* A context menu opens at the pointer, so it sits a little tighter than a menu. */
+.ui-context-menu {
+  min-width: calc(var(--space-1000) * 4);
+}

@@ -1,0 +1,183 @@
+/*
+ * Reset, document typography, focus, scrollbars and color-scheme. Every value
+ * comes from tokens.css.
+ */
+
+/* ─── Reset ──────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Document ───────────────────────────────────────────────────────────── */
+
+/* Native controls (select pop-ups, date pickers, scrollbars) follow the
+   theme. The bootstrap also sets the property inline before first paint. */
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Typography ─────────────────────────────────────────────────────────── */
+
+h1 {
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+
+h2 {
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading-sm);
+}
+
+h3,
+h4 {
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-body);
+}
+
+p {
+  color: var(--color-text-secondary);
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--font-mono);
+}
+
+code {
+  font-size: 0.92em;
+  background: var(--color-surface-sunken);
+  padding: var(--space-050) var(--space-150);
+  border-radius: var(--radius-control);
+}
+
+/* Counts, metrics, dates and durations line up digit for digit. */
+.tabular-nums,
+time {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Focus ──────────────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* ─── Forced colours ─────────────────────────────────────────────────────── */
+
+/* Windows high contrast drops background fills, so whatever marks the
+   current, selected or pressed item, or where a drop lands, gets an outline
+   in the system highlight colour (P9.2). Components may draw their own
+   border as well; this is the floor for every one of them. */
+@media (forced-colors: active) {
+  /* Accent fills keep Highlight behind HighlightText: without this, Windows
+     draws a Canvas backplate behind the text and hides it (P9.2). */
+  .ui-calendar__day.is-today .ui-calendar__day-number,
+  .wizard-steps__step.is-current .wizard-steps__number {
+    forced-color-adjust: none;
+  }
+
+  [aria-current]:not([aria-current='false']),
+  [role='option'][aria-selected='true'],
+  [aria-pressed='true'],
+  .is-selected,
+  .is-active,
+  .is-drop-target,
+  .ostler-sidebar-link.active,
+  .ostler-library-row.selected,
+  .ostler-library-tile.selected,
+  .ostler-library-banner.selected,
+  .ostler-library-rail-item.active {
+    outline: var(--focus-ring-width) solid Highlight;
+    outline-offset: calc(-1 * var(--focus-ring-width));
+  }
+
+  /* Where a dragged row lands. Rows draw it as an inset box-shadow, which
+     Windows high contrast removes, so it becomes a border on that side.
+     Important: this file loads before the rows' own border rules. */
+  .is-drop-before {
+    border-top: var(--focus-ring-width) solid Highlight !important;
+  }
+
+  .is-drop-after {
+    border-bottom: var(--focus-ring-width) solid Highlight !important;
+  }
+}
+
+/* ─── Scrollbars ─────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* A <details> grows open and folds shut, like ui/Collapse. The clip margin
+   leaves room for focus rings at its edges. */
+details {
+  interpolate-size: allow-keywords;
+}
+
+details::details-content {
+  block-size: 0;
+  overflow: clip;
+  overflow-clip-margin: calc(var(--focus-ring-width) + var(--focus-ring-offset));
+  transition:
+    block-size var(--motion-normal) var(--ease-standard),
+    content-visibility var(--motion-normal) allow-discrete;
+}
+
+details[open]::details-content {
+  block-size: auto;
+}

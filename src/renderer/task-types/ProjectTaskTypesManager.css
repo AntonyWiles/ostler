@@ -1,0 +1,51 @@
+/* A project's task types in its settings (N2.7a); rows share the labels' look. */
+.project-task-types {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.project-task-types__add {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-200);
+}
+
+.project-task-types__add > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+/* A type's fields and template (N2.7b). */
+.project-task-types__summary {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.project-task-types__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.project-task-types__fields > legend {
+  padding: 0;
+  margin-bottom: var(--space-100);
+  font-weight: var(--weight-medium);
+}
+
+.project-task-types__field-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: var(--space-100) var(--space-300);
+  margin: 0;
+  padding: 0 0 0 var(--space-300);
+  list-style: none;
+}

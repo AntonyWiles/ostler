@@ -1,0 +1,5 @@
+.ui-confirm__body {
+  white-space: pre-line;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}

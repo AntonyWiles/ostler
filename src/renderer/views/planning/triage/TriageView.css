@@ -1,0 +1,100 @@
+/* To triage (N4.3a): a project's quick captures, one row each, with its decisions. */
+
+.triage-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.triage-view__hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.triage-view__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.triage-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  padding: var(--space-200) var(--space-300);
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.triage-row:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.triage-row__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-width: 0;
+}
+
+.triage-row__picture {
+  flex: none;
+  width: 64px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: var(--radius-control);
+  border: var(--border-width) solid var(--color-border);
+}
+
+.triage-row__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.triage-row__title {
+  font-weight: var(--weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.triage-row__captured {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.triage-row__fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-200);
+}
+
+.triage-row__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+}
+
+.triage-row__key {
+  margin-left: var(--space-100);
+  padding: 0 var(--space-050);
+  font-family: inherit;
+  font-size: var(--text-caption);
+  color: inherit;
+  opacity: 0.75;
+  border: var(--border-width) solid currentColor;
+  border-radius: var(--radius-control);
+}
+
+/* Suggest for all (N4.3b), at the end of the toolbar. */
+.triage-view__suggest-all {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  margin-left: auto;
+}

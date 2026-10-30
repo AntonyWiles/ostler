@@ -1,0 +1,126 @@
+/* The Timeline across projects (N5.4): the project Timeline's look
+   (TimelineView.css), filling the page, with project rows, area headings
+   and a thin span bar per project. */
+
+.timeline-overview {
+  height: 100%;
+  padding: var(--space-400);
+}
+
+.timeline-overview .ui-page-header {
+  margin: 0;
+}
+
+.timeline-overview__project {
+  display: flex;
+  align-items: center;
+  gap: var(--space-150);
+  width: 100%;
+  min-width: 0;
+  padding: 0 var(--space-200);
+}
+
+.timeline-overview__project .timeline-group__toggle {
+  font-weight: var(--weight-medium);
+}
+
+.timeline-overview__undated,
+.timeline-overview__note {
+  flex: none;
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+}
+
+.timeline-overview__note {
+  padding: 0 var(--space-600);
+}
+
+.timeline-overview__area {
+  padding: 0 var(--space-300);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+}
+
+.timeline-overview__inner {
+  padding-left: var(--space-600);
+}
+
+.timeline-overview__span {
+  fill: var(--color-text-muted);
+  opacity: 0.6;
+}
+
+.timeline-overview__choose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+  max-height: calc(var(--space-1200) * 6);
+  padding: var(--space-200);
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+.timeline-overview__meeting {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+  max-width: calc(var(--space-1200) * 8);
+  padding: var(--space-200);
+}
+
+.timeline-overview__meeting-title {
+  margin: 0;
+  font-weight: var(--weight-semibold);
+}
+
+.timeline-overview__meeting ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline-overview__meeting-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-150);
+  width: 100%;
+  padding: var(--space-100);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.timeline-overview__meeting-item:hover {
+  background: var(--color-surface-sunken);
+}
+
+.timeline-overview__meeting-item:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+@media (forced-colors: active) {
+  .timeline-overview__span {
+    fill: CanvasText;
+  }
+}
+
+.timeline-overview__subproject {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  padding: 0 var(--space-200) 0 var(--space-400);
+}
+
+.timeline-overview__subproject .timeline-group__toggle {
+  font-weight: var(--weight-medium);
+}

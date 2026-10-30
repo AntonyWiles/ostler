@@ -1,0 +1,307 @@
+/* Budgets and costs (N6.3a): the Costs view, the Overview's Budget card, the drawer's section. Tokens only. */
+
+.costs-amount {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.costs-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+/* The Costs view */
+
+.costs-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  padding: var(--space-400);
+}
+
+.costs-view__header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-300);
+}
+
+.costs-view__intro {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.costs-view__spacer {
+  flex: 1;
+}
+
+.costs-view__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* At 900 px the editing row's fields would push the table past the view:
+   the fields shrink to their columns, and the table scrolls sideways only if
+   it still does not fit. */
+.costs-table-scroll {
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.costs-table__row--editing .ui-input-box,
+.costs-table__row--editing .ui-select {
+  min-width: calc(var(--space-1200) * 1.5);
+}
+
+.costs-table__row--editing input,
+.costs-table__row--editing select {
+  width: 100%;
+}
+
+.costs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body);
+}
+
+.costs-table th,
+.costs-table td {
+  padding: var(--space-150) var(--space-200);
+  border-bottom: var(--border-width) solid var(--color-border);
+  text-align: start;
+  vertical-align: middle;
+}
+
+.costs-table thead th {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+}
+
+.costs-table__row:hover {
+  background: var(--color-surface-hover);
+}
+
+.costs-table__row:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(-1 * var(--focus-ring-width));
+}
+
+.costs-table__row--editing {
+  background: var(--color-surface-selected);
+}
+
+.costs-table__date {
+  white-space: nowrap;
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.costs-table__muted {
+  color: var(--color-text-secondary);
+}
+
+.costs-table th.costs-table__amount,
+.costs-table td.costs-table__amount {
+  text-align: end;
+}
+
+.costs-table__links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.costs-table__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-100);
+  white-space: nowrap;
+}
+
+.costs-table tfoot th,
+.costs-table tfoot td {
+  border-bottom: none;
+  font-weight: var(--weight-semibold);
+}
+
+.costs-state {
+  display: inline-block;
+  padding: 0 var(--space-200);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+}
+
+.costs-state[data-state='paid'] {
+  background: var(--color-success-subtle);
+  color: var(--color-success);
+}
+
+/* The Overview's Budget card */
+
+.budget-card__numbers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: var(--space-300);
+  margin: 0;
+}
+
+.budget-card__numbers dt {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.budget-card__numbers dd {
+  margin: 0;
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.budget-card__numbers [data-tone='warning'] dt,
+.budget-card__numbers [data-tone='warning'] dd {
+  color: var(--color-warning);
+}
+
+.budget-card__bar {
+  display: flex;
+  height: var(--space-200);
+  margin-top: var(--space-300);
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-sunken);
+  border: var(--border-width) solid var(--color-border);
+}
+
+.budget-card__bar[data-over] {
+  border-color: var(--color-warning);
+}
+
+.budget-card__bar-paid {
+  background: var(--color-accent);
+}
+
+.budget-card__bar-planned {
+  background: var(--color-accent-subtle);
+}
+
+/* High contrast drops fills: paid stays solid Highlight, planned is hatched,
+   and an over-budget bar gets a thicker edge rather than a colour. */
+@media (forced-colors: active) {
+  .budget-card__bar-paid,
+  .budget-card__bar-planned {
+    forced-color-adjust: none;
+  }
+
+  .budget-card__bar-paid {
+    background: Highlight;
+  }
+
+  .budget-card__bar-planned {
+    background: repeating-linear-gradient(
+      135deg,
+      CanvasText 0 var(--border-width),
+      Canvas var(--border-width) var(--space-100)
+    );
+  }
+
+  .budget-card__bar[data-over] {
+    border-width: var(--focus-ring-width);
+  }
+
+  .costs-state {
+    border: var(--border-width) solid CanvasText;
+  }
+
+  .costs-table__row--editing {
+    outline: var(--focus-ring-width) solid Highlight;
+    outline-offset: calc(-1 * var(--focus-ring-width));
+  }
+}
+
+.budget-card__categories {
+  display: flex;
+  flex-direction: column;
+  margin: var(--space-300) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.budget-card__categories li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-200);
+  padding: var(--space-100) 0;
+  border-top: var(--border-width) solid var(--color-border);
+  font-size: var(--text-body-sm);
+}
+
+/* The drawer's Costs section */
+
+.task-costs__summary {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.task-costs__list {
+  display: flex;
+  flex-direction: column;
+  margin: var(--space-200) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-costs__entry {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--control-height-sm);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.task-costs__date {
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.task-costs__description {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.task-costs__meta {
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+}
+
+.task-costs__actions {
+  display: flex;
+  gap: var(--space-050);
+}
+
+.project-budget-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-300);
+}
+
+.milestone-card__costs {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.budget-card__still-to-buy {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}

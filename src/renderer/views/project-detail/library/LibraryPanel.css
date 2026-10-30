@@ -1,0 +1,755 @@
+/* Library tab: rail · centre · detail, plus the editor and the drop overlay.
+   Tokens only. */
+
+.ostler-library {
+  position: relative;
+  display: grid;
+  grid-template-columns: 12.5rem minmax(0, 1fr) 22.5rem;
+  gap: var(--space-300);
+  height: 100%;
+  min-height: 0;
+}
+
+.ostler-library-muted {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+/* ─── Rail ──────────────────────────────────────────────────────────────── */
+
+.ostler-library-rail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.ostler-library-rail-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+}
+
+.ostler-library-rail-item {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-200);
+  padding: var(--space-150) var(--space-200);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+
+.ostler-library-rail-item span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ostler-library-rail-item:hover {
+  color: var(--color-text);
+  background: var(--color-surface-hover);
+}
+
+.ostler-library-rail-item.active {
+  color: var(--color-text);
+  background: var(--color-surface-active);
+}
+
+.ostler-library-rail-count {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.ostler-library-context {
+  padding: var(--space-300);
+  background: var(--color-surface-sunken);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.ostler-library-meter-label {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.ostler-library-meter-label.over,
+.ostler-library-meter-note {
+  color: var(--color-warning);
+}
+
+.ostler-library-meter-note {
+  font-size: var(--text-caption);
+}
+
+/* ─── Centre ────────────────────────────────────────────────────────────── */
+
+.ostler-library-centre {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-width: 0;
+  min-height: 0;
+}
+
+.ostler-library-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.ostler-library-search {
+  flex: 1;
+  min-width: 0;
+}
+
+.ostler-library-selection {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  padding: var(--space-150) var(--space-300);
+  font-size: var(--text-body-sm);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.ostler-library-selection {
+  background: var(--color-accent-subtle);
+  border-color: var(--color-accent);
+}
+
+.ostler-library-selection-names {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ostler-library-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  padding-right: var(--space-100);
+}
+
+.ostler-library-banner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  padding: var(--space-300) var(--space-400);
+  color: var(--color-text);
+  text-align: left;
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-accent);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.ostler-library-banner-title {
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.ostler-library-banner-summary {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.ostler-library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: var(--space-300);
+}
+
+.ostler-library-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.ostler-library-tile-image {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.ostler-library-tile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ostler-library-tile-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-150);
+  padding: var(--space-150) var(--space-200);
+}
+
+.ostler-library-tile-title {
+  overflow: hidden;
+  font-size: var(--text-body-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ostler-library-tick {
+  margin: 0;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+/* Inert: the click lands on the tick itself, which toggles the item. */
+.ostler-library-tick__box {
+  pointer-events: none;
+}
+
+.ostler-library-tile:hover .ostler-library-tick,
+.ostler-library-row:hover .ostler-library-tick,
+.selected .ostler-library-tick {
+  opacity: 1;
+}
+
+.ostler-library-rows {
+  display: flex;
+  flex-direction: column;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.ostler-library-row {
+  display: grid;
+  grid-template-columns: var(--icon-size) 5.5rem minmax(0, 1fr) auto auto 4rem;
+  align-items: center;
+  gap: var(--space-300);
+  padding: var(--space-200) var(--space-300);
+  font-size: var(--text-body-sm);
+  border-bottom: var(--border-width) solid var(--color-border);
+  cursor: pointer;
+}
+
+.ostler-library-row:last-child {
+  border-bottom: 0;
+}
+
+.ostler-library-row:hover,
+.ostler-library-tile:hover {
+  background: var(--color-surface-hover);
+}
+
+.ostler-library-row.active,
+.ostler-library-tile.active,
+.ostler-library-banner.active {
+  background: var(--color-surface-active);
+}
+
+/* On the chosen row's background, muted text would fall just under 4.5:1 (WCAG 1.4.3). */
+.ostler-library-row.active .ostler-library-row-kind,
+.ostler-library-row.active .ostler-library-row-updated {
+  color: var(--color-text-secondary);
+}
+
+.ostler-library-row.selected,
+.ostler-library-tile.selected,
+.ostler-library-banner.selected {
+  box-shadow: inset var(--space-100) 0 0 var(--color-accent);
+}
+
+.ostler-library-tile.selected {
+  border-color: var(--color-accent);
+}
+
+.ostler-library-row.focused,
+.ostler-library-tile.focused,
+.ostler-library-banner.focused {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: calc(-1 * var(--focus-ring-width));
+}
+
+.ostler-library-row.archived,
+.ostler-library-tile.archived {
+  opacity: 0.65;
+}
+
+.ostler-library-row-kind {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.ostler-library-row-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ostler-library-row-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-150);
+  overflow: hidden;
+  font-weight: var(--weight-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ostler-library-row-summary {
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ostler-library-row-tags {
+  display: flex;
+  gap: var(--space-100);
+  max-width: 10rem;
+  overflow: hidden;
+}
+
+.ostler-library-row-updated {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  text-align: right;
+}
+
+.ostler-library-nomatch {
+  padding: var(--space-400);
+  text-align: center;
+}
+
+/* ─── Detail ────────────────────────────────────────────────────────────── */
+
+.ostler-library-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  padding: var(--space-400);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.ostler-library-detail--empty {
+  align-items: center;
+  justify-content: center;
+}
+
+.ostler-library-detail-title {
+  margin: 0;
+  font-size: var(--text-body-lg);
+  overflow-wrap: anywhere;
+}
+
+.ostler-library-preview img {
+  display: block;
+  max-width: 100%;
+  max-height: 20rem;
+  margin: 0 auto;
+  border-radius: var(--radius-control);
+}
+
+.ostler-library-link-url {
+  color: var(--color-link);
+  font-size: var(--text-body-sm);
+  overflow-wrap: anywhere;
+}
+
+.ostler-library-document-text {
+  max-height: 15rem;
+  margin: 0;
+  overflow: auto;
+  padding: var(--space-300);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  white-space: pre-wrap;
+  background: var(--color-surface);
+  border-radius: var(--radius-control);
+}
+
+.ostler-library-markdown {
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body);
+  overflow-wrap: anywhere;
+}
+
+.ostler-library-preview .ostler-library-markdown {
+  max-height: 15rem;
+  overflow: auto;
+}
+
+.ostler-library-markdown h1,
+.ostler-library-markdown h2,
+.ostler-library-markdown h3 {
+  margin: var(--space-300) 0 var(--space-150);
+  font-size: var(--text-body);
+}
+
+.ostler-library-markdown ul,
+.ostler-library-markdown ol {
+  padding-left: var(--space-500);
+}
+
+.ostler-library-markdown img {
+  max-width: 100%;
+}
+
+.ostler-library-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.ostler-library-field-label {
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+}
+
+.ostler-library-links {
+  margin: 0;
+  padding-left: var(--space-400);
+  font-size: var(--text-body-sm);
+}
+
+.ostler-library-links li {
+  display: flex;
+  gap: var(--space-150);
+  align-items: center;
+}
+
+.ostler-library-info {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-100) var(--space-300);
+  margin: 0;
+  font-size: var(--text-caption);
+}
+
+.ostler-library-info dt {
+  color: var(--color-text-muted);
+}
+
+.ostler-library-info dd {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ostler-library-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-200);
+}
+
+/* ─── Editor ────────────────────────────────────────────────────────────── */
+
+.ostler-library-editor {
+  grid-column: 2 / 4;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-height: 0;
+  padding: var(--space-400);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.ostler-library-editor-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-300);
+}
+
+.ostler-library-editor-header > .ui-field {
+  flex: 1;
+}
+
+.ostler-library-editor-title {
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-semibold);
+}
+
+.ostler-library-editor-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 11rem;
+  gap: var(--space-300);
+  flex: 1;
+  min-height: 0;
+}
+
+.ostler-library-editor-body:has(> :only-child) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.ostler-library-editor-text:focus-visible {
+  border-color: var(--color-focus);
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: 0;
+}
+
+.ostler-library-editor-text {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+  resize: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+.ostler-library-editor-preview {
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  padding: var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-control);
+}
+
+.ostler-library-revisions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.ostler-library-revision {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-150);
+  font-size: var(--text-body-sm);
+}
+
+.ostler-library-editor-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.ostler-library-editor-footer > span {
+  flex: 1;
+}
+
+/* ─── Overlays ──────────────────────────────────────────────────────────── */
+
+.ostler-library-drop {
+  position: absolute;
+  z-index: var(--z-sticky);
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: var(--focus-ring-width) dashed var(--color-accent);
+  border-radius: var(--radius-lg);
+  background: var(--color-overlay);
+  pointer-events: none;
+}
+
+.ostler-library-drop__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-200);
+  max-width: 22rem;
+  padding: var(--space-600) var(--space-800);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-lg);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  text-align: center;
+}
+
+.ostler-library-drop__card strong {
+  color: var(--color-text);
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-semibold);
+}
+
+.ostler-library-drop__card .ostler-icon {
+  color: var(--color-link);
+}
+
+.ostler-library-link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-link);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ostler-library-link-button:hover {
+  text-decoration: underline;
+}
+
+/* The banner is a button, so its tick sits beside it rather than inside. */
+.ostler-library-banner-wrap {
+  position: relative;
+  display: flex;
+}
+
+.ostler-library-banner-wrap .ostler-library-banner {
+  flex: 1;
+  padding-left: calc(var(--space-400) + var(--space-600));
+}
+
+.ostler-library-banner-wrap .ostler-library-tick {
+  position: absolute;
+  z-index: 1;
+  top: var(--space-300);
+  left: var(--space-300);
+}
+
+.ostler-library-banner-wrap:hover .ostler-library-tick,
+.ostler-library-banner-wrap:has(.selected) .ostler-library-tick {
+  opacity: 1;
+}
+
+/* ─── Shared bits ───────────────────────────────────────────────────────── */
+
+.ostler-library-kicker {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+}
+
+.ostler-library-rail-group > .ostler-library-kicker {
+  margin-bottom: var(--space-100);
+}
+
+.ostler-library-sections .ui-tabs__list {
+  /* Sections that don't fit move into More (useTabsThatFit), so the row never
+     scrolls. Clipped, not scrolled: for the frame between a resize and the
+     next measure the last tab can overhang. */
+  overflow-x: hidden;
+}
+
+/* More: set off from the row by a line. */
+.ostler-library-sections .ui-tabs__trailing {
+  margin-left: var(--space-100);
+  box-shadow: inset var(--border-width) 0 0 var(--color-border);
+}
+
+.ostler-library-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+}
+
+.ostler-library-danger {
+  color: var(--color-danger);
+}
+
+.ostler-library-tile.ui-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.ostler-library-tile-image .ostler-library-muted {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.ostler-library-tick {
+  display: inline-flex;
+}
+
+/* Insert a live list (N4.4c). */
+.ostler-live-list-insert {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+/* At 900 px the three columns left the list a sliver: the item's detail goes
+   under the rail and the list, at full width. Last in the file, so it wins
+   over the columns set above. */
+@container project-detail (max-width: 900px) {
+  .ostler-library {
+    grid-template-columns: 12.5rem minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .ostler-library-detail {
+    grid-column: 1 / -1;
+    max-height: 45vh;
+  }
+
+  .ostler-library-editor {
+    grid-column: 2 / -1;
+  }
+}
+
+.ostler-library-cloud-file {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  flex-wrap: wrap;
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+}
+
+/* A whiteboard's preview: the whole board, at a fixed height. */
+.ostler-library-whiteboard {
+  height: 15rem;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--whiteboard-paper);
+  overflow: hidden;
+}
+
+.ostler-library-whiteboard svg {
+  display: block;
+}
+
+.ostler-library-whiteboard--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

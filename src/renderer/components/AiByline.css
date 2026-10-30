@@ -1,0 +1,19 @@
+/* The AI byline and warnings list. Tokens only. */
+
+.ai-byline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+}
+
+.ai-warnings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  margin: 0;
+  padding-inline-start: var(--space-400);
+}

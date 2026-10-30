@@ -1,0 +1,62 @@
+/* Snip to task's overlay (N4.2a). Tokens only. */
+
+.snip-overlay {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  cursor: crosshair;
+  user-select: none;
+  outline: none;
+}
+
+.snip-overlay__picture {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.snip-overlay__dim {
+  position: absolute;
+  inset: 0;
+  background: var(--color-overlay);
+  pointer-events: none;
+}
+
+/* While a rectangle is drawn, the selection's own shadow does the dimming. */
+.snip-overlay__dim--cut {
+  background: transparent;
+}
+
+.snip-overlay__selection {
+  position: absolute;
+  border: var(--border-width) solid var(--color-on-fill-light);
+  box-shadow: 0 0 0 9999px var(--color-overlay);
+  pointer-events: none;
+}
+
+.snip-overlay__size,
+.snip-overlay__hint {
+  position: absolute;
+  padding: var(--space-100) var(--space-200);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-caption);
+  white-space: nowrap;
+  box-shadow: var(--shadow-md);
+}
+
+.snip-overlay__size {
+  top: calc(100% + var(--space-100));
+  left: 0;
+}
+
+.snip-overlay__hint {
+  top: var(--space-600);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--text-body);
+}

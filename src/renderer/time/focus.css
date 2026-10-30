@@ -1,0 +1,7 @@
+/* Focus (N3.5): the length picker. Tokens only. */
+
+.focus-start {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}

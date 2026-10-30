@@ -1,0 +1,1002 @@
+/* The task drawer and its sections. The panel itself is ui/Drawer. */
+
+/* The status and actions share the top row; the title has the next one to itself. */
+.task-drawer .ui-drawer__header {
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: var(--space-200);
+}
+
+.task-drawer .ui-drawer__actions {
+  order: 1;
+  margin-left: auto;
+}
+
+.task-drawer .ui-drawer__titles {
+  order: 2;
+  flex-basis: 100%;
+}
+
+.task-drawer .ui-drawer__title {
+  font-size: var(--text-heading);
+  line-height: var(--leading-heading);
+}
+
+.task-drawer .ui-drawer__body {
+  padding: 0;
+}
+
+/* The status: a Select that reads like a StatusBadge. */
+.task-drawer__status {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.task-drawer__status-icon {
+  position: absolute;
+  left: var(--space-200);
+  z-index: 1;
+  color: var(--status-color);
+  pointer-events: none;
+}
+
+.task-drawer__status .ui-select > select {
+  padding-left: calc(var(--space-200) + var(--icon-size) + var(--space-100));
+  background: var(--color-surface-sunken);
+  border-color: transparent;
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-medium);
+}
+
+.task-drawer__status .ui-select > select:hover:not(:disabled) {
+  border-color: var(--color-border-strong);
+}
+
+/* The title, edited in place: a heading until it has focus. */
+.task-drawer__title-input {
+  width: 100%;
+  padding: var(--space-050) var(--space-100);
+  margin-left: calc(-1 * var(--space-100));
+  background: transparent;
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  font: inherit;
+  field-sizing: content;
+  resize: none;
+  overflow: hidden;
+}
+
+.task-drawer__title-input:hover {
+  border-color: var(--color-border);
+}
+
+.task-drawer__title-input:focus {
+  background: var(--color-surface);
+  border-color: var(--color-focus);
+}
+
+/*
+ * The body has three levels, so the eye finds its way: the title, the task's
+ * own content (description, checklist and the sections after it, each opened
+ * by a heading over a rule), and its properties, which read as a quiet list
+ * of label and value. The drawer's own width decides the layout, not the
+ * window's: narrow and default widths stack properties over the content; a
+ * wide drawer puts them in a column beside it.
+ */
+.task-drawer .ui-drawer__body {
+  container: task-drawer / inline-size;
+}
+
+.task-drawer__form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-flow: row dense;
+  align-items: start;
+  gap: var(--space-500);
+  padding: var(--space-400) var(--space-500) var(--space-600);
+}
+
+.task-drawer__properties,
+.task-drawer__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  min-width: 0;
+}
+
+.task-drawer__main {
+  gap: var(--space-500);
+}
+
+@container task-drawer (min-width: 760px) {
+  .task-drawer__form {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 34%);
+    column-gap: var(--space-800);
+  }
+
+  .task-drawer__form > * {
+    grid-column: 1 / -1;
+  }
+
+  .task-drawer__form > .task-drawer__main {
+    grid-column: 1;
+  }
+
+  .task-drawer__form > .task-drawer__properties {
+    grid-column: 2;
+    padding-left: var(--space-500);
+    border-left: var(--border-width) solid var(--color-border);
+  }
+}
+
+/*
+ * Properties: one row each, the label on the left in muted small type and the
+ * value on the right. Controls show their box only on hover and focus, so the
+ * values stand out rather than a stack of empty-looking boxes.
+ */
+.task-drawer__fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-100);
+}
+
+.task-drawer__fields .ui-field {
+  display: grid;
+  /* The value stays near its label, however wide the drawer. */
+  grid-template-columns: 7.5rem minmax(0, 22rem);
+  align-items: center;
+  column-gap: var(--space-300);
+  row-gap: var(--space-050);
+}
+
+.task-drawer__fields .ui-field > :not(.ui-field__label) {
+  grid-column: 2;
+}
+
+/* Lined up with the first line of its value, which may wrap onto a second. */
+.task-drawer__fields .ui-field__label {
+  display: flex;
+  align-self: start;
+  align-items: center;
+  min-height: var(--control-height-sm);
+  grid-column: 1;
+  color: var(--color-text-muted);
+  font-weight: var(--weight-regular);
+  overflow-wrap: anywhere;
+}
+
+/* The narrowest drawer has no room beside the label: stack it again. */
+@container task-drawer (max-width: 359px) {
+  .task-drawer__fields {
+    gap: var(--space-300);
+  }
+
+  .task-drawer__fields .ui-field {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .task-drawer__fields .ui-field > :not(.ui-field__label) {
+    grid-column: 1;
+  }
+}
+
+/* A text area keeps its box: empty, it would otherwise not show at all. */
+.task-drawer__fields .ui-input-box:not(.ui-textarea),
+.task-drawer__fields .ui-select > select,
+.task-checklist__row .ui-input-box {
+  background: transparent;
+  border-color: transparent;
+}
+
+/* A free-text box keeps a light outline: empty, it would otherwise not show. */
+.task-drawer__fields .ui-input-box:has(> input[type='text']:not([role='combobox'])),
+.task-drawer__fields .ui-input-box:has(> input:not([type], [role='combobox'])) {
+  border-color: var(--color-border);
+}
+
+.task-drawer__fields .ui-number-field input {
+  text-align: left;
+}
+
+.task-drawer__fields .ui-number-field .ui-input-box {
+  max-width: 8rem;
+}
+
+.task-drawer__fields .ui-input-box:hover,
+.task-drawer__fields .ui-select > select:hover,
+.task-checklist__row .ui-input-box:hover {
+  background: var(--color-surface);
+  border-color: var(--color-border-strong);
+}
+
+.task-drawer__fields .ui-input-box:focus-within,
+.task-drawer__fields .ui-select > select:focus,
+.task-checklist__row .ui-input-box:focus-within {
+  background: var(--color-surface);
+  border-color: var(--color-focus);
+}
+
+.task-drawer__fields .is-invalid .ui-input-box {
+  border-color: var(--color-danger);
+}
+
+.task-drawer__field-wide {
+  grid-column: 1 / -1;
+}
+
+/* Sections */
+
+.task-drawer__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.task-drawer__section-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-200);
+  min-height: var(--control-height-sm);
+}
+
+/* Each section after the first opens over a rule, so sections read as blocks. */
+.task-drawer__main > * + * {
+  padding-top: var(--space-500);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.task-drawer__section-title {
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.task-drawer__section-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  margin-left: calc(-1 * var(--space-100));
+  padding: var(--space-050) var(--space-100);
+  border-radius: var(--radius-control);
+  font: inherit;
+}
+
+.task-drawer__section-toggle:hover {
+  background: var(--color-surface-hover);
+}
+
+.task-drawer__section-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.task-drawer__section-description,
+.task-drawer__muted {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+}
+
+.task-drawer__section-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.task-drawer__text {
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  overflow-wrap: anywhere;
+}
+
+.task-drawer__bullets {
+  padding-left: var(--space-500);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  list-style: disc;
+}
+
+.task-drawer__row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-200);
+}
+
+.task-drawer__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  padding: var(--space-300);
+  background: var(--color-surface-sunken);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.task-drawer__panel--row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-drawer__draft {
+  border-color: var(--color-accent);
+}
+
+.task-drawer__draft-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-300);
+}
+
+.task-drawer__draft-head h3 {
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading-sm);
+}
+
+.task-drawer__markdown {
+  min-height: calc(var(--row-height) * 2);
+  padding: var(--space-200) var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-body-lg);
+  overflow-wrap: anywhere;
+}
+
+.task-drawer__markdown > * + * {
+  margin-top: var(--space-200);
+}
+
+.task-drawer__markdown h1,
+.task-drawer__markdown h2,
+.task-drawer__markdown h3 {
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.task-drawer__markdown ul,
+.task-drawer__markdown ol {
+  padding-left: var(--space-500);
+}
+
+.task-drawer__markdown ul {
+  list-style: disc;
+}
+
+.task-drawer__markdown ol {
+  list-style: decimal;
+}
+
+.task-drawer__markdown code {
+  font-family: var(--font-mono);
+  font-size: var(--text-body-sm);
+}
+
+.task-drawer__markdown a {
+  color: var(--color-link);
+}
+
+.task-drawer__details summary {
+  margin-top: var(--space-200);
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+  cursor: pointer;
+}
+
+.task-drawer__alert-action {
+  margin-left: var(--space-200);
+}
+
+/* The Library picker drops down from its button. */
+.task-drawer__picker-anchor {
+  display: flex;
+  gap: var(--space-100);
+  position: relative;
+}
+
+.task-drawer__picker-anchor .ostler-library-attach-picker {
+  top: calc(100% + var(--space-150));
+  right: 0;
+  bottom: auto;
+  left: auto;
+}
+
+/* Footer */
+
+.task-drawer__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-300);
+  width: 100%;
+}
+
+.task-drawer__stamps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.task-drawer__stamp-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.task-drawer__footer-actions {
+  display: flex;
+  gap: var(--space-200);
+  margin-left: auto;
+}
+
+/* Checklist rows */
+
+.task-checklist {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-200);
+}
+
+.task-checklist__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  width: 100%;
+}
+
+.task-checklist__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-050);
+}
+
+.task-checklist__row > .ui-field {
+  flex: 1;
+  margin-right: var(--space-100);
+}
+
+/* An item's date and person (N2.2): the button shows on hover and focus, chips when set. */
+.task-checklist__details {
+  opacity: 0;
+}
+
+.task-checklist__row:hover .task-checklist__details,
+.task-checklist__row:focus-within .task-checklist__details,
+.task-checklist__details[aria-expanded='true'] {
+  opacity: 1;
+}
+
+.task-checklist__chips {
+  display: inline-flex;
+  gap: var(--space-050);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-control);
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.task-checklist__chip {
+  padding: 0 var(--space-150);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  white-space: nowrap;
+}
+
+.task-checklist__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  padding: var(--space-300);
+  min-width: 16rem;
+}
+
+/* Lists of linked things: dependencies, subtasks, decisions, Library items. */
+
+.task-dependencies {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.task-dependencies__list,
+.task-links__list,
+.task-subtasks__list,
+.task-library-list {
+  display: flex;
+  flex-direction: column;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.task-dependencies__row,
+.task-links__row,
+.task-subtasks__row,
+.task-library-list__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--row-height);
+  padding: 0 var(--space-200) 0 var(--space-300);
+}
+
+.task-dependencies__row + .task-dependencies__row,
+.task-links__row + .task-links__row,
+.task-subtasks__row + .task-subtasks__row,
+.task-library-list__row + .task-library-list__row {
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+/* An attached picture's thumbnail (N4.2a). */
+.task-library-list__thumb {
+  flex: 0 0 auto;
+  width: var(--control-height-lg);
+  height: var(--control-height-sm);
+  margin: var(--space-100) 0;
+  border-radius: var(--radius-control);
+  object-fit: cover;
+}
+
+/* A waits-on link's type and lag, in words with its editor (N7.2a). */
+.task-dependencies__row--detailed {
+  flex-wrap: wrap;
+  padding-block: var(--space-100);
+}
+
+.task-dependencies__detail {
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  padding-bottom: var(--space-100);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.task-dependencies__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.task-dependencies__editor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+}
+
+.task-dependencies__help {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+/* Reordering subtasks by dragging (D31): the dragged row, and where it will land. */
+.task-subtasks__row {
+  transition:
+    opacity var(--motion-fast) var(--ease-standard),
+    box-shadow var(--motion-fast) var(--ease-standard);
+}
+
+.task-subtasks__row.is-dragging {
+  opacity: 0.5;
+}
+
+.task-subtasks__row.is-drop-before {
+  box-shadow: inset 0 var(--space-050) 0 var(--color-accent);
+}
+
+.task-subtasks__row.is-drop-after {
+  box-shadow: inset 0 calc(-1 * var(--space-050)) 0 var(--color-accent);
+}
+
+.task-dependencies__open,
+.task-links__open,
+.task-subtasks__open,
+.task-library-list__open {
+  display: flex;
+  flex: 1;
+  align-items: baseline;
+  gap: var(--space-200);
+  min-width: 0;
+  padding: var(--space-150) 0;
+  font: inherit;
+  font-size: var(--text-body-sm);
+  text-align: left;
+}
+
+button.task-dependencies__open:hover,
+button.task-links__open:hover,
+button.task-subtasks__open:hover,
+button.task-library-list__open:hover .task-library-list__title {
+  color: var(--color-link);
+  text-decoration: underline;
+}
+
+.task-dependencies__open,
+.task-links__open,
+.task-subtasks__open,
+.task-library-list__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.task-dependencies__missing {
+  flex: 1;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.task-library-list__kind,
+.task-library-list__meta {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+}
+
+.task-library-list__attach {
+  flex-shrink: 0;
+}
+
+.task-library-list__attach .ui-check__label {
+  font-size: var(--text-caption);
+}
+
+/* Subtasks */
+
+/* Only there to measure reorders from (useReorderMotion): no box of its own. */
+.task-subtasks__phases {
+  display: contents;
+}
+
+.task-subtasks__phase {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.task-subtasks__phase-label {
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+}
+
+.task-subtasks__add {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--space-200);
+}
+
+.task-subtasks__add-actions {
+  display: flex;
+  grid-column: 1 / -1;
+  justify-content: flex-end;
+  gap: var(--space-200);
+}
+
+/* Agent run: the changes to review. */
+
+.task-agent-run__changes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.task-agent-run__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-300);
+  font-size: var(--text-body-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.task-agent-run__summary .is-added {
+  color: var(--color-success);
+}
+
+.task-agent-run__summary .is-removed {
+  color: var(--color-danger);
+}
+
+.task-agent-run__summary code {
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+}
+
+.task-agent-run__patch {
+  max-height: calc(var(--row-height) * 12);
+  overflow: auto;
+  padding: var(--space-200) var(--space-300);
+  background: var(--color-surface-sunken);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+}
+
+.task-agent-run__patch span {
+  display: block;
+  white-space: pre;
+}
+
+.task-agent-run__patch .is-addition {
+  background: var(--color-success-subtle);
+  color: var(--color-success);
+}
+
+.task-agent-run__patch .is-deletion {
+  background: var(--color-danger-subtle);
+  color: var(--color-danger);
+}
+
+.task-agent-run__patch .is-hunk {
+  color: var(--color-info);
+}
+
+.task-agent-run__patch .is-meta {
+  color: var(--color-text-muted);
+}
+
+@media (forced-colors: active) {
+  .task-drawer__status .ui-select > select,
+  .task-drawer__title-input {
+    border-color: CanvasText;
+  }
+}
+
+/* Assignee: the picker, with "Assign to me" beside it. */
+.assignee-field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-200);
+}
+
+.assignee-field > .ui-field {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+.assignee-field__me {
+  flex-shrink: 0;
+  margin-bottom: var(--space-050);
+}
+
+/* Checklist ticks and progress */
+.task-checklist__progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-300);
+  width: 100%;
+}
+
+.task-checklist__progress > .ui-progress {
+  flex: 1;
+}
+
+.task-checklist__progress-text {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.task-checklist__check {
+  flex-shrink: 0;
+  margin-right: var(--space-100);
+}
+
+.task-checklist__row.is-checked .ui-input-box input {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+/* Take turns (N2.3): the people in order, each row draggable. */
+.task-turns {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.task-turns__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-turns__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  cursor: grab;
+}
+
+.task-turns__row.is-dragging {
+  opacity: 0.5;
+}
+
+.task-turns__grip {
+  color: var(--color-text-muted);
+}
+
+.task-turns__name {
+  flex: 1;
+}
+
+/* Repeat and reminders (P5.6). */
+.task-repeat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.task-repeat__every {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-300);
+}
+
+.task-repeat__days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200) var(--space-400);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.task-repeat__days legend {
+  margin-bottom: var(--space-100);
+  font-weight: var(--weight-medium);
+}
+
+.task-reminders {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-reminders__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  min-height: var(--control-height-sm);
+}
+
+.task-reminders__row > :last-child:is(button) {
+  margin-inline-start: auto;
+}
+
+/* The keep-reminding bar's actions (N1.7). */
+.task-drawer__nudge-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+  margin-top: var(--space-200);
+}
+
+/*
+ * Links (N2.4): kept apart from Waits on, so nobody reads "relates to" as
+ * holding work back. A dashed frame, and each row says how it is linked.
+ */
+.task-links__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-style: dashed;
+}
+
+.task-links__role {
+  flex: none;
+  font-size: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+
+.task-links__closed,
+.task-links__empty {
+  font-size: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+
+.task-links__empty {
+  margin: 0;
+}
+
+.task-links__add {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-200);
+  margin-top: var(--space-200);
+}
+
+.task-links__add > :nth-child(2) {
+  flex: 1;
+  min-width: 12rem;
+}
+
+/* Under an AI field (N8.4): who filled it, and Fill with AI. */
+.task-custom-fields__ai {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+  margin-top: var(--space-100);
+}
+
+.task-custom-fields__ai-note {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-050);
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+/* Attachments: files dropped here are attached to the task. */
+.task-attach-drop {
+  border: var(--border-width) dashed transparent;
+  border-radius: var(--radius-md);
+}
+
+.task-attach-drop.is-over {
+  border-color: var(--color-accent);
+  background: var(--color-accent-subtle);
+}
+
+/* The pictures in a description, shown while writing it. */
+.task-attachment-preview__image {
+  display: block;
+  max-width: 100%;
+  max-height: 70vh;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+.task-attachment-preview__text {
+  max-height: 70vh;
+  margin: 0;
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-body-sm);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* A task this person may not edit: the fields are disabled together (the database refuses edits). */
+.task-drawer__lock {
+  display: grid;
+  gap: var(--space-500);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}

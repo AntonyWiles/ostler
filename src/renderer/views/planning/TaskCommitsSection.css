@@ -1,0 +1,45 @@
+/* The drawer's Commits section (N9.8b). */
+
+.task-commits__list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-commits__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-200);
+  padding: var(--space-200) 0;
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.task-commits__item:first-child {
+  border-top: none;
+}
+
+.task-commits__hash {
+  margin-top: var(--space-050);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  color: var(--color-text-secondary);
+}
+
+.task-commits__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  min-width: 0;
+}
+
+.task-commits__subject {
+  overflow-wrap: anywhere;
+}
+
+.task-commits__meta {
+  font-size: var(--text-caption);
+  color: var(--color-text-secondary);
+}

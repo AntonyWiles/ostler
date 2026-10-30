@@ -1,0 +1,9 @@
+TYPE,CONTENT,DESCRIPTION,PRIORITY,INDENT,AUTHOR,RESPONSIBLE,DATE,DATE_LANG,TIMEZONE,DURATION,DURATION_UNIT,DEADLINE,DEADLINE_LANG
+section,To do,,,,,,,,,,,,
+task,Paint the hallway @home @weekend,Matte white,1,1,Evan (14781400),Evan (14781400),Oct 20 2026,en,Europe/London,,None,,
+task,Pick a colour,,4,2,Evan (14781400),,,en,Europe/London,,None,,
+task,Ask for samples,,4,3,Evan (14781400),,,en,Europe/London,,None,,
+task,Compare the samples,,4,4,Evan (14781400),,,en,Europe/London,,None,,
+note,Keep the receipt,,,,Evan (14781400),,,,,,,,
+section,Doing
+task,Fix the shelf @home,,2,1,Evan (14781400),Mia (2201),every day,en,Europe/London,30,minute,,

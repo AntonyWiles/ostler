@@ -1,0 +1,35 @@
+/* Picture thumbnails under a description: the drawer's and New task's (MOP-31). */
+.task-description-pictures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+  margin-top: var(--space-100);
+}
+
+.task-description-pictures__button {
+  padding: 0;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: none;
+  cursor: pointer;
+}
+
+.task-description-pictures__image {
+  display: block;
+  max-width: 160px;
+  max-height: 100px;
+  border-radius: var(--radius-control);
+  object-fit: cover;
+}
+
+.task-description-pictures__item {
+  position: relative;
+  list-style: none;
+}
+
+.task-description-pictures__remove {
+  position: absolute;
+  top: var(--space-050);
+  right: var(--space-050);
+  background: var(--color-surface-raised);
+}

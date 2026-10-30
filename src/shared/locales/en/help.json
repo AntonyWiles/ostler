@@ -1,0 +1,39 @@
+{
+  "shortcutOverlay": {
+    "title": "Keyboard shortcuts",
+    "description": "Single-key shortcuts work when you aren't typing in a field.",
+    "search": "Search shortcuts",
+    "noMatch": "No shortcut matches “{{query}}”."
+  },
+  "helpProvider": {
+    "diagnosticsCopied": "Diagnostics copied",
+    "versionsCountsEndLog": "Versions, counts and the end of the log, with names, keys and tokens removed.",
+    "couldntCopyDiagnostics": "Couldn't copy diagnostics",
+    "issuePageOpenBrowser": "The {{brand}} issue page is open in your browser, and diagnostics are on your clipboard: paste them into the report only if you want to.",
+    "couldntOpenIssuePage": "Couldn't open the issue page"
+  },
+  "whatsNewDialog": {
+    "whatsNew": "What's new in {{brand}}",
+    "version": "Version {{version}}",
+    "close": "Close",
+    "thereNoNotesVersion": "There are no notes for this version."
+  },
+  "guide": {
+    "version": "Version {{version}}"
+  },
+  "helpView": {
+    "userGuidePages": "User guide pages",
+    "userGuide": "User guide",
+    "searchGuide": "Search the guide",
+    "matches_one": "{{count}} match",
+    "matches_other": "{{count}} matches",
+    "userGuideIsntBuild": "The user guide isn't in this build",
+    "readOnlineRepositoryDocs": "Read it online in the {{brand}} repository, in the docs/user-guide folder.",
+    "noPageMentions": "No page mentions that.",
+    "foundPages_one": "Found on {{count}} page.",
+    "foundPages_other": "Found on {{count}} pages.",
+    "notPage": "Not on this page.",
+    "matchesPageHighlighted_one": "{{count}} match on this page, highlighted.",
+    "matchesPageHighlighted_other": "{{count}} matches on this page, highlighted."
+  }
+}

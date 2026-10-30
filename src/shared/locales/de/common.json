@@ -1,0 +1,366 @@
+{
+  "time": {
+    "justNow": "gerade eben"
+  },
+  "date": {
+    "today": "Heute",
+    "tomorrow": "Morgen",
+    "yesterday": "Gestern",
+    "overdueBy_one": "{{count}} Tag überfällig",
+    "overdueBy_other": "{{count}} Tage überfällig",
+    "daysAgo_one": "vor {{count}} Tag",
+    "daysAgo_other": "vor {{count}} Tagen",
+    "inDays_one": "In {{count}} Tag",
+    "inDays_other": "In {{count}} Tagen"
+  },
+  "count": {
+    "task_one": "{{count}} Aufgabe",
+    "task_other": "{{count}} Aufgaben",
+    "agent_one": "{{count}} Agent",
+    "agent_other": "{{count}} Agenten",
+    "run_one": "{{count}} Lauf",
+    "run_other": "{{count}} Läufe",
+    "goal_one": "{{count}} Ziel",
+    "goal_other": "{{count}} Ziele",
+    "milestone_one": "{{count}} Meilenstein",
+    "milestone_other": "{{count}} Meilensteine",
+    "fileEvent_one": "{{count}} Dateiereignis",
+    "fileEvent_other": "{{count}} Dateiereignisse",
+    "commit_one": "{{count}} Commit",
+    "commit_other": "{{count}} Commits",
+    "agentEvent_one": "{{count}} Agent-Ereignis",
+    "agentEvent_other": "{{count}} Agent-Ereignisse",
+    "day_one": "{{count}} Tag",
+    "day_other": "{{count}} Tage",
+    "libraryFile_one": "{{count}} Bibliotheksdatei",
+    "libraryFile_other": "{{count}} Bibliotheksdateien",
+    "list_one": "{{count}} Liste",
+    "list_other": "{{count}} Listen",
+    "label_one": "{{count}} Label",
+    "label_other": "{{count}} Labels",
+    "member_one": "{{count}} Mitglied",
+    "member_other": "{{count}} Mitglieder",
+    "file_one": "{{count}} Datei",
+    "file_other": "{{count}} Dateien",
+    "phase_one": "{{count}} Phase",
+    "phase_other": "{{count}} Phasen"
+  },
+  "keys": {
+    "plus": "plus",
+    "then": "dann",
+    "or": "oder",
+    "Ctrl": "Strg",
+    "Shift": "Umschalt",
+    "Alt": "Alt",
+    "Esc": "Esc",
+    "Enter": "Eingabe",
+    "Delete": "Entf",
+    "Tab": "Tab",
+    "Space": "Leertaste",
+    "Backspace": "Rücktaste",
+    "Left": "Pfeil links",
+    "Right": "Pfeil rechts",
+    "Up": "Pfeil oben",
+    "Down": "Pfeil unten",
+    "ArrowKeys": "Pfeiltasten",
+    "Home": "Pos1",
+    "End": "Ende",
+    "PageUp": "Bild auf",
+    "PageDown": "Bild ab"
+  },
+  "chip": {
+    "item": "Element",
+    "remove": "{{name}} entfernen"
+  },
+  "sentenceSeparator": ". ",
+  "errorBoundary": {
+    "detailsLogCopyDiagnostics": "Die Details stehen im Protokoll. Kopieren Sie die Diagnosedaten, um sie in einen Fehlerbericht aufzunehmen.",
+    "viewCrashed": "Ansicht abgestürzt: {{message}}",
+    "appCrashed": "App abgestürzt: {{message}}",
+    "somethingWentWrongView": "In dieser Ansicht ist ein Fehler aufgetreten",
+    "somethingWentWrong": "Es ist ein Fehler aufgetreten",
+    "reloadView": "Ansicht neu laden",
+    "reload": "Neu laden"
+  },
+  "ostlerContext": {
+    "unknownError": "Unbekannter Fehler"
+  },
+  "useConfig": {
+    "unknownError": "Unbekannter Fehler"
+  },
+  "avatarGroup": {
+    "people": "{{peopleCount}} Personen",
+    "more_one": "{{count}} weitere: {{names}}",
+    "more_other": "{{count}} weitere: {{names}}"
+  },
+  "daysOff": {
+    "note": "{{name}}: ein freier Tag",
+    "notePerson": "{{name}}: ein freier Tag für {{person}}",
+    "dayOffLabel": "freier Tag: {{name}}",
+    "personOff": "{{person}} abwesend",
+    "peopleOff": "{{people}} abwesend"
+  },
+  "calendarGrid": {
+    "more": "+{{moreCount}} weitere",
+    "more2": "{{moreCount}} weitere am {{longDate}}",
+    "n1Item": "1 Element",
+    "items": "{{total}} Elemente"
+  },
+  "combobox": {
+    "create": "„{{text}}“ erstellen",
+    "noMatches": "Keine Treffer"
+  },
+  "confirm": {
+    "cancel": "Abbrechen",
+    "useconfirmNeedsAboveApp": "useConfirm braucht darüber einen <ConfirmProvider> (App.tsx)."
+  },
+  "dataTable": {
+    "deselectAllRows": "Alle Zeilen abwählen",
+    "selectAllRows": "Alle Zeilen auswählen",
+    "sortShiftClickAdds": "Nach {{header}} sortieren. Umschalt+Klick fügt es als weitere Sortierung hinzu.",
+    "select": "{{entryLabel}} auswählen",
+    "sortedAscending": "Sortiert nach {{header}}, aufsteigend",
+    "sortedDescending": "Sortiert nach {{header}}, absteigend",
+    "noLongerSorted": "{{header}} ist nicht mehr sortiert",
+    "movedColumn": "{{header}} auf Spalte {{to}} von {{columnCount}} verschoben",
+    "pixelsWide": "{{header}} ist {{width}} Pixel breit",
+    "selected": "{{rowIdCount}} ausgewählt",
+    "movedColumn2": "{{header}} auf Spalte {{number}} von {{columnCount}} verschoben",
+    "sortRankAscending": "Sortierung {{rank}}, aufsteigend",
+    "sortRankDescending": "Sortierung {{rank}}, absteigend"
+  },
+  "dateField": {
+    "quickDates": "Schnellauswahl",
+    "today": "Heute",
+    "tomorrow": "Morgen",
+    "nextWeek": "Nächste Woche",
+    "clear": "Leeren",
+    "notADate": "Kein gültiges Datum. Prüfen Sie Tag, Monat und Jahr."
+  },
+  "dialog": {
+    "close": "Schließen"
+  },
+  "drawer": {
+    "close": "Schließen",
+    "resizePanel": "Größe des Bereichs ändern"
+  },
+  "errorText": {
+    "details": "Details"
+  },
+  "filterBuilder": {
+    "filters": "Filter",
+    "match": "Übereinstimmung",
+    "editFilter": "Filter bearbeiten: {{words}}",
+    "removeFilter": "Filter entfernen: {{words}}",
+    "removeFilter2": "Filter entfernen",
+    "addFilter": "Filter hinzufügen",
+    "clear": "Leeren",
+    "remove": "Entfernen",
+    "done": "Fertig",
+    "words": "Wörter",
+    "noTaskProjectHas": "In diesem Projekt hat noch keine Aufgabe ein Label.",
+    "when": "Wann",
+    "date": "Datum",
+    "estimate": "Schätzung",
+    "checklist": "Checkliste",
+    "allFilters": "Alle Filter",
+    "anyFilter": "Beliebiger Filter",
+    "me": "Ich",
+    "nobody": "Niemand",
+    "noMilestone": "Kein Meilenstein",
+    "noGoal": "Kein Ziel",
+    "editFilterField": "Filter bearbeiten: {{field}}",
+    "customFields": "Benutzerdefinierte Felder",
+    "findField": "Feld suchen",
+    "noFieldMatches": "Kein Feld passt.",
+    "fieldDeleted": "Dieses Feld wurde gelöscht. Entfernen Sie den Filter.",
+    "from": "Von",
+    "to": "Bis",
+    "isEmpty": "ist leer",
+    "isSet": "ist gesetzt",
+    "currentIteration": "Die aktuelle Iteration",
+    "noIteration": "Keine Iteration",
+    "noType": "Kein Typ",
+    "noSubproject": "Kein Workstream"
+  },
+  "inlineAlert": {
+    "dismiss": "Ausblenden"
+  },
+  "priorityIcon": {
+    "priority": "{{taskPriorityLabel}}-Priorität"
+  },
+  "textField": {
+    "clear": "Leeren"
+  },
+  "toast": {
+    "notifications": "Benachrichtigungen",
+    "dismissNotification": "Benachrichtigung ausblenden",
+    "undo": "Rückgängig",
+    "available": "{{actionLabel}} ist verfügbar.",
+    "availableBoth": "{{firstLabel}} und {{secondLabel}} sind verfügbar.",
+    "keptInCenter": "Etwas verpasst? Alles finden Sie unter der Glocke."
+  },
+  "toolbar": {
+    "moreActions": "Weitere Aktionen"
+  },
+  "chartFrame": {
+    "table": "{{title}} als Tabelle",
+    "legend": "Legende",
+    "showChart": "Als Diagramm anzeigen",
+    "showTable": "Als Tabelle anzeigen"
+  },
+  "chartCore": {
+    "total": "Summe",
+    "noData": "{{kind}} ohne Daten.",
+    "noValues": "{{series}}: keine Werte",
+    "kind": {
+      "bar": "Balkendiagramm",
+      "line": "Liniendiagramm",
+      "stackedArea": "Gestapeltes Flächendiagramm"
+    },
+    "bars_one": "{{count}} Balken",
+    "bars_other": "{{count}} Balken",
+    "points_one": "{{count}} Punkt von {{first}} bis {{last}}",
+    "points_other": "{{count}} Punkte von {{first}} bis {{last}}",
+    "barValues": "{{series}}: {{values}}",
+    "categoryValue": "{{category}} {{value}}",
+    "categoryNoValue": "{{category}} ohne Wert",
+    "staysAt": "{{series}} bleibt bei {{value}}",
+    "staysAtPeaking": "{{series}} bleibt bei {{value}}, Höchstwert {{peak}}",
+    "goesFrom": "{{series}} verläuft von {{from}} bis {{to}}",
+    "goesFromPeaking": "{{series}} verläuft von {{from}} bis {{to}}, Höchstwert {{peak}}",
+    "summary": "{{kind}}, {{span}}. {{details}}."
+  },
+  "timelineScale": {
+    "week": "Woche ab {{format}}"
+  },
+  "unit": {
+    "files": "Dateien",
+    "days": "Tage",
+    "seconds": "Sekunden",
+    "ms": "ms",
+    "MB": "MB",
+    "minutes": "Minuten",
+    "tokens": "Token"
+  },
+  "itemLinks": {
+    "deletedItem": "Gelöschtes Element",
+    "kinds": {
+      "task": "Aufgabe",
+      "milestone": "Meilenstein",
+      "decision": "Entscheidung",
+      "library": "Bibliothekselement"
+    },
+    "picker": "Mit einem Element verknüpfen",
+    "pickerHint": "Tippen, um eine Aufgabe, einen Meilenstein, eine Entscheidung oder ein Bibliothekselement zu finden",
+    "noMatches": "Nichts passt",
+    "linkedFrom": "Verknüpft von",
+    "sources": {
+      "task": "Aufgabe: {{title}}",
+      "comment": "Kommentar zu „{{title}}“",
+      "decision": "Entscheidung: {{title}}",
+      "library": "Bibliothek: {{title}}"
+    }
+  },
+  "pins": {
+    "pinned": "Angeheftet",
+    "pinnedCount_one": "{{count}} Anheftung",
+    "pinnedCount_other": "{{count}} Anheftungen",
+    "pinToSidebar": "An Seitenleiste anheften",
+    "unpinFromSidebar": "Von Seitenleiste lösen",
+    "pinToOverview": "An Übersicht anheften",
+    "unpinFromOverview": "Von Übersicht lösen",
+    "sidebarFull": "In der Seitenleiste sind höchstens {{max}} Anheftungen möglich. Lösen Sie eine, um Platz zu schaffen.",
+    "unpin": "Lösen",
+    "actions": "Aktionen für {{title}}",
+    "gone": "Nicht mehr vorhanden",
+    "archived": "Archiviert",
+    "pinnedToSidebar": "{{title}} an die Seitenleiste angeheftet",
+    "pinnedToOverview": "{{title}} an die Übersicht angeheftet",
+    "unpinned": "{{title}} gelöst",
+    "couldntPin": "Konnte nicht angeheftet werden",
+    "couldntUnpin": "Konnte nicht gelöst werden",
+    "couldntMove": "Die Anheftung konnte nicht verschoben werden",
+    "couldntOpen": "Konnte nicht geöffnet werden",
+    "kinds": {
+      "task": "Aufgabe",
+      "milestone": "Meilenstein",
+      "decision": "Entscheidung",
+      "library": "Bibliothekselement",
+      "saved-view": "Gespeicherte Ansicht",
+      "project-view": "Ansicht",
+      "personal-goal": "Ziel"
+    },
+    "openLinkTitle": "Diesen Link öffnen?",
+    "openLinkBody": "{{url}}\n\n„{{name}}“ wird in Ihrem Browser geöffnet.",
+    "openLinkConfirm": "Link öffnen",
+    "openFileTitle": "{{name}} in der zugehörigen App öffnen?",
+    "openFileBody": "Die Datei wird außerhalb von {{appName}} in der App geöffnet, die Windows dafür verwendet.",
+    "openFileConfirm": "Öffnen",
+    "shortcuts": "Verknüpfungen",
+    "noShortcuts": "Heften Sie an, was Sie in diesem Projekt am häufigsten öffnen, etwa einen Meilenstein, eine gespeicherte Ansicht oder die Verwaltungsseite des Ladens.",
+    "shortcutActions": "Verknüpfungsaktionen für {{title}}",
+    "moveLeft": "Nach links verschieben",
+    "moveRight": "Nach rechts verschieben",
+    "addShortcut": "Verknüpfung hinzufügen",
+    "addShortcutExisting": "Ein Element",
+    "addShortcutLink": "Ein neuer Link",
+    "findItem": "Aufgabe, Meilenstein, Entscheidung, Bibliothekselement oder Ansicht suchen",
+    "findItemPlaceholder": "Tippen, um zu suchen…",
+    "nothingToPin": "Nichts passt",
+    "linkName": "Name",
+    "linkAddress": "Adresse",
+    "linkAddressHint": "Eine https-Adresse. Sie wird als Link in der Bibliothek gespeichert.",
+    "enterHttpsAddress": "Geben Sie eine https-Adresse ein.",
+    "enterName": "Geben Sie einen Namen ein.",
+    "add": "Verknüpfung hinzufügen",
+    "cancel": "Abbrechen",
+    "palettePin": "Anheften…",
+    "palettePinHint": "Eine Aufgabe, einen Meilenstein, eine Entscheidung, ein Bibliothekselement oder eine Ansicht an die Seitenleiste anheften",
+    "paletteFindToPin": "Etwas suchen, das an die Seitenleiste angeheftet werden soll",
+    "paletteKeywords": "anheften, angeheftet, pin, Verknüpfung, shortcut, Favorit, Lesezeichen, bookmark",
+    "thisView": "{{view}}"
+  },
+  "countdowns": {
+    "daysTo_one": "noch {{count}} Tag bis {{title}}",
+    "daysTo_other": "noch {{count}} Tage bis {{title}}",
+    "tomorrow": "{{title}} ist morgen",
+    "today": "{{title}} ist heute",
+    "yesterday": "{{title}} war gestern",
+    "daysAgo_one": "{{title}} war vor {{count}} Tag",
+    "daysAgo_other": "{{title}} war vor {{count}} Tagen",
+    "done": "{{title}}: erledigt",
+    "withWorkingDays": "{{words}} ({{workingDays}})",
+    "workingDays_one": "{{count}} Arbeitstag",
+    "workingDays_other": "{{count}} Arbeitstage",
+    "show": "Als Countdown anzeigen",
+    "hide": "Countdown beenden",
+    "shown": "{{title}} wird als Countdown angezeigt",
+    "hidden": "{{title}} zählt nicht mehr herunter",
+    "couldntChange": "Der Countdown konnte nicht geändert werden",
+    "offerAfterPin": "Auf der Startseite als Countdown anzeigen?",
+    "limitTitle": "Einen Countdown ausschalten?",
+    "limitBody": "Es können höchstens {{max}} Countdowns gleichzeitig angezeigt werden. Wählen Sie einen aus, der für {{title}} ausgeschaltet werden soll.",
+    "turnOff": "{{title}} ausschalten",
+    "turnOffShort": "Ausschalten",
+    "turnOffDone": "Countdown für {{title}} ausschalten",
+    "cancel": "Abbrechen",
+    "heading": "Countdowns",
+    "open": "{{title}} öffnen, {{words}}, {{date}}",
+    "progress": "Seit dem Anheften vergangene Zeit"
+  },
+  "notificationCenter": {
+    "title": "In-App-Benachrichtigungen",
+    "intro": "Nachrichten von {{brand}} während der Arbeit, bis das Fenster geschlossen wird. Rückgängig ist dort weiterhin möglich. Erinnerungen und Agent-Meldungen erscheinen außerdem in den Windows-Benachrichtigungen, im Windows-Benachrichtigungscenter (Windows-Taste + N).",
+    "empty": "Noch nichts da. Verpasste Benachrichtigungen warten hier auf Sie.",
+    "clearAll": "Alle entfernen",
+    "settings": "Benachrichtigungseinstellungen",
+    "remove": "„{{title}}“ entfernen",
+    "undone": "Rückgängig gemacht",
+    "done": "Erledigt"
+  },
+  "mentions": {
+    "noLongerHere": "Jemand, der nicht mehr dabei ist",
+    "picker": "Jemanden erwähnen"
+  }
+}

@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+
+# Build output
+out/
+dist/
+release/
+.vite/
+*.tsbuildinfo
+
+# Local databases and secrets
+*.db*
+.env
+.env.*
+!.env.example
+
+# Test and tool caches
+coverage/
+.playwright/
+test-results/
+.eslintcache
+__pycache__/
+*.py[cod]
+
+# Local logs and screenshots from the dev tools and UI tests
+logs/
+tools/window-screenshot/*.png
+
+# Agent harness state, when the harness is installed into this repository
+.agent-harness/
+
+# Personal Claude Code settings
+.claude/settings.json
+.claude/settings.local.json
+
+# Android app (mobile/): dependencies, generated native projects and Expo cache
+mobile/node_modules/
+mobile/android/
+mobile/ios/
+mobile/.expo/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

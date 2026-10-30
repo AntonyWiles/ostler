@@ -1,0 +1,23 @@
+.ui-error-details {
+  margin-top: var(--space-100);
+  font-size: var(--text-body-sm);
+  color: var(--color-text-secondary);
+}
+
+.ui-error-details > summary {
+  cursor: pointer;
+  width: fit-content;
+  border-radius: var(--radius-control);
+}
+
+.ui-error-details > summary:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.ui-error-details__raw {
+  margin-top: var(--space-100);
+  font-family: var(--font-mono);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}

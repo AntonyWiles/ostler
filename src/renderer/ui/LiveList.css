@@ -1,0 +1,98 @@
+.ui-live-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+  margin: var(--space-200) 0;
+  padding: var(--space-200) var(--space-300);
+  background: var(--color-surface-sunken);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-body-sm);
+}
+
+.ui-live-list.is-loading,
+.ui-live-list__words,
+.ui-live-list__empty,
+.ui-live-list__note,
+.ui-live-list__meta {
+  color: var(--color-text-muted);
+}
+
+.ui-live-list__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-100) var(--space-300);
+}
+
+.ui-live-list__title {
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+}
+
+.ui-live-list__counts {
+  color: var(--color-text-secondary);
+}
+
+.ui-live-list__words,
+.ui-live-list__empty,
+.ui-live-list__note {
+  margin: 0;
+}
+
+.ui-live-list__tasks {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  gap: var(--space-100) var(--space-300);
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ui-live-list__task {
+  display: contents;
+}
+
+.ui-live-list__task-title {
+  min-width: 0;
+}
+
+.ui-live-list__more {
+  align-self: flex-start;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font: inherit;
+}
+
+.ui-live-list__more.is-link {
+  color: var(--color-link);
+  cursor: pointer;
+}
+
+.ui-live-list__more.is-link:hover {
+  text-decoration: underline;
+}
+
+.ui-live-list__more.is-link:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.ui-live-list__text {
+  margin: 0;
+  font-family: var(--font-mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 900px) {
+  .ui-live-list__tasks {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}

@@ -1,0 +1,268 @@
+/* The Calendar view: period navigation, the shared filter toolbar, then the
+   grid filling the page, with the Unscheduled panel beside it. */
+
+.ostler-workspace:has(> .ostler-workspace-view--calendar) {
+  height: 100%;
+}
+
+.ostler-workspace-view--calendar {
+  min-height: 0;
+}
+
+.calendar-view {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+  min-height: calc(var(--space-1200) * 8);
+}
+
+.calendar-view__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.calendar-view__title {
+  margin: 0 var(--space-200);
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading-sm);
+}
+
+.calendar-view__modes {
+  margin-left: auto;
+}
+
+.calendar-view__main {
+  display: flex;
+  flex: 1;
+  gap: var(--space-300);
+  min-height: 0;
+}
+
+.calendar-view__grid-area {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+  min-height: 0;
+}
+
+.calendar-view__grid {
+  flex: 1;
+}
+
+.calendar-view__loading {
+  padding: var(--space-400);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+/* The "+" shows on hover or focus within the day, or while it is the focused day. */
+.calendar-view__add {
+  opacity: 0;
+}
+
+.ui-calendar__day:hover .calendar-view__add,
+.ui-calendar__day:focus-within .calendar-view__add,
+.calendar-view__add:focus-visible {
+  opacity: 1;
+}
+
+/* A task on the calendar: status icon, title, overdue mark and assignee, on
+   its status colour at low intensity. */
+.calendar-chip {
+  --chip-status: var(--status-backlog);
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  width: 100%;
+  height: 100%;
+  min-height: calc(var(--space-500) + var(--space-100));
+  padding: 0 var(--space-150);
+  border: none;
+  border-left: var(--space-050) solid var(--chip-status);
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--chip-status) 14%, var(--color-surface));
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  text-align: left;
+  cursor: pointer;
+}
+
+.calendar-chip:hover {
+  background: color-mix(in srgb, var(--chip-status) 24%, var(--color-surface));
+}
+
+.calendar-chip:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: 0;
+}
+
+.calendar-chip.is-active {
+  box-shadow: inset 0 0 0 var(--border-width) var(--color-accent);
+}
+
+.calendar-chip--ready {
+  --chip-status: var(--status-ready);
+}
+
+.calendar-chip--active {
+  --chip-status: var(--status-active);
+}
+
+.calendar-chip--blocked {
+  --chip-status: var(--status-blocked);
+}
+
+.calendar-chip--review {
+  --chip-status: var(--status-review);
+}
+
+.calendar-chip--done {
+  --chip-status: var(--status-done);
+}
+
+.calendar-chip.is-done {
+  opacity: 0.55;
+}
+
+.calendar-chip.is-done .calendar-chip__title {
+  text-decoration: line-through;
+}
+
+.calendar-chip.is-overdue {
+  border-left-color: var(--color-danger);
+}
+
+/* A bar that carries on from the week before, or into the next one. */
+.calendar-chip.continues-before {
+  border-left-style: dashed;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.calendar-chip.continues-after {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.calendar-chip__status {
+  flex: none;
+  color: var(--chip-status);
+}
+
+.calendar-chip__title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-chip__overdue {
+  flex: none;
+  color: var(--color-danger);
+}
+
+.calendar-chip .ui-avatar {
+  flex: none;
+}
+
+/* A milestone: a flag on its target date. */
+.calendar-flag {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  height: 100%;
+  padding: 0 var(--space-150);
+  border-radius: var(--radius-control);
+  background: var(--color-accent-subtle);
+  color: var(--color-link);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+}
+
+.calendar-flag__name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-unscheduled {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--space-200);
+  width: clamp(calc(var(--space-1000) * 4), 22vw, calc(var(--space-1000) * 6));
+  min-height: 0;
+  padding: var(--space-300);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.calendar-unscheduled__title {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.calendar-unscheduled__hint,
+.calendar-unscheduled__empty {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+}
+
+.calendar-unscheduled__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.calendar-unscheduled__list > li {
+  cursor: grab;
+}
+
+.calendar-quick-add {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.calendar-quick-add__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-200);
+}
+
+/* Week with hours (N3.4a): the all-day row stays short and lines up with
+   the hour grid's day columns, past its gutter of hour labels. */
+.calendar-view__grid.is-week-hours {
+  flex: none;
+  margin-left: calc(var(--space-1000) + var(--space-400));
+}
+
+.calendar-view__grid.is-week-hours .ui-calendar__week {
+  min-height: calc(var(--calendar-head) + 2 * var(--calendar-row));
+}
+
+.calendar-view__grid-area:has(.week-hours) {
+  gap: 0;
+}

@@ -1,0 +1,181 @@
+/*
+ * Writes out/THIRD_PARTY_NOTICES.md from the production dependency tree
+ * (`npm ls --omit=dev --all --json --long`): name, version, licence and licence
+ * text for every package the installer ships, the vendored opencode-ai included.
+ *
+ * It refuses (exit 1) when a production dependency is GPL or AGPL licensed, has
+ * no licence, or has one this policy does not know (D24). `npm run build` and
+ * `npm run dev` write the file, which is never committed; `npm run lint` runs
+ * this with --check, which applies the policy without writing anything.
+ */
+const fs = require('node:fs')
+const path = require('node:path')
+const { execFileSync } = require('node:child_process')
+const { parseArgs } = require('./lib/args.cjs')
+const { projectRoot } = require('./lib/root.cjs')
+const { npmCommand } = require('./lib/run.cjs')
+
+const OUTPUT = path.join(projectRoot, 'out', 'THIRD_PARTY_NOTICES.md')
+
+/** Licences a production dependency may carry. Anything else is refused. */
+const ALLOWED = new Set([
+  'MIT',
+  'MIT-0',
+  'ISC',
+  'Apache-2.0',
+  'BSD-2-Clause',
+  'BSD-3-Clause',
+  '0BSD',
+  'BlueOak-1.0.0',
+  'Python-2.0',
+  'CC0-1.0',
+  'Unlicense',
+  'WTFPL'
+])
+
+/**
+ * Packages whose package.json has no `license` field, with the licence checked
+ * by hand. opencode-ai's platform binaries are published from the same MIT
+ * repository (sst/opencode) as opencode-ai itself, whose LICENSE they share.
+ */
+const OVERRIDES = {
+  'opencode-windows-x64': { license: 'MIT', textFrom: 'opencode-ai' },
+  'opencode-windows-x64-baseline': { license: 'MIT', textFrom: 'opencode-ai' },
+  // npm installs these instead of the Windows binaries on Linux (development and CI only).
+  'opencode-linux-x64': { license: 'MIT', textFrom: 'opencode-ai' },
+  'opencode-linux-x64-baseline': { license: 'MIT', textFrom: 'opencode-ai' },
+  'opencode-linux-x64-baseline-musl': { license: 'MIT', textFrom: 'opencode-ai' },
+  'opencode-linux-x64-musl': { license: 'MIT', textFrom: 'opencode-ai' }
+}
+
+const LICENCE_FILE = /^(licen[cs]e|copying|notice)(\.(md|txt|markdown))?$|^licen[cs]e[-_.]/i
+
+/** The `license` field as one SPDX-like string, or null. */
+function licenseOf(pkg) {
+  const raw = pkg.license ?? pkg.licenses
+  if (!raw) return null
+  if (typeof raw === 'string') return raw
+  if (Array.isArray(raw)) return raw.map((l) => (typeof l === 'string' ? l : l.type)).join(' OR ')
+  return raw.type ?? null
+}
+
+/** Why a licence expression is refused, or null when it is allowed. */
+function policyProblem(license) {
+  if (!license) return 'has no licence'
+  // GPL in any form (GPL, LGPL, AGPL) is named, even inside an OR.
+  if (/GPL/i.test(license)) return `is ${license}, which the policy refuses (GPL/AGPL)`
+  const expression = license.replace(/[()]/g, ' ').trim()
+  const alternatives = expression.split(/\s+OR\s+/i)
+  const ok = alternatives.some((alt) =>
+    alt.split(/\s+AND\s+/i).every((id) =>
+      ALLOWED.has(
+        id
+          .trim()
+          .replace(/\+$/, '')
+          .replace(/-only$/, '')
+      )
+    )
+  )
+  return ok ? null : `has the unknown licence "${license}"`
+}
+
+/** Flattens an `npm ls --json --long` tree into unique packages, sorted by name. */
+function collectPackages(tree) {
+  const found = new Map()
+  ;(function walk(node) {
+    for (const [name, dep] of Object.entries(node.dependencies || {})) {
+      if (!dep.path || !dep.version) continue // deduped references and missing optionals
+      const key = `${name}@${dep.version}`
+      if (found.has(key)) continue
+      found.set(key, { name, version: dep.version, path: dep.path, license: licenseOf(dep) })
+      walk(dep)
+    }
+  })(tree)
+  return [...found.values()].sort(
+    (a, b) => a.name.localeCompare(b.name) || a.version.localeCompare(b.version)
+  )
+}
+
+/** Reads a package's licence file, or null when it ships none. */
+function readLicenceText(dir) {
+  let names
+  try {
+    names = fs.readdirSync(dir)
+  } catch {
+    return null
+  }
+  const file = names.filter((n) => LICENCE_FILE.test(n)).sort()[0]
+  return file ? fs.readFileSync(path.join(dir, file), 'utf8').replace(/\r\n/g, '\n').trim() : null
+}
+
+/** Applies overrides and licence texts; returns { entries, problems }. */
+function resolveEntries(packages, readText = readLicenceText) {
+  const byName = new Map(packages.map((p) => [p.name, p]))
+  const problems = []
+  const entries = packages.map((pkg) => {
+    const override = OVERRIDES[pkg.name]
+    const license = pkg.license ?? override?.license ?? null
+    const problem = policyProblem(license)
+    if (problem) problems.push(`${pkg.name}@${pkg.version} ${problem}`)
+    const source = override?.textFrom ? byName.get(override.textFrom) : pkg
+    const text = (source && readText(source.path)) ?? readText(pkg.path)
+    return { name: pkg.name, version: pkg.version, license, text }
+  })
+  return { entries, problems }
+}
+
+/** The notices file for resolved entries. */
+function renderNotices(entries) {
+  const lines = [
+    '# Third-party notices',
+    '',
+    '<!-- Generated by `npm run notices` (scripts/generate-third-party-notices.cjs). Do not edit by hand. -->',
+    '',
+    'Ostler ships the following open source packages. Each is listed with its version, its licence',
+    'and the licence text it is distributed with.',
+    '',
+    `${entries.length} packages.`,
+    ''
+  ]
+  for (const entry of entries) {
+    lines.push(`## ${entry.name} ${entry.version}`, '', `Licence: ${entry.license}`, '')
+    if (entry.text) {
+      const fence = entry.text.includes('```') ? '~~~~' : '```'
+      lines.push(`${fence}text`, entry.text, fence, '')
+    } else {
+      lines.push(`The package ships no licence file. Its licence is ${entry.license}.`, '')
+    }
+  }
+  return lines.join('\n')
+}
+
+function readTree() {
+  const npm = npmCommand(['ls', '--omit=dev', '--all', '--json', '--long'])
+  const out = execFileSync(npm.command, npm.args, {
+    cwd: projectRoot,
+    encoding: 'utf8',
+    maxBuffer: 256 * 1024 * 1024,
+    shell: npm.shell
+  })
+  return JSON.parse(out)
+}
+
+function main() {
+  const check = parseArgs().has('--check')
+  const { entries, problems } = resolveEntries(collectPackages(readTree()))
+  if (problems.length > 0) {
+    process.stderr.write(
+      `third-party notices: refused by the licence policy:\n${problems.map((p) => `  - ${p}`).join('\n')}\n`
+    )
+    process.exitCode = 1
+    return
+  }
+  if (check) return
+  fs.mkdirSync(path.dirname(OUTPUT), { recursive: true })
+  fs.writeFileSync(OUTPUT, renderNotices(entries))
+  process.stdout.write(`Wrote out/THIRD_PARTY_NOTICES.md (${entries.length} packages)\n`)
+}
+
+if (require.main === module) main()
+
+module.exports = { collectPackages, policyProblem, resolveEntries, renderNotices, licenseOf }

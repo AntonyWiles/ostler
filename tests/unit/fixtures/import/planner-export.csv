@@ -1,0 +1,4 @@
+Task ID,Task Name,Bucket Name,Progress,Priority,Assigned To,Created By,Created Date,Start Date,Due Date,Late,Completed Date,Completed By,Description,Completed Checklist Items,Checklist Items,Labels
+AbC1,Order the chairs,Venue,In progress,Important,Alex Chen;Sam Lee,Sam Lee,9/1/2026,10/1/2026,10/15/2026,false,,,Eighty chairs,1/2,Count the guests;Ask for a quote,Pink;Blue
+AbC2,Book the band,Music,Completed,Urgent,Sam Lee,Sam Lee,9/1/2026,,9/20/2026,false,9/18/2026,Sam Lee,,,,
+AbC3,Choose the songs,Music,Not started,Low,,Sam Lee,9/2/2026,,10/25/2026,false,,,,,,Blue

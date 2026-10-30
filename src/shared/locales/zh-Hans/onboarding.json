@@ -1,0 +1,201 @@
+{
+  "welcome": {
+    "goProjectSkipRest": "前往项目，并跳过其余步骤。",
+    "closeWelcomeWithoutCreating": "关闭欢迎页，不创建任何内容。这里的所有设置也都可以在“设置”中找到。",
+    "skipNow": "暂时跳过",
+    "welcome": "欢迎使用 {{brand}}",
+    "planProjectsTasksBoards": "用任务、看板、日历和时间线规划项目。所有内容都保存在这台电脑上。两个简单的选择，然后创建你的第一个项目。",
+    "whatShouldWeCall": "我们该怎么称呼你？",
+    "tasksAssignYourselfShow": "分配给你自己的任务会显示这个名字。你可以在“设置 › 成员”中更改。",
+    "theme": "主题",
+    "continue": "继续",
+    "howDoWantStart": "你想怎么开始？",
+    "firstProject": "你的第一个项目",
+    "startWithDemos": "从演示项目开始",
+    "setUpFromOtherDevice": "从我的另一台设备设置",
+    "joinTitle": "从我的另一台设备设置",
+    "joinLead": "如果你已在另一台电脑上使用 {{brand}}，这台电脑可以加入它的个人空间：你的项目、个人数据和设置也会同步到这里。",
+    "chooseTemplate": "选择模板",
+    "next": "下一步",
+    "progress": "欢迎进度",
+    "stepOf": "第 {{current}} 步，共 {{total}} 步",
+    "startTemplate": "从模板开始",
+    "readyMadePlanSuch": "现成的计划，例如活动、产品发布或学习计划。",
+    "blankProject": "空白项目",
+    "emptyProjectFillYourself": "一个空项目，由你自己填写。",
+    "import": "导入",
+    "spreadsheetCsvTrelloBoard": "来自电子表格（CSV）或 Trello 看板。",
+    "projectName": "项目名称",
+    "websiteRelaunch": "网站改版",
+    "back": "上一步",
+    "fewOptionalExtras": "几项可选功能",
+    "eachTheseOptionalCan": "以下每项都是可选的，你可以稍后在“设置”中完成。",
+    "softwareProject": "这是一个软件项目吗？",
+    "linkedReadsNeverWrites": "已关联到 {{folder}}。{{brand}} 只读取它，从不写入。",
+    "linkFolderBrowseFiles": "关联其文件夹，即可浏览文件并查看 Git 活动。{{brand}} 只会读取它。",
+    "linkFolder": "关联文件夹…",
+    "wantAiHelp": "需要 AI 帮助吗？",
+    "setUp": "{{aiName}} 已设置。",
+    "canSuggestTasksBreak": "{{aiName}} 可以建议任务、拆分目标并生成摘要。你可以使用这台电脑上的免费模型，也可以使用 AI 账户。",
+    "setUpAi": "设置 AI…",
+    "useAiAgents": "使用 AI 智能体吗？",
+    "agents": "智能体已开启。",
+    "agentsWorkThroughTasks": "智能体会在你的文件夹中处理任务，每个任务使用各自的副本。在你接受之前，不会更改任何内容。",
+    "setUpAgents": "设置智能体…",
+    "system": "跟随 Windows",
+    "followsWindows": "跟随 Windows 设置",
+    "light": "浅色",
+    "lightAllTime": "始终使用浅色",
+    "dark": "深色",
+    "darkAllTime": "始终使用深色",
+    "chooseProjectFolder": "选择项目文件夹",
+    "couldntLinkFolder": "无法关联文件夹。{{error}}",
+    "chooseFile": "选择文件…",
+    "createProject": "创建项目",
+    "openProject": "打开项目",
+    "finish": "完成",
+    "readyOptional": "“{{projectName}}”已就绪。以下每项都是可选的，你可以稍后在“设置”中完成。"
+  },
+  "gettingStarted": {
+    "createTask": "创建任务",
+    "giveTaskDueDate": "为任务设置截止日期",
+    "tryAnotherViewList": "试试其他视图：列表、日历或时间线",
+    "findSomethingCommandPalette": "用命令面板查找内容",
+    "seeWhereBackups": "查看备份的位置",
+    "setUpAi": "设置 AI"
+  },
+  "tips": {
+    "tipEyebrow": "小贴士",
+    "tourEyebrow": "导览",
+    "stepOf": "第 {{step}} 步，共 {{count}} 步",
+    "steps": "导览步骤",
+    "goToStep": "前往第 {{step}} 步",
+    "back": "上一步",
+    "next": "下一步",
+    "done": "完成",
+    "gotIt": "知道了",
+    "notNow": "暂不",
+    "close": "关闭",
+    "showMeAround": "带我看看",
+    "dontShowAgain": "不再显示",
+    "dontShowTipAgain": "不再显示此小贴士",
+    "turnOffTips": "关闭小贴士",
+    "closeTour": "关闭导览",
+    "announce": "小贴士：{{title}}",
+    "tourDone": "导览到此结束",
+    "tourClosed": "导览已关闭",
+    "tourAgain": "随时可以从“帮助 › 开始导览”再次查看。",
+    "turnedOff": "小贴士已关闭",
+    "turnedOffBody": "请在“设置 › 常规 › 小贴士和导览”中重新开启。",
+    "turnBackOn": "重新开启",
+    "openSettings": "设置",
+    "invite": {
+      "title": "初次使用？来一次快速导览吧",
+      "body": "这个演示项目是一个虚构的周末出游计划，内容已经填好，方便你放心尝试。导览会依次介绍每个视图，并用 {{count}} 个简短步骤指出可以尝试的操作。"
+    },
+    "tour": {
+      "welcome": {
+        "title": "演示项目",
+        "body": "这里的内容都是虚构的，你可以随意更改、移动或删除。任务从上到下排列：前面的任务介绍基础操作，后面的任务展示更多功能。你在这里做的任何操作，都不会影响你自己的项目。"
+      },
+      "views": {
+        "title": "一个项目，多种视图",
+        "body": "每个标签页以不同方式展示此项目，而且它们共享同一批任务：在一个视图中更改任务，其他所有视图都会同步显示这一更改。接下来的几步会依次介绍每个标签页。"
+      },
+      "board": {
+        "title": "看板：工作的推进",
+        "body": "每一列代表一种状态。随着工作推进，任务从左向右移动：从待办，到进行中，再到已完成。每列名称旁边的数字，表示该列中的任务数量。"
+      },
+      "card": {
+        "title": "打开任务",
+        "body": "单击卡片即可查看它的全部信息：状态、优先级、截止日期、负责人、检查清单和评论。将卡片拖到另一列，即可推进它。"
+      },
+      "newTask": {
+        "title": "添加你自己的任务",
+        "body": "“新任务”会在此项目中添加一个任务。在项目中的任何位置按 {{keys}}，都可以完成同样的操作。"
+      },
+      "search": {
+        "title": "查找任何内容",
+        "body": "搜索可以查找任务、项目和文档，还可以按名称运行任何命令。在任何位置按 {{keys}} 即可。"
+      },
+      "help": {
+        "title": "随时可以获得帮助",
+        "body": "用户指南、键盘快捷键和本次导览都在“帮助”中。像这样的小贴士，可以在“设置 › 常规”中关闭。"
+      },
+      "overview": {
+        "title": "概览：一眼看清项目",
+        "body": "包括未完成、本周已完成和已逾期的任务数量，然后是需要你处理的事项、进行中的工作，以及接下来要做的事。发布一条更新，用一两句话告诉大家项目进展如何。"
+      },
+      "list": {
+        "title": "列表：所有任务按行排列",
+        "body": "和电子表格类似：单击标题即可排序，用“列”选择显示的内容，勾选行即可同时更改多个任务。子任务位于其父任务之下，就像 Plan the meals 下的各顿饭。"
+      },
+      "calendar": {
+        "title": "日历：按截止日期查看任务",
+        "body": "每个任务显示在它的截止当天，里程碑会有标记。可以在“月”“周”“年”和“议程”之间切换；将任务拖到另一天，即可更改其截止日期；没有日期的任务，可在“未排期”下找到。"
+      },
+      "timeline": {
+        "title": "时间线：跨周规划",
+        "body": "每个条形表示任务从开始到截止日期的时间段，并按其所属的里程碑分组。拖动条形即可移动，拖动两端即可调整长度。打开“显示关键路径”，即可看到哪些任务不能延误。"
+      },
+      "milestones": {
+        "title": "里程碑和目标",
+        "body": "目标是项目的意义所在；里程碑是通往目标途中的重要节点，每个里程碑都有一个日期，以及通往它的任务。里程碑的条形会随着任务完成而逐渐填满。"
+      },
+      "library": {
+        "title": "资料库：与工作并列的文档",
+        "body": "此项目的简报、笔记和文档都保存在这里。打开 Trip plan 即可阅读，用“添加”加入你自己的内容，并把任一文档关联到任务，它就会显示在该任务的详细信息中。"
+      },
+      "decisions": {
+        "title": "决策：选定了什么，以及为什么",
+        "body": "记录已做出的决定、背景、还权衡过哪些方案，以及由此产生的后续事项，这样以后就不必有人去回忆。决策可以关联受其影响的任务，就像这里关联到 Book the cabin 一样。"
+      }
+    },
+    "drawer": {
+      "title": "更改会随时保存",
+      "body": "没有保存按钮：每一次更改都会在你操作时保存下来。按 Ctrl+Z 即可撤销上一次更改。"
+    },
+    "drawerResize": {
+      "title": "加宽此面板",
+      "body": "拖动面板的左边缘，即可增加或减少它的宽度。每个面板都会保留你设置的宽度。"
+    },
+    "boardDrag": {
+      "title": "拖动以推进任务",
+      "body": "将卡片拖到另一列，即可更改其状态。你也可以打开卡片，在顶部选择新的状态。"
+    },
+    "list": {
+      "title": "排序和比较",
+      "body": "单击列标题即可按该列排序。按住 Shift 再单击另一个标题，即可将其作为下一个排序条件。"
+    },
+    "calendar": {
+      "title": "一眼看清截止日期",
+      "body": "任务显示在它的截止当天。将任务拖到另一天，即可更改其截止日期。"
+    },
+    "timeline": {
+      "title": "跨周规划",
+      "body": "每个条形表示任务从开始到截止日期的时间段。拖动条形即可移动，拖动两端即可调整所需时间。"
+    },
+    "library": {
+      "title": "与工作并排的文档",
+      "body": "在这里保存此项目的简报、笔记和文档。打开一份即可阅读或编辑，或将其关联到任务，它就会显示在该任务的详细信息中。"
+    },
+    "pointers": {
+      "clickToOpen": "单击打开",
+      "clickToAdd": "单击添加任务",
+      "clickOrPress": "单击，或按 {{keys}}",
+      "clickForHelp": "单击查看帮助",
+      "changeStatus": "试试更改状态",
+      "dragToColumn": "拖到下一列",
+      "dragToDay": "拖到另一天",
+      "dragToMove": "拖动以移动",
+      "dragToResize": "拖动以调整大小",
+      "addDocument": "添加文档",
+      "postUpdate": "分享进展情况",
+      "chooseColumns": "选择列",
+      "changeRange": "月、周、年或议程",
+      "criticalPath": "查看哪些任务不能延误",
+      "clickToRead": "单击阅读",
+      "recordDecision": "记录一项决策"
+    }
+  }
+}

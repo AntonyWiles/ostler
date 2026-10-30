@@ -1,0 +1,101 @@
+{
+  "format": "ostler-project-package",
+  "version": 1,
+  "exportedAt": "2026-10-08T21:00:00.000Z",
+  "app": {
+    "name": "Ostler",
+    "version": "test"
+  },
+  "template": null,
+  "project": {
+    "name": "Party",
+    "color": "#ec4899",
+    "estimateUnit": "hours"
+  },
+  "people": [
+    {
+      "ref": "p1",
+      "name": "Sam Rivera",
+      "initials": "",
+      "color": "#ef4444"
+    },
+    {
+      "ref": "p2",
+      "name": "Me",
+      "initials": "",
+      "color": "#10b981"
+    }
+  ],
+  "labels": [
+    {
+      "name": "venue",
+      "color": "#8b5cf6"
+    }
+  ],
+  "goals": [],
+  "milestones": [
+    {
+      "ref": "m1",
+      "goalRef": null,
+      "name": "Booked",
+      "outcome": "",
+      "targetDate": "2026-11-01",
+      "successCriteria": [],
+      "status": "planned"
+    }
+  ],
+  "tasks": [
+    {
+      "ref": "t1",
+      "milestoneRef": "m1",
+      "parentRef": null,
+      "title": "Book the hall",
+      "description": "Call first",
+      "status": "active",
+      "priority": "high",
+      "labels": ["venue"],
+      "checklist": [
+        {
+          "text": "Call",
+          "checked": true
+        }
+      ],
+      "assigneeRef": "p1",
+      "startDate": null,
+      "dueDate": "2026-10-20",
+      "estimate": 2,
+      "dependsOnRefs": [],
+      "recurrence": null
+    }
+  ],
+  "decisions": [],
+  "comments": [
+    {
+      "taskRef": "t1",
+      "authorRef": "p2",
+      "body": "Booked for Saturday"
+    }
+  ],
+  "library": [
+    {
+      "kind": "document",
+      "title": "Guest list",
+      "summary": "",
+      "body": "",
+      "url": null,
+      "aiAccess": "when-selected",
+      "tags": [],
+      "file": "library/Guest list.txt"
+    },
+    {
+      "kind": "note",
+      "title": "Ideas",
+      "summary": "",
+      "body": "Fancy dress?",
+      "url": null,
+      "aiAccess": "human-only",
+      "tags": [],
+      "file": null
+    }
+  ]
+}

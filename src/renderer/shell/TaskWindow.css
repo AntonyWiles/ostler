@@ -1,0 +1,23 @@
+/*
+ * A task in a window of its own (MOP-12): the task's drawer fills the window
+ * under the title bar, with no backdrop, edge, shadow or resize handle. The
+ * drawer is drawn at the end of the page, so this is keyed to the body.
+ */
+
+.is-task-window .ui-drawer-backdrop {
+  background: transparent;
+  animation: none;
+}
+
+.is-task-window .ui-drawer {
+  width: 100% !important;
+  max-width: none;
+  border-left: 0;
+  border-radius: 0;
+  box-shadow: none;
+  animation: none;
+}
+
+.is-task-window .ui-drawer__resize {
+  display: none;
+}

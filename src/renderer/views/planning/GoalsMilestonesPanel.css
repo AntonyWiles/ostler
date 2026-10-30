@@ -1,0 +1,127 @@
+/* The Milestones view: goal headers, the milestone grid and the archived
+   dialog. Cards: MilestoneCard.css. Tokens only. */
+
+.milestones-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-600);
+  min-width: 0;
+}
+
+.milestones-view__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-300);
+}
+
+.milestones-view__intro {
+  max-width: 70ch;
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.milestones-view__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+}
+
+.milestones-view__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+}
+
+.milestones-view__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--space-1200) * 7), 1fr));
+  gap: var(--space-300);
+  align-items: start;
+}
+
+.milestones-view__quiet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.goal-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-200) var(--space-400);
+  padding-bottom: var(--space-200);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.goal-header__titles {
+  display: flex;
+  flex: 1 1 calc(var(--space-1200) * 6);
+  flex-direction: column;
+  gap: var(--space-050);
+  min-width: 0;
+}
+
+.goal-header__title {
+  margin: 0;
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading-sm);
+}
+
+.goal-header__outcome {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.goal-header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.archived-records {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.archived-records h3 {
+  margin: var(--space-200) 0 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+
+.archived-records ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.archived-records li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.archived-records li > span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

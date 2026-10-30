@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- Ostler's mark. The single source of every icon (window, taskbar, tray,
+       installer, notifications, title bar): run `npm run icons` after
+       changing it. The tile's gradient is #tile; the icon script reuses it. -->
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#06b6d4"/>
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="56" fill="url(#tile)"/>
+  <path d="M80 132 V120 A48 48 0 0 1 176 120 V132" fill="none" stroke="#ffffff" stroke-width="30" stroke-opacity="0.6"/>
+  <!-- The white shoe's heels cast a soft shadow on the pale arch and a little to their sides. -->
+  <path d="M65 108 H95 V146 H65 Z M161 108 H191 V146 H161 Z" fill="#1e1b4b" fill-opacity="0.45" filter="url(#shadow)"/>
+  <path d="M80 106 V136 A48 48 0 0 0 176 136 V106" fill="none" stroke="#ffffff" stroke-width="30"/>
+</svg>

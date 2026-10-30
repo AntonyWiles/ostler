@@ -1,0 +1,174 @@
+{
+  "format": "ostler-project-package",
+  "version": 1,
+  "template": {
+    "description": "Bring a product to market: readiness, messaging, launch day and follow-up.",
+    "icon": "rocket"
+  },
+  "project": {
+    "name": "Product launch",
+    "color": "#ef4444",
+    "estimateUnit": "points"
+  },
+  "people": [],
+  "labels": [
+    {
+      "name": "marketing",
+      "color": "#ec4899"
+    },
+    {
+      "name": "sales",
+      "color": "#f59e0b"
+    },
+    {
+      "name": "support",
+      "color": "#14b8a6"
+    }
+  ],
+  "goals": [
+    {
+      "ref": "g1",
+      "title": "A successful launch",
+      "outcome": "Customers know about the product and can buy it on day one."
+    }
+  ],
+  "milestones": [
+    {
+      "ref": "m1",
+      "name": "Launch plan ready",
+      "targetDate": "+14d",
+      "goalRef": "g1"
+    },
+    {
+      "ref": "m2",
+      "name": "Ready to sell",
+      "targetDate": "+35d",
+      "goalRef": "g1",
+      "successCriteria": ["Pricing set", "Support trained"]
+    },
+    {
+      "ref": "m3",
+      "name": "Launch day",
+      "targetDate": "+42d",
+      "goalRef": "g1"
+    },
+    {
+      "ref": "m4",
+      "name": "First month review",
+      "targetDate": "+72d",
+      "goalRef": "g1"
+    }
+  ],
+  "tasks": [
+    {
+      "ref": "t1",
+      "title": "Agree the launch date",
+      "milestoneRef": "m1",
+      "priority": "high",
+      "dueDate": "+3d"
+    },
+    {
+      "ref": "t2",
+      "title": "Write the positioning statement",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["marketing"],
+      "dueDate": "+8d"
+    },
+    {
+      "ref": "t3",
+      "title": "Set pricing",
+      "milestoneRef": "m1",
+      "priority": "high",
+      "labels": ["sales"],
+      "dueDate": "+14d",
+      "dependsOnRefs": ["t2"]
+    },
+    {
+      "ref": "t4",
+      "title": "Build the product page",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["marketing"],
+      "dueDate": "+25d",
+      "dependsOnRefs": ["t2"]
+    },
+    {
+      "ref": "t5",
+      "title": "Train the support team",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["support"],
+      "checklist": [
+        {
+          "text": "Product demo",
+          "checked": false
+        },
+        {
+          "text": "Common questions",
+          "checked": false
+        },
+        {
+          "text": "How to escalate",
+          "checked": false
+        }
+      ],
+      "dueDate": "+30d"
+    },
+    {
+      "ref": "t6",
+      "title": "Prepare the sales materials",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["sales"],
+      "dueDate": "+32d",
+      "dependsOnRefs": ["t3"]
+    },
+    {
+      "ref": "t7",
+      "title": "Write the press release",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["marketing"],
+      "dueDate": "+35d",
+      "dependsOnRefs": ["t2"]
+    },
+    {
+      "ref": "t8",
+      "title": "Launch",
+      "milestoneRef": "m3",
+      "priority": "critical",
+      "dueDate": "+42d",
+      "dependsOnRefs": ["t4", "t5", "t6", "t7"]
+    },
+    {
+      "ref": "t9",
+      "title": "Watch for problems in launch week",
+      "milestoneRef": "m3",
+      "priority": "medium",
+      "labels": ["support"],
+      "dueDate": "+49d",
+      "dependsOnRefs": ["t8"]
+    },
+    {
+      "ref": "t10",
+      "title": "Review the first month",
+      "milestoneRef": "m4",
+      "priority": "medium",
+      "dueDate": "+72d",
+      "dependsOnRefs": ["t8"]
+    }
+  ],
+  "decisions": [
+    {
+      "title": "Launch date",
+      "decision": "Launch on a Tuesday morning so the team is on hand all week.",
+      "date": "+0d"
+    }
+  ],
+  "comments": [],
+  "columns": {
+    "hidden": ["ready"]
+  },
+  "library": []
+}

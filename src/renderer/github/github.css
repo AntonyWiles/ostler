@@ -1,0 +1,103 @@
+/* GitHub links (R4.4): the drawer's section and the cards' icons. */
+
+.task-github__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin-bottom: var(--space-200);
+}
+
+.task-github__form-actions {
+  display: flex;
+  gap: var(--space-200);
+}
+
+.task-github__empty {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.task-github__links {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-github__link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-200);
+  padding: var(--space-200) 0;
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.task-github__link:first-child {
+  border-top: none;
+}
+
+.task-github__icon {
+  margin-top: var(--space-050);
+}
+
+.task-github__icon.is-open,
+.task-github__icon.is-draft {
+  color: var(--color-success);
+}
+
+.task-github__icon.is-merged {
+  color: var(--color-accent);
+}
+
+.task-github__icon.is-closed,
+.task-github__icon.is-unknown {
+  color: var(--color-text-secondary);
+}
+
+.task-github__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  min-width: 0;
+}
+
+.task-github__title {
+  color: var(--color-link);
+  overflow-wrap: anywhere;
+}
+
+.task-github__number {
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.task-github__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-100);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+}
+
+.task-github__problem {
+  color: var(--color-danger);
+  font-size: var(--text-caption);
+}
+
+.task-card__github {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-050);
+}
+
+.task-card__github .is-open,
+.task-card__github .is-draft {
+  color: var(--color-success);
+}
+
+.task-card__github .is-merged {
+  color: var(--color-accent);
+}

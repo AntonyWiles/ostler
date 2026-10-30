@@ -1,0 +1,76 @@
+.new-whiteboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+}
+
+.new-whiteboard__templates {
+  border: none;
+}
+
+.new-whiteboard__legend {
+  margin-bottom: var(--space-200);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.new-whiteboard__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: var(--space-300);
+}
+
+.new-whiteboard__template {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  padding: var(--space-200);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.new-whiteboard__template:hover {
+  background: var(--color-surface-hover);
+}
+
+.new-whiteboard__template.is-selected {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 var(--border-width) var(--color-accent);
+}
+
+/* The radio itself is visually hidden; the card shows the choice. */
+.new-whiteboard__template input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.new-whiteboard__template:has(input:focus-visible) {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.new-whiteboard__preview {
+  display: block;
+  aspect-ratio: 12 / 7;
+  overflow: hidden;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--whiteboard-paper);
+}
+
+.new-whiteboard__preview svg {
+  display: block;
+}
+
+.new-whiteboard__name {
+  font-weight: var(--weight-medium);
+}
+
+.new-whiteboard__description {
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+}

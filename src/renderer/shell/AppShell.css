@@ -1,0 +1,56 @@
+/* The app shell: sidebar and content above the status bar. Tokens only. */
+
+.ostler-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.ostler-shell-main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ostler-content {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  /* Every scrolling pane keeps room for its scrollbar (scrollbar-gutter), so
+     a view that grows past the fold, or a section that opens, never shifts
+     the content beside it sideways. */
+  scrollbar-gutter: stable;
+  background: var(--color-bg);
+}
+
+/* The content area takes focus only as the skip link's fallback; its heading
+   shows the focus ring instead (P9.2). */
+.ostler-content:focus {
+  outline: none;
+}
+
+/* "Skip to content": off screen until it has focus (P9.2, WCAG 2.4.1). */
+.ostler-skip-link {
+  position: fixed;
+  top: var(--space-200);
+  left: var(--space-200);
+  z-index: var(--z-tooltip);
+  padding: var(--space-200) var(--space-300);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-link);
+  font-weight: var(--weight-semibold);
+  box-shadow: var(--shadow-md);
+  transform: translateY(calc(-100% - var(--space-300)));
+}
+
+.ostler-skip-link:focus {
+  transform: none;
+}

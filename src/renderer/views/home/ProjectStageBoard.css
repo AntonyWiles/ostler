@@ -1,0 +1,136 @@
+/* Home's board of projects (N5.3). Tokens only. */
+
+.project-stage-board__hint {
+  margin: 0 0 var(--space-200);
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.project-stage-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-300);
+}
+
+@media (max-width: 1100px) {
+  .project-stage-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.project-stage-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  min-width: 0;
+  padding: var(--space-200);
+  background: var(--color-surface-sunken);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-md);
+  transition:
+    background var(--motion-fast) var(--ease-standard),
+    border-color var(--motion-fast) var(--ease-standard);
+}
+
+.project-stage-column.is-drop-target {
+  background: var(--color-accent-subtle);
+  border-color: var(--color-accent);
+}
+
+.project-stage-column__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.project-stage-column__title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-stage-column__count,
+.project-stage-column__empty,
+.project-stage-column__area-title {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.project-stage-column__empty {
+  margin: 0;
+}
+
+.project-stage-column__area-title {
+  margin: 0 0 var(--space-100);
+  font-weight: var(--weight-medium);
+}
+
+.project-stage-column__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project-stage-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  cursor: grab;
+}
+
+.project-stage-card__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.project-stage-card__dot {
+  flex: 0 0 auto;
+  width: var(--space-300);
+  height: var(--space-300);
+  border-radius: var(--radius-full);
+}
+
+.project-stage-card__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-weight: var(--weight-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-stage-card__facts {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+@media (forced-colors: active) {
+  /* The columns' fill is flattened: each keeps an edge. */
+  .project-stage-column {
+    border-color: CanvasText;
+  }
+
+  .project-stage-column.is-drop-target {
+    border-color: Highlight;
+  }
+
+  .project-stage-card__dot {
+    forced-color-adjust: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-stage-column {
+    transition: none;
+  }
+}

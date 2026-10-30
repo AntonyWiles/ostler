@@ -1,0 +1,28 @@
+.ostler-error-boundary-content {
+  display: contents;
+}
+
+.ostler-error-boundary {
+  max-width: 35rem;
+  margin: var(--space-400) auto;
+  padding: var(--space-400);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.ostler-error-boundary-message {
+  font-family: var(--font-mono);
+  overflow-wrap: anywhere;
+}
+
+.ostler-error-boundary-note {
+  color: var(--color-text-secondary);
+}
+
+.ostler-error-boundary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}

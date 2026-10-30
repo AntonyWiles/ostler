@@ -1,0 +1,29 @@
+/* The personal space's set-up, shared by Settings › Devices and the welcome. */
+.ostler-keep-in-step,
+.ostler-join-start,
+.ostler-join-waiting,
+.ostler-join-stuck {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-200);
+}
+
+.ostler-join-start p,
+.ostler-join-waiting p,
+.ostler-join-stuck p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+.ostler-devices-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+}
+
+.ostler-keep-in-step .ui-check__hint {
+  overflow-wrap: anywhere;
+}

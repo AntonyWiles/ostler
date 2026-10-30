@@ -1,0 +1,41 @@
+/* Write release notes (N9.9): options, then the draft with any polished suggestion beside it. */
+.release-notes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
+}
+
+.release-notes__options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-300);
+}
+
+.release-notes__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-200);
+}
+
+.release-notes__choice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+  margin-top: var(--space-200);
+}
+
+.release-notes__muted {
+  margin: 0;
+  margin-right: auto;
+  font-size: var(--text-body-sm);
+  color: var(--color-text-muted);
+}
+
+.release-notes__preview textarea {
+  font-family: var(--font-mono);
+  font-size: var(--text-body-sm);
+}

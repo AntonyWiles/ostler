@@ -1,0 +1,191 @@
+{
+  "format": "ostler-project-package",
+  "version": 1,
+  "template": {
+    "description": "Organise an event: venue, guests, suppliers and the day itself.",
+    "icon": "calendar"
+  },
+  "project": {
+    "name": "Event planning",
+    "color": "#f59e0b",
+    "estimateUnit": "points"
+  },
+  "people": [],
+  "labels": [
+    {
+      "name": "venue",
+      "color": "#8b5cf6"
+    },
+    {
+      "name": "guests",
+      "color": "#3b82f6"
+    },
+    {
+      "name": "suppliers",
+      "color": "#f59e0b"
+    }
+  ],
+  "fields": [
+    {
+      "ref": "cost",
+      "name": "Cost",
+      "type": "number",
+      "options": []
+    },
+    {
+      "ref": "supplier",
+      "name": "Supplier",
+      "type": "text",
+      "options": []
+    }
+  ],
+  "goals": [],
+  "milestones": [
+    {
+      "ref": "m1",
+      "name": "Venue booked",
+      "targetDate": "+14d",
+      "outcome": "Date and place confirmed"
+    },
+    {
+      "ref": "m2",
+      "name": "Invitations sent",
+      "targetDate": "+30d"
+    },
+    {
+      "ref": "m3",
+      "name": "Event day",
+      "targetDate": "+60d",
+      "outcome": "Everything ready on the day",
+      "successCriteria": ["Suppliers confirmed", "Run sheet shared"]
+    }
+  ],
+  "tasks": [
+    {
+      "ref": "t1",
+      "title": "Set the budget",
+      "milestoneRef": "m1",
+      "priority": "high",
+      "dueDate": "+3d"
+    },
+    {
+      "ref": "t2",
+      "title": "Shortlist venues",
+      "milestoneRef": "m1",
+      "priority": "medium",
+      "labels": ["venue"],
+      "dueDate": "+7d",
+      "dependsOnRefs": ["t1"]
+    },
+    {
+      "ref": "t3",
+      "title": "Visit and book the venue",
+      "milestoneRef": "m1",
+      "priority": "high",
+      "labels": ["venue"],
+      "checklist": [
+        {
+          "text": "Capacity",
+          "checked": false
+        },
+        {
+          "text": "Accessibility",
+          "checked": false
+        },
+        {
+          "text": "Parking",
+          "checked": false
+        },
+        {
+          "text": "Deposit paid",
+          "checked": false
+        }
+      ],
+      "dueDate": "+14d",
+      "dependsOnRefs": ["t2"]
+    },
+    {
+      "ref": "t4",
+      "title": "Draft the guest list",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["guests"],
+      "dueDate": "+18d"
+    },
+    {
+      "ref": "t5",
+      "title": "Design the invitation",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["guests"],
+      "dueDate": "+24d",
+      "dependsOnRefs": ["t3"]
+    },
+    {
+      "ref": "t6",
+      "title": "Send invitations",
+      "milestoneRef": "m2",
+      "priority": "medium",
+      "labels": ["guests"],
+      "dueDate": "+30d",
+      "dependsOnRefs": ["t4", "t5"]
+    },
+    {
+      "ref": "t7",
+      "title": "Book catering",
+      "milestoneRef": "m3",
+      "priority": "medium",
+      "labels": ["suppliers"],
+      "dueDate": "+35d",
+      "dependsOnRefs": ["t3"]
+    },
+    {
+      "ref": "t8",
+      "title": "Book music or entertainment",
+      "milestoneRef": "m3",
+      "priority": "medium",
+      "labels": ["suppliers"],
+      "dueDate": "+40d",
+      "dependsOnRefs": ["t3"]
+    },
+    {
+      "ref": "t9",
+      "title": "Track replies",
+      "milestoneRef": "m3",
+      "priority": "medium",
+      "labels": ["guests"],
+      "dueDate": "+50d",
+      "dependsOnRefs": ["t6"]
+    },
+    {
+      "ref": "t10",
+      "title": "Write the run sheet for the day",
+      "milestoneRef": "m3",
+      "priority": "medium",
+      "dueDate": "+55d",
+      "dependsOnRefs": ["t7", "t8"]
+    },
+    {
+      "ref": "t11",
+      "title": "Confirm every supplier",
+      "milestoneRef": "m3",
+      "priority": "medium",
+      "labels": ["suppliers"],
+      "dueDate": "+57d",
+      "dependsOnRefs": ["t7", "t8"]
+    },
+    {
+      "ref": "t12",
+      "title": "Send thank-you notes",
+      "priority": "medium",
+      "dueDate": "+65d",
+      "dependsOnRefs": ["t11"]
+    }
+  ],
+  "decisions": [],
+  "comments": [],
+  "columns": {
+    "hidden": ["ready", "review"]
+  },
+  "library": []
+}

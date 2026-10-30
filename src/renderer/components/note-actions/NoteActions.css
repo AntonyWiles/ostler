@@ -1,0 +1,12 @@
+.note-actions__heading {
+  margin: 0 0 var(--space-200);
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.note-actions__open {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-200);
+}

@@ -1,0 +1,42 @@
+{
+  "shortcutOverlay": {
+    "title": "Raccourcis clavier",
+    "description": "Les raccourcis à une seule touche fonctionnent lorsque vous ne saisissez pas de texte dans un champ.",
+    "search": "Rechercher un raccourci",
+    "noMatch": "Aucun raccourci ne correspond à « {{query}} »."
+  },
+  "helpProvider": {
+    "diagnosticsCopied": "Diagnostic copié",
+    "versionsCountsEndLog": "Versions, compteurs et fin du journal, sans les noms, clés ni jetons.",
+    "couldntCopyDiagnostics": "Impossible de copier le diagnostic",
+    "issuePageOpenBrowser": "La page de signalement de {{brand}} est ouverte dans votre navigateur, et le diagnostic est dans le presse-papiers : collez-le dans le rapport seulement si vous le souhaitez.",
+    "couldntOpenIssuePage": "Impossible d’ouvrir la page de signalement"
+  },
+  "whatsNewDialog": {
+    "whatsNew": "Nouveautés de {{brand}}",
+    "version": "Version {{version}}",
+    "close": "Fermer",
+    "thereNoNotesVersion": "Aucune note pour cette version."
+  },
+  "guide": {
+    "version": "Version {{version}}"
+  },
+  "helpView": {
+    "userGuidePages": "Pages du guide de l’utilisateur",
+    "userGuide": "Guide de l’utilisateur",
+    "searchGuide": "Rechercher dans le guide",
+    "matches_one": "{{count}} résultat",
+    "matches_many": "{{count}} résultats",
+    "matches_other": "{{count}} résultats",
+    "userGuideIsntBuild": "Le guide de l’utilisateur ne fait pas partie de cette version",
+    "readOnlineRepositoryDocs": "Lisez-le en ligne dans le dépôt de {{brand}}, dans le dossier docs/user-guide.",
+    "noPageMentions": "Aucune page ne le mentionne.",
+    "foundPages_one": "Trouvé sur {{count}} page.",
+    "foundPages_many": "Trouvé sur {{count}} pages.",
+    "foundPages_other": "Trouvé sur {{count}} pages.",
+    "notPage": "Absent de cette page.",
+    "matchesPageHighlighted_one": "{{count}} résultat sur cette page, en surbrillance.",
+    "matchesPageHighlighted_many": "{{count}} résultats sur cette page, en surbrillance.",
+    "matchesPageHighlighted_other": "{{count}} résultats sur cette page, en surbrillance."
+  }
+}

@@ -1,0 +1,152 @@
+/* Billable time (N6.4): the Time report, its print page, and Project settings' billing fields. Tokens only. */
+
+.time-report {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  padding: var(--space-400);
+}
+
+.time-report__intro,
+.time-report__muted {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.time-report__range {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-200);
+}
+
+.time-report__spacer {
+  flex: 1;
+}
+
+.time-report__totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-400);
+  margin: 0;
+}
+
+.time-report__total {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+}
+
+.time-report__total dt {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.time-report__total dd {
+  margin: 0;
+  font-size: var(--text-title);
+  font-weight: var(--weight-semibold);
+}
+
+.time-report__number {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.time-report__part {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+.time-report__heading {
+  margin: 0;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+}
+
+.time-report__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body);
+}
+
+.time-report__table th,
+.time-report__table td {
+  padding: var(--space-150) var(--space-200);
+  border-bottom: var(--border-width) solid var(--color-border);
+  text-align: start;
+  vertical-align: middle;
+  font-weight: var(--weight-regular);
+}
+
+.time-report__table thead th {
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-medium);
+}
+
+.time-report__table th.time-report__number,
+.time-report__table td.time-report__number {
+  text-align: end;
+}
+
+.time-report__table tfoot th,
+.time-report__table tfoot td {
+  border-bottom: none;
+  font-weight: var(--weight-semibold);
+}
+
+.time-report__task {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.time-report__entries-row td {
+  background: var(--color-surface-sunken);
+}
+
+.time-report__entries {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding-inline-start: var(--space-500);
+  color: var(--color-text-secondary);
+  font-size: var(--text-body-sm);
+}
+
+.time-report__billings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.time-report__billing {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.time-report__billing-text {
+  flex: 1;
+}
+
+/* Project settings */
+
+.billing-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+}
+
+/* The drawer and the Timesheet */
+
+.time-billed {
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+}

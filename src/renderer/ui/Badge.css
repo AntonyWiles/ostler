@@ -1,0 +1,51 @@
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  height: calc(var(--control-height-sm) - var(--space-100));
+  padding: 0 var(--space-200);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-full);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-caption);
+  white-space: nowrap;
+  background: var(--color-surface-sunken);
+  color: var(--color-text-secondary);
+}
+
+.ui-badge .ostler-icon {
+  width: var(--space-300);
+  height: var(--space-300);
+}
+
+.ui-badge--accent {
+  background: var(--color-accent-subtle);
+  color: var(--color-link);
+}
+
+.ui-badge--info {
+  background: var(--color-info-subtle);
+  color: var(--color-info);
+}
+
+.ui-badge--success {
+  background: var(--color-success-subtle);
+  color: var(--color-success);
+}
+
+.ui-badge--warning {
+  background: var(--color-warning-subtle);
+  color: var(--color-warning);
+}
+
+.ui-badge--danger {
+  background: var(--color-danger-subtle);
+  color: var(--color-danger);
+}
+
+@media (forced-colors: active) {
+  .ui-badge {
+    border-color: CanvasText;
+  }
+}

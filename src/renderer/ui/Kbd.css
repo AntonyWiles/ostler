@@ -1,0 +1,23 @@
+.ui-kbd {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-050);
+  font-family: var(--font-sans);
+}
+
+.ui-kbd__key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--space-500);
+  height: var(--space-500);
+  padding: 0 var(--space-100);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-bottom-width: var(--space-050);
+  border-radius: var(--radius-control);
+  color: var(--color-text-secondary);
+  font-family: var(--font-sans);
+  font-size: var(--text-caption);
+  line-height: 1;
+}

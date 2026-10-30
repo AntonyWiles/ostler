@@ -1,0 +1,39 @@
+{
+  "shortcutOverlay": {
+    "title": "Tastenkombinationen",
+    "description": "Einzeltasten-Befehle funktionieren, solange Sie nicht in einem Feld tippen.",
+    "search": "Tastenkombinationen durchsuchen",
+    "noMatch": "Keine Tastenkombination passt zu „{{query}}“."
+  },
+  "helpProvider": {
+    "diagnosticsCopied": "Diagnosedaten kopiert",
+    "versionsCountsEndLog": "Versionen, Anzahlen und das Ende des Protokolls, ohne Namen, Tasten und Token.",
+    "couldntCopyDiagnostics": "Diagnosedaten konnten nicht kopiert werden",
+    "issuePageOpenBrowser": "Die Problemseite von {{brand}} ist in Ihrem Browser geöffnet, und die Diagnosedaten liegen in der Zwischenablage. Fügen Sie sie nur in den Bericht ein, wenn Sie möchten.",
+    "couldntOpenIssuePage": "Die Problemseite konnte nicht geöffnet werden"
+  },
+  "whatsNewDialog": {
+    "whatsNew": "Was ist neu in {{brand}}",
+    "version": "Version {{version}}",
+    "close": "Schließen",
+    "thereNoNotesVersion": "Zu dieser Version gibt es keine Hinweise."
+  },
+  "guide": {
+    "version": "Version {{version}}"
+  },
+  "helpView": {
+    "userGuidePages": "Seiten des Benutzerhandbuchs",
+    "userGuide": "Benutzerhandbuch",
+    "searchGuide": "Handbuch durchsuchen",
+    "matches_one": "{{count}} Treffer",
+    "matches_other": "{{count}} Treffer",
+    "userGuideIsntBuild": "Das Benutzerhandbuch ist in diesem Build nicht enthalten",
+    "readOnlineRepositoryDocs": "Lesen Sie es online im {{brand}}-Repository, im Ordner docs/user-guide.",
+    "noPageMentions": "Keine Seite erwähnt das.",
+    "foundPages_one": "Auf {{count}} Seite gefunden.",
+    "foundPages_other": "Auf {{count}} Seiten gefunden.",
+    "notPage": "Nicht auf dieser Seite.",
+    "matchesPageHighlighted_one": "{{count}} Treffer auf dieser Seite, markiert.",
+    "matchesPageHighlighted_other": "{{count}} Treffer auf dieser Seite, markiert."
+  }
+}

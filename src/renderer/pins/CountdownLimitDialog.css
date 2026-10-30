@@ -1,0 +1,10 @@
+/* The countdown limit's choice (N5.2b): one button per countdown, stacked. */
+
+.countdown-limit-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
