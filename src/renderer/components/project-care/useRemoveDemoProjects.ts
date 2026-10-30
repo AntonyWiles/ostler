@@ -26,7 +26,7 @@ export function useRemoveDemoProjects(): () => Promise<boolean> {
       toast({ title: t('projects:demoRemoval.couldntRemove'), body: status.error, tone: 'danger' })
       return false
     }
-    const { projects, addedTasks, addedComments } = status.value
+    const { projects, addedTasks, addedComments, untouched } = status.value
     if (projects.length === 0) return false
     const yours = [
       addedTasks > 0 ? t('projects:demoRemoval.taskCount', { count: addedTasks }) : null,
@@ -35,7 +35,9 @@ export function useRemoveDemoProjects(): () => Promise<boolean> {
     const added =
       yours.length > 0
         ? t('projects:demoRemoval.added', { what: yours.join(t('projects:demoRemoval.and')) })
-        : null
+        : untouched
+          ? null
+          : t('projects:demoRemoval.edited')
     const ok = await confirm({
       title: t('projects:demoRemoval.title', { count: projects.length }),
       body: [

@@ -1182,6 +1182,7 @@
     "body_other": "{{brand}} löscht {{names}} und alles darin. Holen Sie sie jederzeit über Strg+K zurück: Beispielprojekt öffnen.",
     "and": " und ",
     "added": "Sie haben {{what}} dazugefügt, das wird ebenfalls gelöscht.",
+    "edited": "Sie haben sie seit der Erstellung geändert; diese Änderungen werden ebenfalls gelöscht.",
     "taskCount_one": "{{count}} Aufgabe",
     "taskCount_other": "{{count}} Aufgaben",
     "commentCount_one": "{{count}} Kommentar",

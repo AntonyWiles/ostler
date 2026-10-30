@@ -1227,6 +1227,7 @@
     "body_other": "{{brand}} supprime {{names}} et tout ce qu’ils contiennent. Vous pouvez les restaurer à tout moment depuis Ctrl+K : Ouvrir le projet d’exemple.",
     "and": " et ",
     "added": "Vous y avez ajouté {{what}}, qui disparaissent aussi.",
+    "edited": "Vous les avez modifiés depuis leur création ; ces modifications disparaissent aussi.",
     "taskCount_one": "{{count}} tâche",
     "taskCount_many": "{{count}} tâches",
     "taskCount_other": "{{count}} tâches",

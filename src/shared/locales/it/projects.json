@@ -1227,6 +1227,7 @@
     "body_other": "{{brand}} rimuove {{names}} e tutto ciò che contengono. Riportali quando vuoi da Ctrl+K: Apri il progetto di esempio.",
     "and": " e ",
     "added": "Hai aggiunto {{what}} a questi, che vanno via anche loro.",
+    "edited": "Li hai modificati dalla creazione, e anche queste modifiche vanno via.",
     "taskCount_one": "{{count}} attività",
     "taskCount_many": "{{count}} attività",
     "taskCount_other": "{{count}} attività",

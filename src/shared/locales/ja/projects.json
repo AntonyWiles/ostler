@@ -1137,6 +1137,7 @@
     "body_other": "{{brand}}は{{names}}と、その中のすべてを削除します。Ctrl+K から「サンプルプロジェクトを開く」を選べば、いつでも戻せます。",
     "and": "と",
     "added": "あなたがこれらに追加した{{what}}も、一緒に削除されます。",
+    "edited": "作成後にあなたが変更した内容も、一緒に削除されます。",
     "taskCount_other": "{{count}}件のタスク",
     "commentCount_other": "{{count}}件のコメント",
     "confirm_other": "デモを削除",

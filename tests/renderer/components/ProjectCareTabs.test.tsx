@@ -80,6 +80,7 @@ function renderRemove(options: {
   found?: ProjectRemovalInventory
   backups?: ProjectBackupEntry[]
   project?: RendererProject
+  demoStatus?: { addedTasks: number; addedComments: number; untouched: boolean }
 }) {
   const calls: string[] = []
   const onClose = vi.fn()
@@ -110,9 +111,7 @@ function renderRemove(options: {
           { id: 'd1', name: 'Welcome to Ostler (Demo Project)', kind: 'simple', enabled: true },
           { id: 'd2', name: 'Harbour Café refit (Advanced Demo)', kind: 'advanced', enabled: true }
         ],
-        addedTasks: 2,
-        addedComments: 0,
-        untouched: false
+        ...(options.demoStatus ?? { addedTasks: 2, addedComments: 0, untouched: false })
       }
     }),
     removeDemoProjects: async () => {
@@ -187,6 +186,32 @@ describe('Project settings › Remove', () => {
     await screen.findByRole('dialog', { name: 'Garden removed' })
     expect(calls).toEqual(['backup', 'purge'])
     expect(screen.getByText(backup.filePath)).toBeInTheDocument()
+  })
+
+  it('says changes to the demos go too when nothing was added but they were edited', async () => {
+    const { calls } = renderRemove({
+      project: { ...project, demo: 'simple' },
+      demoStatus: { addedTasks: 0, addedComments: 0, untouched: false }
+    })
+    fireEvent.click(await screen.findByRole('button', { name: 'Remove the demos…' }))
+    const confirm = await screen.findByRole('alertdialog', { name: 'Remove both demo projects?' })
+    expect(
+      within(confirm).getByText(/You have changed them since they were made/)
+    ).toBeInTheDocument()
+    expect(within(confirm).queryByText(/You added/)).toBeNull()
+    fireEvent.click(within(confirm).getByRole('button', { name: 'Cancel' }))
+    await waitFor(() => expect(screen.queryByRole('alertdialog')).toBeNull())
+    expect(calls).toEqual([])
+  })
+
+  it('does not warn about changes when the demos are untouched', async () => {
+    renderRemove({
+      project: { ...project, demo: 'simple' },
+      demoStatus: { addedTasks: 0, addedComments: 0, untouched: true }
+    })
+    fireEvent.click(await screen.findByRole('button', { name: 'Remove the demos…' }))
+    const confirm = await screen.findByRole('alertdialog', { name: 'Remove both demo projects?' })
+    expect(within(confirm).queryByText(/You have changed them/)).toBeNull()
   })
 
   it('holds removal back while an agent is running', async () => {

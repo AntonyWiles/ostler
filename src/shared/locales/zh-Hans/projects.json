@@ -1137,6 +1137,7 @@
     "body_other": "{{brand}} 将删除 {{names}} 及其中的全部内容。你随时可以通过 Ctrl+K：打开示例项目找回它们。",
     "and": " 和 ",
     "added": "你添加到其中的 {{what}} 也会一并删除。",
+    "edited": "你在创建后对它们做过修改，这些修改也会一并删除。",
     "taskCount_other": "{{count}} 个任务",
     "commentCount_other": "{{count}} 条评论",
     "confirm_other": "移除演示项目",

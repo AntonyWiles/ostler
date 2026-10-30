@@ -1227,6 +1227,7 @@
     "body_other": "O {{brand}} remove {{names}} e tudo o que há neles. Traga-os de volta a qualquer momento pelo Ctrl+K: Abrir o projeto de exemplo.",
     "and": " e ",
     "added": "Você adicionou {{what}} a eles, que também serão removidos.",
+    "edited": "Você os alterou desde que foram criados, e essas alterações também serão removidas.",
     "taskCount_one": "{{count}} tarefa",
     "taskCount_many": "{{count}} tarefas",
     "taskCount_other": "{{count}} tarefas",

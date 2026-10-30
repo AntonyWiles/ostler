@@ -20,3 +20,7 @@ export function check(options?: { root?: string; locales?: string; lockFile?: st
   errors: string[]
   warnings: string[]
 }
+export function sameAsEnglishProblems(
+  languages: Map<string, Map<string, string>>,
+  allowed: Map<string, string[] | '*'>
+): string[]

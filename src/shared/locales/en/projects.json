@@ -1371,6 +1371,7 @@
     "body_other": "{{brand}} removes {{names}} and everything in them. Bring them back any time from Ctrl+K: Open the sample project.",
     "and": " and ",
     "added": "You added {{what}} to them, which go too.",
+    "edited": "You have changed them since they were made, and those changes go too.",
     "taskCount_one": "{{count}} task",
     "taskCount_other": "{{count}} tasks",
     "commentCount_one": "{{count}} comment",
