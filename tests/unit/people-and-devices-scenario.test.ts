@@ -23,6 +23,7 @@ vi.mock('electron', () => ({
 
 const HOUSE = 'a1b2c3d4-0000-4000-8000-000000000001'
 const GARDEN = 'a1b2c3d4-0000-4000-8000-000000000002'
+const ORCHARD = 'a1b2c3d4-0000-4000-8000-000000000003'
 
 const noLibrary: LibraryFileStore = {
   syncedOriginal: () => null,
@@ -280,6 +281,18 @@ describe('people and devices: the end-to-end scenario (prompt 15)', () => {
     expect(a2.service.stateOf(GARDEN)?.inPersonalSpace).toBe(true)
   })
 
+  it('leaving a project A2 never joined takes it off the personal list', async () => {
+    a1.projects.set(ORCHARD, 'Orchard')
+    a1.service.projectsChanged(ORCHARD)
+    await a1.service.shareUnsharedProjects()
+
+    await a2.service.leave(ORCHARD)
+    await a2.service.syncNow(PERSONAL_PROJECT_ID)
+
+    expect(a2.projects.has(ORCHARD)).toBe(false)
+    expect(a2.service.stateOf(ORCHARD)).toBeFalsy()
+  })
+
   it('after Ann removes A2, A2 receives nothing new while Bob still does', async () => {
     const space = a1.service.personalSpaceFolder() as string
     const device = a1.service.personalDevices().find((entry) => !entry.isThisDevice)
@@ -299,6 +312,13 @@ describe('people and devices: the end-to-end scenario (prompt 15)', () => {
       a1.service.stateOf(HOUSE)?.members.find((person) => person.name === 'Ann')?.devices
     ).toHaveLength(1)
     expect(a1.service.personalDevices().find((entry) => !entry.isThisDevice)?.revoked).toBe(true)
+  })
+
+  it('removing a device again with nothing changed since does not fail', async () => {
+    const space = a1.service.personalSpaceFolder() as string
+    const device = a1.service.personalDevices().find((entry) => !entry.isThisDevice)
+    await a1.service.removePersonalDevice(space, device!.deviceId)
+    await expect(a1.service.removePersonalDevice(space, device!.deviceId)).resolves.toBeUndefined()
   })
 
   it('no PC logged an error', async () => {

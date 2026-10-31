@@ -69,6 +69,7 @@ import {
 } from './roles'
 import { membershipHistory } from './membership-history'
 import { latestSnapshot, writeSnapshot } from './snapshots'
+import { SyncTransportError } from './transport-paths'
 import { refreshCapabilities, sharedCapabilities, writeMyCapabilities } from './capabilities'
 import { refreshLeft, writeLeftNote } from './leaving'
 import {
@@ -534,7 +535,12 @@ export class SyncService {
    * keep the share (S7d rotates the key when someone leaves).
    */
   async leave(projectId: string): Promise<void> {
-    if (!this.shareRow(projectId)) return
+    if (!this.shareRow(projectId)) {
+      // A project the personal space lists but this PC never joined: take it off the list, so no
+      // device keeps trying to join it.
+      if (await this.listedInPersonalSpace(projectId)) await this.markRemoved(projectId)
+      return
+    }
     // The others are told this PC left, so it shows as left in their member list.
     await this.writeLeft(projectId)
     // The person's other devices leave the share too, and keep their copies (prompt 11).
@@ -554,6 +560,14 @@ export class SyncService {
     await this.enqueue(running, () =>
       writeLeftNote(running.transport, { shareId: share.share_id, memberId: share.member_id }, keys)
     )
+  }
+
+  /** Whether the personal share has an entry for the project that is not already removed. */
+  private async listedInPersonalSpace(projectId: string): Promise<boolean> {
+    const personal = this.running.get(PERSONAL_PROJECT_ID)
+    if (!personal) return false
+    const { entries } = await readShareEntries(this.db, personal.transport)
+    return entries.some((entry) => entry.projectId === projectId && !entry.removed)
   }
 
   /** Writes the personal share's removed marker for a project this PC leaves or has deleted. */
@@ -814,6 +828,8 @@ export class SyncService {
         const keys = this.keysFor(PERSONAL_PROJECT_ID)
         if (keys) await writeSnapshot(this.db, running.transport, PERSONAL_PROJECT_ID, keys)
       } catch (error) {
+        // A snapshot is named by its latest stamp: one already there holds the same rows.
+        if (error instanceof SyncTransportError && error.reason === 'exists') return
         failure = error
       }
     })
