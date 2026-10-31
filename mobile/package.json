@@ -35,7 +35,8 @@
     "android": "expo run:android",
     "lint": "expo lint",
     "test": "jest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "release:android": "node scripts/build-release.cjs"
   },
   "private": true
 }

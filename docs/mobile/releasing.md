@@ -60,22 +60,40 @@ unless Gradle knows the upload key, and Play refuses such a bundle.
 
 Before each upload that Play has not seen:
 
-1. Raise the version. In `mobile/app.config.ts` set `version` (what people see) and
-   raise `android.versionCode` by one (it must be higher than the last upload; the
-   first upload is `1`). Play rejects a bundle whose `versionCode` it has already seen.
-2. Build:
+1. **Raise the version**, in your usual checkout:
 
    ```
    cd mobile
-   npm install
-   npx expo prebuild --platform android
-   cd android
-   ./gradlew bundleRelease
+   npm run release:android -- --bump
    ```
 
-3. The bundle is `mobile/android/app/build/outputs/bundle/release/app-release.aab`. Check it is
-   signed with your upload key: `keytool -printcert -jarfile app-release.aab` shows the SHA-1, which
-   must match the upload key's.
+   This raises `android.versionCode` by one and the patch part of `version` in
+   `mobile/app.config.ts`. Play rejects a bundle whose `versionCode` it has already seen. Add the
+   changes to `CHANGELOG.md` and commit.
+
+2. **Build from a short checkout.** On Windows the native build fails when the repository's path
+   is long (CMake stops at 260 characters), and a drive mapped with `subst` does not help. Keep a
+   second checkout at a short path as a Git worktree, made once:
+
+   ```
+   git worktree add --detach C:oost main
+   ```
+
+   For each release, move it to the commit you just made and build:
+
+   ```
+   cd C:oost
+   git checkout --detach main
+   cd mobile
+   npm install
+   npm run release:android
+   ```
+
+   The script refuses a long path and uncommitted changes, so every bundle matches a commit. It
+   runs `npx expo prebuild`, then `gradlew bundleRelease`, stops if the bundle is signed with the
+   debug key, and prints the version, the commit and the bundle's SHA-1, which must match the
+   upload key's. The bundle is `mobile/android/app/build/outputs/bundle/release/app-release.aab`
+   in the short checkout.
 
 To try a release build on your own phone before uploading, `./gradlew assembleRelease` makes an APK
 you can install with `adb install`. Play takes the bundle, not the APK.

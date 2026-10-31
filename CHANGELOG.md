@@ -7,6 +7,13 @@ Help › What's new, and the Unreleased section until a version has its own.
 
 ## [Unreleased]
 
+### Fixed
+
+- Removing one of your devices no longer shows "Sync folder refused: exists" when nothing else has
+  changed since the last time.
+- Leaving a project that a PC never joined now takes it off your list, so your other devices stop
+  trying to join it.
+
 ## [0.1.0] - 2026-10-30
 
 ### Added
