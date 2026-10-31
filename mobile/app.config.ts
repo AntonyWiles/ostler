@@ -51,6 +51,22 @@ const withReleaseSigning: ConfigPlugin = (expoConfig) =>
     return gradle
   })
 
+/**
+ * Caps the native build at six compiles at a time. Ninja otherwise runs one clang per core, and on
+ * a many-core Windows PC the React Native headers make those run out of memory
+ * ("LLVM ERROR: out of memory"). All native modules build inside the app's one CMake project, so
+ * this one setting covers them.
+ */
+const withNativeCompileCap: ConfigPlugin = (expoConfig) =>
+  withAppBuildGradle(expoConfig, (gradle) => {
+    if (gradle.modResults.contents.includes('CMAKE_JOB_POOLS')) return gradle
+    gradle.modResults.contents +=
+      '\n// Caps parallel native compiles: one clang per core runs out of memory on Windows.\n' +
+      'android { defaultConfig { externalNativeBuild { cmake { arguments ' +
+      '"-DCMAKE_JOB_POOLS=compile=6", "-DCMAKE_JOB_POOL_COMPILE=compile" } } } }\n'
+    return gradle
+  })
+
 const config: ExpoConfig = {
   name: BRAND.name,
   slug: BRAND.appUserModelId.replace(/[^a-z0-9]+/gi, '-').toLowerCase(),
@@ -90,4 +106,4 @@ const config: ExpoConfig = {
   ]
 }
 
-export default withReleaseSigning(config)
+export default withNativeCompileCap(withReleaseSigning(config))
