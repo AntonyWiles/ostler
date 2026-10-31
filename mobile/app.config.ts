@@ -70,7 +70,7 @@ const withNativeCompileCap: ConfigPlugin = (expoConfig) =>
 const config: ExpoConfig = {
   name: BRAND.name,
   slug: BRAND.appUserModelId.replace(/[^a-z0-9]+/gi, '-').toLowerCase(),
-  version: '1.0.1',
+  version: '1.0.2',
   orientation: 'portrait',
   icon: './assets/icon.png',
   userInterfaceStyle: 'automatic',
@@ -79,7 +79,7 @@ const config: ExpoConfig = {
   android: {
     package: BRAND.appUserModelId,
     // Raise by one for every bundle uploaded to Play; Play refuses a number it has seen.
-    versionCode: 2,
+    versionCode: 3,
     adaptiveIcon: {
       backgroundColor: '#4f6fe0',
       foregroundImage: './assets/android-icon-foreground.png',
