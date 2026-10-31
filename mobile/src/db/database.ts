@@ -75,13 +75,19 @@ export function wrapDatabase(raw: DB): OstlerDatabase {
         depth += 1
         try {
           const result = fn(...args)
-          depth -= 1
+          // COMMIT can throw too (a deferred foreign key check fails there). The transaction is
+          // still open then, so it goes through the same rollback as a failure inside fn.
           raw.executeSync(statements.commit)
           return result
         } catch (error) {
-          depth -= 1
-          raw.executeSync(statements.rollback)
+          try {
+            raw.executeSync(statements.rollback)
+          } catch {
+            // Nothing left to roll back; the original error is the one worth reporting.
+          }
           throw error
+        } finally {
+          depth -= 1
         }
       }
     },

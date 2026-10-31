@@ -362,6 +362,8 @@ export class PhoneSync {
     )
     if (running.personal) {
       await this.followEntries(running)
+      // Personal rows that waited for a parent in a project just joined (a reminder on its task) apply now.
+      retryWaiting(this.db, running.shareId)
       this.setStatus(running, members.problems.length > 0 ? 'problems' : 'up-to-date')
       return
     }

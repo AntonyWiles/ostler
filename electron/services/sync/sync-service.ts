@@ -1026,6 +1026,8 @@ export class SyncService {
       await applyRevocations(this.db, parentPlace(running.folder), this.opener)
       // Projects this person has on another device are joined here; one removed there is left (prompt 11).
       const folderProblems = await this.followEntries(running)
+      // Personal rows that waited for a parent in a project just joined (a reminder on its task) apply now.
+      retryWaiting(this.db, running.shareId)
       await this.writeEntries(running.transport)
       if (this.options.settings) {
         const settings = await pullSettings(this.db, running.transport, keys, this.options.settings)

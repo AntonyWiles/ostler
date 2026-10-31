@@ -11,7 +11,9 @@
  * Loading follows the same per-field rule as the merge: a column of a row this
  * PC already has is only overwritten when the snapshot's stamp for it is later
  * than the stored one, and a row this PC deleted later than every stamp in the
- * snapshot stays deleted. Table and column names only ever come from
+ * snapshot stays deleted. A row whose parent is not here yet (a personal reminder
+ * on a task in a project this device has not joined) waits in `sync_pending`, as
+ * a change would, instead of failing the whole snapshot. Table and column names only ever come from
  * `SYNCED_TABLES` and `tableShape`; values are always bound.
  */
 import type Database from 'better-sqlite3'
@@ -202,15 +204,19 @@ export function loadSnapshot(
   withSyncApplying(() =>
     db.transaction(() => {
       db.pragma('defer_foreign_keys = ON')
+      const written: WrittenRow[] = []
       for (const [table, entry] of Object.entries(registry)) {
         const shape = tableShape(db, table)
         const tableRows = snapshot.rows[table]
         if (!shape || !Array.isArray(tableRows)) continue
         const keyColumns = entry.keyColumns ?? shape.keyColumns
         for (const row of tableRows) {
-          if (loadRow(db, projectId, entry, shape, keyColumns, row, incoming)) rows++
+          const loaded = loadRow(db, projectId, entry, shape, keyColumns, row, incoming)
+          if (loaded) written.push({ table, keyColumns, ...loaded })
         }
       }
+      const waiting = parkOrphans(db, share.share_id, written, incoming)
+      rows = written.length - waiting.size
 
       const writeStamp = db.prepare(
         `INSERT INTO sync_field_stamps (table_name, row_key, column_name, stamp, project_id)
@@ -221,6 +227,8 @@ export function loadSnapshot(
       )
       for (const [table, key, column, stamp] of snapshot.stamps) {
         if (!Object.prototype.hasOwnProperty.call(registry, table)) continue
+        // A waiting row is stamped when it is applied; stamped now, it would count as already seen.
+        if (waiting.has(`${table}\u0000${key}`)) continue
         stamps += writeStamp.run({ table, key, column, stamp, projectId }).changes
       }
 
@@ -240,7 +248,81 @@ export function loadSnapshot(
   return { rows, stamps }
 }
 
-/** Inserts or updates one row; returns whether anything was written. */
+interface LoadedRow {
+  /** The row as it was written (a personal row after `arrivingRow`). */
+  row: Record<string, unknown>
+  /** New here, rather than an update of a row this PC already had. */
+  inserted: boolean
+}
+
+interface WrittenRow extends LoadedRow {
+  table: string
+  keyColumns: readonly string[]
+}
+
+/**
+ * Takes out the rows just added whose parent row is missing and leaves each in `sync_pending`
+ * as an upsert waiting for its parent, stamped with the row's newest stamp; `retryWaiting`
+ * applies it once the parent arrives. Repeats while taking a row out leaves another without
+ * its parent. Returns the table-and-key id of every row taken out.
+ */
+function parkOrphans(
+  db: Database.Database,
+  shareId: string,
+  written: readonly WrittenRow[],
+  incoming: Map<string, Map<string, string>>
+): Set<string> {
+  const waiting = new Set<string>()
+  const tables = [...new Set(written.map((entry) => entry.table))]
+  const park = db.prepare(
+    `INSERT INTO sync_pending (share_id, table_name, row_key, op, columns, stamp, waiting_for, received_at, actor)
+     VALUES (@shareId, @table, @key, 'upsert', @columns, @stamp, 'parent', @now, NULL)`
+  )
+  let parkedAny = true
+  while (parkedAny) {
+    parkedAny = false
+    for (const table of tables) {
+      const broken = new Set(
+        (db.pragma(`foreign_key_check(${quote(table)})`) as { rowid: number | null }[]).map(
+          (problem) => problem.rowid
+        )
+      )
+      if (broken.size === 0) continue
+      for (const entry of written) {
+        // An update of a row already here is not taken out: that would lose this PC's copy.
+        if (entry.table !== table || !entry.inserted) continue
+        const key = JSON.stringify(entry.keyColumns.map((column) => entry.row[column]))
+        const id = `${table}\u0000${key}`
+        if (waiting.has(id)) continue
+        const where = entry.keyColumns
+          .map((column, index) => `${quote(column)} IS @k${index}`)
+          .join(' AND ')
+        const keyValues = Object.fromEntries(
+          entry.keyColumns.map((column, index) => [`k${index}`, bindable(entry.row[column])])
+        )
+        const found = db
+          .prepare(`SELECT rowid AS rid FROM ${quote(table)} WHERE ${where} LIMIT 1`)
+          .get(keyValues) as { rid: number } | undefined
+        if (!found || !broken.has(found.rid)) continue
+        const stamps = [...(incoming.get(id)?.values() ?? [])]
+        park.run({
+          shareId,
+          table,
+          key,
+          columns: JSON.stringify(entry.row),
+          stamp: stamps.reduce((max, stamp) => (stamp > max ? stamp : max), ''),
+          now: Date.now()
+        })
+        db.prepare(`DELETE FROM ${quote(table)} WHERE ${where}`).run(keyValues)
+        waiting.add(id)
+        parkedAny = true
+      }
+    }
+  }
+  return waiting
+}
+
+/** Inserts or updates one row; returns what was written, or null when nothing was. */
 function loadRow(
   db: Database.Database,
   projectId: string,
@@ -249,14 +331,14 @@ function loadRow(
   keyColumns: readonly string[],
   incomingRow: Record<string, unknown>,
   incoming: Map<string, Map<string, string>>
-): boolean {
-  if (typeof incomingRow !== 'object' || incomingRow === null) return false
+): LoadedRow | null {
+  if (typeof incomingRow !== 'object' || incomingRow === null) return null
   // A personal row arrives with this PC's own columns left out and its secrets sealed again.
   const row = 'project' in entry ? incomingRow : arrivingRow(entry, incomingRow)
   if (!keyColumns.every((column) => Object.prototype.hasOwnProperty.call(row, column))) {
-    return false
+    return null
   }
-  if (!rowBelongs(db, projectId, entry, row)) return false
+  if (!rowBelongs(db, projectId, entry, row)) return null
 
   const key = JSON.stringify(keyColumns.map((column) => row[column]))
   const theirs = incoming.get(`${shape.table}\u0000${key}`) ?? new Map<string, string>()
@@ -272,7 +354,7 @@ function loadRow(
   // Deleted here after everything the snapshot knows about the row: it stays deleted.
   const tombstone = ours.get('*')
   const newestTheirs = [...theirs.values()].reduce((max, stamp) => (stamp > max ? stamp : max), '')
-  if (tombstone !== undefined && tombstone >= newestTheirs) return false
+  if (tombstone !== undefined && tombstone >= newestTheirs) return null
 
   // Columns this PC's table doesn't have are dropped, as in the merge.
   const columns = shape.columns.filter((column) =>
@@ -293,19 +375,19 @@ function loadRow(
       `INSERT INTO ${quote(shape.table)} (${columns.map(quote).join(', ')})
        VALUES (${columns.map((_, index) => `@c${index}`).join(', ')})`
     ).run(values(columns))
-    return true
+    return { row: Object.fromEntries(columns.map((column) => [column, row[column]])), inserted: true }
   }
 
   const winners = columns.filter(
     (column) =>
       !keyColumns.includes(column) && (theirs.get(column) ?? '') > (ours.get(column) ?? '')
   )
-  if (winners.length === 0) return false
+  if (winners.length === 0) return null
   db.prepare(
     `UPDATE ${quote(shape.table)} SET ${winners.map((column, index) => `${quote(column)} = @c${index}`).join(', ')}
      WHERE ${where}`
   ).run({ ...values(winners), ...keyValues })
-  return true
+  return { row, inserted: false }
 }
 
 /** Whether a snapshot row is this project's: by its own column, or through its parent (already loaded). */

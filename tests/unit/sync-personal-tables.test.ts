@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { attachChangeRecorder } from '../../electron/services/change-history/recorder'
-import { applyChanges } from '../../electron/services/sync/apply'
+import { applyChanges, retryWaiting } from '../../electron/services/sync/apply'
 import { withSyncApplying } from '../../electron/services/sync/capture'
 import {
   newIdentityKeys,
@@ -376,6 +376,47 @@ describe('personal tables travel in the personal share', () => {
       secret: string
     }
     expect(openSecret(stored.secret)).toBe('tok-SNAP')
+  })
+
+  it('loads a personal snapshot whose reminder is on a task not here yet, and applies the reminder once the project is loaded', () => {
+    withSyncApplying(() =>
+      dbA
+        .prepare(
+          `INSERT INTO planning_work_items (id, project_id, title, status, priority, origin, created_at, updated_at)
+           VALUES ('item-1', ?, 'Paint hall', 'ready', 'medium', 'human', 1, 1)`
+        )
+        .run(PROJECT)
+    )
+    dbA.exec(`
+      INSERT INTO reminders (id, project_id, work_item_id, remind_at, kind)
+        VALUES ('rem-1', '${PROJECT}', 'item-1', 5, 'due');
+      INSERT INTO contacts (id, name, created_at, updated_at) VALUES ('c-1', 'Carla', 1, 1);
+    `)
+
+    // A new device loads the personal snapshot before it has joined the project.
+    const personal = readSnapshot(dbA, PERSONAL_PROJECT_ID)
+    const loaded = loadSnapshot(dbB, PERSONAL_PROJECT_ID, personal)
+    expect(loaded.rows).toBe(1)
+    expect(countOf(dbB, 'SELECT COUNT(*) AS n FROM contacts')).toBe(1)
+    expect(countOf(dbB, 'SELECT COUNT(*) AS n FROM reminders')).toBe(0)
+    expect(
+      dbB.prepare('SELECT table_name, row_key, waiting_for FROM sync_pending').all()
+    ).toEqual([{ table_name: 'reminders', row_key: '["rem-1"]', waiting_for: 'parent' }])
+    expect(
+      countOf(
+        dbB,
+        "SELECT COUNT(*) AS n FROM sync_field_stamps WHERE table_name = 'reminders'"
+      )
+    ).toBe(0)
+
+    loadSnapshot(dbB, PROJECT, readSnapshot(dbA, PROJECT))
+    const retried = retryWaiting(dbB, PERSONAL_SHARE)
+    expect(retried.pending).toBe(0)
+    expect(dbB.prepare("SELECT work_item_id, remind_at FROM reminders WHERE id = 'rem-1'").get()).toEqual({
+      work_item_id: 'item-1',
+      remind_at: 5
+    })
+    expect(countOf(dbB, 'SELECT COUNT(*) AS n FROM sync_pending')).toBe(0)
   })
 
   it('captures nothing for personal tables while no personal share exists', async () => {

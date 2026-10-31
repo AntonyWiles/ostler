@@ -13,6 +13,9 @@ Help › What's new, and the Unreleased section until a version has its own.
   changed since the last time.
 - Leaving a project that a PC never joined now takes it off your list, so your other devices stop
   trying to join it.
+- A phone that failed to save one shared project no longer fails to join every project after it.
+- A new device no longer fails to load your personal space when a reminder points at a task in a
+  project it hasn't joined yet. The reminder waits and appears once that project is joined.
 
 ## [0.1.0] - 2026-10-30
 
