@@ -9,8 +9,8 @@ The Android package name is `com.ostler.app`. It comes from `BRAND.appUserModelI
 app is on Play**, so do not change it.
 
 You need the Android SDK, JDK 17 and the rest of the setup in
-[mobile/README.md](../../mobile/README.md). Keep the repository at a short path (for example
-`C:\o\ost`): CMake fails past the 260 character limit on Windows paths.
+[mobile/README.md](../../mobile/README.md). Release bundles are built from a second checkout at a
+short path (step 3): CMake fails past the 260 character limit on Windows paths.
 
 ## 1. Make the upload key (once)
 
@@ -76,16 +76,16 @@ Before each upload that Play has not seen:
    second checkout at a short path as a Git worktree, made once:
 
    ```
-   git worktree add --detach C:oost main
+   git worktree add --detach C:\o\rel main
    ```
 
    For each release, move it to the commit you just made and build:
 
    ```
-   cd C:oost
+   cd C:\o\rel
    git checkout --detach main
    cd mobile
-   npm install
+   npm ci
    npm run release:android
    ```
 
