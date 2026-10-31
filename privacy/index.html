@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ostler privacy policy</title>
+<style>
+  :root { color-scheme: light dark; --text: #1f2328; --muted: #59636e; --line: #d1d9e0; --accent: #4f46e5; --bg: #ffffff; }
+  @media (prefers-color-scheme: dark) { :root { --text: #e6edf3; --muted: #9198a1; --line: #3d444d; --accent: #60a5fa; --bg: #0d1117; } }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 32px 20px 64px; }
+  h1 { font-size: 28px; line-height: 1.25; margin: 0 0 16px; }
+  h2 { font-size: 20px; margin: 32px 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+  a { color: var(--accent); }
+  code { font-size: 14px; }
+  .table { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; }
+  footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+<h1>Ostler privacy policy</h1>
+<p>This policy covers Ostler, the project manager for Windows, and Ostler for Android, its phone
+companion. It was last updated on 30 October 2026.</p>
+<p>Ostler is made by Antony Wiles, who is the developer and the person responsible for the app. Ostler
+is free and open source (GPL-3.0). The source code is at <a href="https://github.com/AntonyWiles/ostler">https://github.com/AntonyWiles/ostler</a>.
+Questions about this policy go to <a href="https://github.com/AntonyWiles/ostler/issues">https://github.com/AntonyWiles/ostler/issues</a>.</p>
+<h2>The short version</h2>
+<ul>
+<li>Your projects and tasks stay on your own devices and in your own Google Drive.</li>
+<li>Everything Ostler puts in Google Drive is encrypted first.</li>
+<li>Nothing is sent to the developer. There is no Ostler server, no account with us, no analytics, no
+advertising and no crash reporting.</li>
+</ul>
+<h2>What Ostler for Android stores on your phone</h2>
+<ul>
+<li>Your projects, tasks, comments and the other things you see in the app, in a database private to
+the app on your phone. Other apps cannot read it.</li>
+<li>The names and colours of the projects you have joined, and the keys Ostler needs to open them,
+kept in Android&#39;s secure storage for the app.</li>
+<li>Which Google account you signed in with. Google keeps your sign-in token itself; Ostler asks
+Google for a short-lived access token each time it needs one and does not keep a copy.</li>
+</ul>
+<p>Signing out in the app&#39;s Settings ends the connection. Uninstalling the app removes everything it
+stored on the phone. Your data in Google Drive stays until you delete it there.</p>
+<h2>What Ostler does with your Google account</h2>
+<p>Ostler uses Sign in with Google so it can reach your own Google Drive. It reads and writes files in
+a folder named Ostler in your My Drive. On the PC it can also read the name of a Drive file you link
+to. It does not look at your other files, and it does not copy your Google data anywhere except between your own devices, through
+that folder.</p>
+<p>Ostler asks for these Google permissions (scopes), only when you use the feature that needs them:</p>
+<div class="table"><table>
+<thead>
+<tr>
+<th>Permission</th>
+<th>Where</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Your email address and sign-in (<code>openid</code>, <code>email</code>)</td>
+<td>PC, phone</td>
+<td>To show which account is connected.</td>
+</tr>
+<tr>
+<td>Google Drive (<code>drive</code>)</td>
+<td>PC, phone</td>
+<td>To keep the Ostler folder in your Drive, put your encrypted projects in it, read what your other devices put there, and let you give other people access to a project&#39;s folder. Google calls this a restricted scope; Ostler uses it only on its own folder.</td>
+</tr>
+<tr>
+<td>Drive files you pick (<code>drive.file</code>)</td>
+<td>PC only</td>
+<td>To show the current name of a Google Drive file you link to from the Library. Only the name is read; the file is never downloaded or copied.</td>
+</tr>
+<tr>
+<td>Calendar (<code>calendar.readonly</code>, <code>calendar.events</code>)</td>
+<td>PC only</td>
+<td>To show your calendars next to your plans and, if you choose a calendar for time blocks, to write each block&#39;s task title and project name there.</td>
+</tr>
+<tr>
+<td>Contacts (<code>contacts.readonly</code>)</td>
+<td>PC only</td>
+<td>To let you link people from your Google contacts to tasks. Contacts stay on the PC.</td>
+</tr>
+<tr>
+<td>Google Tasks (<code>tasks</code>)</td>
+<td>PC only</td>
+<td>To keep the task list you choose in step with your Ostler tasks.</td>
+</tr>
+</tbody></table></div>
+<p>The PC app asks for the file, calendar, contacts and tasks permissions only if you connect those
+features. The phone app asks for Drive only.</p>
+<p>Ostler&#39;s use of information received from Google APIs follows the
+<a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>,
+including its Limited Use requirements. Ostler uses Google data only to give you the features above.
+It does not transfer it to anyone else, does not use it for advertising and does not let anyone
+read it. People do not read your data: there are no servers for them to read it on.</p>
+<h2>Who can see your data</h2>
+<ul>
+<li><strong>Google</strong>, because your encrypted project files are in your Drive. Google can see file names,
+sizes and when they changed. It cannot read what is inside them.</li>
+<li><strong>People you give access to.</strong> If you share a project through Google Drive, the people you name get
+access to that project&#39;s folder, and the invite you send them carries the key to open it. Anyone
+with both can read the project, so treat an invite like a password.</li>
+<li><strong>Nobody else.</strong> Not the developer, not an Ostler server (there is none), not an advertiser.</li>
+</ul>
+<h2>What we collect</h2>
+<p>Nothing. The developer receives no data from the app: no usage statistics, no device identifiers,
+no location, no contacts, no files and no crash reports. Ostler has no telemetry. If something goes
+wrong, errors are written to a log file on your own device and you decide whether to share it.</p>
+<h2>Other services you choose</h2>
+<p>Ostler talks to another service only when you set it up: an AI provider you choose for Ostler AI, a
+calendar link you paste, a Microsoft or Dropbox account, a CalDAV server, a sync server you share a project through, or GitHub. The phone app
+uses none of these. Each of those services has its own privacy policy, and Ostler sends it only what
+that feature needs.</p>
+<h2>Keeping and deleting your data</h2>
+<p>Your data belongs to you and lives on your devices and in your Drive. To delete it: remove the
+projects in Ostler, delete the Ostler folder in your Google Drive, and uninstall the app. You can
+also remove Ostler&#39;s access in your Google Account under Security › Third-party apps and services.</p>
+<h2>Children</h2>
+<p>Ostler is not made for children under 13 and does not knowingly collect anything from them.</p>
+<h2>Changes</h2>
+<p>If this policy changes, the new text replaces this page and the date at the top changes. Changes that
+affect what Ostler does with your data are also listed in the CHANGELOG at
+<a href="https://github.com/AntonyWiles/ostler/blob/main/CHANGELOG.md">https://github.com/AntonyWiles/ostler/blob/main/CHANGELOG.md</a>.</p>
+
+<footer>The source of this page is <a href="https://github.com/AntonyWiles/ostler/blob/main/docs/mobile/privacy-policy.md">docs/mobile/privacy-policy.md</a> in the Ostler repository.</footer>
+</main>
+</body>
+</html>
