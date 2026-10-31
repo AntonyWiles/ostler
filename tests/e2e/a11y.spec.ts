@@ -238,6 +238,7 @@ for (const mode of MODES) {
       agents: true,
       projects: [tokenProject(token)],
       ui: { showProgress: true },
+      oneDrive: true,
       ...(mode === 'light' ? { viewport: BIG_WINDOW } : {})
     })
     if (mode === 'forced') await target.page.emulateMedia({ forcedColors: 'active' })
@@ -367,7 +368,16 @@ for (const mode of MODES) {
     await savePlaybook.getByRole('button', { name: 'Save playbook' }).click()
     await expect(savePlaybook).toBeHidden()
 
-    // Run playbook and Project settings (a task type, the task IDs), from the More menu.
+    // Run playbook and Project settings (a task type, the task IDs, Sharing with its
+    // invite row, which shows once the project is shared), from the More menu.
+    await page.evaluate(
+      async ([id, folder]) => {
+        const api = (globalThis as unknown as { ostlerAPI: OstlerAPI }).ostlerAPI
+        const shared = await api.shareProject(id, folder)
+        if (!shared.ok) throw new Error(shared.error)
+      },
+      [projectId, target.oneDrive!] as const
+    )
     await openPath(page, `/projects/${projectId}/board`)
     const projectMenu = page.getByRole('button', { name: 'More project actions' })
     findings.push(

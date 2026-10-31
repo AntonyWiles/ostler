@@ -2,6 +2,7 @@ import type { Page } from 'playwright'
 import { normalise } from './checks'
 import type { FindingInput } from './recorder'
 import { readNeedlessScroll } from '../../helpers/needless-scroll'
+import { readSqueezedText } from '../../helpers/squeezed-text'
 
 /**
  * What a person notices by looking, checked once on every new screen: a
@@ -269,6 +270,17 @@ export async function lookFindings(page: Page, screen: string): Promise<FindingI
       details: `It hides ${entry.hidden}px behind a scrollbar while there is room for ${entry.room}px more, so it could show everything. Let it grow, or let its dialog or page scroll instead.`,
       where: screen,
       key: `needless-scroll|${screen}|${normalise(entry.element)}`
+    })
+  }
+  const squeezed = await page.evaluate(readSqueezedText).catch(() => [])
+  for (const entry of squeezed) {
+    findings.push({
+      kind: 'visual',
+      severity: 'S3',
+      title: `Text squeezed into a narrow column: ${entry.element.slice(0, 80)}`,
+      details: `It wraps onto ${entry.lines} lines only ${entry.width}px wide, so it reads down the page. Give the text a minimum width, or let what sits beside it wrap or move below.`,
+      where: screen,
+      key: `squeezed-text|${screen}|${normalise(entry.element)}`
     })
   }
   for (const busy of state.busy) {

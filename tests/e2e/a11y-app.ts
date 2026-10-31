@@ -15,6 +15,7 @@ import {
 } from '../../src/shared/ostler-api'
 import { launchOstler } from './helpers/launch'
 import { readNeedlessScroll } from '../helpers/needless-scroll'
+import { readSqueezedText } from '../helpers/squeezed-text'
 
 /**
  * Launching Ostler for the accessibility suite (P9.2): a throwaway data folder,
@@ -31,6 +32,8 @@ export interface A11yApp {
   app: ElectronApplication
   page: Page
   dataDir: string
+  /** The OneDrive folder this PC has, when launched with `oneDrive`: a place to share projects. */
+  oneDrive?: string
 }
 
 function freePort(): Promise<number> {
@@ -64,6 +67,8 @@ export async function launchForAudit(options: {
   desktop?: Partial<OstlerConfig['desktop']>
   /** Windows' languages and regional format, pinned so money and dates read the same everywhere. */
   locale?: string
+  /** Gives this PC a OneDrive folder of its own, so a project can be shared into it. */
+  oneDrive?: boolean
 }): Promise<A11yApp> {
   const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ostler-a11y-'))
   const harnessPort = await freePort()
@@ -94,26 +99,38 @@ export async function launchForAudit(options: {
       2
     )
   )
-  return startApp(dataDir, options.viewport, options.locale)
+  // Outside the data folder: a project's shared folder may not sit inside it.
+  const oneDrive = options.oneDrive
+    ? fs.mkdtempSync(path.join(os.tmpdir(), 'ostler-a11y-onedrive-'))
+    : undefined
+  return startApp(dataDir, options.viewport, options.locale, oneDrive)
 }
 
 /** Starts Ostler on `dataDir`: a launch, or a restart after `app.close()`. */
 export async function startApp(
   dataDir: string,
   viewport: { width: number; height: number } = { width: 1280, height: 800 },
-  locale?: string
+  locale?: string,
+  oneDrive?: string
 ): Promise<A11yApp> {
+  const env = {
+    ...(locale ? { OSTLER_SYSTEM_LOCALE: locale } : {}),
+    ...(oneDrive
+      ? { OneDrive: oneDrive, OneDriveConsumer: undefined, OneDriveCommercial: undefined }
+      : {})
+  }
   const { app, window: page } = await launchOstler({
     dataDir,
     viewport,
-    env: locale ? { OSTLER_SYSTEM_LOCALE: locale } : undefined
+    env: Object.keys(env).length > 0 ? env : undefined
   })
-  return { app, page, dataDir }
+  return { app, page, dataDir, oneDrive }
 }
 
 export async function closeAudit(target: A11yApp): Promise<void> {
   await target.app.close()
   fs.rmSync(target.dataDir, { recursive: true, force: true })
+  if (target.oneDrive) fs.rmSync(target.oneDrive, { recursive: true, force: true })
 }
 
 /** Creates the sample project from its built-in package; returns its id and a task's. */
@@ -183,8 +200,9 @@ export interface Finding {
 
 /**
  * Serious and critical axe violations on the page as it is now (WCAG 2.2 A and
- * AA), and any box that scrolls by a little while the window has room to show
- * all of it (tests/helpers/needless-scroll.ts).
+ * AA), any box that scrolls by a little while the window has room to show
+ * all of it (tests/helpers/needless-scroll.ts), and any text squeezed into a
+ * column a word or two wide (tests/helpers/squeezed-text.ts).
  */
 export async function audit(page: Page, where: string): Promise<Finding[]> {
   const needless = (await page.evaluate(readNeedlessScroll)).map((entry) => ({
@@ -194,7 +212,14 @@ export async function audit(page: Page, where: string): Promise<Finding[]> {
     help: 'A box scrolls although the window has room to show all of it',
     targets: [`${entry.element} -- hides ${entry.hidden}px, room for ${entry.room}px`]
   }))
-  return [...needless, ...(await axeFindings(page, where))]
+  const squeezed = (await page.evaluate(readSqueezedText)).map((entry) => ({
+    where,
+    id: 'squeezed-text',
+    impact: 'layout',
+    help: 'Text is squeezed into a column a word or two wide, so it reads down the page',
+    targets: [`${entry.element} -- ${entry.lines} lines, ${entry.width}px wide`]
+  }))
+  return [...needless, ...squeezed, ...(await axeFindings(page, where))]
 }
 
 async function axeFindings(page: Page, where: string): Promise<Finding[]> {

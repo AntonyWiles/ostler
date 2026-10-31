@@ -1,7 +1,16 @@
-import { useMemo, type ReactNode } from 'react'
-import { Linking, Platform, StyleSheet, Text, View, type TextStyle } from 'react-native'
+import { useMemo, useState, type ReactNode } from 'react'
+import {
+  Linking,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  type TextStyle
+} from 'react-native'
 import { marked, type Token, type Tokens } from 'marked'
 import { RADIUS, SPACE, type Theme } from '../theme'
+import { tableColumnWidth } from './tableLayout'
 
 interface Props {
   theme: Theme
@@ -158,20 +167,16 @@ export function Markdown({ theme, children }: Props) {
         return <View key={key} style={[styles.hr, { backgroundColor: theme.border }]} />
       case 'table': {
         const table = token as Tokens.Table
-        const row = (cells: Tokens.TableCell[], header: boolean, k: string) => (
-          <View key={k} style={[styles.tableRow, { borderColor: theme.border }]}>
-            {cells.map((cell, i) => (
-              <Text key={i} style={[base, styles.cell, header && styles.strong]}>
-                {inline(cell.tokens, `${k}.${i}`)}
-              </Text>
-            ))}
-          </View>
-        )
+        const row = (cells: Tokens.TableCell[], k: string) =>
+          cells.map((cell, i) => inline(cell.tokens, `${k}.${i}`))
         return (
-          <View key={key} style={[styles.table, { borderColor: theme.border }]}>
-            {row(table.header, true, `${key}.h`)}
-            {table.rows.map((cells, i) => row(cells, false, `${key}.${i}`))}
-          </View>
+          <Table
+            key={key}
+            theme={theme}
+            textStyle={base}
+            header={row(table.header, `${key}.h`)}
+            rows={table.rows.map((cells, i) => row(cells, `${key}.${i}`))}
+          />
         )
       }
       default:
@@ -196,6 +201,50 @@ function decode(text: string): string {
     .replace(/&amp;/g, '&')
 }
 
+/**
+ * A table whose columns share its width but keep a few words each
+ * (tableColumnWidth); a table too wide for the screen scrolls sideways.
+ */
+function Table({
+  theme,
+  textStyle,
+  header,
+  rows
+}: {
+  theme: Theme
+  textStyle: TextStyle
+  header: ReactNode[][]
+  rows: ReactNode[][][]
+}) {
+  const [available, setAvailable] = useState(0)
+  const width = tableColumnWidth(
+    Math.max(header.length, ...rows.map((cells) => cells.length)),
+    available
+  )
+  const row = (cells: ReactNode[][], isHeader: boolean, key: string) => (
+    <View key={key} style={[styles.tableRow, { borderColor: theme.border }]}>
+      {cells.map((cell, i) => (
+        <Text key={i} style={[textStyle, styles.cell, { width }, isHeader && styles.strong]}>
+          {cell}
+        </Text>
+      ))}
+    </View>
+  )
+  return (
+    <View
+      onLayout={(event) => setAvailable(Math.floor(event.nativeEvent.layout.width))}
+      style={[styles.table, { borderColor: theme.border }]}
+    >
+      <ScrollView horizontal>
+        <View>
+          {row(header, true, 'h')}
+          {rows.map((cells, i) => row(cells, false, String(i)))}
+        </View>
+      </ScrollView>
+    </View>
+  )
+}
+
 const styles = StyleSheet.create({
   root: { gap: SPACE.small },
   strong: { fontWeight: '700' },
@@ -211,5 +260,5 @@ const styles = StyleSheet.create({
   hr: { height: StyleSheet.hairlineWidth, marginVertical: SPACE.small },
   table: { borderWidth: StyleSheet.hairlineWidth, borderRadius: RADIUS },
   tableRow: { flexDirection: 'row', borderTopWidth: StyleSheet.hairlineWidth },
-  cell: { flex: 1, padding: SPACE.small, fontSize: 13 }
+  cell: { padding: SPACE.small, fontSize: 13 }
 })

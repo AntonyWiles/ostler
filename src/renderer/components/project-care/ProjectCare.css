@@ -7,9 +7,11 @@
   border-radius: var(--radius-md);
 }
 
+/* The text keeps at least 240px: an action wider than the rest of the row
+   wraps its buttons instead of squeezing the text into a column a word wide. */
 .project-care-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(min(100%, calc(var(--space-1000) * 6)), 1fr) auto;
   align-items: center;
   gap: var(--space-200) var(--space-400);
   padding: var(--space-300) var(--space-400);
@@ -78,7 +80,7 @@
 
 .project-care-backup {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(min(100%, calc(var(--space-1000) * 6)), 1fr) auto;
   align-items: center;
   gap: var(--space-200) var(--space-400);
   padding: var(--space-300) var(--space-400);
@@ -307,6 +309,8 @@
 
 /* "What each role can do": a disclosure holding a role-by-capability table. */
 .project-sharing-roles > summary {
+  /* At least 24px tall to click (WCAG 2.5.8). */
+  line-height: var(--space-600);
   cursor: pointer;
   color: var(--color-text-secondary);
   font-size: var(--text-body-sm);
