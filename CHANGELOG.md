@@ -16,7 +16,8 @@ Help › What's new, and the Unreleased section until a version has its own.
   phone's top bar, with the matching words marked.
 - **More task editing on Android.** Edit a task's description, priority, start date, estimate,
   milestone and labels from the phone, and add, rename, reorder or remove checklist items. A task
-  lists its subtasks and links to its parent, and you can add a subtask from it. The changes show in the task's history on your PC, and an
+  lists its subtasks and links to its parent, and you can add a subtask from it. You can also see
+  and change which tasks a task waits on, and see which tasks wait on it. The changes show in the task's history on your PC, and an
   earlier description can be brought back there.
 
 ### Fixed

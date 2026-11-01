@@ -16,6 +16,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { compareIsoDates, isIsoDate } from '@shared/dates'
 import { MAX_ORDER_KEY_LENGTH, orderKeyBetween, spacedOrderKeys } from '@shared/planning/order-key'
+import { DEFAULT_DEPENDENCY_TYPE } from '@shared/planning/dependency-links'
 import { continuesSitting } from '@shared/planning/sitting'
 import { MAX_COMMENT_LENGTH } from '@shared/ostler-api/activity-types'
 import { MAX_MY_DAY_TASKS } from '@shared/ostler-api/home-types'
@@ -73,6 +74,8 @@ export type EditRefusal =
   | 'bad-label'
   | 'bad-checklist-line'
   | 'too-deep' // subtasks nest three levels at most
+  | 'bad-dependency' // not a task of the project, the task itself, or (for a subtask) not a sibling
+  | 'dependency-loop'
 
 /** An edit that was refused; nothing was written. `reason` is what the screen shows. */
 export class EditRefused extends Error {
@@ -111,6 +114,8 @@ interface TaskRow {
   show_from: string | null
   in_triage: number
   linked_harness_task_id: string | null
+  parent_work_item_id: string | null
+  subtask_phase_number: number | null
 }
 
 const MAX_TITLE = 200
@@ -283,6 +288,77 @@ interface TaskChanges {
   milestoneId?: string | null
   labels?: string[]
   checklist?: string[]
+  dependencyIds?: string[]
+}
+
+interface DependencyRow {
+  depends_on_id: string
+  type: string
+  lag_days: number
+}
+
+function dependenciesOf(db: EditDb, taskId: string): DependencyRow[] {
+  return db
+    .prepare(
+      'SELECT depends_on_id, type, lag_days FROM planning_dependencies WHERE work_item_id = ? ORDER BY rowid'
+    )
+    .all(taskId) as DependencyRow[]
+}
+
+/**
+ * The checks of `PlanningService.validateDependencies`: kept tasks of the same project, not the
+ * task itself; a subtask waits only on siblings in its phase; and no loop of waiting.
+ */
+function validDependencies(db: EditDb, current: TaskRow, ids: string[]): string[] {
+  if (!Array.isArray(ids) || ids.some((id) => typeof id !== 'string' || !id)) {
+    throw new EditRefused('bad-dependency')
+  }
+  const unique = [...new Set(ids)]
+  if (unique.length > 50 || unique.includes(current.id)) throw new EditRefused('bad-dependency')
+  if (unique.length === 0) return unique
+  const kept = db
+    .prepare(
+      `SELECT id, parent_work_item_id, subtask_phase_number FROM planning_work_items
+       WHERE project_id = ? AND deleted_at IS NULL`
+    )
+    .all(current.project_id) as {
+    id: string
+    parent_work_item_id: string | null
+    subtask_phase_number: number | null
+  }[]
+  const byId = new Map(kept.map((item) => [item.id, item]))
+  for (const id of unique) {
+    const item = byId.get(id)
+    if (!item) throw new EditRefused('bad-dependency')
+    if (
+      current.parent_work_item_id !== null &&
+      (item.parent_work_item_id !== current.parent_work_item_id ||
+        item.subtask_phase_number !== current.subtask_phase_number)
+    ) {
+      throw new EditRefused('bad-dependency')
+    }
+  }
+  const rows = db
+    .prepare(
+      `SELECT dependency.work_item_id, dependency.depends_on_id
+       FROM planning_dependencies dependency
+       JOIN planning_work_items item ON item.id = dependency.work_item_id
+       WHERE item.project_id = ? AND item.deleted_at IS NULL`
+    )
+    .all(current.project_id) as { work_item_id: string; depends_on_id: string }[]
+  const graph = new Map<string, string[]>()
+  for (const row of rows) {
+    graph.set(row.work_item_id, [...(graph.get(row.work_item_id) ?? []), row.depends_on_id])
+  }
+  graph.set(current.id, unique)
+  const reachesTask = (at: string, seen: Set<string>): boolean => {
+    if (at === current.id) return true
+    if (seen.has(at)) return false
+    seen.add(at)
+    return (graph.get(at) ?? []).some((next) => reachesTask(next, seen))
+  }
+  if (unique.some((id) => reachesTask(id, new Set()))) throw new EditRefused('dependency-loop')
+  return unique
 }
 
 export const TASK_PRIORITIES: readonly PlanningPriority[] = ['low', 'medium', 'high', 'critical']
@@ -405,6 +481,11 @@ function updateTask(
             MAX_CHECKLIST_LINE,
             'bad-checklist-line'
           )
+    const dependenciesBefore = dependenciesOf(db, taskId)
+    const dependencyIds =
+      changes.dependencyIds === undefined
+        ? dependenciesBefore.map((row) => row.depends_on_id)
+        : validDependencies(db, current, changes.dependencyIds)
     const statusChanged = status !== current.status
     if (
       statusChanged &&
@@ -440,6 +521,19 @@ function updateTask(
         taskId
       )
       if (changes.checklist !== undefined) carryChecklist(db, taskId, checklist, renamed)
+      if (changes.dependencyIds !== undefined) {
+        // A link kept keeps its type and lag; a new one is finish to start, 0 days
+        // (`PlanningService.dependencyLinksInput`).
+        const previous = new Map(dependenciesBefore.map((row) => [row.depends_on_id, row]))
+        db.prepare('DELETE FROM planning_dependencies WHERE work_item_id = ?').run(taskId)
+        const insert = db.prepare(
+          'INSERT INTO planning_dependencies (work_item_id, depends_on_id, type, lag_days) VALUES (?, ?, ?, ?)'
+        )
+        for (const id of dependencyIds) {
+          const kept = previous.get(id)
+          insert.run(taskId, id, kept?.type ?? DEFAULT_DEPENDENCY_TYPE, kept?.lag_days ?? 0)
+        }
+      }
 
       // `PlanningActivity.recordUpdate`, for these fields, in its order.
       if (title !== current.title)
@@ -466,6 +560,9 @@ function updateTask(
         recordChange(db, current, 'milestone', current.milestone_id, milestoneId, personId, at)
       if (!sameSet(labelsBefore, labels))
         recordChange(db, current, 'labels', labelsBefore, labels, personId, at)
+      const idsBefore = dependenciesBefore.map((row) => row.depends_on_id)
+      if (!sameSet(idsBefore, dependencyIds))
+        recordChange(db, current, 'dependencies', idsBefore, dependencyIds, personId, at)
       if (!sameSet(checklistBefore, checklist))
         recordSitting(db, current, 'checklist', checklistBefore, checklist, personId, at)
       if (description !== current.description) keepDescriptionVersion(db, current, personId, at)
@@ -582,6 +679,16 @@ export function setTaskMilestone(
   options: EditOptions = {}
 ): void {
   updateTask(db, taskId, { milestoneId }, options)
+}
+
+/** Replaces the tasks a task waits on (`updateWorkItem`, `dependencyIds`). */
+export function setTaskDependencies(
+  db: EditDb,
+  taskId: string,
+  dependencyIds: string[],
+  options: EditOptions = {}
+): void {
+  updateTask(db, taskId, { dependencyIds }, options)
 }
 
 /** Replaces a task's labels (`updateWorkItem`, `labels`). */

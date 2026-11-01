@@ -124,7 +124,10 @@
     "wontDo": "「対応しない」として閉じました。プロジェクトのアーカイブにあります。",
     "someday": "「いつか」にあります。戻すまでボードには表示されません。",
     "subtasks": "サブタスク",
-    "partOf": "親タスク: {{title}}"
+    "partOf": "親タスク: {{title}}",
+    "waitingOn": "待機中のタスク",
+    "waitingOnNone": "他のタスクを待っていません。",
+    "waitedOnBy": "このタスクを待つタスク"
   },
   "nav": {
     "projects": "プロジェクト",
@@ -178,7 +181,9 @@
       "bad-milestone": "そのマイルストーンはこのプロジェクトにありません。",
       "bad-label": "ラベルは 1 つのタスクに最大 20 個、各 80 文字までです。",
       "bad-checklist-line": "チェックリストは異なる項目を最大 30 個、各 500 文字まで持てます。",
-      "too-deep": "サブタスクは 3 階層までしか入れ子にできません。"
+      "too-deep": "サブタスクは 3 階層までしか入れ子にできません。",
+      "bad-dependency": "タスクは同じプロジェクトのタスクしか待てません。サブタスクは隣のサブタスクしか待てません。",
+      "dependency-loop": "タスクが互いに待ち合うループになります。"
     },
     "previousMonth": "前の月",
     "nextMonth": "次の月",
@@ -200,7 +205,10 @@
     "moveDown": "下へ移動",
     "removeItem": "削除",
     "done": "完了",
-    "addSubtask": "サブタスクを追加"
+    "addSubtask": "サブタスクを追加",
+    "addWaitingOn": "このタスクが待つタスクを追加",
+    "stopWaiting": "{{title}} を待つのをやめる",
+    "findTask": "タスクを検索"
   },
   "taskMenu": {
     "addMyDay": "マイデイに追加",

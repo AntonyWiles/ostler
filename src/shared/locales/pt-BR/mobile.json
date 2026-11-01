@@ -124,7 +124,10 @@
     "wontDo": "Fechada como “Não será feita”. Está no arquivo do projeto.",
     "someday": "Em “Algum dia”: oculta do quadro até você trazê-la de volta.",
     "subtasks": "Subtarefas",
-    "partOf": "Parte de: {{title}}"
+    "partOf": "Parte de: {{title}}",
+    "waitingOn": "Aguarda",
+    "waitingOnNone": "Não aguarda outras tarefas.",
+    "waitedOnBy": "Aguardada por"
   },
   "nav": {
     "projects": "Projetos",
@@ -178,7 +181,9 @@
       "bad-milestone": "Esse marco não é deste projeto.",
       "bad-label": "Uma tarefa tem no máximo 20 etiquetas de 80 caracteres cada.",
       "bad-checklist-line": "Uma checklist tem no máximo 30 itens diferentes de 500 caracteres cada.",
-      "too-deep": "Subtarefas só podem ser aninhadas em até três níveis."
+      "too-deep": "Subtarefas só podem ser aninhadas em até três níveis.",
+      "bad-dependency": "Uma tarefa só pode aguardar outra tarefa do seu projeto. Uma subtarefa, só as subtarefas ao lado dela.",
+      "dependency-loop": "Assim tarefas aguardariam umas às outras em ciclo."
     },
     "previousMonth": "Mês anterior",
     "nextMonth": "Próximo mês",
@@ -200,7 +205,10 @@
     "moveDown": "Mover para baixo",
     "removeItem": "Remover",
     "done": "Concluído",
-    "addSubtask": "Adicionar uma subtarefa"
+    "addSubtask": "Adicionar uma subtarefa",
+    "addWaitingOn": "Adicionar uma tarefa que esta aguarda",
+    "stopWaiting": "Parar de aguardar {{title}}",
+    "findTask": "Encontrar uma tarefa"
   },
   "taskMenu": {
     "addMyDay": "Adicionar a Meu dia",

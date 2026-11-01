@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactNode } from 'react'
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { t } from '@shared/i18n/index'
 import { formatIsoDateShort, shiftIsoDate } from '@shared/dates'
 import { formatDateTime, formatRelativeTime } from '@shared/format'
@@ -18,6 +18,7 @@ import {
   setChecklistTick,
   setTaskAssignee,
   setTaskChecklist,
+  setTaskDependencies,
   setTaskDescription,
   setTaskDueDate,
   setTaskEstimate,
@@ -33,6 +34,7 @@ import {
 } from '../data/edits'
 import {
   assignablePeople,
+  dependencyChoices,
   milestoneChoices,
   projectLabels,
   task as readTask,
@@ -69,6 +71,7 @@ type Panel =
   | 'milestone'
   | 'labels'
   | 'checklist'
+  | 'dependencies'
   | 'wontDo'
   | null
 
@@ -82,6 +85,8 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }
   const [error, setError] = useState<string | null>(null)
   /** The checklist line being renamed, by its place in the list. */
   const [renaming, setRenaming] = useState<number | null>(null)
+  /** The words that narrow the tasks offered to wait on. */
+  const [waitFilter, setWaitFilter] = useState('')
   const task = useMemo(() => (version >= 0 ? readTask(db, taskId) : null), [db, taskId, version])
 
   const people = useMemo(
@@ -97,6 +102,11 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }
     const names = new Set([...projectLabels(db, task.projectId), ...task.labels])
     return [...names].sort((a, b) => a.localeCompare(b))
   }, [db, task, panel])
+  const waitChoices = useMemo(
+    () =>
+      task !== null && panel === 'dependencies' ? dependencyChoices(db, task.id, waitFilter) : [],
+    [db, task, panel, waitFilter]
+  )
   /** Runs one edit; true when it was saved. A refusal (a Viewer, a bad date) is shown, not thrown. */
   const attempt = (edit: () => void): boolean => {
     try {
@@ -195,7 +205,7 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }
   )
   /** A field that opens its choices in place, under it, when tapped. */
   const field = (
-    name: Exclude<Panel, 'title' | 'description' | 'checklist' | 'wontDo' | null>,
+    name: Exclude<Panel, 'title' | 'description' | 'checklist' | 'dependencies' | 'wontDo' | null>,
     label: string,
     hint: string,
     value: ReactNode
@@ -775,6 +785,113 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }
             }}
           />
 
+          <View style={styles.headingRow}>
+            <Text
+              accessibilityRole="header"
+              style={[styles.heading, styles.headingText, { color: theme.textSecondary }]}
+            >
+              {t('mobile:task.waitingOn')}
+            </Text>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={
+                panel === 'dependencies' ? t('mobile:edit.done') : t('mobile:edit.addWaitingOn')
+              }
+              onPress={() => {
+                setWaitFilter('')
+                toggle('dependencies')
+              }}
+              hitSlop={SPACE.medium}
+            >
+              <Text style={[styles.headingAction, { color: theme.accent }]}>
+                {panel === 'dependencies' ? t('mobile:edit.done') : t('mobile:edit.add')}
+              </Text>
+            </Pressable>
+          </View>
+          {task.waitingOn.length === 0 && panel !== 'dependencies' && (
+            <Text style={[styles.body, { color: theme.textMuted }]}>
+              {t('mobile:task.waitingOnNone')}
+            </Text>
+          )}
+        </View>
+        {task.waitingOn.length > 0 && (
+          <View style={[styles.group, { borderColor: theme.border }]}>
+            {task.waitingOn.map((other) => (
+              <View key={other.id} style={styles.linkedRow}>
+                <View style={styles.checkText}>
+                  <TaskRow task={other} theme={theme} onPress={() => onOpenTask(other.id)} />
+                </View>
+                {lineButton('✕', t('mobile:edit.stopWaiting', { title: other.title }), () =>
+                  attempt(() =>
+                    setTaskDependencies(
+                      db,
+                      task.id,
+                      task.waitingOn.map((item) => item.id).filter((id) => id !== other.id)
+                    )
+                  )
+                )}
+              </View>
+            ))}
+          </View>
+        )}
+        {panel === 'dependencies' && (
+          <View style={styles.page}>
+            <TextInput
+              autoFocus
+              accessibilityLabel={t('mobile:edit.findTask')}
+              placeholder={t('mobile:edit.findTask')}
+              placeholderTextColor={theme.textMuted}
+              value={waitFilter}
+              onChangeText={setWaitFilter}
+              style={[
+                styles.filter,
+                {
+                  color: theme.text,
+                  borderColor: theme.borderStrong,
+                  backgroundColor: theme.surface
+                }
+              ]}
+            />
+            {waitChoices.map((choice) => (
+              <TaskRow
+                key={choice.id}
+                task={choice}
+                theme={theme}
+                onPress={() =>
+                  attempt(() =>
+                    setTaskDependencies(db, task.id, [
+                      ...task.waitingOn.map((item) => item.id),
+                      choice.id
+                    ])
+                  )
+                }
+              />
+            ))}
+          </View>
+        )}
+        {task.waitedOnBy.length > 0 && (
+          <>
+            <View style={styles.page}>
+              <Text
+                accessibilityRole="header"
+                style={[styles.heading, { color: theme.textSecondary }]}
+              >
+                {t('mobile:task.waitedOnBy')}
+              </Text>
+            </View>
+            <View style={[styles.group, { borderColor: theme.border }]}>
+              {task.waitedOnBy.map((other) => (
+                <TaskRow
+                  key={other.id}
+                  task={other}
+                  theme={theme}
+                  onPress={() => onOpenTask(other.id)}
+                />
+              ))}
+            </View>
+          </>
+        )}
+        <View style={styles.page}>
           <Text accessibilityRole="header" style={[styles.heading, { color: theme.textSecondary }]}>
             {t('mobile:task.comments')}
           </Text>
@@ -905,6 +1022,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   lineGlyph: { fontSize: 16, fontWeight: '600' },
+  linkedRow: { flexDirection: 'row', alignItems: 'center', paddingRight: SPACE.large },
+  filter: {
+    minHeight: 44,
+    borderWidth: 1,
+    borderRadius: RADIUS,
+    paddingHorizontal: SPACE.medium,
+    fontSize: 15
+  },
   comment: {
     gap: SPACE.small,
     padding: SPACE.medium,

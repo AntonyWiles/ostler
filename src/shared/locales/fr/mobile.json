@@ -124,7 +124,10 @@
     "wontDo": "Fermée comme « Ne sera pas fait ». Elle est dans les archives du projet.",
     "someday": "Dans « Un jour » : masquée du tableau jusqu’à ce que vous la rameniez.",
     "subtasks": "Sous-tâches",
-    "partOf": "Fait partie de : {{title}}"
+    "partOf": "Fait partie de : {{title}}",
+    "waitingOn": "Attend",
+    "waitingOnNone": "N’attend aucune autre tâche.",
+    "waitedOnBy": "Attendue par"
   },
   "nav": {
     "projects": "Projets",
@@ -178,7 +181,9 @@
       "bad-milestone": "Ce jalon n’appartient pas à ce projet.",
       "bad-label": "Une tâche a au plus 20 étiquettes de 80 caractères chacune.",
       "bad-checklist-line": "Une liste de contrôle a au plus 30 éléments différents de 500 caractères chacun.",
-      "too-deep": "Les sous-tâches ne s’imbriquent que sur trois niveaux."
+      "too-deep": "Les sous-tâches ne s’imbriquent que sur trois niveaux.",
+      "bad-dependency": "Une tâche ne peut attendre qu’une autre tâche de son projet. Une sous-tâche, que les sous-tâches à côté d’elle.",
+      "dependency-loop": "Des tâches s’attendraient alors en boucle."
     },
     "previousMonth": "Mois précédent",
     "nextMonth": "Mois suivant",
@@ -200,7 +205,10 @@
     "moveDown": "Descendre",
     "removeItem": "Retirer",
     "done": "Terminé",
-    "addSubtask": "Ajouter une sous-tâche"
+    "addSubtask": "Ajouter une sous-tâche",
+    "addWaitingOn": "Ajouter une tâche que celle-ci attend",
+    "stopWaiting": "Ne plus attendre {{title}}",
+    "findTask": "Chercher une tâche"
   },
   "taskMenu": {
     "addMyDay": "Ajouter à Ma journée",

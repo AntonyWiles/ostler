@@ -28,6 +28,7 @@ const TABLES = [
   'planning_checklist_checks',
   'planning_checklist_details',
   'planning_description_versions',
+  'planning_dependencies',
   'planning_milestones',
   'project_task_counters',
   'reminders'
@@ -87,7 +88,19 @@ describe('the phone edits a task the way the desktop does (mobile plan, prompt 1
       human
     ).id
     ids.otherMilestone = planning.createMilestone(PROJECT, { name: 'Snagging' }).id
-    planning.createWorkItem(PROJECT, { title: 'Pick tiles', labels: ['Kitchen'] }, human)
+    ids.tiles = planning.createWorkItem(
+      PROJECT,
+      { title: 'Pick tiles', labels: ['Kitchen'] },
+      human
+    ).id
+    ids.worktop = planning.createWorkItem(
+      PROJECT,
+      {
+        title: 'Order worktop',
+        dependencyLinks: [{ id: ids.tiles, type: 'start-to-start', lagDays: 2 }]
+      },
+      human
+    ).id
     planning.setChecklistItemChecked(ids.main, 'Taps work', true, human)
     planning.close()
     people.close()
@@ -315,6 +328,32 @@ describe('the phone edits a task the way the desktop does (mobile plan, prompt 1
     const third = edits.addTask(phone, PROJECT, 'Level three', { parentId: second })
     expect(() => edits.addTask(phone, PROJECT, 'Level four', { parentId: third })).toThrow(
       'too-deep'
+    )
+    db.close()
+  })
+
+  it('adds and removes tasks to wait on, keeping a kept link’s type and lag', () => {
+    both(
+      (planning) => {
+        planning.updateWorkItem(ids.main, { dependencyIds: [ids.tiles] }, human)
+        planning.updateWorkItem(ids.worktop, { dependencyIds: [ids.tiles, ids.main] }, human)
+        planning.updateWorkItem(ids.main, { dependencyIds: [] }, human)
+      },
+      (db) => {
+        edits.setTaskDependencies(db, ids.main, [ids.tiles])
+        edits.setTaskDependencies(db, ids.worktop, [ids.tiles, ids.main])
+        edits.setTaskDependencies(db, ids.main, [])
+      }
+    )
+  })
+
+  it('refuses waiting on itself, on a task of another project, or in a loop', () => {
+    const db = new Database(phonePath)
+    const phone = db as unknown as EditDb
+    expect(() => edits.setTaskDependencies(phone, ids.main, [ids.main])).toThrow('bad-dependency')
+    expect(() => edits.setTaskDependencies(phone, ids.main, ['nope'])).toThrow('bad-dependency')
+    expect(() => edits.setTaskDependencies(phone, ids.tiles, [ids.worktop])).toThrow(
+      'dependency-loop'
     )
     db.close()
   })

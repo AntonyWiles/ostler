@@ -203,6 +203,10 @@ export interface TaskDetail extends TaskSummary {
   parent: { id: string; title: string } | null
   /** Its own subtasks that are not archived or in the bin, by phase, then in the project's order. */
   subtasks: TaskSummary[]
+  /** The tasks it waits on, in the order they were linked. */
+  waitingOn: TaskSummary[]
+  /** The tasks that wait on it. */
+  waitedOnBy: TaskSummary[]
   comments: TaskComment[]
   createdAt: number
   updatedAt: number
@@ -296,6 +300,32 @@ export function task(db: QueryDb, id: string): TaskDetail | null {
           `SELECT ${SUMMARY_COLUMNS} FROM planning_work_items
            WHERE parent_work_item_id = ? AND deleted_at IS NULL AND archived_at IS NULL
            ORDER BY subtask_phase_number, order_key`
+        )
+        .all(id) as TaskSummaryRow[]
+    ).map(toSummary),
+    waitingOn: (
+      db
+        .prepare(
+          `SELECT ${SUMMARY_COLUMNS.split(', ')
+            .map((column) => `item.${column}`)
+            .join(', ')}
+           FROM planning_dependencies dependency
+           JOIN planning_work_items item ON item.id = dependency.depends_on_id
+           WHERE dependency.work_item_id = ? AND item.deleted_at IS NULL
+           ORDER BY dependency.rowid`
+        )
+        .all(id) as TaskSummaryRow[]
+    ).map(toSummary),
+    waitedOnBy: (
+      db
+        .prepare(
+          `SELECT ${SUMMARY_COLUMNS.split(', ')
+            .map((column) => `item.${column}`)
+            .join(', ')}
+           FROM planning_dependencies dependency
+           JOIN planning_work_items item ON item.id = dependency.work_item_id
+           WHERE dependency.depends_on_id = ? AND item.deleted_at IS NULL
+           ORDER BY item.order_key`
         )
         .all(id) as TaskSummaryRow[]
     ).map(toSummary),
@@ -556,6 +586,52 @@ export function assignablePeople(db: QueryDb, projectId: string): PersonChoice[]
        ORDER BY name COLLATE NOCASE, id`
     )
     .all(projectId) as PersonChoice[]
+}
+
+/**
+ * The tasks a task could wait on: the project's live tasks, not itself or ones it waits on
+ * already, whose title holds `filter`; for a subtask, only its siblings in the same phase.
+ */
+export function dependencyChoices(
+  db: QueryDb,
+  taskId: string,
+  filter: string,
+  limit = 30
+): TaskSummary[] {
+  const self = db
+    .prepare(
+      'SELECT project_id, parent_work_item_id, subtask_phase_number FROM planning_work_items WHERE id = ?'
+    )
+    .get(taskId) as
+    | {
+        project_id: string
+        parent_work_item_id: string | null
+        subtask_phase_number: number | null
+      }
+    | undefined
+  if (!self) return []
+  const words = filter.trim().toLowerCase()
+  const rows = db
+    .prepare(
+      `SELECT ${SUMMARY_COLUMNS}, parent_work_item_id, subtask_phase_number FROM planning_work_items
+       WHERE project_id = ? AND deleted_at IS NULL AND archived_at IS NULL AND id <> ?
+         AND id NOT IN (SELECT depends_on_id FROM planning_dependencies WHERE work_item_id = ?)
+       ORDER BY status = 'done', order_key`
+    )
+    .all(self.project_id, taskId, taskId) as (TaskSummaryRow & {
+    parent_work_item_id: string | null
+    subtask_phase_number: number | null
+  })[]
+  return rows
+    .filter(
+      (row) =>
+        self.parent_work_item_id === null ||
+        (row.parent_work_item_id === self.parent_work_item_id &&
+          row.subtask_phase_number === self.subtask_phase_number)
+    )
+    .filter((row) => !words || row.title.toLowerCase().includes(words))
+    .slice(0, limit)
+    .map(toSummary)
 }
 
 export interface MilestoneChoice {

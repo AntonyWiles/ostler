@@ -124,7 +124,10 @@
     "wontDo": "已以“不做”关闭，位于项目的归档中。",
     "someday": "在“将来某天”中：在你移回之前不会显示在看板上。",
     "subtasks": "子任务",
-    "partOf": "所属任务：{{title}}"
+    "partOf": "所属任务：{{title}}",
+    "waitingOn": "等待",
+    "waitingOnNone": "未等待其他任务。",
+    "waitedOnBy": "被以下任务等待"
   },
   "nav": {
     "projects": "项目",
@@ -178,7 +181,9 @@
       "bad-milestone": "该里程碑不属于此项目。",
       "bad-label": "一个任务最多有 20 个标签，每个最多 80 个字符。",
       "bad-checklist-line": "清单最多有 30 个不同的项目，每项最多 500 个字符。",
-      "too-deep": "子任务最多只能嵌套三层。"
+      "too-deep": "子任务最多只能嵌套三层。",
+      "bad-dependency": "任务只能等待同一项目中的其他任务；子任务只能等待相邻的子任务。",
+      "dependency-loop": "这会让任务互相循环等待。"
     },
     "previousMonth": "上个月",
     "nextMonth": "下个月",
@@ -200,7 +205,10 @@
     "moveDown": "下移",
     "removeItem": "移除",
     "done": "完成",
-    "addSubtask": "添加子任务"
+    "addSubtask": "添加子任务",
+    "addWaitingOn": "添加此任务要等待的任务",
+    "stopWaiting": "不再等待 {{title}}",
+    "findTask": "查找任务"
   },
   "taskMenu": {
     "addMyDay": "添加到我的一天",

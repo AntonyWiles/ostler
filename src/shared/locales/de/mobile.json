@@ -124,7 +124,10 @@
     "wontDo": "Als „Wird nicht erledigt“ geschlossen. Die Aufgabe liegt im Archiv des Projekts.",
     "someday": "In „Irgendwann“: auf dem Board ausgeblendet, bis du sie zurückholst.",
     "subtasks": "Unteraufgaben",
-    "partOf": "Teil von: {{title}}"
+    "partOf": "Teil von: {{title}}",
+    "waitingOn": "Wartet auf",
+    "waitingOnNone": "Wartet auf keine anderen Aufgaben.",
+    "waitedOnBy": "Darauf warten"
   },
   "nav": {
     "projects": "Projekte",
@@ -178,7 +181,9 @@
       "bad-milestone": "Dieser Meilenstein gehört nicht zu diesem Projekt.",
       "bad-label": "Eine Aufgabe hat höchstens 20 Labels mit je 80 Zeichen.",
       "bad-checklist-line": "Eine Checkliste hat höchstens 30 verschiedene Punkte mit je 500 Zeichen.",
-      "too-deep": "Unteraufgaben lassen sich höchstens drei Ebenen tief verschachteln."
+      "too-deep": "Unteraufgaben lassen sich höchstens drei Ebenen tief verschachteln.",
+      "bad-dependency": "Eine Aufgabe kann nur auf eine andere Aufgabe ihres Projekts warten. Eine Unteraufgabe nur auf Unteraufgaben daneben.",
+      "dependency-loop": "Dann würden Aufgaben im Kreis aufeinander warten."
     },
     "previousMonth": "Vorheriger Monat",
     "nextMonth": "Nächster Monat",
@@ -200,7 +205,10 @@
     "moveDown": "Nach unten",
     "removeItem": "Entfernen",
     "done": "Fertig",
-    "addSubtask": "Unteraufgabe hinzufügen"
+    "addSubtask": "Unteraufgabe hinzufügen",
+    "addWaitingOn": "Aufgabe hinzufügen, auf die diese wartet",
+    "stopWaiting": "Nicht mehr auf {{title}} warten",
+    "findTask": "Aufgabe suchen"
   },
   "taskMenu": {
     "addMyDay": "Zu Mein Tag hinzufügen",

@@ -124,7 +124,10 @@
     "wontDo": "Cerrada como «No se hará». Está en el archivo del proyecto.",
     "someday": "En «Algún día»: oculta en el tablero hasta que la recuperes.",
     "subtasks": "Subtareas",
-    "partOf": "Parte de: {{title}}"
+    "partOf": "Parte de: {{title}}",
+    "waitingOn": "Espera a",
+    "waitingOnNone": "No espera a otras tareas.",
+    "waitedOnBy": "La esperan"
   },
   "nav": {
     "projects": "Proyectos",
@@ -178,7 +181,9 @@
       "bad-milestone": "Ese hito no es de este proyecto.",
       "bad-label": "Una tarea tiene como máximo 20 etiquetas de 80 caracteres cada una.",
       "bad-checklist-line": "Una lista de comprobación tiene como máximo 30 elementos distintos de 500 caracteres cada uno.",
-      "too-deep": "Las subtareas solo se pueden anidar hasta tres niveles."
+      "too-deep": "Las subtareas solo se pueden anidar hasta tres niveles.",
+      "bad-dependency": "Una tarea solo puede esperar a otra tarea de su proyecto. Una subtarea, solo a subtareas junto a ella.",
+      "dependency-loop": "Así unas tareas se esperarían a otras en círculo."
     },
     "previousMonth": "Mes anterior",
     "nextMonth": "Mes siguiente",
@@ -200,7 +205,10 @@
     "moveDown": "Bajar",
     "removeItem": "Quitar",
     "done": "Listo",
-    "addSubtask": "Añadir una subtarea"
+    "addSubtask": "Añadir una subtarea",
+    "addWaitingOn": "Añadir una tarea a la que esta espera",
+    "stopWaiting": "Dejar de esperar a {{title}}",
+    "findTask": "Buscar una tarea"
   },
   "taskMenu": {
     "addMyDay": "Añadir a Mi día",
