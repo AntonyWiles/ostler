@@ -206,7 +206,6 @@
     "goalMilestones": "有 {{count}} 个里程碑通向这个目标"
   },
   "myDay": {
-    "empty": "今天没有安排。",
     "today": "今天，{{date}}"
   },
   "task": {
@@ -452,5 +451,14 @@
     "week": "{{date}} 那一周",
     "empty": "未来十二周内没有带日期的内容。",
     "undated": "没有日期的未完成任务: {{count}}"
+  },
+  "home": {
+    "inProgress": "进行中",
+    "newToday": "今天新出现",
+    "allClear": "今天和本周都没有到期的事。可以在电脑上计划今天,或打开一个项目。",
+    "planned": "今天的计划",
+    "today": "今天 ({{count}})",
+    "marked": "已完成: {{title}}",
+    "markDone": "将 {{title}} 标记为完成"
   }
 }

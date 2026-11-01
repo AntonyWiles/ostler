@@ -537,7 +537,12 @@ export default function App() {
           <Projects db={db} version={version} onOpenProject={openProject} />
         )}
         {db !== null && tab === 'myDay' && (
-          <MyDay db={db} version={version} onOpenTask={(id) => openTask(id, 'home')} />
+          <MyDay
+            db={db}
+            version={version}
+            onOpenTask={(id) => openTask(id, 'home')}
+            onEdited={edited}
+          />
         )}
         {db !== null && tab === 'needsYou' && (
           <NeedsYou

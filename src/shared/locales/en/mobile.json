@@ -206,7 +206,6 @@
     "goalMilestones": "{{count}} milestones towards this goal"
   },
   "myDay": {
-    "empty": "Nothing planned for today.",
     "today": "Today, {{date}}"
   },
   "task": {
@@ -452,5 +451,14 @@
     "week": "Week of {{date}}",
     "empty": "Nothing dated in the next twelve weeks.",
     "undated": "Open tasks without a date: {{count}}"
+  },
+  "home": {
+    "inProgress": "In progress",
+    "newToday": "New today",
+    "allClear": "Nothing due today or this week. Plan your day on your PC, or open a project.",
+    "planned": "Planned for today",
+    "today": "Today ({{count}})",
+    "marked": "Done: {{title}}",
+    "markDone": "Mark {{title}} done"
   }
 }

@@ -206,7 +206,6 @@
     "goalMilestones": "{{count}} traguardi verso questo obiettivo"
   },
   "myDay": {
-    "empty": "Niente in programma per oggi.",
     "today": "Oggi, {{date}}"
   },
   "task": {
@@ -452,5 +451,14 @@
     "week": "Settimana del {{date}}",
     "empty": "Niente con una data nelle prossime dodici settimane.",
     "undated": "Attività aperte senza data: {{count}}"
+  },
+  "home": {
+    "inProgress": "In corso",
+    "newToday": "Nuova oggi",
+    "allClear": "Niente in scadenza oggi o questa settimana. Pianifica la giornata sul PC o apri un progetto.",
+    "planned": "In programma oggi",
+    "today": "Oggi ({{count}})",
+    "marked": "Fatta: {{title}}",
+    "markDone": "Segna {{title}} come fatta"
   }
 }

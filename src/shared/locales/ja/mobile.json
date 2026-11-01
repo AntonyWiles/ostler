@@ -206,7 +206,6 @@
     "goalMilestones": "この目標に向けたマイルストーン {{count}}件"
   },
   "myDay": {
-    "empty": "今日の予定はありません。",
     "today": "今日、{{date}}"
   },
   "task": {
@@ -452,5 +451,14 @@
     "week": "{{date}}の週",
     "empty": "今後12週間に日付のあるものはありません。",
     "undated": "日付のない未完了タスク: {{count}}"
+  },
+  "home": {
+    "inProgress": "進行中",
+    "newToday": "今日から",
+    "allClear": "今日と今週に期限のものはありません。PCで1日の計画を立てるか、プロジェクトを開いてください。",
+    "planned": "今日の予定",
+    "today": "今日 ({{count}})",
+    "marked": "完了: {{title}}",
+    "markDone": "{{title}} を完了にする"
   }
 }

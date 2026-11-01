@@ -70,6 +70,9 @@ Help › What's new, and the Unreleased section until a version has its own.
   starting in it.
 - **More at a glance on Android.** The Projects list shows each project's latest health (on track,
   at risk, off track), and a task lists the contacts it names, with Call and Email buttons.
+- **My Day on Android shows your day as Home does on the PC.** Today's planned list comes first,
+  then Today (overdue, due today, in progress and new today, yours or nobody's) and the next seven
+  days, day by day. Tap a task's circle to mark it done, with Undo.
 - **A richer task list on Android.** Sort a project's tasks by Do first, board order, due date or
   priority, and fold status groups (Done starts folded). Rows show priority, a coloured due date,
   checklist progress, what the task waits on, comments, labels and who it is assigned to.
