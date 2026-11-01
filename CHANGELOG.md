@@ -76,6 +76,8 @@ Help › What's new, and the Unreleased section until a version has its own.
 - **A richer task list on Android.** Sort a project's tasks by Do first, board order, due date or
   priority, and fold status groups (Done starts folded). Rows show priority, a coloured due date,
   checklist progress, what the task waits on, comments, labels and who it is assigned to.
+- **Quick capture on Android.** The + on the home screen takes one line into a project's To triage,
+  to sort out later on the phone or your PC. The project you used last is picked again.
 
 ### Fixed
 

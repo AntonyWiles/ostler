@@ -460,5 +460,13 @@
     "today": "今日 ({{count}})",
     "marked": "完了: {{title}}",
     "markDone": "{{title}} を完了にする"
+  },
+  "capture": {
+    "title": "クイック登録",
+    "placeholder": "何を記録しますか？",
+    "add": "追加",
+    "hint": "プロジェクトの「仕分け」に入ります。あとでここか PC で整理できます。",
+    "close": "閉じる",
+    "done": "「{{title}}」を {{project}} の仕分けに追加しました。"
   }
 }

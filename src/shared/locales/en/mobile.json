@@ -460,5 +460,13 @@
     "today": "Today ({{count}})",
     "marked": "Done: {{title}}",
     "markDone": "Mark {{title}} done"
+  },
+  "capture": {
+    "title": "Quick capture",
+    "placeholder": "What's on your mind?",
+    "add": "Add",
+    "hint": "It goes to the project's To triage, to sort out later here or on your PC.",
+    "close": "Close",
+    "done": "“{{title}}” added to {{project}}'s To triage."
   }
 }

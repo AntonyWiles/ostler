@@ -462,6 +462,17 @@ describe('the phone edits a task the way the desktop does (mobile plan, prompt 1
     )
   })
 
+  it('captures a task into To triage, as a quick add on the PC does', () => {
+    both(
+      (planning) => {
+        planning.setTriageSetting(() => true)
+        return planning.createWorkItem(PROJECT, { title: 'Herb box', capture: 'quick-add' }, human)
+          .id
+      },
+      (db) => edits.addTask(db, PROJECT, 'Herb box', { triage: true })
+    )
+  })
+
   it('archives a task', () => {
     both(
       (planning) => void planning.archiveWorkItem(ids.main, human),

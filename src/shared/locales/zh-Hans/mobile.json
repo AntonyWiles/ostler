@@ -460,5 +460,13 @@
     "today": "今天 ({{count}})",
     "marked": "已完成: {{title}}",
     "markDone": "将 {{title}} 标记为完成"
+  },
+  "capture": {
+    "title": "快速记录",
+    "placeholder": "想记下什么？",
+    "add": "添加",
+    "hint": "它会进入项目的“待分拣”，稍后可在这里或电脑上整理。",
+    "close": "关闭",
+    "done": "已将“{{title}}”加入 {{project}} 的待分拣。"
   }
 }

@@ -17,6 +17,8 @@ import { Timesheet } from './src/screens/Timesheet'
 import { Team } from './src/screens/Team'
 import { Contacts } from './src/screens/Contacts'
 import { LibraryReader } from './src/screens/ProjectLibrary'
+import { QuickCapture } from './src/screens/QuickCapture'
+import { projectName } from './src/data/project-display'
 import { RunningTimerBar } from './src/screens/TaskTime'
 import { Join } from './src/screens/Join'
 import { Pairing } from './src/screens/Pairing'
@@ -115,6 +117,14 @@ export default function App() {
   const [pairing, setPairing] = useState<PhonePairing | null>(null)
   const [version, setVersion] = useState(0)
   const [pendingInvite, setPendingInvite] = useState<string | null>(null)
+  // Quick capture is open on the home screen; what was captured last, said for a few seconds.
+  const [capturing, setCapturing] = useState(false)
+  const [captured, setCaptured] = useState<string | null>(null)
+  useEffect(() => {
+    if (captured === null) return
+    const timer = setTimeout(() => setCaptured(null), 4000)
+    return () => clearTimeout(timer)
+  }, [captured])
   const dbRef = useRef<OstlerDatabase | null>(null)
 
   // The database stays open for the life of the app: the sync loop writes to it. It is never
@@ -459,6 +469,11 @@ export default function App() {
         title={BRAND.name}
         actions={[
           {
+            icon: 'plus',
+            label: t('mobile:capture.title'),
+            onPress: () => setCapturing(!capturing)
+          },
+          {
             icon: 'search',
             label: t('views:searchView.search'),
             onPress: () => setScreen('search')
@@ -523,6 +538,25 @@ export default function App() {
           )
         })}
       </View>
+      {db !== null && capturing && (
+        <QuickCapture
+          db={db}
+          theme={theme}
+          onCaptured={(projectId, title) => {
+            edited()
+            setCaptured(
+              t('mobile:capture.done', {
+                title,
+                project: projectName({ id: projectId, name: null })
+              })
+            )
+          }}
+          onClose={() => setCapturing(false)}
+        />
+      )}
+      {captured !== null && (
+        <Text style={[styles.captured, { color: theme.success }]}>{captured}</Text>
+      )}
       {db !== null && (
         <RunningTimerBar
           db={db}
@@ -600,5 +634,6 @@ const styles = StyleSheet.create({
   },
   badgeText: { fontSize: 12, fontWeight: '700' },
   line: { fontSize: 16, padding: 16 },
+  captured: { fontSize: 14, fontWeight: '600', paddingHorizontal: 16, paddingBottom: 8 },
   bad: { fontWeight: '600' }
 })

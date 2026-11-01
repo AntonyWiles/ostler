@@ -460,5 +460,13 @@
     "today": "Hoy ({{count}})",
     "marked": "Hecha: {{title}}",
     "markDone": "Marcar {{title}} como hecha"
+  },
+  "capture": {
+    "title": "Captura rápida",
+    "placeholder": "¿Qué tienes en mente?",
+    "add": "Añadir",
+    "hint": "Va a Por clasificar del proyecto, para ordenarlo luego aquí o en tu PC.",
+    "close": "Cerrar",
+    "done": "«{{title}}» añadido a Por clasificar de {{project}}."
   }
 }

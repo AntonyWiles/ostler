@@ -460,5 +460,13 @@
     "today": "Heute ({{count}})",
     "marked": "Erledigt: {{title}}",
     "markDone": "{{title}} als erledigt markieren"
+  },
+  "capture": {
+    "title": "Schnell erfassen",
+    "placeholder": "Was hast du im Kopf?",
+    "add": "Hinzufügen",
+    "hint": "Es landet unter „Zu sortieren“ im Projekt, zum Einordnen später hier oder am PC.",
+    "close": "Schließen",
+    "done": "„{{title}}“ unter „Zu sortieren“ in {{project}} hinzugefügt."
   }
 }

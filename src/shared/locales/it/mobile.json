@@ -460,5 +460,13 @@
     "today": "Oggi ({{count}})",
     "marked": "Fatta: {{title}}",
     "markDone": "Segna {{title}} come fatta"
+  },
+  "capture": {
+    "title": "Acquisizione rapida",
+    "placeholder": "Cosa hai in mente?",
+    "add": "Aggiungi",
+    "hint": "Finisce in Da smistare del progetto, da sistemare dopo qui o sul PC.",
+    "close": "Chiudi",
+    "done": "«{{title}}» aggiunto a Da smistare di {{project}}."
   }
 }

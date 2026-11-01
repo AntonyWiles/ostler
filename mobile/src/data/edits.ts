@@ -1235,10 +1235,15 @@ export function addTask(
   db: EditDb,
   projectId: string,
   title: string,
-  options: EditOptions & { parentId?: string } = {}
+  options: EditOptions & {
+    parentId?: string
+    /** A quick capture from the phone: it waits in To triage until accepted on either device. */
+    triage?: boolean
+  } = {}
 ): string {
   return guarded(() => {
     const text = validTitle(title)
+    const triage = options.triage === true && !options.parentId
     const personId = options.personId ?? null
     const at = options.now ?? Date.now()
     const id = uuidv4()
@@ -1297,8 +1302,8 @@ export function addTask(
         number,
         null,
         null,
-        0,
-        null,
+        triage ? 1 : 0,
+        triage ? 'quick-add' : null,
         null,
         placement.subprojectId
       )

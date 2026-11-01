@@ -460,5 +460,13 @@
     "today": "Aujourd’hui ({{count}})",
     "marked": "Terminé : {{title}}",
     "markDone": "Marquer {{title}} comme terminée"
+  },
+  "capture": {
+    "title": "Saisie rapide",
+    "placeholder": "Qu’avez-vous en tête ?",
+    "add": "Ajouter",
+    "hint": "Il va dans « À trier » du projet, à traiter plus tard ici ou sur votre PC.",
+    "close": "Fermer",
+    "done": "« {{title}} » ajouté à « À trier » de {{project}}."
   }
 }
