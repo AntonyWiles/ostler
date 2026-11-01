@@ -5,6 +5,8 @@ import { projectColor, projectName } from '../data/project-display'
 import { projects, today, type QueryDb } from '../data/queries'
 import { projectAttention, type ProjectAttention } from '../data/plan'
 import { needsYou, needsYouCounts } from '../data/needs-you'
+import { latestStatusUpdates } from '../data/status-updates'
+import { HealthTag } from './ProjectStatus'
 import { SPACE, useTheme } from '../theme'
 import { Icon } from './Icon'
 
@@ -30,6 +32,8 @@ export function Projects({ db, version, onOpenProject }: Props) {
     () => (version >= 0 ? projectAttention(db, today()) : new Map<string, ProjectAttention>()),
     [db, version]
   )
+  // Each project's latest status update, shown as its health beside the name.
+  const health = useMemo(() => (version >= 0 ? latestStatusUpdates(db) : {}), [db, version])
   // Blocked on the person and in review, per project, as the Needs you tab counts them.
   const asks = useMemo(
     () =>
@@ -69,7 +73,12 @@ export function Projects({ db, version, onOpenProject }: Props) {
           >
             <View style={[styles.swatch, { backgroundColor: projectColor(item) }]} />
             <View style={styles.text}>
-              <Text style={[styles.name, { color: theme.text }]}>{name}</Text>
+              <View style={styles.nameRow}>
+                <Text style={[styles.name, styles.grow, { color: theme.text }]} numberOfLines={1}>
+                  {name}
+                </Text>
+                {health[item.id] && <HealthTag theme={theme} health={health[item.id].health} />}
+              </View>
               <Text style={[styles.meta, { color: theme.textMuted }]}>
                 {t('mobile:projects.counts', { open: item.openCount, done: item.doneCount })}
               </Text>
@@ -150,5 +159,7 @@ const styles = StyleSheet.create({
   swatch: { width: 12, height: 12, borderRadius: 3 },
   text: { flex: 1, gap: 2 },
   name: { fontSize: 16, fontWeight: '600' },
+  nameRow: { flexDirection: 'row', alignItems: 'center', gap: SPACE.small },
+  grow: { flex: 1 },
   meta: { fontSize: 13 }
 })

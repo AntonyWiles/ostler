@@ -68,6 +68,8 @@ Help › What's new, and the Unreleased section until a version has its own.
 - **A project's schedule on Android.** The Schedule view lists what is overdue, then the next twelve
   weeks one at a time, with each week's milestones (and their progress) and the tasks due or
   starting in it.
+- **More at a glance on Android.** The Projects list shows each project's latest health (on track,
+  at risk, off track), and a task lists the contacts it names, with Call and Email buttons.
 - **A richer task list on Android.** Sort a project's tasks by Do first, board order, due date or
   priority, and fold status groups (Done starts folded). Rows show priority, a coloured due date,
   checklist progress, what the task waits on, comments, labels and who it is assigned to.

@@ -67,6 +67,7 @@ import { DatePicker } from './DatePicker'
 import { Markdown } from './Markdown'
 import { BlockerAnswer } from './NeedsYou'
 import { TaskTime } from './TaskTime'
+import { TaskContacts } from './TaskContacts'
 import { openBlockers, resolveTaskBlocker } from '../data/needs-you'
 import { TaskRow } from './TaskRow'
 import { TopBar, type MenuItem } from './TopBar'
@@ -1099,6 +1100,7 @@ export function TaskDetail({
             </View>
           )}
 
+          <TaskContacts db={db} taskId={task.id} version={version} theme={theme} />
           <TaskTime
             db={db}
             taskId={task.id}

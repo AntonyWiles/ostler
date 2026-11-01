@@ -73,3 +73,13 @@ export function deleteStatusUpdate(db: EditDb & QueryDb, updateId: string): void
 export function restoreStatusUpdate(db: EditDb & QueryDb, updateId: string): void {
   guarded(() => void service(db).restore(updateId))
 }
+
+/** Each project's latest update, by project id, for the Projects list. */
+export function latestStatusUpdates(db: QueryDb): Record<string, StatusUpdate> {
+  try {
+    const all = projects(db).map((project) => project.id)
+    return service(db as EditDb & QueryDb).latestFor(all)
+  } catch {
+    return {}
+  }
+}
