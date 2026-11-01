@@ -9,17 +9,26 @@ import {
   type TextStyle
 } from 'react-native'
 import { marked, type Token, type Tokens } from 'marked'
+import { t } from '@shared/i18n/index'
+import { autolinkBareUrls } from '@shared/autolink'
+import { BRAND } from '@shared/brand'
+import { itemLinkTarget } from '@shared/item-links'
+import type { ItemLinkRef } from '@shared/ostler-api'
 import { RADIUS, SPACE, type Theme } from '../theme'
 import { tableColumnWidth } from './tableLayout'
 
 interface Props {
   theme: Theme
   children: string
+  /** Opens an item a link points at (`ostler://task/…`); without it item links show as text. */
+  onOpenItem?: (ref: ItemLinkRef) => void
+  /** The linked item's current title, or null when it is not on the phone. */
+  itemTitle?: (ref: ItemLinkRef) => string | null
 }
 
 const MONO = Platform.OS === 'ios' ? 'Menlo' : 'monospace'
 
-/** Only the web's links open; Ostler's own (`ostler://…` item links, mentions) show as their text. */
+/** Links that open outside the app: the web's and email addresses. */
 function isWebLink(href: string): boolean {
   return /^(https?:|mailto:)/i.test(href)
 }
@@ -29,8 +38,11 @@ function isWebLink(href: string): boolean {
  * renders it: headings, emphasis, code, quotes, lists, checklists, links and
  * tables. Raw HTML and pictures show as text, so nothing runs or loads.
  */
-export function Markdown({ theme, children }: Props) {
-  const tokens = useMemo(() => marked.lexer(children, { gfm: true, breaks: true }), [children])
+export function Markdown({ theme, children, onOpenItem, itemTitle }: Props) {
+  const tokens = useMemo(
+    () => marked.lexer(autolinkBareUrls(children), { gfm: true, breaks: true }),
+    [children]
+  )
   const base: TextStyle = { color: theme.text, fontSize: 15, lineHeight: 21 }
 
   const inline = (items: Token[] | undefined, key = ''): ReactNode[] =>
@@ -66,6 +78,25 @@ export function Markdown({ theme, children }: Props) {
           )
         case 'link': {
           const link = token as Tokens.Link
+          const ref = onOpenItem ? itemLinkTarget(link.href, BRAND.urlScheme) : null
+          if (ref && onOpenItem) {
+            const title = itemTitle?.(ref) ?? null
+            // A pasted link's words are its address: show the item's title instead.
+            const bare = link.text === link.href || /^\w[\w-]*:\/\//.test(link.text)
+            return (
+              <Text
+                key={k}
+                accessibilityRole="link"
+                accessibilityHint={t(`mobile:links.open.${ref.kind}`)}
+                style={{ color: theme.accent, fontWeight: '600' }}
+                onPress={() => onOpenItem(ref)}
+              >
+                {bare
+                  ? (title ?? t(`mobile:links.missing.${ref.kind}`))
+                  : inline(link.tokens, k)}
+              </Text>
+            )
+          }
           const web = isWebLink(link.href)
           return (
             <Text

@@ -1034,6 +1034,25 @@ export function setTaskSomeday(
   })
 }
 
+/**
+ * Accepts a task waiting in To triage (`acceptFromTriage`): it joins the Board in the status it
+ * has, as the PC's Accept does with no fields changed.
+ */
+export function acceptTaskFromTriage(db: EditDb, taskId: string, options: EditOptions = {}): void {
+  guarded(() => {
+    const current = requireTask(db, taskId)
+    if (!current.in_triage) return
+    const at = options.now ?? Date.now()
+    db.transaction(() => {
+      db.prepare('UPDATE planning_work_items SET in_triage = 0, updated_at = ? WHERE id = ?').run(
+        at,
+        taskId
+      )
+      recordChange(db, current, 'triage', true, false, options.personId ?? null, at)
+    })()
+  })
+}
+
 function writeSomeday(
   db: EditDb,
   current: TaskRow,

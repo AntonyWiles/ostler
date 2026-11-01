@@ -25,6 +25,17 @@ Help › What's new, and the Unreleased section until a version has its own.
 - **Filter a project's tasks on Android** by words in the title or by label. A task you add on the
   phone opens straight away, so you can set its date, person and other details. The changes show in the task's history on your PC, and an
   earlier description can be brought back there.
+- **Project planning on Android.** A project on the phone opens views for To triage (accept, move
+  to Someday or mark won't do), Someday, milestones with their progress, goals with check-ins,
+  decisions, and sign-offs you can approve or send back. The Projects list shows what is in
+  progress, overdue, waiting to be triaged or waiting for your sign-off in each project.
+- **Links on your PC and phone.** Plain web addresses and `ostler://` item links in descriptions
+  and comments turn into links. On the PC, web links open in your browser. On the phone, an item
+  link shows the item's title and opens it, a task can be shared as a link, and "Add a link" puts a
+  link to another task, milestone or decision into a description or comment.
+- **A richer task list on Android.** Sort a project's tasks by Do first, board order, due date or
+  priority, and fold status groups (Done starts folded). Rows show priority, a coloured due date,
+  checklist progress, what the task waits on, comments, labels and who it is assigned to.
 
 ### Fixed
 

@@ -2,7 +2,8 @@ import { useMemo } from 'react'
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import { t } from '@shared/i18n/index'
 import { projectColor, projectName } from '../data/project-display'
-import { projects, type QueryDb } from '../data/queries'
+import { projects, today, type QueryDb } from '../data/queries'
+import { projectAttention, type ProjectAttention } from '../data/plan'
 import { SPACE, useTheme } from '../theme'
 import { Icon } from './Icon'
 
@@ -22,6 +23,10 @@ export function Projects({ db, version, onOpenProject }: Props) {
       (version >= 0 ? projects(db) : [])
         .map((project) => ({ ...project, name: projectName(project) }))
         .sort((a, b) => a.name.localeCompare(b.name)),
+    [db, version]
+  )
+  const attention = useMemo(
+    () => (version >= 0 ? projectAttention(db, today()) : new Map<string, ProjectAttention>()),
     [db, version]
   )
   if (list.length === 0) {
@@ -59,6 +64,42 @@ export function Projects({ db, version, onOpenProject }: Props) {
               <Text style={[styles.meta, { color: theme.textMuted }]}>
                 {t('mobile:projects.counts', { open: item.openCount, done: item.doneCount })}
               </Text>
+              {(() => {
+                const wants = attention.get(item.id)
+                if (!wants) return null
+                const parts: { text: string; color: string }[] = []
+                if (wants.active > 0)
+                  parts.push({
+                    text: t('mobile:projects.active', { count: wants.active }),
+                    color: theme.textSecondary
+                  })
+                if (wants.overdue > 0)
+                  parts.push({
+                    text: t('mobile:projects.overdue', { count: wants.overdue }),
+                    color: theme.danger
+                  })
+                if (wants.triage > 0)
+                  parts.push({
+                    text: t('mobile:projects.triage', { count: wants.triage }),
+                    color: theme.warning
+                  })
+                if (wants.signOffs > 0)
+                  parts.push({
+                    text: t('mobile:projects.signOffs', { count: wants.signOffs }),
+                    color: theme.accent
+                  })
+                if (parts.length === 0) return null
+                return (
+                  <Text style={styles.meta}>
+                    {parts.map((part, index) => (
+                      <Text key={part.text} style={{ color: part.color }}>
+                        {index > 0 ? ' · ' : ''}
+                        {part.text}
+                      </Text>
+                    ))}
+                  </Text>
+                )
+              })()}
             </View>
             <Icon name="chevron-right" color={theme.textMuted} />
           </Pressable>

@@ -1,11 +1,43 @@
 import { useMemo, useState } from 'react'
-import { Alert, SectionList, StyleSheet, Text, TextInput, View } from 'react-native'
+import {
+  Alert,
+  Pressable,
+  ScrollView,
+  SectionList,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
+} from 'react-native'
 import { t } from '@shared/i18n/index'
 import { formatIsoDateShort } from '@shared/dates'
 import { TASK_STATUSES, taskStatusLabel } from '@shared/task-labels'
 import { projectColor, projectName } from '../data/project-display'
 import type { PlanningWorkItemStatus } from '@shared/ostler-api'
-import { addTask, restoreTaskFromBin, type EditDb } from '../data/edits'
+import {
+  acceptTaskFromTriage,
+  addTask,
+  closeTaskAsWontDo,
+  restoreTaskFromBin,
+  setTaskSomeday,
+  type EditDb
+} from '../data/edits'
+import {
+  answerSignOff,
+  decisions,
+  doFirstOrder,
+  dueOrder,
+  goals,
+  milestones,
+  milestoneTasks,
+  priorityOrder,
+  recordGoalCheckIn,
+  signOffs,
+  somedayTasks,
+  taskRowDetails,
+  triageTasks
+} from '../data/plan'
+import { DecisionList, GoalList, MilestoneList, SignOffList } from './ProjectPlan'
 import {
   archivedTasks,
   binnedTasks,
@@ -13,6 +45,7 @@ import {
   projectOverview,
   taskIdsWithLabel,
   tasksByStatus,
+  today,
   type QueryDb,
   type TaskSummary
 } from '../data/queries'
@@ -29,6 +62,8 @@ interface Props {
   onOpenTask: (taskId: string) => void
   /** Called after a task is added, so the change is pushed and the screens re-read. */
   onEdited: () => void
+  /** The view it opens on; a link to a milestone or decision opens that list. */
+  initialView?: ProjectView
 }
 
 /** One of the Overview's numbers, in a compact row of four. */
@@ -59,26 +94,69 @@ function Figure({
   )
 }
 
-type ProjectView = 'tasks' | 'archive' | 'bin'
+export type ProjectView =
+  | 'tasks'
+  | 'triage'
+  | 'someday'
+  | 'milestones'
+  | 'decisions'
+  | 'goals'
+  | 'signOffs'
+  | 'archive'
+  | 'bin'
+
+/** The views whose rows are tasks, listed under the overview. */
+const TASK_VIEWS: readonly ProjectView[] = ['tasks', 'triage', 'someday', 'archive', 'bin']
 
 /** A status's tasks, or (status null) the archive's or the bin's, under no heading. */
 interface Section {
   status: PlanningWorkItemStatus | null
   data: TaskSummary[]
+  /** How many tasks the section holds, shown when it is folded away. */
+  count: number
 }
+
+/** How the Tasks view orders its tasks. Do first is one list, not grouped by status. */
+type TaskSort = 'doFirst' | 'board' | 'due' | 'priority'
+const SORTS: readonly TaskSort[] = ['doFirst', 'board', 'due', 'priority']
 
 /**
  * One project: the Overview's figures, then its tasks grouped by status; + adds a task. Its
  * archive and recycle bin are a tap away; a task in the bin is restored from there.
  */
-export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }: Props) {
+export function Project({
+  db,
+  projectId,
+  version,
+  onBack,
+  onOpenTask,
+  onEdited,
+  initialView = 'tasks'
+}: Props) {
   const theme = useTheme()
   const [adding, setAdding] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [view, setView] = useState<ProjectView>('tasks')
+  const [view, setView] = useState<ProjectView>(initialView)
   /** Words a task's title must hold, and a label it must carry, to be listed. */
   const [words, setWords] = useState('')
   const [label, setLabel] = useState<string | null>(null)
+  const [filtering, setFiltering] = useState(false)
+  const [sort, setSort] = useState<TaskSort>('doFirst')
+  /** Status groups folded away; Done starts folded. */
+  const [folded, setFolded] = useState<ReadonlySet<PlanningWorkItemStatus>>(
+    () => new Set<PlanningWorkItemStatus>(['done'])
+  )
+  const fold = (status: PlanningWorkItemStatus) =>
+    setFolded((now) => {
+      const next = new Set(now)
+      if (next.has(status)) next.delete(status)
+      else next.add(status)
+      return next
+    })
+  const details = useMemo(
+    () => (version >= 0 ? taskRowDetails(db, projectId) : new Map()),
+    [db, projectId, version]
+  )
   const labels = useMemo(
     () => (version >= 0 ? projectLabels(db, projectId) : []),
     [db, projectId, version]
@@ -94,7 +172,13 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
             overview: projectOverview(db, projectId),
             groups: tasksByStatus(db, projectId),
             archived: view === 'archive' ? archivedTasks(db, projectId) : [],
-            binned: view === 'bin' ? binnedTasks(db, projectId) : []
+            binned: view === 'bin' ? binnedTasks(db, projectId) : [],
+            triage: triageTasks(db, projectId),
+            someday: view === 'someday' ? somedayTasks(db, projectId) : [],
+            milestones: view === 'milestones' ? milestones(db, projectId) : [],
+            decisions: view === 'decisions' ? decisions(db, projectId) : [],
+            goals: view === 'goals' ? goals(db, projectId) : [],
+            signOffs: signOffs(db, projectId)
           }
         : null,
     [db, projectId, version, view]
@@ -107,13 +191,28 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
           (!wanted || task.title.toLowerCase().includes(wanted)) &&
           (labelled === null || labelled.has(task.id))
       )
-    if (view === 'archive') return [{ status: null, data: shown(data?.archived ?? []) }]
-    if (view === 'bin') return [{ status: null, data: shown(data?.binned ?? []) }]
-    return TASK_STATUSES.map((status) => ({
-      status,
-      data: shown(data?.groups[status] ?? [])
-    })).filter((section) => section.data.length > 0)
-  }, [data, view, words, labelled])
+    const flat = (tasks: TaskSummary[]): Section[] => {
+      const list = shown(tasks)
+      return [{ status: null, data: list, count: list.length }]
+    }
+    if (view === 'archive') return flat(data?.archived ?? [])
+    if (view === 'bin') return flat(data?.binned ?? [])
+    if (view === 'triage') return flat(data?.triage ?? [])
+    if (view === 'someday') return flat(data?.someday ?? [])
+    if (!TASK_VIEWS.includes(view)) return []
+    if (sort === 'doFirst') {
+      const open = TASK_STATUSES.filter((status) => status !== 'done').flatMap(
+        (status) => data?.groups[status] ?? []
+      )
+      return flat(doFirstOrder(open, today()))
+    }
+    const order = (tasks: TaskSummary[]) =>
+      sort === 'due' ? dueOrder(tasks) : sort === 'priority' ? priorityOrder(tasks) : tasks
+    return TASK_STATUSES.map((status) => {
+      const list = order(shown(data?.groups[status] ?? []))
+      return { status, data: folded.has(status) ? [] : list, count: list.length }
+    }).filter((section) => section.count > 0)
+  }, [data, view, words, labelled, sort, folded])
   const confirmRestore = (taskId: string, title: string) =>
     Alert.alert(t('mobile:project.restoreTitle'), title, [
       { text: t('mobile:taskMenu.cancel'), style: 'cancel' },
@@ -131,6 +230,19 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
         }
       }
     ])
+  /** Runs one of the views' edits, then shows its refusal or pushes the change. */
+  const edit = (run: () => void) => {
+    try {
+      run()
+    } catch (failure) {
+      setError(editErrorText(failure))
+      return
+    }
+    setError(null)
+    onEdited()
+  }
+  const waitingSignOffs = (data?.signOffs ?? []).filter((item) => item.canAnswer).length
+  const triageCount = data?.triage.length ?? 0
   const reference = { id: projectId, name: null, color: null }
   const overview = data?.overview
   const milestone = overview?.nextMilestone ?? null
@@ -221,12 +333,60 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
                         })}
                   </Text>
                 </View>
-                <View style={styles.views}>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.viewsLine}
+                >
                   <Chip
                     label={t('mobile:project.tasksView')}
                     theme={theme}
                     selected={view === 'tasks'}
                     onPress={() => setView('tasks')}
+                  />
+                  <Chip
+                    label={
+                      triageCount > 0
+                        ? t('mobile:plan.triageCount', { count: triageCount })
+                        : t('mobile:plan.triageView')
+                    }
+                    theme={theme}
+                    selected={view === 'triage'}
+                    onPress={() => setView('triage')}
+                  />
+                  <Chip
+                    label={t('mobile:plan.somedayView')}
+                    theme={theme}
+                    selected={view === 'someday'}
+                    onPress={() => setView('someday')}
+                  />
+                  <Chip
+                    label={t('mobile:plan.milestonesView')}
+                    theme={theme}
+                    selected={view === 'milestones'}
+                    onPress={() => setView('milestones')}
+                  />
+                  <Chip
+                    label={t('mobile:plan.goalsView')}
+                    theme={theme}
+                    selected={view === 'goals'}
+                    onPress={() => setView('goals')}
+                  />
+                  <Chip
+                    label={t('mobile:plan.decisionsView')}
+                    theme={theme}
+                    selected={view === 'decisions'}
+                    onPress={() => setView('decisions')}
+                  />
+                  <Chip
+                    label={
+                      waitingSignOffs > 0
+                        ? t('mobile:plan.signOffsCount', { count: waitingSignOffs })
+                        : t('mobile:plan.signOffsView')
+                    }
+                    theme={theme}
+                    selected={view === 'signOffs'}
+                    onPress={() => setView('signOffs')}
                   />
                   <Chip
                     label={t('mobile:project.archiveView')}
@@ -240,7 +400,36 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
                     selected={view === 'bin'}
                     onPress={() => setView('bin')}
                   />
-                </View>
+                </ScrollView>
+                {TASK_VIEWS.includes(view) && (
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.viewsLine}
+                  >
+                    {view === 'tasks' &&
+                      SORTS.map((name) => (
+                        <Chip
+                          key={name}
+                          label={t(`mobile:list.sort.${name}`)}
+                          theme={theme}
+                          selected={sort === name}
+                          onPress={() => setSort(name)}
+                        />
+                      ))}
+                    <Chip
+                      label={
+                        words.trim() || label !== null
+                          ? t('mobile:list.filterOn')
+                          : t('mobile:list.filter')
+                      }
+                      theme={theme}
+                      selected={filtering || Boolean(words.trim()) || label !== null}
+                      onPress={() => setFiltering(!filtering)}
+                    />
+                  </ScrollView>
+                )}
+                {filtering && TASK_VIEWS.includes(view) && (
                 <TextInput
                   accessibilityLabel={t('mobile:project.filter')}
                   placeholder={t('mobile:project.filter')}
@@ -257,7 +446,8 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
                     }
                   ]}
                 />
-                {labels.length > 0 && (
+                )}
+                {filtering && TASK_VIEWS.includes(view) && labels.length > 0 && (
                   <View style={styles.views}>
                     {labels.map((name) => (
                       <Chip
@@ -295,54 +485,138 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
                 </View>
               </View>
             )}
+            {view === 'milestones' && (
+              <MilestoneList
+                theme={theme}
+                items={data?.milestones ?? []}
+                tasksOf={(milestoneId) => milestoneTasks(db, milestoneId)}
+                onOpenTask={onOpenTask}
+              />
+            )}
+            {view === 'decisions' && <DecisionList theme={theme} items={data?.decisions ?? []} />}
+            {view === 'goals' && (
+              <GoalList
+                theme={theme}
+                items={data?.goals ?? []}
+                onCheckIn={(goalId, value) =>
+                  edit(() => recordGoalCheckIn(db, goalId, value, today()))
+                }
+              />
+            )}
+            {view === 'signOffs' && (
+              <SignOffList
+                theme={theme}
+                items={data?.signOffs ?? []}
+                onOpenTask={onOpenTask}
+                onAnswer={(id, answer, note) => edit(() => answerSignOff(db, id, answer, note))}
+              />
+            )}
           </View>
         }
         ListEmptyComponent={
-          <Text style={[styles.empty, styles.inset, { color: theme.textMuted }]}>
-            {words.trim() || label !== null
-              ? t('mobile:project.noMatches')
-              : view === 'archive'
-                ? t('mobile:project.archiveEmpty')
-                : view === 'bin'
-                  ? t('mobile:project.binEmpty')
-                  : t('mobile:project.noTasks')}
-          </Text>
+          !TASK_VIEWS.includes(view) ? undefined : (
+            <Text style={[styles.empty, styles.inset, { color: theme.textMuted }]}>
+              {words.trim() || label !== null
+                ? t('mobile:project.noMatches')
+                : view === 'archive'
+                  ? t('mobile:project.archiveEmpty')
+                  : view === 'bin'
+                    ? t('mobile:project.binEmpty')
+                    : view === 'triage'
+                      ? t('mobile:plan.triageEmpty')
+                      : view === 'someday'
+                        ? t('mobile:plan.somedayEmpty')
+                        : t('mobile:project.noTasks')}
+            </Text>
+          )
         }
         renderSectionHeader={({ section }) => {
           if (section.status === null) {
-            return view === 'bin' && section.data.length > 0 ? (
-              <Text style={[styles.note, styles.inset, { color: theme.textMuted }]}>
-                {t('mobile:project.binNote')}
-              </Text>
+            const note =
+              view === 'bin'
+                ? t('mobile:project.binNote')
+                : view === 'triage'
+                  ? t('mobile:plan.triageNote')
+                  : view === 'someday'
+                    ? t('mobile:plan.somedayNote')
+                    : view === 'tasks' && sort === 'doFirst'
+                      ? t('mobile:list.doFirstNote')
+                      : null
+            return note !== null && section.data.length > 0 ? (
+              <Text style={[styles.note, styles.inset, { color: theme.textMuted }]}>{note}</Text>
             ) : null
           }
           const heading = t('mobile:project.groupHeading', {
             status: taskStatusLabel(section.status),
-            count: section.data.length
+            count: section.count
           })
+          const status = section.status
+          const open = !folded.has(status)
           return (
-            <View style={[styles.sectionHeader, { borderColor: theme.border }]}>
-              <View
-                style={[styles.sectionDot, { backgroundColor: statusColor(theme, section.status) }]}
-              />
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={heading}
+              accessibilityState={{ expanded: open }}
+              onPress={() => fold(status)}
+              style={({ pressed }) => [
+                styles.sectionHeader,
+                {
+                  borderColor: theme.border,
+                  backgroundColor: pressed ? theme.surfaceSunken : theme.bg
+                }
+              ]}
+            >
+              <Text style={[styles.chevron, { color: theme.textMuted }]}>{open ? '▾' : '▸'}</Text>
+              <View style={[styles.sectionDot, { backgroundColor: statusColor(theme, status) }]} />
               <Text
                 accessibilityRole="header"
-                accessibilityLabel={heading}
                 style={[styles.sectionTitle, { color: theme.textSecondary }]}
               >
                 {heading}
               </Text>
-            </View>
+            </Pressable>
           )
         }}
         renderItem={({ item }) => (
-          <TaskRow
-            task={item}
-            theme={theme}
-            onPress={() =>
-              view === 'bin' ? confirmRestore(item.id, item.title) : onOpenTask(item.id)
-            }
-          />
+          <View>
+            <TaskRow
+              task={item}
+              theme={theme}
+              details={details.get(item.id)}
+              showStatus={view === 'tasks' && sort === 'doFirst'}
+              onPress={() =>
+                view === 'bin' ? confirmRestore(item.id, item.title) : onOpenTask(item.id)
+              }
+            />
+            {view === 'triage' && (
+              <View style={styles.rowActions}>
+                <Chip
+                  label={t('mobile:plan.accept')}
+                  theme={theme}
+                  onPress={() => edit(() => acceptTaskFromTriage(db, item.id))}
+                />
+                <Chip
+                  label={t('mobile:plan.someday')}
+                  theme={theme}
+                  onPress={() => edit(() => setTaskSomeday(db, item.id, true))}
+                />
+                <Chip
+                  label={t('mobile:plan.wontDo')}
+                  theme={theme}
+                  onPress={() => edit(() => closeTaskAsWontDo(db, item.id, ''))}
+                />
+              </View>
+            )}
+            {view === 'someday' && (
+              <View style={styles.rowActions}>
+                <Chip
+                  label={t('mobile:plan.bringBack')}
+                  theme={theme}
+                  onPress={() => edit(() => setTaskSomeday(db, item.id, false))}
+                />
+              </View>
+            )}
+          </View>
         )}
       />
     </>
@@ -364,7 +638,16 @@ const styles = StyleSheet.create({
   milestone: { fontSize: 13, flex: 1 },
   figures: { flexDirection: 'row', gap: SPACE.small },
   views: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACE.small },
+  viewsLine: { flexDirection: 'row', gap: SPACE.small },
+  chevron: { fontSize: 13, width: 12 },
   note: { fontSize: 13 },
+  rowActions: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: SPACE.small,
+    paddingHorizontal: SPACE.large,
+    paddingBottom: SPACE.small
+  },
   filter: {
     minHeight: 44,
     borderWidth: 1,

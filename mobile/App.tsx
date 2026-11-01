@@ -14,7 +14,7 @@ import { Inbox, type InboxTarget } from './src/screens/Inbox'
 import { Join } from './src/screens/Join'
 import { Pairing } from './src/screens/Pairing'
 import { MyDay } from './src/screens/MyDay'
-import { Project } from './src/screens/Project'
+import { Project, type ProjectView } from './src/screens/Project'
 import { Projects } from './src/screens/Projects'
 import { Search } from './src/screens/Search'
 import { Settings } from './src/screens/Settings'
@@ -23,6 +23,8 @@ import { TopBar } from './src/screens/TopBar'
 import { useIsDark, useTheme } from './src/theme'
 import { BRAND } from '../src/shared/brand'
 import { findInvite } from '../src/shared/deep-link'
+import { itemLinkTarget } from '../src/shared/item-links'
+import type { ItemLinkRef } from '@shared/ostler-api'
 import { t } from '@shared/i18n/index'
 import {
   LATEST_SCHEMA_VERSION,
@@ -68,8 +70,13 @@ export default function App() {
   const [taskFrom, setTaskFrom] = useState<'project' | 'home' | 'search'>('home')
   // The tasks a parent or subtask was opened from, newest last: Back steps through them first.
   const [taskTrail, setTaskTrail] = useState<string[]>([])
-  // Where Back from a project goes: Search when it was found there, else the home lists.
-  const [projectFrom, setProjectFrom] = useState<'home' | 'search'>('home')
+  // Where Back from a project goes: Search when it was found there, the task whose link opened
+  // it, else the home lists.
+  const [projectFrom, setProjectFrom] = useState<'home' | 'search' | 'task'>('home')
+  // The view a project opens on: a link to a milestone or decision opens that list.
+  const [projectView, setProjectView] = useState<ProjectView>('tasks')
+  // An item link that opened the app (`<scheme>://task/…`), opened once the database is ready.
+  const [incomingItem, setIncomingItem] = useState<ItemLinkRef | null>(null)
   // The words in Search, kept while a result is open so Back returns to them.
   const [searchQuery, setSearchQuery] = useState('')
   const [db, setDb] = useState<OstlerDatabase | null>(null)
@@ -133,8 +140,14 @@ export default function App() {
     }
   }, [db, signedIn])
 
-  // An invite link (`<scheme>://join/<invite>`) opens the Join screen and joins.
+  // An invite link (`<scheme>://join/<invite>`) opens the Join screen and joins; an item link
+  // (`<scheme>://task/<project>/<task>`, and milestones and decisions) opens that item.
   const openLink = useCallback((url: string | null | undefined) => {
+    const item = url == null ? null : itemLinkTarget(url, BRAND.urlScheme)
+    if (item !== null) {
+      setIncomingItem(item)
+      return
+    }
     const invite = url == null ? null : findInvite(url, BRAND.urlScheme)
     if (invite === null) return
     setPendingInvite(invite)
@@ -173,11 +186,15 @@ export default function App() {
     setVersion((n) => n + 1)
   }, [sync])
 
-  const openProject = useCallback((id: string, from: 'home' | 'search' = 'home') => {
-    setProjectId(id)
-    setProjectFrom(from)
-    setScreen('project')
-  }, [])
+  const openProject = useCallback(
+    (id: string, from: 'home' | 'search' | 'task' = 'home', view: ProjectView = 'tasks') => {
+      setProjectId(id)
+      setProjectFrom(from)
+      setProjectView(view)
+      setScreen('project')
+    },
+    []
+  )
   const openTask = useCallback((id: string, from: 'project' | 'home' | 'search') => {
     setTaskId(id)
     setTaskFrom(from)
@@ -191,6 +208,36 @@ export default function App() {
     },
     [taskId]
   )
+  // A link in a task's text: a task opens on the trail (Back returns), a milestone or decision
+  // opens its project on that list. The phone keeps no Library, so its links open the project.
+  const openItem = useCallback(
+    (ref: ItemLinkRef) => {
+      if (ref.kind === 'task') openRelatedTask(ref.id)
+      else
+        openProject(
+          ref.projectId,
+          'task',
+          ref.kind === 'milestone' ? 'milestones' : ref.kind === 'decision' ? 'decisions' : 'tasks'
+        )
+    },
+    [openProject, openRelatedTask]
+  )
+  useEffect(() => {
+    if (incomingItem === null || db === null) return
+    setIncomingItem(null)
+    if (incomingItem.kind === 'task') openTask(incomingItem.id, 'home')
+    else
+      openProject(
+        incomingItem.projectId,
+        'home',
+        incomingItem.kind === 'milestone'
+          ? 'milestones'
+          : incomingItem.kind === 'decision'
+            ? 'decisions'
+            : 'tasks'
+      )
+  }, [incomingItem, db, openTask, openProject])
+
   // An Inbox item or a search result opens its task, or its project.
   const openTarget = useCallback(
     (target: InboxTarget, from: 'home' | 'search') => {
@@ -247,8 +294,10 @@ export default function App() {
   if (screen === 'project' && db !== null && projectId !== null) {
     return page(
       <Project
+        key={`${projectId}:${projectView}`}
         db={db}
         projectId={projectId}
+        initialView={projectView}
         version={version}
         onBack={goBack}
         onOpenTask={(id) => openTask(id, 'project')}
@@ -277,6 +326,7 @@ export default function App() {
         onBack={goBack}
         onEdited={edited}
         onOpenTask={openRelatedTask}
+        onOpenItem={openItem}
       />
     )
   }

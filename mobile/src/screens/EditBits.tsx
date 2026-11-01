@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Pressable,
   StyleSheet,
@@ -59,6 +59,7 @@ export function TextSender({
   multiline,
   autoFocus,
   keyboardType,
+  append,
   onSend
 }: {
   theme: Theme
@@ -68,10 +69,19 @@ export function TextSender({
   multiline?: boolean
   autoFocus?: boolean
   keyboardType?: KeyboardTypeOptions
+  /** Text to add to what is typed (a picked link); a new `key` adds it again. */
+  append?: { text: string; key: number }
   /** Sends the text; throws to keep what was typed. */
   onSend: (text: string) => void
 }) {
   const [text, setText] = useState(initial)
+  // A link picked before this box opened is not added again.
+  const added = useRef(append?.key)
+  useEffect(() => {
+    if (!append || added.current === append.key) return
+    added.current = append.key
+    setText((now) => (now && !/\s$/.test(now) ? `${now} ` : now) + append.text)
+  }, [append?.key])
   const send = () => {
     try {
       onSend(text)

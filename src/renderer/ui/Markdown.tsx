@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import ReactMarkdown, { defaultUrlTransform, type Components } from 'react-markdown'
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 import type { ItemLinkInfo, ItemLinkRef } from '@shared/ostler-api'
+import { autolinkBareUrls } from '@shared/autolink'
 import { BRAND } from '@shared/brand'
 import { LEGACY_NAMES } from '@shared/legacy-names'
 import { extractItemLinks, itemLinkTarget } from '@shared/item-links'
@@ -130,7 +131,9 @@ export function Markdown({
   projectId,
   listItemAction
 }: MarkdownProps) {
-  const refs = useMemo(() => extractItemLinks(children, BRAND.urlScheme), [children])
+  // A link pasted as plain text is drawn as a link too.
+  const text = useMemo(() => autolinkBareUrls(children), [children])
+  const refs = useMemo(() => extractItemLinks(text, BRAND.urlScheme), [text])
   const info = useItemLinkInfo(refs, refreshKey)
   const blocks = useMemo(
     () => (projectId ? findLiveListBlocks(children).map((block) => block.body) : []),
@@ -144,8 +147,22 @@ export function Markdown({
         const mentioned = href && !ref ? mentionPersonId(href, BRAND.urlScheme) : null
         if (mentioned) return <MentionChip personId={mentioned} />
         if (!ref) {
+          // The window never navigates, so a web link opens in the browser instead.
+          const web = href !== undefined && /^https?:/i.test(href)
           return (
-            <a href={href} {...rest}>
+            <a
+              href={href}
+              {...rest}
+              onClick={
+                web
+                  ? (event) => {
+                      event.preventDefault()
+                      event.stopPropagation()
+                      void window.ostlerAPI.openExternalLink(href)
+                    }
+                  : undefined
+              }
+            >
               {words}
             </a>
           )
@@ -192,7 +209,7 @@ export function Markdown({
       urlTransform={markdownUrlTransform}
       components={components}
     >
-      {children}
+      {text}
     </ReactMarkdown>
   )
   return className ? <div className={className}>{body}</div> : body

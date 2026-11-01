@@ -1,5 +1,19 @@
 import { useMemo, useState, type ReactNode } from 'react'
-import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import {
+  Alert,
+  Pressable,
+  ScrollView,
+  Share,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
+} from 'react-native'
+import { BRAND } from '@shared/brand'
+import { itemLinkUrl } from '@shared/item-links'
+import type { ItemLinkRef } from '@shared/ostler-api'
+import { linkedItemTitle } from '../data/plan'
+import { itemLinkMarkdown, LinkPicker } from './LinkPicker'
 import { t } from '@shared/i18n/index'
 import { formatIsoDateShort, shiftIsoDate } from '@shared/dates'
 import { formatDateTime, formatRelativeTime } from '@shared/format'
@@ -63,6 +77,8 @@ interface Props {
   onEdited: () => void
   /** Opens a related task (the parent or a subtask); Back returns here. */
   onOpenTask: (id: string) => void
+  /** Opens an item a link in the description or a comment points at. */
+  onOpenItem: (ref: ItemLinkRef) => void
 }
 
 type Panel =
@@ -86,9 +102,12 @@ type Panel =
  * One task's details; tapping the title, the description or a field opens its edit in place.
  * The ⋮ menu holds what is done to the task as a whole, as the PC's task menu does.
  */
-export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }: Props) {
+export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask, onOpenItem }: Props) {
   const theme = useTheme()
   const [panel, setPanel] = useState<Panel>(null)
+  /** Which text box the link picker adds to, and the link it last picked. */
+  const [linking, setLinking] = useState<'description' | 'comment' | null>(null)
+  const [pickedLink, setPickedLink] = useState<{ text: string; key: number } | undefined>()
   const [error, setError] = useState<string | null>(null)
   /** The checklist line being renamed, by its place in the list. */
   const [renaming, setRenaming] = useState<number | null>(null)
@@ -203,10 +222,44 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }
           label: task.wontDo ? t('mobile:taskMenu.reopen') : t('mobile:taskMenu.unarchive'),
           onPress: () => attempt(() => unarchiveTask(db, task.id))
         },
+    {
+      label: t('mobile:links.share'),
+      onPress: () => {
+        const url = itemLinkUrl(
+          { kind: 'task', projectId: task.projectId, id: task.id },
+          BRAND.urlScheme
+        )
+        void Share.share({ message: `${task.title}\n${url}` })
+      }
+    },
     ...(!task.agentLinked
       ? [{ label: t('mobile:taskMenu.bin'), danger: true, onPress: confirmBin }]
       : [])
   ]
+  const itemTitle = (ref: ItemLinkRef) => linkedItemTitle(db, ref.kind, ref.id)
+  /** The link picker under a text box; a pick adds the link to that box. */
+  const linkPicker = (box: 'description' | 'comment') => (
+    <>
+      <Chip
+        label={t('mobile:links.add')}
+        theme={theme}
+        selected={linking === box}
+        onPress={() => setLinking(linking === box ? null : box)}
+      />
+      {linking === box && (
+        <LinkPicker
+          db={db}
+          theme={theme}
+          projectId={task.projectId}
+          excludeId={task.id}
+          onPick={(target) => {
+            setPickedLink({ text: itemLinkMarkdown(target), key: Date.now() })
+            setLinking(null)
+          }}
+        />
+      )}
+    </>
+  )
 
   const due = task.targetDate === null ? null : formatIsoDateShort(task.targetDate)
   const start = task.startDate === null ? null : formatIsoDateShort(task.startDate)
@@ -640,12 +693,14 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }
                 initial={task.description}
                 multiline
                 autoFocus
+                append={linking === null ? pickedLink : undefined}
                 onSend={(text) => {
                   if (!attempt(() => setTaskDescription(db, task.id, text)))
                     throw new Error('refused')
                   setPanel(null)
                 }}
               />
+              {linkPicker('description')}
               <Chip
                 label={t('mobile:taskMenu.cancel')}
                 theme={theme}
@@ -653,7 +708,9 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }
               />
             </>
           ) : task.description.trim() ? (
-            <Markdown theme={theme}>{task.description}</Markdown>
+            <Markdown theme={theme} onOpenItem={onOpenItem} itemTitle={itemTitle}>
+              {task.description}
+            </Markdown>
           ) : (
             <Text style={[styles.body, { color: theme.textMuted }]}>
               {t('mobile:task.noDescription')}
@@ -1103,7 +1160,9 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }
                   />
                 </>
               ) : (
-                <Markdown theme={theme}>{comment.body}</Markdown>
+                <Markdown theme={theme} onOpenItem={onOpenItem} itemTitle={itemTitle}>
+                  {comment.body}
+                </Markdown>
               )}
             </View>
           ))}
@@ -1129,10 +1188,12 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }
             placeholder={t('mobile:edit.commentLabel')}
             button={t('mobile:edit.post')}
             multiline
+            append={panel !== 'description' ? pickedLink : undefined}
             onSend={(text) => {
               if (!attempt(() => void addTaskComment(db, task.id, text))) throw new Error('refused')
             }}
           />
+          {linkPicker('comment')}
         </View>
       </ScrollView>
     </>
