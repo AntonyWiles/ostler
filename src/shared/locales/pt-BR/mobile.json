@@ -106,7 +106,9 @@
     "binEmpty": "A lixeira está vazia.",
     "binNote": "Toque em uma tarefa para restaurá-la. Seu PC esvazia a lixeira após 30 dias.",
     "restoreTitle": "Restaurar esta tarefa?",
-    "restore": "Restaurar"
+    "restore": "Restaurar",
+    "filter": "Filtrar tarefas",
+    "noMatches": "Nenhuma tarefa corresponde."
   },
   "myDay": {
     "empty": "Nada planejado para hoje.",

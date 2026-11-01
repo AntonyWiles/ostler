@@ -106,7 +106,9 @@
     "binEmpty": "回收站是空的。",
     "binNote": "点按任务即可恢复。电脑会在 30 天后清空回收站。",
     "restoreTitle": "恢复此任务？",
-    "restore": "恢复"
+    "restore": "恢复",
+    "filter": "筛选任务",
+    "noMatches": "没有匹配的任务。"
   },
   "myDay": {
     "empty": "今天没有安排。",

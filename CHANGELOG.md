@@ -21,7 +21,9 @@ Help › What's new, and the Unreleased section until a version has its own.
   edited and deleted (with Undo), as your role in the project allows.
 - **Reminders, archive and recycle bin on Android.** A task shows its coming reminders, and you
   can add one from the phone (your PC shows it when it is due) or remove one. A project's archive
-  and recycle bin are a tap away, and a task in the bin can be restored from the phone. The changes show in the task's history on your PC, and an
+  and recycle bin are a tap away, and a task in the bin can be restored from the phone.
+- **Filter a project's tasks on Android** by words in the title or by label. A task you add on the
+  phone opens straight away, so you can set its date, person and other details. The changes show in the task's history on your PC, and an
   earlier description can be brought back there.
 
 ### Fixed

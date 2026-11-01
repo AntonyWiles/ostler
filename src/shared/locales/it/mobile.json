@@ -106,7 +106,9 @@
     "binEmpty": "Il cestino è vuoto.",
     "binNote": "Tocca un'attività per ripristinarla. Il tuo PC svuota il cestino dopo 30 giorni.",
     "restoreTitle": "Ripristinare questa attività?",
-    "restore": "Ripristina"
+    "restore": "Ripristina",
+    "filter": "Filtra attività",
+    "noMatches": "Nessuna attività corrisponde."
   },
   "myDay": {
     "empty": "Niente in programma per oggi.",

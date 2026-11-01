@@ -106,7 +106,9 @@
     "binEmpty": "La corbeille est vide.",
     "binNote": "Touchez une tâche pour la restaurer. Votre PC vide la corbeille après 30 jours.",
     "restoreTitle": "Restaurer cette tâche ?",
-    "restore": "Restaurer"
+    "restore": "Restaurer",
+    "filter": "Filtrer les tâches",
+    "noMatches": "Aucune tâche ne correspond."
   },
   "myDay": {
     "empty": "Rien de prévu aujourd’hui.",

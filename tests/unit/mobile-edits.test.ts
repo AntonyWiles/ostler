@@ -419,6 +419,18 @@ describe('the phone edits a task the way the desktop does (mobile plan, prompt 1
     db.close()
   })
 
+  it('finds a project’s labels and the tasks that carry one', async () => {
+    const queries = await import('../../mobile/src/data/queries')
+    const db = new Database(phonePath)
+    const phone = db as unknown as EditDb
+    edits.setTaskLabels(phone, ids.main, ['Plumbing', 'Kitchen'])
+    expect(queries.projectLabels(db as never, PROJECT)).toEqual(['Kitchen', 'Plumbing'])
+    expect([...queries.taskIdsWithLabel(db as never, PROJECT, 'Kitchen')].sort()).toEqual(
+      [ids.main, ids.tiles].sort()
+    )
+    db.close()
+  })
+
   it('ticks and unticks checklist items', () => {
     both(
       (planning) => {

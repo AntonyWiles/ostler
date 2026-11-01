@@ -638,6 +638,17 @@ export interface TaskReminder {
   keepReminding: boolean
 }
 
+/** The ids of a project's live tasks that carry `label`. */
+export function taskIdsWithLabel(db: QueryDb, projectId: string, label: string): Set<string> {
+  const rows = db
+    .prepare(
+      `SELECT id, labels FROM planning_work_items
+       WHERE project_id = ? AND deleted_at IS NULL AND labels <> '[]'`
+    )
+    .all(projectId) as { id: string; labels: string }[]
+  return new Set(rows.filter((row) => stringList(row.labels).includes(label)).map((row) => row.id))
+}
+
 /** A project's archived tasks (won't do ones too), the most recently archived first. */
 export function archivedTasks(db: QueryDb, projectId: string): TaskSummary[] {
   return (

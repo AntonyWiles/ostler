@@ -106,7 +106,9 @@
     "binEmpty": "Der Papierkorb ist leer.",
     "binNote": "Tippe auf eine Aufgabe, um sie wiederherzustellen. Dein PC leert den Papierkorb nach 30 Tagen.",
     "restoreTitle": "Diese Aufgabe wiederherstellen?",
-    "restore": "Wiederherstellen"
+    "restore": "Wiederherstellen",
+    "filter": "Aufgaben filtern",
+    "noMatches": "Keine passenden Aufgaben."
   },
   "myDay": {
     "empty": "Für heute ist nichts geplant.",

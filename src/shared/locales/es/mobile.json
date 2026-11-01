@@ -106,7 +106,9 @@
     "binEmpty": "La papelera está vacía.",
     "binNote": "Toca una tarea para restaurarla. Tu PC vacía la papelera a los 30 días.",
     "restoreTitle": "¿Restaurar esta tarea?",
-    "restore": "Restaurar"
+    "restore": "Restaurar",
+    "filter": "Filtrar tareas",
+    "noMatches": "Ninguna tarea coincide."
   },
   "myDay": {
     "empty": "Nada planeado para hoy.",

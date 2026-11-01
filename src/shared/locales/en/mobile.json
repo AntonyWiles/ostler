@@ -106,7 +106,9 @@
     "binEmpty": "The recycle bin is empty.",
     "binNote": "Tap a task to restore it. Your PC empties the bin after 30 days.",
     "restoreTitle": "Restore this task?",
-    "restore": "Restore"
+    "restore": "Restore",
+    "filter": "Filter tasks",
+    "noMatches": "No tasks match."
   },
   "myDay": {
     "empty": "Nothing planned for today.",

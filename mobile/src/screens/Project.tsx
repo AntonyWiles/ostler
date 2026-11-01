@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Alert, SectionList, StyleSheet, Text, View } from 'react-native'
+import { Alert, SectionList, StyleSheet, Text, TextInput, View } from 'react-native'
 import { t } from '@shared/i18n/index'
 import { formatIsoDateShort } from '@shared/dates'
 import { TASK_STATUSES, taskStatusLabel } from '@shared/task-labels'
@@ -9,11 +9,14 @@ import { addTask, restoreTaskFromBin, type EditDb } from '../data/edits'
 import {
   archivedTasks,
   binnedTasks,
+  projectLabels,
   projectOverview,
+  taskIdsWithLabel,
   tasksByStatus,
-  type QueryDb
+  type QueryDb,
+  type TaskSummary
 } from '../data/queries'
-import { SPACE, statusColor, useTheme, type Theme } from '../theme'
+import { RADIUS, SPACE, statusColor, useTheme, type Theme } from '../theme'
 import { Chip, editErrorText, editStyles, TextSender } from './EditBits'
 import { TopBar } from './TopBar'
 import { TaskRow } from './TaskRow'
@@ -58,6 +61,12 @@ function Figure({
 
 type ProjectView = 'tasks' | 'archive' | 'bin'
 
+/** A status's tasks, or (status null) the archive's or the bin's, under no heading. */
+interface Section {
+  status: PlanningWorkItemStatus | null
+  data: TaskSummary[]
+}
+
 /**
  * One project: the Overview's figures, then its tasks grouped by status; + adds a task. Its
  * archive and recycle bin are a tap away; a task in the bin is restored from there.
@@ -67,6 +76,17 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
   const [adding, setAdding] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [view, setView] = useState<ProjectView>('tasks')
+  /** Words a task's title must hold, and a label it must carry, to be listed. */
+  const [words, setWords] = useState('')
+  const [label, setLabel] = useState<string | null>(null)
+  const labels = useMemo(
+    () => (version >= 0 ? projectLabels(db, projectId) : []),
+    [db, projectId, version]
+  )
+  const labelled = useMemo(
+    () => (label !== null && version >= 0 ? taskIdsWithLabel(db, projectId, label) : null),
+    [db, projectId, label, version]
+  )
   const data = useMemo(
     () =>
       version >= 0
@@ -79,18 +99,21 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
         : null,
     [db, projectId, version, view]
   )
-  const sections = useMemo(() => {
-    if (view === 'archive') return [{ status: null, data: data?.archived ?? [] }]
-    if (view === 'bin') return [{ status: null, data: data?.binned ?? [] }]
-    return TASK_STATUSES.map(
-      (
-        status
-      ): {
-        status: PlanningWorkItemStatus | null
-        data: NonNullable<typeof data>['archived']
-      } => ({ status, data: data?.groups[status] ?? [] })
-    ).filter((section) => section.data.length > 0)
-  }, [data, view])
+  const sections = useMemo((): Section[] => {
+    const wanted = words.trim().toLowerCase()
+    const shown = (tasks: TaskSummary[]) =>
+      tasks.filter(
+        (task) =>
+          (!wanted || task.title.toLowerCase().includes(wanted)) &&
+          (labelled === null || labelled.has(task.id))
+      )
+    if (view === 'archive') return [{ status: null, data: shown(data?.archived ?? []) }]
+    if (view === 'bin') return [{ status: null, data: shown(data?.binned ?? []) }]
+    return TASK_STATUSES.map((status) => ({
+      status,
+      data: shown(data?.groups[status] ?? [])
+    })).filter((section) => section.data.length > 0)
+  }, [data, view, words, labelled])
   const confirmRestore = (taskId: string, title: string) =>
     Alert.alert(t('mobile:project.restoreTitle'), title, [
       { text: t('mobile:taskMenu.cancel'), style: 'cancel' },
@@ -149,8 +172,9 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
                   button={t('mobile:edit.add')}
                   autoFocus
                   onSend={(text) => {
+                    let id: string
                     try {
-                      addTask(db, projectId, text)
+                      id = addTask(db, projectId, text)
                     } catch (failure) {
                       setError(editErrorText(failure))
                       throw failure
@@ -158,6 +182,8 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
                     setError(null)
                     setAdding(false)
                     onEdited()
+                    // The new task opens, so its date, person and the rest are set right away.
+                    onOpenTask(id)
                   }}
                 />
               </View>
@@ -215,6 +241,35 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
                     onPress={() => setView('bin')}
                   />
                 </View>
+                <TextInput
+                  accessibilityLabel={t('mobile:project.filter')}
+                  placeholder={t('mobile:project.filter')}
+                  placeholderTextColor={theme.textMuted}
+                  value={words}
+                  onChangeText={setWords}
+                  returnKeyType="search"
+                  style={[
+                    styles.filter,
+                    {
+                      color: theme.text,
+                      borderColor: theme.borderStrong,
+                      backgroundColor: theme.surface
+                    }
+                  ]}
+                />
+                {labels.length > 0 && (
+                  <View style={styles.views}>
+                    {labels.map((name) => (
+                      <Chip
+                        key={name}
+                        label={name}
+                        theme={theme}
+                        selected={label === name}
+                        onPress={() => setLabel(label === name ? null : name)}
+                      />
+                    ))}
+                  </View>
+                )}
                 <View style={styles.figures}>
                   <Figure
                     label={t('mobile:project.open')}
@@ -244,11 +299,13 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
         }
         ListEmptyComponent={
           <Text style={[styles.empty, styles.inset, { color: theme.textMuted }]}>
-            {view === 'archive'
-              ? t('mobile:project.archiveEmpty')
-              : view === 'bin'
-                ? t('mobile:project.binEmpty')
-                : t('mobile:project.noTasks')}
+            {words.trim() || label !== null
+              ? t('mobile:project.noMatches')
+              : view === 'archive'
+                ? t('mobile:project.archiveEmpty')
+                : view === 'bin'
+                  ? t('mobile:project.binEmpty')
+                  : t('mobile:project.noTasks')}
           </Text>
         }
         renderSectionHeader={({ section }) => {
@@ -308,6 +365,13 @@ const styles = StyleSheet.create({
   figures: { flexDirection: 'row', gap: SPACE.small },
   views: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACE.small },
   note: { fontSize: 13 },
+  filter: {
+    minHeight: 44,
+    borderWidth: 1,
+    borderRadius: RADIUS,
+    paddingHorizontal: SPACE.medium,
+    fontSize: 15
+  },
   figure: { flex: 1 },
   figureValue: { fontSize: 20, fontWeight: '700' },
   figureLabel: { fontSize: 12 },
