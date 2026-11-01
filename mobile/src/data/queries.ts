@@ -216,6 +216,8 @@ export interface TaskDetail extends TaskSummary {
   waitingOn: TaskSummary[]
   /** The tasks that wait on it. */
   waitedOnBy: TaskSummary[]
+  /** Its reminders still to come, soonest first. */
+  reminders: TaskReminder[]
   comments: TaskComment[]
   createdAt: number
   updatedAt: number
@@ -332,6 +334,20 @@ export function task(db: QueryDb, id: string): TaskDetail | null {
         )
         .all(id) as TaskSummaryRow[]
     ).map(toSummary),
+    reminders: (
+      db
+        .prepare(
+          `SELECT id, remind_at, kind, keep_reminding FROM reminders
+           WHERE work_item_id = ? AND delivered_at IS NULL AND stopped_at IS NULL
+           ORDER BY remind_at`
+        )
+        .all(id) as { id: string; remind_at: number; kind: string; keep_reminding: number }[]
+    ).map((reminder) => ({
+      id: reminder.id,
+      remindAt: reminder.remind_at,
+      due: reminder.kind === 'due',
+      keepReminding: Boolean(reminder.keep_reminding)
+    })),
     waitedOnBy: (
       db
         .prepare(
@@ -612,6 +628,40 @@ export function assignablePeople(db: QueryDb, projectId: string): PersonChoice[]
        ORDER BY name COLLATE NOCASE, id`
     )
     .all(projectId) as PersonChoice[]
+}
+
+export interface TaskReminder {
+  id: string
+  remindAt: number
+  /** Planned from the due date by the PC, rather than set by a person. */
+  due: boolean
+  keepReminding: boolean
+}
+
+/** A project's archived tasks (won't do ones too), the most recently archived first. */
+export function archivedTasks(db: QueryDb, projectId: string): TaskSummary[] {
+  return (
+    db
+      .prepare(
+        `SELECT ${SUMMARY_COLUMNS} FROM planning_work_items
+         WHERE project_id = ? AND deleted_at IS NULL AND archived_at IS NOT NULL
+         ORDER BY archived_at DESC, order_key`
+      )
+      .all(projectId) as TaskSummaryRow[]
+  ).map(toSummary)
+}
+
+/** A project's tasks in the recycle bin, the most recently binned first. */
+export function binnedTasks(db: QueryDb, projectId: string): TaskSummary[] {
+  return (
+    db
+      .prepare(
+        `SELECT ${SUMMARY_COLUMNS} FROM planning_work_items
+         WHERE project_id = ? AND deleted_at IS NOT NULL
+         ORDER BY deleted_at DESC, order_key`
+      )
+      .all(projectId) as TaskSummaryRow[]
+  ).map(toSummary)
 }
 
 /** This phone's role in a shared project, or null for a project that is not shared. */

@@ -8,10 +8,12 @@ import { projectName } from '../data/project-display'
 import {
   addTask,
   addTaskComment,
+  addTaskReminder,
   addTaskToMyDay,
   archiveTask,
   closeTaskAsWontDo,
   deleteTaskComment,
+  deleteTaskReminder,
   editTaskComment,
   inMyDay,
   moveTaskToBin,
@@ -76,6 +78,7 @@ type Panel =
   | 'labels'
   | 'checklist'
   | 'dependencies'
+  | 'reminder'
   | 'wontDo'
   | null
 
@@ -213,7 +216,10 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }
   )
   /** A field that opens its choices in place, under it, when tapped. */
   const field = (
-    name: Exclude<Panel, 'title' | 'description' | 'checklist' | 'dependencies' | 'wontDo' | null>,
+    name: Exclude<
+      Panel,
+      'title' | 'description' | 'checklist' | 'dependencies' | 'reminder' | 'wontDo' | null
+    >,
     label: string,
     hint: string,
     value: ReactNode
@@ -263,6 +269,12 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }
       </Text>
     </Pressable>
   )
+  /** A reminder at 09:00 local time on a `YYYY-MM-DD` day. */
+  const remindOn = (day: string) => {
+    const [year, month, date] = day.split('-').map(Number)
+    const at = new Date(year, month - 1, date, 9, 0).getTime()
+    if (attempt(() => void addTaskReminder(db, task.id, at))) setPanel(null)
+  }
   /** Quick dates and a calendar, for the due date and the start date. */
   const datePanel = (
     value: string | null,
@@ -900,6 +912,82 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }
           </>
         )}
         <View style={styles.page}>
+          <View style={styles.headingRow}>
+            <Text
+              accessibilityRole="header"
+              style={[styles.heading, styles.headingText, { color: theme.textSecondary }]}
+            >
+              {t('mobile:task.reminders')}
+            </Text>
+            {open && task.status !== 'done' && (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={
+                  panel === 'reminder' ? t('mobile:taskMenu.cancel') : t('mobile:edit.addReminder')
+                }
+                onPress={() => toggle('reminder')}
+                hitSlop={SPACE.medium}
+              >
+                <Text style={[styles.headingAction, { color: theme.accent }]}>
+                  {panel === 'reminder' ? t('mobile:taskMenu.cancel') : t('mobile:edit.add')}
+                </Text>
+              </Pressable>
+            )}
+          </View>
+          {task.reminders.length === 0 && panel !== 'reminder' && (
+            <Text style={[styles.body, { color: theme.textMuted }]}>
+              {t('mobile:task.noReminders')}
+            </Text>
+          )}
+          {task.reminders.map((reminder) => (
+            <View key={reminder.id} style={styles.checkRow}>
+              <Text style={[styles.body, styles.checkText, { color: theme.text }]}>
+                {reminder.due
+                  ? t('mobile:task.dueReminder', { when: formatDateTime(reminder.remindAt) })
+                  : formatDateTime(reminder.remindAt)}
+              </Text>
+              {!reminder.due &&
+                lineButton(
+                  '✕',
+                  t('mobile:edit.removeReminder', { when: formatDateTime(reminder.remindAt) }),
+                  () => attempt(() => deleteTaskReminder(db, task.id, reminder.id))
+                )}
+            </View>
+          ))}
+          {panel === 'reminder' && (
+            <View style={styles.reminderPanel}>
+              <Text style={[styles.body, { color: theme.textMuted }]}>
+                {t('mobile:edit.reminderOnPc')}
+              </Text>
+              <View style={styles.chips}>
+                <Chip
+                  label={t('mobile:edit.inAnHour')}
+                  theme={theme}
+                  onPress={() => {
+                    const at = Math.ceil((Date.now() + 60 * 60 * 1000) / 60000) * 60000
+                    if (attempt(() => void addTaskReminder(db, task.id, at))) setPanel(null)
+                  }}
+                />
+                <Chip
+                  label={t('mobile:edit.tomorrowMorning')}
+                  theme={theme}
+                  onPress={() => remindOn(shiftIsoDate(today(), 1))}
+                />
+              </View>
+              <Text style={[styles.body, { color: theme.textMuted }]}>
+                {t('mobile:edit.pickDayAtNine')}
+              </Text>
+              <DatePicker
+                theme={theme}
+                value={null}
+                today={today()}
+                onPick={(day) => {
+                  if (day !== null) remindOn(day)
+                }}
+              />
+            </View>
+          )}
+
           <Text accessibilityRole="header" style={[styles.heading, { color: theme.textSecondary }]}>
             {t('mobile:task.comments')}
           </Text>
@@ -1121,6 +1209,7 @@ const styles = StyleSheet.create({
   },
   lineGlyph: { fontSize: 16, fontWeight: '600' },
   commentMore: { marginLeft: 'auto', paddingHorizontal: SPACE.small },
+  reminderPanel: { gap: SPACE.small },
   undoRow: {
     flexDirection: 'row',
     alignItems: 'center',

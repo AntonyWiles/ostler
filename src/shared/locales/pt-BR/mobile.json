@@ -98,7 +98,15 @@
     "taskLabel": "{{title}}, {{status}}",
     "taskLabelDue": "{{title}}, {{status}}, vence {{date}}",
     "due": "Vence {{date}}",
-    "figure": "{{label}}: {{value}}"
+    "figure": "{{label}}: {{value}}",
+    "tasksView": "Tarefas",
+    "archiveView": "Arquivo",
+    "binView": "Lixeira",
+    "archiveEmpty": "Nada no arquivo.",
+    "binEmpty": "A lixeira está vazia.",
+    "binNote": "Toque em uma tarefa para restaurá-la. Seu PC esvazia a lixeira após 30 dias.",
+    "restoreTitle": "Restaurar esta tarefa?",
+    "restore": "Restaurar"
   },
   "myDay": {
     "empty": "Nada planejado para hoje.",
@@ -129,7 +137,10 @@
     "waitingOnNone": "Não aguarda outras tarefas.",
     "waitedOnBy": "Aguardada por",
     "edited": "editado",
-    "pinned": "fixado"
+    "pinned": "fixado",
+    "reminders": "Lembretes",
+    "noReminders": "Nenhum lembrete.",
+    "dueReminder": "{{when}} (prazo)"
   },
   "nav": {
     "projects": "Projetos",
@@ -185,7 +196,9 @@
       "bad-checklist-line": "Uma checklist tem no máximo 30 itens diferentes de 500 caracteres cada.",
       "too-deep": "Subtarefas só podem ser aninhadas em até três níveis.",
       "bad-dependency": "Uma tarefa só pode aguardar outra tarefa do seu projeto. Uma subtarefa, só as subtarefas ao lado dela.",
-      "dependency-loop": "Assim tarefas aguardariam umas às outras em ciclo."
+      "dependency-loop": "Assim tarefas aguardariam umas às outras em ciclo.",
+      "bad-reminder-time": "Escolha um horário futuro, dentro de dez anos.",
+      "task-closed": "Uma tarefa concluída, arquivada ou excluída não recebe novos lembretes."
     },
     "previousMonth": "Mês anterior",
     "nextMonth": "Próximo mês",
@@ -217,7 +230,13 @@
     "editComment": "Editar",
     "deleteComment": "Excluir",
     "commentDeleted": "Comentário excluído.",
-    "undo": "Desfazer"
+    "undo": "Desfazer",
+    "addReminder": "Adicionar um lembrete",
+    "removeReminder": "Remover o lembrete de {{when}}",
+    "reminderOnPc": "Seu PC mostra o lembrete na hora marcada.",
+    "inAnHour": "Daqui a uma hora",
+    "tomorrowMorning": "Amanhã às 9:00",
+    "pickDayAtNine": "Ou escolha um dia (às 9:00):"
   },
   "taskMenu": {
     "addMyDay": "Adicionar a Meu dia",

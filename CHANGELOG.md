@@ -18,7 +18,10 @@ Help › What's new, and the Unreleased section until a version has its own.
   milestone and labels from the phone, and add, rename, reorder or remove checklist items. A task
   lists its subtasks and links to its parent, and you can add a subtask from it. You can also see
   and change which tasks a task waits on, and see which tasks wait on it. Comments can be pinned,
-  edited and deleted (with Undo), as your role in the project allows. The changes show in the task's history on your PC, and an
+  edited and deleted (with Undo), as your role in the project allows.
+- **Reminders, archive and recycle bin on Android.** A task shows its coming reminders, and you
+  can add one from the phone (your PC shows it when it is due) or remove one. A project's archive
+  and recycle bin are a tap away, and a task in the bin can be restored from the phone. The changes show in the task's history on your PC, and an
   earlier description can be brought back there.
 
 ### Fixed

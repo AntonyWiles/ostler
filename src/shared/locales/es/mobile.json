@@ -98,7 +98,15 @@
     "taskLabel": "{{title}}, {{status}}",
     "taskLabelDue": "{{title}}, {{status}}, vence {{date}}",
     "due": "Vence {{date}}",
-    "figure": "{{label}}: {{value}}"
+    "figure": "{{label}}: {{value}}",
+    "tasksView": "Tareas",
+    "archiveView": "Archivo",
+    "binView": "Papelera",
+    "archiveEmpty": "No hay nada en el archivo.",
+    "binEmpty": "La papelera está vacía.",
+    "binNote": "Toca una tarea para restaurarla. Tu PC vacía la papelera a los 30 días.",
+    "restoreTitle": "¿Restaurar esta tarea?",
+    "restore": "Restaurar"
   },
   "myDay": {
     "empty": "Nada planeado para hoy.",
@@ -129,7 +137,10 @@
     "waitingOnNone": "No espera a otras tareas.",
     "waitedOnBy": "La esperan",
     "edited": "editado",
-    "pinned": "fijado"
+    "pinned": "fijado",
+    "reminders": "Recordatorios",
+    "noReminders": "Sin recordatorios.",
+    "dueReminder": "{{when}} (fecha límite)"
   },
   "nav": {
     "projects": "Proyectos",
@@ -185,7 +196,9 @@
       "bad-checklist-line": "Una lista de comprobación tiene como máximo 30 elementos distintos de 500 caracteres cada uno.",
       "too-deep": "Las subtareas solo se pueden anidar hasta tres niveles.",
       "bad-dependency": "Una tarea solo puede esperar a otra tarea de su proyecto. Una subtarea, solo a subtareas junto a ella.",
-      "dependency-loop": "Así unas tareas se esperarían a otras en círculo."
+      "dependency-loop": "Así unas tareas se esperarían a otras en círculo.",
+      "bad-reminder-time": "Elige una hora futura, dentro de diez años.",
+      "task-closed": "Una tarea terminada, archivada o eliminada no admite recordatorios nuevos."
     },
     "previousMonth": "Mes anterior",
     "nextMonth": "Mes siguiente",
@@ -217,7 +230,13 @@
     "editComment": "Editar",
     "deleteComment": "Eliminar",
     "commentDeleted": "Comentario eliminado.",
-    "undo": "Deshacer"
+    "undo": "Deshacer",
+    "addReminder": "Añadir un recordatorio",
+    "removeReminder": "Quitar el recordatorio de las {{when}}",
+    "reminderOnPc": "Tu PC muestra el recordatorio cuando llega la hora.",
+    "inAnHour": "Dentro de una hora",
+    "tomorrowMorning": "Mañana a las 9:00",
+    "pickDayAtNine": "O elige un día (a las 9:00):"
   },
   "taskMenu": {
     "addMyDay": "Añadir a Mi día",

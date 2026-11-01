@@ -98,7 +98,15 @@
     "taskLabel": "{{title}}, {{status}}",
     "taskLabelDue": "{{title}}, {{status}}, scade il {{date}}",
     "due": "Scade il {{date}}",
-    "figure": "{{label}}: {{value}}"
+    "figure": "{{label}}: {{value}}",
+    "tasksView": "Attività",
+    "archiveView": "Archivio",
+    "binView": "Cestino",
+    "archiveEmpty": "Niente in archivio.",
+    "binEmpty": "Il cestino è vuoto.",
+    "binNote": "Tocca un'attività per ripristinarla. Il tuo PC svuota il cestino dopo 30 giorni.",
+    "restoreTitle": "Ripristinare questa attività?",
+    "restore": "Ripristina"
   },
   "myDay": {
     "empty": "Niente in programma per oggi.",
@@ -129,7 +137,10 @@
     "waitingOnNone": "Non attende altre attività.",
     "waitedOnBy": "Attesa da",
     "edited": "modificato",
-    "pinned": "fissato"
+    "pinned": "fissato",
+    "reminders": "Promemoria",
+    "noReminders": "Nessun promemoria.",
+    "dueReminder": "{{when}} (scadenza)"
   },
   "nav": {
     "projects": "Progetti",
@@ -185,7 +196,9 @@
       "bad-checklist-line": "Una checklist ha al massimo 30 voci diverse di 500 caratteri ciascuna.",
       "too-deep": "Le sottoattività si annidano al massimo su tre livelli.",
       "bad-dependency": "Un'attività può attendere solo un'altra attività del suo progetto. Una sottoattività, solo le sottoattività accanto a lei.",
-      "dependency-loop": "Così alcune attività si attenderebbero a vicenda in un ciclo."
+      "dependency-loop": "Così alcune attività si attenderebbero a vicenda in un ciclo.",
+      "bad-reminder-time": "Scegli un'ora futura, entro dieci anni.",
+      "task-closed": "Un'attività completata, archiviata o eliminata non accetta nuovi promemoria."
     },
     "previousMonth": "Mese precedente",
     "nextMonth": "Mese successivo",
@@ -217,7 +230,13 @@
     "editComment": "Modifica",
     "deleteComment": "Elimina",
     "commentDeleted": "Commento eliminato.",
-    "undo": "Annulla"
+    "undo": "Annulla",
+    "addReminder": "Aggiungi un promemoria",
+    "removeReminder": "Rimuovi il promemoria delle {{when}}",
+    "reminderOnPc": "Il tuo PC mostra il promemoria all'ora prevista.",
+    "inAnHour": "Tra un'ora",
+    "tomorrowMorning": "Domani alle 9:00",
+    "pickDayAtNine": "Oppure scegli un giorno (alle 9:00):"
   },
   "taskMenu": {
     "addMyDay": "Aggiungi a La mia giornata",

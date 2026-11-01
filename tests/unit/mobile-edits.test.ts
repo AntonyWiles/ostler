@@ -383,6 +383,42 @@ describe('the phone edits a task the way the desktop does (mobile plan, prompt 1
     )
   })
 
+  it('restores a task from the recycle bin', () => {
+    const seed = new PlanningService(phonePath, () => [PROJECT])
+    seed.moveWorkItemToBin(ids.tiles, human)
+    seed.close()
+    fs.copyFileSync(phonePath, desktopPath)
+    both(
+      (planning) => void planning.restoreWorkItem(ids.tiles, human),
+      (db) => edits.restoreTaskFromBin(db, ids.tiles)
+    )
+  })
+
+  it('adds a one-off reminder and removes it, as addReminder and deleteReminder do', () => {
+    const at = NOW.getTime() + 2 * 60 * 60 * 1000
+    let added = ''
+    both(
+      (planning) => {
+        added = planning.addReminder(ids.main, at).id
+        return added
+      },
+      (db) => edits.addTaskReminder(db, ids.main, at)
+    )
+    const db = new Database(phonePath)
+    const phone = db as unknown as EditDb
+    const mine = (
+      db.prepare("SELECT id FROM reminders WHERE kind = 'custom'").get() as { id: string }
+    ).id
+    edits.deleteTaskReminder(phone, ids.main, mine)
+    expect(db.prepare("SELECT COUNT(*) AS n FROM reminders WHERE kind = 'custom'").get()).toEqual({
+      n: 0
+    })
+    expect(() => edits.addTaskReminder(phone, ids.main, NOW.getTime() - 1)).toThrow(
+      'bad-reminder-time'
+    )
+    db.close()
+  })
+
   it('ticks and unticks checklist items', () => {
     both(
       (planning) => {

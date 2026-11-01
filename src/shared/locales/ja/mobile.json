@@ -98,7 +98,15 @@
     "taskLabel": "{{title}}、{{status}}",
     "taskLabelDue": "{{title}}、{{status}}、期限 {{date}}",
     "due": "期限 {{date}}",
-    "figure": "{{label}}: {{value}}"
+    "figure": "{{label}}: {{value}}",
+    "tasksView": "タスク",
+    "archiveView": "アーカイブ",
+    "binView": "ごみ箱",
+    "archiveEmpty": "アーカイブは空です。",
+    "binEmpty": "ごみ箱は空です。",
+    "binNote": "タスクをタップすると復元します。ごみ箱は 30 日後に PC が空にします。",
+    "restoreTitle": "このタスクを復元しますか？",
+    "restore": "復元"
   },
   "myDay": {
     "empty": "今日の予定はありません。",
@@ -129,7 +137,10 @@
     "waitingOnNone": "他のタスクを待っていません。",
     "waitedOnBy": "このタスクを待つタスク",
     "edited": "編集済み",
-    "pinned": "ピン留め"
+    "pinned": "ピン留め",
+    "reminders": "リマインダー",
+    "noReminders": "リマインダーはありません。",
+    "dueReminder": "{{when}}（期限）"
   },
   "nav": {
     "projects": "プロジェクト",
@@ -185,7 +196,9 @@
       "bad-checklist-line": "チェックリストは異なる項目を最大 30 個、各 500 文字まで持てます。",
       "too-deep": "サブタスクは 3 階層までしか入れ子にできません。",
       "bad-dependency": "タスクは同じプロジェクトのタスクしか待てません。サブタスクは隣のサブタスクしか待てません。",
-      "dependency-loop": "タスクが互いに待ち合うループになります。"
+      "dependency-loop": "タスクが互いに待ち合うループになります。",
+      "bad-reminder-time": "10 年以内の未来の時刻を選んでください。",
+      "task-closed": "完了・アーカイブ・削除済みのタスクには新しいリマインダーを追加できません。"
     },
     "previousMonth": "前の月",
     "nextMonth": "次の月",
@@ -217,7 +230,13 @@
     "editComment": "編集",
     "deleteComment": "削除",
     "commentDeleted": "コメントを削除しました。",
-    "undo": "元に戻す"
+    "undo": "元に戻す",
+    "addReminder": "リマインダーを追加",
+    "removeReminder": "{{when}} のリマインダーを削除",
+    "reminderOnPc": "時間になると PC にリマインダーが表示されます。",
+    "inAnHour": "1 時間後",
+    "tomorrowMorning": "明日 9:00",
+    "pickDayAtNine": "または日付を選択（9:00）："
   },
   "taskMenu": {
     "addMyDay": "マイデイに追加",

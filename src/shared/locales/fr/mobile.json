@@ -98,7 +98,15 @@
     "taskLabel": "{{title}}, {{status}}",
     "taskLabelDue": "{{title}}, {{status}}, à rendre le {{date}}",
     "due": "Échéance {{date}}",
-    "figure": "{{label}} : {{value}}"
+    "figure": "{{label}} : {{value}}",
+    "tasksView": "Tâches",
+    "archiveView": "Archives",
+    "binView": "Corbeille",
+    "archiveEmpty": "Rien dans les archives.",
+    "binEmpty": "La corbeille est vide.",
+    "binNote": "Touchez une tâche pour la restaurer. Votre PC vide la corbeille après 30 jours.",
+    "restoreTitle": "Restaurer cette tâche ?",
+    "restore": "Restaurer"
   },
   "myDay": {
     "empty": "Rien de prévu aujourd’hui.",
@@ -129,7 +137,10 @@
     "waitingOnNone": "N’attend aucune autre tâche.",
     "waitedOnBy": "Attendue par",
     "edited": "modifié",
-    "pinned": "épinglé"
+    "pinned": "épinglé",
+    "reminders": "Rappels",
+    "noReminders": "Aucun rappel.",
+    "dueReminder": "{{when}} (échéance)"
   },
   "nav": {
     "projects": "Projets",
@@ -185,7 +196,9 @@
       "bad-checklist-line": "Une liste de contrôle a au plus 30 éléments différents de 500 caractères chacun.",
       "too-deep": "Les sous-tâches ne s’imbriquent que sur trois niveaux.",
       "bad-dependency": "Une tâche ne peut attendre qu’une autre tâche de son projet. Une sous-tâche, que les sous-tâches à côté d’elle.",
-      "dependency-loop": "Des tâches s’attendraient alors en boucle."
+      "dependency-loop": "Des tâches s’attendraient alors en boucle.",
+      "bad-reminder-time": "Choisissez une heure à venir, dans les dix ans.",
+      "task-closed": "Une tâche terminée, archivée ou supprimée ne prend pas de nouveau rappel."
     },
     "previousMonth": "Mois précédent",
     "nextMonth": "Mois suivant",
@@ -217,7 +230,13 @@
     "editComment": "Modifier",
     "deleteComment": "Supprimer",
     "commentDeleted": "Commentaire supprimé.",
-    "undo": "Annuler"
+    "undo": "Annuler",
+    "addReminder": "Ajouter un rappel",
+    "removeReminder": "Retirer le rappel de {{when}}",
+    "reminderOnPc": "Votre PC affiche le rappel à l’heure prévue.",
+    "inAnHour": "Dans une heure",
+    "tomorrowMorning": "Demain à 9 h",
+    "pickDayAtNine": "Ou choisissez un jour (à 9 h) :"
   },
   "taskMenu": {
     "addMyDay": "Ajouter à Ma journée",

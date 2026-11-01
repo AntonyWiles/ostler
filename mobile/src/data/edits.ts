@@ -76,6 +76,8 @@ export type EditRefusal =
   | 'too-deep' // subtasks nest three levels at most
   | 'bad-dependency' // not a task of the project, the task itself, or (for a subtask) not a sibling
   | 'dependency-loop'
+  | 'bad-reminder-time' // in the past, or more than ten years ahead
+  | 'task-closed' // a done, archived or binned task takes no new reminder
 
 /** An edit that was refused; nothing was written. `reason` is what the screen shows. */
 export class EditRefused extends Error {
@@ -785,6 +787,66 @@ export function addTaskComment(
       })
     })()
     return id
+  })
+}
+
+const MAX_REMINDER_AHEAD_MS = 10 * 366 * 24 * 60 * 60 * 1000
+
+/**
+ * Adds a one-off reminder to a task (`PlanningService.addReminder`, without keep reminding). The
+ * PC that holds the project shows it when it is due.
+ */
+export function addTaskReminder(
+  db: EditDb,
+  taskId: string,
+  remindAt: number,
+  options: EditOptions = {}
+): string {
+  return guarded(() => {
+    const current = requireTask(db, taskId)
+    const now = options.now ?? Date.now()
+    if (!Number.isInteger(remindAt) || remindAt <= now || remindAt > now + MAX_REMINDER_AHEAD_MS) {
+      throw new EditRefused('bad-reminder-time')
+    }
+    if (current.status === 'done' || current.archived_at !== null) {
+      throw new EditRefused('task-closed')
+    }
+    const id = uuidv4()
+    db.prepare(
+      `INSERT INTO reminders (id, project_id, work_item_id, remind_at, kind, delivered_at,
+         dismissed_at, keep_reminding, interval_minutes)
+       VALUES (?, ?, ?, ?, ?, NULL, NULL, ?, ?)`
+    ).run(id, current.project_id, taskId, remindAt, 'custom', 0, null)
+    return id
+  })
+}
+
+/** Removes one of a task's reminders (`PlanningService.deleteReminder`). */
+export function deleteTaskReminder(db: EditDb, taskId: string, reminderId: string): void {
+  guarded(() => {
+    requireTask(db, taskId)
+    const row = db.prepare('SELECT work_item_id FROM reminders WHERE id = ?').get(reminderId) as
+      { work_item_id: string } | undefined
+    if (!row || row.work_item_id !== taskId) throw new EditRefused('not-found')
+    db.prepare('DELETE FROM reminders WHERE id = ?').run(reminderId)
+  })
+}
+
+/**
+ * Brings a task back from the recycle bin (`PlanningService.restoreWorkItem`). Its due reminder
+ * is planned again by the PC, as after any change the phone makes to a due date.
+ */
+export function restoreTaskFromBin(db: EditDb, taskId: string, options: EditOptions = {}): void {
+  guarded(() => {
+    const current = db.prepare('SELECT * FROM planning_work_items WHERE id = ?').get(taskId) as
+      TaskRow | undefined
+    if (!current) throw new EditRefused('not-found')
+    if (current.deleted_at === null) return
+    const at = options.now ?? Date.now()
+    db.transaction(() => {
+      db.prepare('UPDATE planning_work_items SET deleted_at = NULL WHERE id = ?').run(taskId)
+      recordChange(db, current, 'restored', undefined, undefined, options.personId ?? null, at)
+    })()
   })
 }
 

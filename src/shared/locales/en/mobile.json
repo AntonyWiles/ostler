@@ -98,7 +98,15 @@
     "taskLabel": "{{title}}, {{status}}",
     "taskLabelDue": "{{title}}, {{status}}, due {{date}}",
     "due": "Due {{date}}",
-    "figure": "{{label}}: {{value}}"
+    "figure": "{{label}}: {{value}}",
+    "tasksView": "Tasks",
+    "archiveView": "Archive",
+    "binView": "Recycle bin",
+    "archiveEmpty": "Nothing in the archive.",
+    "binEmpty": "The recycle bin is empty.",
+    "binNote": "Tap a task to restore it. Your PC empties the bin after 30 days.",
+    "restoreTitle": "Restore this task?",
+    "restore": "Restore"
   },
   "myDay": {
     "empty": "Nothing planned for today.",
@@ -129,7 +137,10 @@
     "waitingOnNone": "Not waiting on other tasks.",
     "waitedOnBy": "Waited on by",
     "edited": "edited",
-    "pinned": "pinned"
+    "pinned": "pinned",
+    "reminders": "Reminders",
+    "noReminders": "No reminders.",
+    "dueReminder": "{{when}} (due date)"
   },
   "nav": {
     "projects": "Projects",
@@ -185,7 +196,9 @@
       "bad-checklist-line": "A checklist has at most 30 items of 500 characters each, and each one different.",
       "too-deep": "Subtasks can only be nested three levels deep.",
       "bad-dependency": "A task can only wait on another task of its project. A subtask can only wait on subtasks next to it.",
-      "dependency-loop": "That would make tasks wait on each other in a loop."
+      "dependency-loop": "That would make tasks wait on each other in a loop.",
+      "bad-reminder-time": "Choose a time in the future, within ten years.",
+      "task-closed": "A finished, archived or deleted task takes no new reminders."
     },
     "previousMonth": "Previous month",
     "nextMonth": "Next month",
@@ -217,7 +230,13 @@
     "editComment": "Edit",
     "deleteComment": "Delete",
     "commentDeleted": "Comment deleted.",
-    "undo": "Undo"
+    "undo": "Undo",
+    "addReminder": "Add a reminder",
+    "removeReminder": "Remove the reminder at {{when}}",
+    "reminderOnPc": "Your PC shows the reminder when it is due.",
+    "inAnHour": "In an hour",
+    "tomorrowMorning": "Tomorrow at 9:00",
+    "pickDayAtNine": "Or pick a day (at 9:00):"
   },
   "taskMenu": {
     "addMyDay": "Add to My Day",

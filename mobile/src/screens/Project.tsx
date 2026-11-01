@@ -1,13 +1,20 @@
 import { useMemo, useState } from 'react'
-import { SectionList, StyleSheet, Text, View } from 'react-native'
+import { Alert, SectionList, StyleSheet, Text, View } from 'react-native'
 import { t } from '@shared/i18n/index'
 import { formatIsoDateShort } from '@shared/dates'
 import { TASK_STATUSES, taskStatusLabel } from '@shared/task-labels'
 import { projectColor, projectName } from '../data/project-display'
-import { addTask, type EditDb } from '../data/edits'
-import { projectOverview, tasksByStatus, type QueryDb } from '../data/queries'
+import type { PlanningWorkItemStatus } from '@shared/ostler-api'
+import { addTask, restoreTaskFromBin, type EditDb } from '../data/edits'
+import {
+  archivedTasks,
+  binnedTasks,
+  projectOverview,
+  tasksByStatus,
+  type QueryDb
+} from '../data/queries'
 import { SPACE, statusColor, useTheme, type Theme } from '../theme'
-import { editErrorText, editStyles, TextSender } from './EditBits'
+import { Chip, editErrorText, editStyles, TextSender } from './EditBits'
 import { TopBar } from './TopBar'
 import { TaskRow } from './TaskRow'
 
@@ -49,25 +56,58 @@ function Figure({
   )
 }
 
-/** One project: the Overview's figures, then its tasks grouped by status; + adds a task. */
+type ProjectView = 'tasks' | 'archive' | 'bin'
+
+/**
+ * One project: the Overview's figures, then its tasks grouped by status; + adds a task. Its
+ * archive and recycle bin are a tap away; a task in the bin is restored from there.
+ */
 export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }: Props) {
   const theme = useTheme()
   const [adding, setAdding] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [view, setView] = useState<ProjectView>('tasks')
   const data = useMemo(
     () =>
       version >= 0
-        ? { overview: projectOverview(db, projectId), groups: tasksByStatus(db, projectId) }
+        ? {
+            overview: projectOverview(db, projectId),
+            groups: tasksByStatus(db, projectId),
+            archived: view === 'archive' ? archivedTasks(db, projectId) : [],
+            binned: view === 'bin' ? binnedTasks(db, projectId) : []
+          }
         : null,
-    [db, projectId, version]
+    [db, projectId, version, view]
   )
-  const sections = useMemo(
-    () =>
-      TASK_STATUSES.map((status) => ({ status, data: data?.groups[status] ?? [] })).filter(
-        (section) => section.data.length > 0
-      ),
-    [data]
-  )
+  const sections = useMemo(() => {
+    if (view === 'archive') return [{ status: null, data: data?.archived ?? [] }]
+    if (view === 'bin') return [{ status: null, data: data?.binned ?? [] }]
+    return TASK_STATUSES.map(
+      (
+        status
+      ): {
+        status: PlanningWorkItemStatus | null
+        data: NonNullable<typeof data>['archived']
+      } => ({ status, data: data?.groups[status] ?? [] })
+    ).filter((section) => section.data.length > 0)
+  }, [data, view])
+  const confirmRestore = (taskId: string, title: string) =>
+    Alert.alert(t('mobile:project.restoreTitle'), title, [
+      { text: t('mobile:taskMenu.cancel'), style: 'cancel' },
+      {
+        text: t('mobile:project.restore'),
+        onPress: () => {
+          try {
+            restoreTaskFromBin(db, taskId)
+          } catch (failure) {
+            setError(editErrorText(failure))
+            return
+          }
+          setError(null)
+          onEdited()
+        }
+      }
+    ])
   const reference = { id: projectId, name: null, color: null }
   const overview = data?.overview
   const milestone = overview?.nextMilestone ?? null
@@ -155,6 +195,26 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
                         })}
                   </Text>
                 </View>
+                <View style={styles.views}>
+                  <Chip
+                    label={t('mobile:project.tasksView')}
+                    theme={theme}
+                    selected={view === 'tasks'}
+                    onPress={() => setView('tasks')}
+                  />
+                  <Chip
+                    label={t('mobile:project.archiveView')}
+                    theme={theme}
+                    selected={view === 'archive'}
+                    onPress={() => setView('archive')}
+                  />
+                  <Chip
+                    label={t('mobile:project.binView')}
+                    theme={theme}
+                    selected={view === 'bin'}
+                    onPress={() => setView('bin')}
+                  />
+                </View>
                 <View style={styles.figures}>
                   <Figure
                     label={t('mobile:project.open')}
@@ -184,10 +244,21 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
         }
         ListEmptyComponent={
           <Text style={[styles.empty, styles.inset, { color: theme.textMuted }]}>
-            {t('mobile:project.noTasks')}
+            {view === 'archive'
+              ? t('mobile:project.archiveEmpty')
+              : view === 'bin'
+                ? t('mobile:project.binEmpty')
+                : t('mobile:project.noTasks')}
           </Text>
         }
         renderSectionHeader={({ section }) => {
+          if (section.status === null) {
+            return view === 'bin' && section.data.length > 0 ? (
+              <Text style={[styles.note, styles.inset, { color: theme.textMuted }]}>
+                {t('mobile:project.binNote')}
+              </Text>
+            ) : null
+          }
           const heading = t('mobile:project.groupHeading', {
             status: taskStatusLabel(section.status),
             count: section.data.length
@@ -208,7 +279,13 @@ export function Project({ db, projectId, version, onBack, onOpenTask, onEdited }
           )
         }}
         renderItem={({ item }) => (
-          <TaskRow task={item} theme={theme} onPress={() => onOpenTask(item.id)} />
+          <TaskRow
+            task={item}
+            theme={theme}
+            onPress={() =>
+              view === 'bin' ? confirmRestore(item.id, item.title) : onOpenTask(item.id)
+            }
+          />
         )}
       />
     </>
@@ -229,6 +306,8 @@ const styles = StyleSheet.create({
   swatch: { width: 10, height: 10, borderRadius: 3 },
   milestone: { fontSize: 13, flex: 1 },
   figures: { flexDirection: 'row', gap: SPACE.small },
+  views: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACE.small },
+  note: { fontSize: 13 },
   figure: { flex: 1 },
   figureValue: { fontSize: 20, fontWeight: '700' },
   figureLabel: { fontSize: 12 },

@@ -98,7 +98,15 @@
     "taskLabel": "{{title}}，{{status}}",
     "taskLabelDue": "{{title}}，{{status}}，截止 {{date}}",
     "due": "截止 {{date}}",
-    "figure": "{{label}}：{{value}}"
+    "figure": "{{label}}：{{value}}",
+    "tasksView": "任务",
+    "archiveView": "归档",
+    "binView": "回收站",
+    "archiveEmpty": "归档中没有内容。",
+    "binEmpty": "回收站是空的。",
+    "binNote": "点按任务即可恢复。电脑会在 30 天后清空回收站。",
+    "restoreTitle": "恢复此任务？",
+    "restore": "恢复"
   },
   "myDay": {
     "empty": "今天没有安排。",
@@ -129,7 +137,10 @@
     "waitingOnNone": "未等待其他任务。",
     "waitedOnBy": "被以下任务等待",
     "edited": "已编辑",
-    "pinned": "已置顶"
+    "pinned": "已置顶",
+    "reminders": "提醒",
+    "noReminders": "没有提醒。",
+    "dueReminder": "{{when}}（截止日期）"
   },
   "nav": {
     "projects": "项目",
@@ -185,7 +196,9 @@
       "bad-checklist-line": "清单最多有 30 个不同的项目，每项最多 500 个字符。",
       "too-deep": "子任务最多只能嵌套三层。",
       "bad-dependency": "任务只能等待同一项目中的其他任务；子任务只能等待相邻的子任务。",
-      "dependency-loop": "这会让任务互相循环等待。"
+      "dependency-loop": "这会让任务互相循环等待。",
+      "bad-reminder-time": "请选择十年内的未来时间。",
+      "task-closed": "已完成、已归档或已删除的任务不能添加新提醒。"
     },
     "previousMonth": "上个月",
     "nextMonth": "下个月",
@@ -217,7 +230,13 @@
     "editComment": "编辑",
     "deleteComment": "删除",
     "commentDeleted": "评论已删除。",
-    "undo": "撤销"
+    "undo": "撤销",
+    "addReminder": "添加提醒",
+    "removeReminder": "移除 {{when}} 的提醒",
+    "reminderOnPc": "到时间后，你的电脑会显示提醒。",
+    "inAnHour": "一小时后",
+    "tomorrowMorning": "明天 9:00",
+    "pickDayAtNine": "或选择一天（9:00）："
   },
   "taskMenu": {
     "addMyDay": "添加到我的一天",
