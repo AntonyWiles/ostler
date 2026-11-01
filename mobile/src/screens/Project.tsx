@@ -38,6 +38,9 @@ import {
   triageTasks
 } from '../data/plan'
 import { DecisionList, GoalList, MilestoneList, SignOffList } from './ProjectPlan'
+import { StatusList } from './ProjectStatus'
+import { ShoppingList } from './ProjectShopping'
+import { deleteStatusUpdate, postStatusUpdate, statusUpdates } from '../data/status-updates'
 import {
   archivedTasks,
   binnedTasks,
@@ -102,6 +105,8 @@ export type ProjectView =
   | 'decisions'
   | 'goals'
   | 'signOffs'
+  | 'status'
+  | 'shopping'
   | 'archive'
   | 'bin'
 
@@ -178,6 +183,12 @@ export function Project({
             milestones: view === 'milestones' ? milestones(db, projectId) : [],
             decisions: view === 'decisions' ? decisions(db, projectId) : [],
             goals: view === 'goals' ? goals(db, projectId) : [],
+            status: view === 'status' ? statusUpdates(db, projectId) : [],
+            meId:
+              (
+                db.prepare('SELECT id FROM people WHERE is_me = 1').get() as
+                  { id: string } | undefined
+              )?.id ?? null,
             signOffs: signOffs(db, projectId)
           }
         : null,
@@ -345,6 +356,12 @@ export function Project({
                     onPress={() => setView('tasks')}
                   />
                   <Chip
+                    label={t('mobile:status.view')}
+                    theme={theme}
+                    selected={view === 'status'}
+                    onPress={() => setView('status')}
+                  />
+                  <Chip
                     label={
                       triageCount > 0
                         ? t('mobile:plan.triageCount', { count: triageCount })
@@ -389,6 +406,12 @@ export function Project({
                     onPress={() => setView('signOffs')}
                   />
                   <Chip
+                    label={t('mobile:shopping.view')}
+                    theme={theme}
+                    selected={view === 'shopping'}
+                    onPress={() => setView('shopping')}
+                  />
+                  <Chip
                     label={t('mobile:project.archiveView')}
                     theme={theme}
                     selected={view === 'archive'}
@@ -430,22 +453,22 @@ export function Project({
                   </ScrollView>
                 )}
                 {filtering && TASK_VIEWS.includes(view) && (
-                <TextInput
-                  accessibilityLabel={t('mobile:project.filter')}
-                  placeholder={t('mobile:project.filter')}
-                  placeholderTextColor={theme.textMuted}
-                  value={words}
-                  onChangeText={setWords}
-                  returnKeyType="search"
-                  style={[
-                    styles.filter,
-                    {
-                      color: theme.text,
-                      borderColor: theme.borderStrong,
-                      backgroundColor: theme.surface
-                    }
-                  ]}
-                />
+                  <TextInput
+                    accessibilityLabel={t('mobile:project.filter')}
+                    placeholder={t('mobile:project.filter')}
+                    placeholderTextColor={theme.textMuted}
+                    value={words}
+                    onChangeText={setWords}
+                    returnKeyType="search"
+                    style={[
+                      styles.filter,
+                      {
+                        color: theme.text,
+                        borderColor: theme.borderStrong,
+                        backgroundColor: theme.surface
+                      }
+                    ]}
+                  />
                 )}
                 {filtering && TASK_VIEWS.includes(view) && labels.length > 0 && (
                   <View style={styles.views}>
@@ -500,6 +523,44 @@ export function Project({
                 items={data?.goals ?? []}
                 onCheckIn={(goalId, value) =>
                   edit(() => recordGoalCheckIn(db, goalId, value, today()))
+                }
+              />
+            )}
+            {view === 'shopping' && (
+              <ShoppingList
+                db={db}
+                projectId={projectId}
+                version={version}
+                theme={theme}
+                onEdited={onEdited}
+              />
+            )}
+            {view === 'status' && (
+              <StatusList
+                key={projectId}
+                theme={theme}
+                items={data?.status ?? []}
+                meId={data?.meId ?? null}
+                onPost={(health, note) => {
+                  try {
+                    postStatusUpdate(db, projectId, health, note)
+                  } catch (failure) {
+                    setError(editErrorText(failure))
+                    return false
+                  }
+                  setError(null)
+                  onEdited()
+                  return true
+                }}
+                onDelete={(update) =>
+                  Alert.alert(t('projects:statusUpdates.delete'), undefined, [
+                    { text: t('mobile:taskMenu.cancel'), style: 'cancel' },
+                    {
+                      text: t('mobile:status.delete'),
+                      style: 'destructive',
+                      onPress: () => edit(() => deleteStatusUpdate(db, update.id))
+                    }
+                  ])
                 }
               />
             )}

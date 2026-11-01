@@ -407,5 +407,36 @@
     "unblocked": "Risposta inviata, attività spostata",
     "replied": "Risposta inviata",
     "blockers": "Blocchi da decidere: {{count}}"
+  },
+  "status": {
+    "view": "Stato",
+    "postUpdate": "Pubblica un aggiornamento di stato",
+    "delete": "Elimina"
+  },
+  "review": {
+    "moved": "«{{title}}» spostata al {{date}}",
+    "finishedBody": "Il PC mostra quando l’hai fatta l’ultima volta. Alla prossima settimana.",
+    "done": "Fatto"
+  },
+  "time": {
+    "title": "Tempo",
+    "logged": "{{time}} registrato",
+    "start": "Avvia timer",
+    "stop": "Ferma",
+    "log": "Registra tempo",
+    "minutes": "Minuti",
+    "add": "Aggiungi",
+    "yesterday": "Ieri",
+    "note": "Nota (facoltativa)",
+    "deleteTitle": "Eliminare questa registrazione?",
+    "timesheet": "Foglio ore",
+    "thisWeek": "Questa settimana",
+    "weekOf": "Settimana del {{date}}",
+    "running": "Timer in corso",
+    "empty": "Nessun tempo registrato questa settimana."
+  },
+  "shopping": {
+    "view": "Spesa",
+    "unticked": "{{name}} è di nuovo da comprare"
   }
 }

@@ -407,5 +407,36 @@
     "unblocked": "Réponse envoyée, tâche déplacée",
     "replied": "Réponse envoyée",
     "blockers": "Blocages à trancher : {{count}}"
+  },
+  "status": {
+    "view": "État",
+    "postUpdate": "Publier un point d’étape",
+    "delete": "Supprimer"
+  },
+  "review": {
+    "moved": "« {{title}} » déplacée au {{date}}",
+    "finishedBody": "Votre PC indique quand vous l’avez faite pour la dernière fois. À la semaine prochaine.",
+    "done": "Terminé"
+  },
+  "time": {
+    "title": "Temps",
+    "logged": "{{time}} saisi",
+    "start": "Lancer le minuteur",
+    "stop": "Arrêter",
+    "log": "Saisir du temps",
+    "minutes": "Minutes",
+    "add": "Ajouter",
+    "yesterday": "Hier",
+    "note": "Note (facultative)",
+    "deleteTitle": "Supprimer cette saisie de temps ?",
+    "timesheet": "Feuille de temps",
+    "thisWeek": "Cette semaine",
+    "weekOf": "Semaine du {{date}}",
+    "running": "Minuteur en cours",
+    "empty": "Aucun temps saisi cette semaine."
+  },
+  "shopping": {
+    "view": "Courses",
+    "unticked": "{{name}} est de nouveau à acheter"
   }
 }

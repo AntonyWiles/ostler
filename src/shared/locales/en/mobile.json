@@ -407,5 +407,36 @@
     "unblocked": "Reply sent, task moved",
     "replied": "Reply sent",
     "blockers": "Blockers to decide: {{count}}"
+  },
+  "status": {
+    "view": "Status",
+    "postUpdate": "Post a status update",
+    "delete": "Delete"
+  },
+  "review": {
+    "moved": "Moved “{{title}}” to {{date}}",
+    "finishedBody": "Your PC shows when you last did it. See you next week.",
+    "done": "Done"
+  },
+  "time": {
+    "title": "Time",
+    "logged": "{{time}} logged",
+    "start": "Start timer",
+    "stop": "Stop",
+    "log": "Log time",
+    "minutes": "Minutes",
+    "add": "Add",
+    "yesterday": "Yesterday",
+    "note": "Note (optional)",
+    "deleteTitle": "Delete this time entry?",
+    "timesheet": "Timesheet",
+    "thisWeek": "This week",
+    "weekOf": "Week of {{date}}",
+    "running": "Timer running",
+    "empty": "No time logged this week."
+  },
+  "shopping": {
+    "view": "Shopping",
+    "unticked": "{{name}} is to buy again"
   }
 }

@@ -407,5 +407,36 @@
     "unblocked": "已回复, 任务已移动",
     "replied": "已回复",
     "blockers": "待决定的阻塞项: {{count}}"
+  },
+  "status": {
+    "view": "状态",
+    "postUpdate": "发布状态更新",
+    "delete": "删除"
+  },
+  "review": {
+    "moved": "已将“{{title}}”移到 {{date}}",
+    "finishedBody": "你的电脑会显示你上次完成的时间。下周见。",
+    "done": "完成"
+  },
+  "time": {
+    "title": "时间",
+    "logged": "已记录 {{time}}",
+    "start": "开始计时",
+    "stop": "停止",
+    "log": "记录时间",
+    "minutes": "分钟",
+    "add": "添加",
+    "yesterday": "昨天",
+    "note": "备注 (可选)",
+    "deleteTitle": "删除这条时间记录?",
+    "timesheet": "工时表",
+    "thisWeek": "本周",
+    "weekOf": "{{date}} 那一周",
+    "running": "正在计时",
+    "empty": "本周没有记录时间。"
+  },
+  "shopping": {
+    "view": "购物",
+    "unticked": "{{name}} 改回待购买"
   }
 }

@@ -407,5 +407,36 @@
     "unblocked": "Resposta enviada, tarefa movida",
     "replied": "Resposta enviada",
     "blockers": "Bloqueios para decidir: {{count}}"
+  },
+  "status": {
+    "view": "Situação",
+    "postUpdate": "Publicar uma atualização de status",
+    "delete": "Excluir"
+  },
+  "review": {
+    "moved": "“{{title}}” movida para {{date}}",
+    "finishedBody": "Seu PC mostra quando você a fez pela última vez. Até a próxima semana.",
+    "done": "Concluído"
+  },
+  "time": {
+    "title": "Tempo",
+    "logged": "{{time}} registrado",
+    "start": "Iniciar cronômetro",
+    "stop": "Parar",
+    "log": "Registrar tempo",
+    "minutes": "Minutos",
+    "add": "Adicionar",
+    "yesterday": "Ontem",
+    "note": "Nota (opcional)",
+    "deleteTitle": "Excluir este registro de tempo?",
+    "timesheet": "Folha de horas",
+    "thisWeek": "Esta semana",
+    "weekOf": "Semana de {{date}}",
+    "running": "Cronômetro rodando",
+    "empty": "Nenhum tempo registrado nesta semana."
+  },
+  "shopping": {
+    "view": "Compras",
+    "unticked": "{{name}} voltou para a lista de compras"
   }
 }

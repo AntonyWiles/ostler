@@ -8,12 +8,15 @@ import {
   type KeyboardTypeOptions
 } from 'react-native'
 import { t } from '@shared/i18n/index'
+import { isRefusal } from '@shared/refusal'
 import { EditRefused } from '../data/edits'
 import { RADIUS, SPACE, type Theme } from '../theme'
 
 /** The text the person sees for an edit that failed: a refusal says why, anything else is generic. */
 export function editErrorText(error: unknown): string {
   if (error instanceof EditRefused) return t(`mobile:edit.refused.${error.reason}`)
+  // A desktop service's refusal (time tracking, say) is already written for the person.
+  if (isRefusal(error)) return error.message
   return t('mobile:edit.failed')
 }
 

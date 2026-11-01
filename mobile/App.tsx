@@ -12,6 +12,9 @@ import {
 } from 'react-native'
 import { Inbox, type InboxTarget } from './src/screens/Inbox'
 import { NeedsYou } from './src/screens/NeedsYou'
+import { WeeklyReview } from './src/screens/WeeklyReview'
+import { Timesheet } from './src/screens/Timesheet'
+import { RunningTimerBar } from './src/screens/TaskTime'
 import { Join } from './src/screens/Join'
 import { Pairing } from './src/screens/Pairing'
 import { MyDay } from './src/screens/MyDay'
@@ -64,18 +67,30 @@ export default function App() {
   const theme = useTheme()
   const dark = useIsDark()
   const [screen, setScreen] = useState<
-    'home' | 'settings' | 'join' | 'pairing' | 'project' | 'task' | 'search'
+    | 'home'
+    | 'settings'
+    | 'join'
+    | 'pairing'
+    | 'project'
+    | 'task'
+    | 'search'
+    | 'weeklyReview'
+    | 'timesheet'
   >('home')
   const [tab, setTab] = useState<'projects' | 'myDay' | 'inbox' | 'needsYou'>('projects')
   const [projectId, setProjectId] = useState<string | null>(null)
   const [taskId, setTaskId] = useState<string | null>(null)
   // Where Back from a task goes: the project it was opened from, Search, or the home lists.
-  const [taskFrom, setTaskFrom] = useState<'project' | 'home' | 'search'>('home')
+  const [taskFrom, setTaskFrom] = useState<
+    'project' | 'home' | 'search' | 'weeklyReview' | 'timesheet'
+  >('home')
   // The tasks a parent or subtask was opened from, newest last: Back steps through them first.
   const [taskTrail, setTaskTrail] = useState<string[]>([])
   // Where Back from a project goes: Search when it was found there, the task whose link opened
   // it, else the home lists.
-  const [projectFrom, setProjectFrom] = useState<'home' | 'search' | 'task'>('home')
+  const [projectFrom, setProjectFrom] = useState<'home' | 'search' | 'task' | 'weeklyReview'>(
+    'home'
+  )
   // The view a project opens on: a link to a milestone or decision opens that list.
   const [projectView, setProjectView] = useState<ProjectView>('tasks')
   // An item link that opened the app (`<scheme>://task/…`), opened once the database is ready.
@@ -190,7 +205,11 @@ export default function App() {
   }, [sync])
 
   const openProject = useCallback(
-    (id: string, from: 'home' | 'search' | 'task' = 'home', view: ProjectView = 'tasks') => {
+    (
+      id: string,
+      from: 'home' | 'search' | 'task' | 'weeklyReview' = 'home',
+      view: ProjectView = 'tasks'
+    ) => {
       setProjectId(id)
       setProjectFrom(from)
       setProjectView(view)
@@ -198,12 +217,15 @@ export default function App() {
     },
     []
   )
-  const openTask = useCallback((id: string, from: 'project' | 'home' | 'search') => {
-    setTaskId(id)
-    setTaskFrom(from)
-    setTaskTrail([])
-    setScreen('task')
-  }, [])
+  const openTask = useCallback(
+    (id: string, from: 'project' | 'home' | 'search' | 'weeklyReview' | 'timesheet') => {
+      setTaskId(id)
+      setTaskFrom(from)
+      setTaskTrail([])
+      setScreen('task')
+    },
+    []
+  )
   const openRelatedTask = useCallback(
     (id: string) => {
       if (taskId !== null) setTaskTrail((trail) => [...trail, taskId])
@@ -343,6 +365,33 @@ export default function App() {
       />
     )
   }
+  if (screen === 'weeklyReview' && db !== null) {
+    return page(
+      <WeeklyReview
+        db={db}
+        version={version}
+        onBack={home}
+        onOpenTask={(id) => openTask(id, 'weeklyReview')}
+        onOpenMilestones={(id) => openProject(id, 'weeklyReview', 'milestones')}
+        onOpenInbox={() => {
+          setTab('inbox')
+          setScreen('home')
+        }}
+        onEdited={edited}
+      />
+    )
+  }
+  if (screen === 'timesheet' && db !== null) {
+    return page(
+      <Timesheet
+        db={db}
+        version={version}
+        onBack={home}
+        onOpenTask={(id) => openTask(id, 'timesheet')}
+        onEdited={edited}
+      />
+    )
+  }
   if (screen === 'task' && db !== null && taskId !== null) {
     return page(
       <TaskDetail
@@ -373,6 +422,10 @@ export default function App() {
             label: t('mobile:settings.open'),
             onPress: () => setScreen('settings')
           }
+        ]}
+        menu={[
+          { label: t('views:weeklyReview.start'), onPress: () => setScreen('weeklyReview') },
+          { label: t('mobile:time.timesheet'), onPress: () => setScreen('timesheet') }
         ]}
       />
       <View
@@ -422,6 +475,15 @@ export default function App() {
           )
         })}
       </View>
+      {db !== null && (
+        <RunningTimerBar
+          db={db}
+          version={version}
+          theme={theme}
+          onOpenTask={(id) => openTask(id, 'home')}
+          onEdited={edited}
+        />
+      )}
       <View style={styles.content}>
         {db !== null && tab === 'projects' && (
           <Projects db={db} version={version} onOpenProject={openProject} />

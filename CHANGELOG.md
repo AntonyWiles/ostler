@@ -45,6 +45,18 @@ Help › What's new, and the Unreleased section until a version has its own.
   your PC (a key, a sign-in, a command) is marked so. The Projects list shows what in each project
   is blocked on you or waiting for review, and a task shows its open blockers with the same
   choices. The phone's new screens are now translated into every language the app speaks.
+- **Weekly review on Android.** The phone's ⋮ menu opens the weekly review, step by step as on the
+  PC: overdue (move to tomorrow or next week, Someday, won't do), blocked for a while, untouched for
+  two weeks, Someday, the next two weeks and milestones at risk, each action with Undo. Finishing
+  it records the review, so your PC knows it was done.
+- **Status updates on Android.** A project's new Status view shows its updates (on track, at risk,
+  off track, with a note) and lets you post one from the phone or delete your own.
+- **Time tracking on Android.** Start and stop a timer on a task, or log time by hand for today,
+  yesterday or the day before. The running timer stays in a bar on the home screen, and the ⋮
+  menu opens your Timesheet, a week at a time with each project's total.
+- **Shopping lists on Android.** A project's Shopping view is made for the shop: add an item in
+  one line ("3 packs wall plugs £4.50"), tick it bought (a paid cost at its estimate), and bought
+  items fold away. Every change has Undo.
 - **A richer task list on Android.** Sort a project's tasks by Do first, board order, due date or
   priority, and fold status groups (Done starts folded). Rows show priority, a coloured due date,
   checklist progress, what the task waits on, comments, labels and who it is assigned to.

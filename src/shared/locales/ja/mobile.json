@@ -407,5 +407,36 @@
     "unblocked": "返信してタスクを移動しました",
     "replied": "返信しました",
     "blockers": "判断待ちのブロッカー: {{count}}件"
+  },
+  "status": {
+    "view": "状況",
+    "postUpdate": "状況を報告する",
+    "delete": "削除"
+  },
+  "review": {
+    "moved": "「{{title}}」を{{date}}に移動しました",
+    "finishedBody": "前回いつ行ったかはPCに表示されます。また来週。",
+    "done": "完了"
+  },
+  "time": {
+    "title": "時間",
+    "logged": "記録 {{time}}",
+    "start": "タイマー開始",
+    "stop": "停止",
+    "log": "時間を記録",
+    "minutes": "分",
+    "add": "追加",
+    "yesterday": "昨日",
+    "note": "メモ (任意)",
+    "deleteTitle": "この記録を削除しますか?",
+    "timesheet": "タイムシート",
+    "thisWeek": "今週",
+    "weekOf": "{{date}}の週",
+    "running": "計測中",
+    "empty": "今週の記録はありません。"
+  },
+  "shopping": {
+    "view": "買い物",
+    "unticked": "{{name}} を未購入に戻しました"
   }
 }

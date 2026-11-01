@@ -407,5 +407,36 @@
     "unblocked": "Antwort gesendet, Aufgabe verschoben",
     "replied": "Antwort gesendet",
     "blockers": "Zu entscheidende Blockaden: {{count}}"
+  },
+  "status": {
+    "view": "Stand",
+    "postUpdate": "Statusmeldung posten",
+    "delete": "Löschen"
+  },
+  "review": {
+    "moved": "„{{title}}“ auf {{date}} verschoben",
+    "finishedBody": "Dein PC zeigt, wann du sie zuletzt gemacht hast. Bis nächste Woche.",
+    "done": "Fertig"
+  },
+  "time": {
+    "title": "Zeit",
+    "logged": "{{time}} erfasst",
+    "start": "Timer starten",
+    "stop": "Stopp",
+    "log": "Zeit erfassen",
+    "minutes": "Minuten",
+    "add": "Hinzufügen",
+    "yesterday": "Gestern",
+    "note": "Notiz (optional)",
+    "deleteTitle": "Diesen Zeiteintrag löschen?",
+    "timesheet": "Stundenzettel",
+    "thisWeek": "Diese Woche",
+    "weekOf": "Woche vom {{date}}",
+    "running": "Timer läuft",
+    "empty": "Diese Woche wurde keine Zeit erfasst."
+  },
+  "shopping": {
+    "view": "Einkauf",
+    "unticked": "{{name}} steht wieder auf der Liste"
   }
 }

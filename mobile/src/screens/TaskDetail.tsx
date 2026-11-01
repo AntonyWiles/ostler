@@ -66,6 +66,7 @@ import { RADIUS, SPACE, statusColor, useTheme } from '../theme'
 import { DatePicker } from './DatePicker'
 import { Markdown } from './Markdown'
 import { BlockerAnswer } from './NeedsYou'
+import { TaskTime } from './TaskTime'
 import { openBlockers, resolveTaskBlocker } from '../data/needs-you'
 import { TaskRow } from './TaskRow'
 import { TopBar, type MenuItem } from './TopBar'
@@ -1097,6 +1098,16 @@ export function TaskDetail({
               />
             </View>
           )}
+
+          <TaskTime
+            db={db}
+            taskId={task.id}
+            projectId={task.projectId}
+            version={version}
+            theme={theme}
+            open={open}
+            onEdited={onEdited}
+          />
 
           <Text accessibilityRole="header" style={[styles.heading, { color: theme.textSecondary }]}>
             {t('mobile:task.comments')}

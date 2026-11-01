@@ -407,5 +407,36 @@
     "unblocked": "Respuesta enviada, tarea movida",
     "replied": "Respuesta enviada",
     "blockers": "Bloqueos por decidir: {{count}}"
+  },
+  "status": {
+    "view": "Estado",
+    "postUpdate": "Publicar una actualización de estado",
+    "delete": "Eliminar"
+  },
+  "review": {
+    "moved": "«{{title}}» movida al {{date}}",
+    "finishedBody": "Tu PC muestra cuándo la hiciste por última vez. Hasta la semana que viene.",
+    "done": "Listo"
+  },
+  "time": {
+    "title": "Tiempo",
+    "logged": "{{time}} registrado",
+    "start": "Iniciar temporizador",
+    "stop": "Detener",
+    "log": "Registrar tiempo",
+    "minutes": "Minutos",
+    "add": "Añadir",
+    "yesterday": "Ayer",
+    "note": "Nota (opcional)",
+    "deleteTitle": "¿Eliminar este registro de tiempo?",
+    "timesheet": "Hoja de horas",
+    "thisWeek": "Esta semana",
+    "weekOf": "Semana del {{date}}",
+    "running": "Temporizador en marcha",
+    "empty": "No hay tiempo registrado esta semana."
+  },
+  "shopping": {
+    "view": "Compras",
+    "unticked": "{{name}} vuelve a estar por comprar"
   }
 }
