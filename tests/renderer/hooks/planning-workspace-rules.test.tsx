@@ -98,8 +98,8 @@ describe('planning workspace rules', () => {
     )
     expect(columns).toEqual({
       backlog: ['a'],
-      ready: ['b', 'd', 'e', 'k', 'l', 'm', 'n', 'o', 'q', 'r'],
-      active: ['f', 'h'],
+      ready: ['b', 'd', 'e', 'f', 'k', 'l', 'm', 'n', 'o', 'q', 'r'],
+      active: ['h'],
       blocked: ['g', 'p'],
       review: ['i'],
       done: ['c', 'j']

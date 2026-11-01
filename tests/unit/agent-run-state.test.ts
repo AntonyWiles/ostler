@@ -5,6 +5,8 @@ import {
   agentRunStateLabel,
   sessionRunState
 } from '../../src/shared/agent-run-state'
+import { projectWorkItemStatus } from '../../src/shared/work-item-status'
+import type { PlanningWorkItem } from '../../src/shared/ostler-api'
 
 const task = (overrides: Partial<HarnessTask> = {}): HarnessTask => ({
   id: 'task-1',
@@ -59,6 +61,28 @@ describe('agentRunState', () => {
         none
       )
     ).toBe('starting')
+  })
+
+  it('keeps a task in Ready while its copy is made, and moves it once an agent claims it', () => {
+    const item = { status: 'ready', linkedHarnessTaskId: 'task-1' } as PlanningWorkItem
+    const copy = {
+      state: 'preparing' as const,
+      preparedAt: '2026-01-01T00:00:00.000Z',
+      hasWork: false,
+      branchName: 'ostler/t',
+      worktreePath: '/copies/t',
+      baseBranch: 'main',
+      baseCommit: 'abc'
+    }
+    expect(projectWorkItemStatus(item, { taskQueue: [task({ copy })], reviewSessions: [] })).toBe(
+      'ready'
+    )
+    expect(
+      projectWorkItemStatus(item, {
+        taskQueue: [task({ status: 'claimed', claimedBy: 'session-1' })],
+        reviewSessions: []
+      })
+    ).toBe('active')
   })
 
   it('reads a claimed task as Running, or Waiting for you while its agent asks', () => {

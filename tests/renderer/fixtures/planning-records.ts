@@ -190,7 +190,7 @@ export const SCENARIO_EXPECTED = {
     c: 'done',
     d: 'ready',
     e: 'ready',
-    f: 'active',
+    f: 'ready',
     g: 'blocked',
     h: 'active',
     i: 'review',
@@ -230,7 +230,7 @@ export const SCENARIO_EXPECTED = {
   queuePosition: { a: -1, e: 0, f: -1, g: -1, m: -1, q: 1, k: -1 },
   queueWait: { e: 0, m: 2, q: 0, a: 0 },
   readyNow: ['b', 'd', 'n', 'o', 'r'],
-  activeNow: ['f', 'h'],
+  activeNow: ['h'],
   blockedNow: ['g', 'p'],
   runnableTasks: ['t-e', 't-q'],
   waitingTasks: ['t-m']

@@ -57,13 +57,15 @@ export function projectWorkItemStatus(
 /**
  * Which column each run state sits in. A held queue entry is the harness's
  * own "nobody may take this", so it shows where a reader looks for stopped
- * work rather than sitting in Ready looking startable. Starting means an agent
- * has been given it: work in flight, not work waiting to be picked.
+ * work rather than sitting in Ready looking startable. Starting only means its
+ * copy is being made, which happens ahead of time for the next few queued
+ * tasks whether or not an agent will take them, so it stays in Ready until an
+ * agent claims it.
  */
 const RUN_STATE_COLUMN: Record<AgentRunState, PlanningWorkItemStatus> = {
   queued: 'ready',
   onHold: 'blocked',
-  starting: 'active',
+  starting: 'ready',
   running: 'active',
   waitingForYou: 'active',
   inReview: 'review',
