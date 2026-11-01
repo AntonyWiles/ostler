@@ -7,6 +7,7 @@ import { libraryItem, libraryItems } from '../data/library'
 import { linkedItemTitle } from '../data/plan'
 import type { QueryDb } from '../data/queries'
 import { RADIUS, SPACE, useTheme, type Theme } from '../theme'
+import { Chip } from './EditBits'
 import { Markdown } from './Markdown'
 import { TopBar } from './TopBar'
 
@@ -28,21 +29,84 @@ export function LibraryList({
   projectId,
   version,
   theme,
-  onOpen
+  onOpen,
+  onAddNote
 }: {
   db: QueryDb
   projectId: string
   version: number
   theme: Theme
   onOpen: (itemId: string) => void
+  /** Writes a note; false when it was refused. Left out when the person may not write here. */
+  onAddNote?: (title: string, body: string) => boolean
 }) {
   const [words, setWords] = useState('')
+  const [writing, setWriting] = useState(false)
+  const [title, setTitle] = useState('')
+  const [body, setBody] = useState('')
+  const stopWriting = () => {
+    setWriting(false)
+    setTitle('')
+    setBody('')
+  }
   const items = useMemo(
     () => (version >= 0 ? libraryItems(db, projectId, words) : []),
     [db, projectId, words, version]
   )
   return (
     <View style={styles.list}>
+      {onAddNote !== undefined && !writing && (
+        <View style={styles.actions}>
+          <Chip
+            label={t('mobile:library.newNote')}
+            theme={theme}
+            onPress={() => setWriting(true)}
+          />
+        </View>
+      )}
+      {onAddNote !== undefined && writing && (
+        <View
+          style={[
+            styles.card,
+            styles.form,
+            { backgroundColor: theme.surface, borderColor: theme.accent }
+          ]}
+        >
+          <TextInput
+            accessibilityLabel={t('mobile:library.noteTitle')}
+            placeholder={t('mobile:library.noteTitle')}
+            placeholderTextColor={theme.textMuted}
+            value={title}
+            onChangeText={setTitle}
+            autoFocus
+            style={[styles.input, { color: theme.text, borderColor: theme.borderStrong }]}
+          />
+          <TextInput
+            accessibilityLabel={t('mobile:library.noteBody')}
+            placeholder={t('mobile:library.noteBody')}
+            placeholderTextColor={theme.textMuted}
+            value={body}
+            onChangeText={setBody}
+            multiline
+            style={[
+              styles.input,
+              styles.noteBody,
+              { color: theme.text, borderColor: theme.borderStrong }
+            ]}
+          />
+          <View style={styles.actions}>
+            <Chip
+              label={t('mobile:edit.save')}
+              theme={theme}
+              selected
+              onPress={() => {
+                if (title.trim() && onAddNote(title, body)) stopWriting()
+              }}
+            />
+            <Chip label={t('mobile:taskMenu.cancel')} theme={theme} onPress={stopWriting} />
+          </View>
+        </View>
+      )}
       <TextInput
         accessibilityLabel={t('mobile:library.filter')}
         placeholder={t('mobile:library.filter')}
@@ -190,5 +254,8 @@ const styles = StyleSheet.create({
   lead: { fontSize: 16, lineHeight: 22 },
   url: { fontSize: 15, textDecorationLine: 'underline' },
   file: { borderWidth: 1, borderRadius: RADIUS, padding: SPACE.medium, gap: 2 },
-  fileName: { fontSize: 15, fontWeight: '600' }
+  fileName: { fontSize: 15, fontWeight: '600' },
+  form: { gap: SPACE.small },
+  actions: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACE.small },
+  noteBody: { minHeight: 140, paddingVertical: SPACE.small, textAlignVertical: 'top' }
 })

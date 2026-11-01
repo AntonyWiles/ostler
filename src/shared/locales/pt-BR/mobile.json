@@ -451,7 +451,10 @@
     "filter": "Buscar na biblioteca",
     "empty": "A biblioteca deste projeto ainda está vazia.",
     "missing": "Item da biblioteca não está neste celular",
-    "fileOnPc": "o arquivo está no seu PC"
+    "fileOnPc": "o arquivo está no seu PC",
+    "newNote": "Nova nota",
+    "noteTitle": "Título",
+    "noteBody": "Escreva sua nota. **Negrito**, listas e links funcionam como no PC."
   },
   "schedule": {
     "view": "Cronograma",

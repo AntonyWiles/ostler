@@ -17,7 +17,7 @@ import {
   requiredText,
   targetDate
 } from '../../../electron/services/planning-work-item-input'
-import { guarded, type EditDb } from './edits'
+import { guarded, reindexLinks, type EditDb } from './edits'
 import { shareRole, type QueryDb, type TaskSummary } from './queries'
 
 const SUMMARY_COLUMNS = 'id, project_id, title, status, priority, target_date, assignee_id'
@@ -355,11 +355,12 @@ export function recordDecision(
 ): string {
   return guarded(() => {
     const id = uuidv4()
-    db.prepare(
+    const insert = db.prepare(
       `INSERT INTO planning_decisions
         (id, project_id, title, context, decision, alternatives_considered, consequences, date, linked_work_item_ids, origin, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, '[]', 'human', ?, ?)`
-    ).run(
+    )
+    const values = [
       id,
       projectId,
       requiredText(input.title, 'Decision title', 200),
@@ -370,7 +371,11 @@ export function recordDecision(
       targetDate(input.date) ?? todayIsoDate(),
       now,
       now
-    )
+    ]
+    db.transaction(() => {
+      insert.run(...values)
+      reindexLinks(db, 'decision', id)
+    })()
     return id
   })
 }

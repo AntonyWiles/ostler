@@ -451,7 +451,10 @@
     "filter": "Cerca nella libreria",
     "empty": "La libreria di questo progetto è ancora vuota.",
     "missing": "Elemento della libreria non presente su questo telefono",
-    "fileOnPc": "il file è sul tuo PC"
+    "fileOnPc": "il file è sul tuo PC",
+    "newNote": "Nuova nota",
+    "noteTitle": "Titolo",
+    "noteBody": "Scrivi la nota. **Grassetto**, elenchi e link funzionano come sul PC."
   },
   "schedule": {
     "view": "Calendario",

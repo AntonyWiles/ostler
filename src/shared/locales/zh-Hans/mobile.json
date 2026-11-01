@@ -451,7 +451,10 @@
     "filter": "在资料库中查找",
     "empty": "此项目的资料库还是空的。",
     "missing": "资料库条目不在这部手机上",
-    "fileOnPc": "文件在你的电脑上"
+    "fileOnPc": "文件在你的电脑上",
+    "newNote": "新建笔记",
+    "noteTitle": "标题",
+    "noteBody": "写下笔记。**粗体**、列表和链接与电脑上一样可用。"
   },
   "schedule": {
     "view": "日程",

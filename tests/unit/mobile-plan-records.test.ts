@@ -10,7 +10,7 @@ const plan = await import('../../mobile/src/data/plan')
 
 // A milestone or decision made on the phone is the row the desktop would write for it.
 
-const PROJECT = 'p1'
+const PROJECT = '00000000-0000-4000-8000-000000000001'
 const NOW = new Date(2026, 9, 16, 9, 0)
 
 describe('milestones and decisions made on the phone', () => {
@@ -64,7 +64,8 @@ describe('milestones and decisions made on the phone', () => {
     const input = {
       title: 'Worktop',
       decision: 'Laminate',
-      context: 'Oak marks',
+      context:
+        'Oak marks, see [tiles](ostler://task/00000000-0000-4000-8000-000000000001/00000000-0000-4000-8000-0000000000aa)',
       alternatives: 'Quartz',
       consequences: ''
     }
@@ -81,6 +82,10 @@ describe('milestones and decisions made on the phone', () => {
     const fromPhone = plan.recordDecision(db as unknown as EditDb, PROJECT, input)
     expect(row('planning_decisions', fromPhone)).toEqual(row('planning_decisions', fromDesktop))
     expect(row('planning_decisions', fromPhone).date).toBe('2026-10-16')
+    const links = db
+      .prepare('SELECT source_id FROM item_links WHERE source_kind = ?')
+      .all('decision') as { source_id: string }[]
+    expect(links.map((link) => link.source_id).sort()).toEqual([fromDesktop, fromPhone].sort())
   })
 
   it('refuses a milestone with no name or a decision with no decision', () => {

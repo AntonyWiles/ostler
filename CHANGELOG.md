@@ -81,9 +81,14 @@ Help › What's new, and the Unreleased section until a version has its own.
 - **Add milestones and record decisions on Android.** A project's Milestones view has New
   milestone (a name, what it delivers and a target date), and its Decisions view has Record a
   decision (what it's about, what was decided, the context, alternatives and consequences).
+- **Write notes in the Library on Android.** A project's Library view has New note, for a title
+  and text formatted as on the PC. The note opens once it is saved, and shows on your PC.
 
 ### Fixed
 
+- Links to tasks, milestones, decisions and Library items written on the phone, in a description,
+  a comment or a decision, now show under "Linked from" on the item they point to, as links
+  written on the PC do.
 - A blocker resolved or a task's status changed on another device (your phone, say) now wakes
   agent dispatch on your PC as soon as the change arrives, as the same change made on the PC does.
   Before, the agent waited until something else happened in the project.

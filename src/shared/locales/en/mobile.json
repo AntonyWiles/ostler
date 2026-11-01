@@ -451,7 +451,10 @@
     "filter": "Find in the Library",
     "empty": "Nothing in this project's Library yet.",
     "missing": "Library item not on this phone",
-    "fileOnPc": "the file is on your PC"
+    "fileOnPc": "the file is on your PC",
+    "newNote": "New note",
+    "noteTitle": "Title",
+    "noteBody": "Write your note. **Bold**, lists and links work as on your PC."
   },
   "schedule": {
     "view": "Schedule",

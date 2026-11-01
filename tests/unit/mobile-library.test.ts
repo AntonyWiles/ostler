@@ -7,10 +7,11 @@ import { useTempDir } from '../helpers/temp-dir'
 const { LibraryRepository } = await import('../../electron/services/database/library-repository')
 const { createMigratedDatabase } = await import('../helpers/database')
 const library = await import('../../mobile/src/data/library')
+const { LibraryService } = await import('../../electron/services/library-service')
 
 // The phone reads a project's Library through the desktop's LibraryRepository.
 
-const PROJECT = 'p1'
+const PROJECT = '00000000-0000-4000-8000-000000000001'
 
 function item(
   id: string,
@@ -41,9 +42,11 @@ function item(
 describe('the Library on the phone', () => {
   const tempDir = useTempDir('ostler-mobile-library-')
   let db: Database.Database
+  let dbPath: string
 
   beforeEach(async () => {
-    db = new Database(await createMigratedDatabase(tempDir()))
+    dbPath = await createMigratedDatabase(tempDir())
+    db = new Database(dbPath)
     const repository = new LibraryRepository(db)
     repository.insertItem(item('n1', 'note', 'Site visit', { body: 'The **boiler** is old.' }))
     repository.insertItem(item('b1', 'brief', 'Kitchen brief', { isPrimaryBrief: true }))
@@ -75,5 +78,38 @@ describe('the Library on the phone', () => {
   it('reads one item, or null', () => {
     expect(library.libraryItem(phone(), 'l1')?.url).toBe('https://example.com/tiles')
     expect(library.libraryItem(phone(), 'missing')).toBeNull()
+  })
+
+  it('writes a note as the PC does: the item, its first revision and its links', () => {
+    const phoneNote = library.addLibraryNote(phone(), PROJECT, {
+      title: '  Boiler ',
+      body: 'Ask about [the sink](ostler://task/00000000-0000-4000-8000-000000000001/00000000-0000-4000-8000-0000000000aa).'
+    })
+    db.close()
+    const service = new LibraryService(dbPath, tempDir())
+    const pcNote = service.createItem(PROJECT, {
+      kind: 'note',
+      title: 'Boiler',
+      body: 'Ask about [the sink](ostler://task/00000000-0000-4000-8000-000000000001/00000000-0000-4000-8000-0000000000aa).'
+    })
+    service.close()
+    db = new Database(dbPath)
+    const strip = ({ id: _id, createdAt: _c, updatedAt: _u, ...rest }: LibraryItem) => rest
+    expect(strip(phoneNote)).toEqual(strip(pcNote))
+    const revisions = db
+      .prepare('SELECT COUNT(*) AS n FROM library_item_revisions WHERE item_id = ?')
+      .get(phoneNote.id) as { n: number }
+    expect(revisions.n).toBe(1)
+    const links = (id: string) =>
+      db.prepare('SELECT COUNT(*) AS n FROM item_links WHERE source_id = ?').get(id) as {
+        n: number
+      }
+    expect(links(phoneNote.id)).toEqual({ n: 1 })
+    expect(links(pcNote.id)).toEqual({ n: 1 })
+    expect(library.libraryItem(phone(), phoneNote.id)?.title).toBe('Boiler')
+  })
+
+  it('refuses a note with no title', () => {
+    expect(() => library.addLibraryNote(phone(), PROJECT, { title: ' ', body: 'x' })).toThrow()
   })
 })

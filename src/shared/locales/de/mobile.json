@@ -451,7 +451,10 @@
     "filter": "In der Bibliothek suchen",
     "empty": "In der Bibliothek dieses Projekts ist noch nichts.",
     "missing": "Bibliothekseintrag nicht auf diesem Telefon",
-    "fileOnPc": "die Datei ist auf deinem PC"
+    "fileOnPc": "die Datei ist auf deinem PC",
+    "newNote": "Neue Notiz",
+    "noteTitle": "Titel",
+    "noteBody": "Schreib deine Notiz. **Fett**, Listen und Links funktionieren wie am PC."
   },
   "schedule": {
     "view": "Zeitplan",

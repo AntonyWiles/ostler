@@ -6,8 +6,12 @@
  * Plain functions over anything shaped like a database, so this file imports no React Native code.
  */
 import type Database from 'better-sqlite3'
-import type { LibraryItem, LibraryItemKind } from '@shared/ostler-api'
+import { v4 as uuidv4 } from 'uuid'
+import { DEFAULT_AI_ACCESS, type LibraryItem, type LibraryItemKind } from '@shared/ostler-api'
+import { Refusal } from '@shared/refusal'
 import { LibraryRepository } from '../../../electron/services/database/library-repository'
+import { cleanTitle } from '../../../electron/services/library-title'
+import { guarded } from './edits'
 import type { QueryDb } from './queries'
 
 function repository(db: QueryDb): LibraryRepository {
@@ -49,4 +53,54 @@ export function libraryItems(db: QueryDb, projectId: string, words = ''): Librar
 /** One item, or null when it is not on the phone. */
 export function libraryItem(db: QueryDb, itemId: string): LibraryItem | null {
   return repository(db).getItem(itemId)
+}
+
+const MAX_BODY_CHARS = 200_000
+
+/**
+ * Writes a note into a project's Library, as the PC's `createItem` does for one: its first
+ * revision is stored and the links in its text indexed. Returns the new item.
+ */
+export function addLibraryNote(
+  db: QueryDb,
+  projectId: string,
+  input: { title: string; body: string }
+): LibraryItem {
+  if (input.body.length > MAX_BODY_CHARS)
+    throw new Refusal(`Body is longer than ${MAX_BODY_CHARS} characters`)
+  const now = new Date().toISOString()
+  const item: LibraryItem = {
+    id: uuidv4(),
+    projectId,
+    kind: 'note',
+    title: cleanTitle(input.title),
+    summary: '',
+    body: input.body,
+    url: null,
+    file: null,
+    aiAccess: DEFAULT_AI_ACCESS.note,
+    isPrimaryBrief: false,
+    tags: [],
+    revision: 1,
+    createdAt: now,
+    updatedAt: now,
+    archivedAt: null
+  }
+  const library = repository(db)
+  guarded(() =>
+    (db as unknown as Database.Database).transaction(() => {
+      library.insertItem(item)
+      library.insertRevision(item)
+      library.indexItem({
+        itemId: item.id,
+        projectId,
+        title: item.title,
+        summary: '',
+        body: item.body,
+        tags: [],
+        extractedText: ''
+      })
+    })()
+  )
+  return item
 }

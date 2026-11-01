@@ -451,7 +451,10 @@
     "filter": "Chercher dans la bibliothèque",
     "empty": "La bibliothèque de ce projet est encore vide.",
     "missing": "Élément de bibliothèque absent de ce téléphone",
-    "fileOnPc": "le fichier est sur votre PC"
+    "fileOnPc": "le fichier est sur votre PC",
+    "newNote": "Nouvelle note",
+    "noteTitle": "Titre",
+    "noteBody": "Écrivez votre note. Le **gras**, les listes et les liens fonctionnent comme sur votre PC."
   },
   "schedule": {
     "view": "Calendrier",

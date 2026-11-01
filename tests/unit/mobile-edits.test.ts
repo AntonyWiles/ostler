@@ -16,7 +16,7 @@ const edits = await import('../../mobile/src/data/edits')
 // from generated ids (mobile plan, prompt 12). The clock is fixed so timestamps match too.
 
 const human = { kind: 'human' as const }
-const PROJECT = 'p1'
+const PROJECT = '00000000-0000-4000-8000-000000000001'
 const NOW = new Date(2026, 9, 16, 8, 0)
 
 /** The tables the desktop's task edits write to. */
@@ -31,7 +31,8 @@ const TABLES = [
   'planning_dependencies',
   'planning_milestones',
   'project_task_counters',
-  'reminders'
+  'reminders',
+  'item_links'
 ]
 /** Generated per row: compared by presence, not by value. */
 const GENERATED = new Set(['id'])
@@ -202,6 +203,31 @@ describe('the phone edits a task the way the desktop does (mobile plan, prompt 1
         edits.setTaskDescription(db, ids.main, 'Use the **grey** sealant.')
         edits.setTaskDescription(db, ids.main, ' Use the grey sealant. ')
         edits.setTaskDescription(db, ids.main, '', { now: later.getTime() })
+      }
+    )
+  })
+
+  it('indexes the item links in a description and in a comment, written and edited', () => {
+    const link = (id: string) => `[it](ostler://task/${PROJECT}/${id})`
+    const later = new Date(NOW.getTime() + 5000)
+    both(
+      (planning) => {
+        planning.updateWorkItem(ids.main, { description: `After ${link(ids.tiles)}` }, human)
+        const comment = planning.addComment(ids.main, `See ${link(ids.tiles)}`, human)
+        vi.setSystemTime(later)
+        planning.updateComment(comment.id, `See ${link(ids.worktop)}`, human)
+        vi.setSystemTime(NOW)
+        return comment.id
+      },
+      (db) => {
+        edits.setTaskDescription(db, ids.main, `After ${link(ids.tiles)}`)
+        const comment = edits.addTaskComment(db, ids.main, `See ${link(ids.tiles)}`)
+        edits.editTaskComment(db, comment, `See ${link(ids.worktop)}`, { now: later.getTime() })
+        const rows = (db as unknown as Database.Database)
+          .prepare('SELECT COUNT(*) AS n FROM item_links')
+          .get() as { n: number }
+        expect(rows.n).toBe(2)
+        return comment
       }
     )
   })

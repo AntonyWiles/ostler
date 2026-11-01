@@ -28,6 +28,7 @@ import { TASK_STATUSES } from '@shared/task-labels'
 import type { PlanningPriority, PlanningWorkItemStatus } from '@shared/ostler-api'
 import { MAX_ESTIMATE } from '@shared/ostler-api/people-types'
 import { takeTaskNumber } from '../../../electron/services/sync/task-numbers'
+import { ItemLinkIndex } from '../../../electron/services/item-link-index'
 import {
   closeTaskReminders,
   insertComment,
@@ -138,6 +139,17 @@ export function guarded<T>(run: () => T): T {
     }
     throw error
   }
+}
+
+/**
+ * Re-reads the item links in a task's, comment's or decision's text, as the PC does on each write,
+ * so what links to an item shows on both devices.
+ */
+export function reindexLinks(db: EditDb, kind: 'task' | 'comment' | 'decision', id: string): void {
+  new ItemLinkIndex(db as unknown as ConstructorParameters<typeof ItemLinkIndex>[0]).reindex(
+    kind,
+    id
+  )
 }
 
 export function requireTask(db: EditDb, taskId: string): TaskRow {
@@ -528,6 +540,8 @@ function updateTask(
         taskId
       )
       if (changes.checklist !== undefined) carryChecklist(db, taskId, checklist, renamed)
+      if (title !== current.title || description !== current.description)
+        reindexLinks(db, 'task', taskId)
       if (changes.dependencyIds !== undefined) {
         // A link kept keeps its type and lag; a new one is finish to start, 0 days
         // (`PlanningService.dependencyLinksInput`).
@@ -790,6 +804,7 @@ export function addTaskComment(
         updatedAt: at,
         ruleName: null
       })
+      reindexLinks(db, 'comment', id)
     })()
     return id
   })
@@ -888,11 +903,14 @@ export function editTaskComment(
     const text = body.trim()
     if (text === current.body) return
     const at = Math.max(options.now ?? Date.now(), current.created_at + 1)
-    db.prepare('UPDATE planning_comments SET body = ?, updated_at = ? WHERE id = ?').run(
-      text,
-      at,
-      commentId
-    )
+    db.transaction(() => {
+      db.prepare('UPDATE planning_comments SET body = ?, updated_at = ? WHERE id = ?').run(
+        text,
+        at,
+        commentId
+      )
+      reindexLinks(db, 'comment', commentId)
+    })()
   })
 }
 
