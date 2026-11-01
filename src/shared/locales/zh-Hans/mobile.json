@@ -127,7 +127,9 @@
     "partOf": "所属任务：{{title}}",
     "waitingOn": "等待",
     "waitingOnNone": "未等待其他任务。",
-    "waitedOnBy": "被以下任务等待"
+    "waitedOnBy": "被以下任务等待",
+    "edited": "已编辑",
+    "pinned": "已置顶"
   },
   "nav": {
     "projects": "项目",
@@ -208,7 +210,14 @@
     "addSubtask": "添加子任务",
     "addWaitingOn": "添加此任务要等待的任务",
     "stopWaiting": "不再等待 {{title}}",
-    "findTask": "查找任务"
+    "findTask": "查找任务",
+    "commentActions": "评论操作",
+    "pin": "置顶",
+    "unpin": "取消置顶",
+    "editComment": "编辑",
+    "deleteComment": "删除",
+    "commentDeleted": "评论已删除。",
+    "undo": "撤销"
   },
   "taskMenu": {
     "addMyDay": "添加到我的一天",

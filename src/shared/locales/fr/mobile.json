@@ -127,7 +127,9 @@
     "partOf": "Fait partie de : {{title}}",
     "waitingOn": "Attend",
     "waitingOnNone": "N’attend aucune autre tâche.",
-    "waitedOnBy": "Attendue par"
+    "waitedOnBy": "Attendue par",
+    "edited": "modifié",
+    "pinned": "épinglé"
   },
   "nav": {
     "projects": "Projets",
@@ -208,7 +210,14 @@
     "addSubtask": "Ajouter une sous-tâche",
     "addWaitingOn": "Ajouter une tâche que celle-ci attend",
     "stopWaiting": "Ne plus attendre {{title}}",
-    "findTask": "Chercher une tâche"
+    "findTask": "Chercher une tâche",
+    "commentActions": "Actions du commentaire",
+    "pin": "Épingler",
+    "unpin": "Désépingler",
+    "editComment": "Modifier",
+    "deleteComment": "Supprimer",
+    "commentDeleted": "Commentaire supprimé.",
+    "undo": "Annuler"
   },
   "taskMenu": {
     "addMyDay": "Ajouter à Ma journée",

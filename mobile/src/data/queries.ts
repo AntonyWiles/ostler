@@ -8,13 +8,16 @@
  * out. The status figures come from the desktop's own `buildProjectReport`, so they cannot drift.
  */
 import type {
+  PlanningComment,
   PlanningMilestone,
   PlanningPriority,
   PlanningStatusTransition,
   PlanningWorkItem,
   PlanningWorkItemStatus,
-  ReportKeyNumbers
+  ReportKeyNumbers,
+  ShareRole
 } from '@shared/ostler-api'
+import { commentPermissions, type CommentPermissions } from '@shared/comment-permissions'
 import { actorDisplayName } from '@shared/actor-name'
 import type { ActorKind } from '@shared/ostler-api/activity-types'
 import { normalisedDependencyLink } from '@shared/planning/dependency-links'
@@ -179,6 +182,12 @@ export interface TaskComment {
   author: string
   /** True for a person's comment; false for an agent, automation or rule. */
   byPerson: boolean
+  /** Changed after it was written. */
+  edited: boolean
+  /** Pinned to the top of the task's comments. */
+  pinned: boolean
+  /** What this phone's person may do with it (`commentPermissions`, as on the PC). */
+  can: CommentPermissions
 }
 
 export interface TaskDetail extends TaskSummary {
@@ -259,18 +268,25 @@ export function task(db: QueryDb, id: string): TaskDetail | null {
   )
   const comments = db
     .prepare(
-      `SELECT c.id, c.body, c.created_at, c.author_kind, c.rule_name, p.name AS author_name
+      `SELECT c.id, c.body, c.created_at, c.updated_at, c.pinned_at, c.author_kind,
+              c.author_person_id, c.rule_name, p.name AS author_name
        FROM planning_comments c LEFT JOIN people p ON p.id = c.author_person_id
-       WHERE c.work_item_id = ? AND c.deleted_at IS NULL ORDER BY c.created_at`
+       WHERE c.work_item_id = ? AND c.deleted_at IS NULL
+       ORDER BY c.pinned_at IS NULL, c.pinned_at, c.created_at`
     )
     .all(id) as {
     id: string
     body: string
     created_at: number
+    updated_at: number
+    pinned_at: number | null
     author_kind: ActorKind
+    author_person_id: string | null
     rule_name: string | null
     author_name: string | null
   }[]
+  const role = shareRole(db, row.project_id)
+  const me = mePerson(db)
   return {
     ...toSummary(row),
     description: row.description,
@@ -334,7 +350,17 @@ export function task(db: QueryDb, id: string): TaskDetail | null {
       body: comment.body,
       createdAt: comment.created_at,
       author: actorDisplayName(comment.author_kind, comment.author_name, comment.rule_name),
-      byPerson: comment.author_kind === 'human' && !comment.rule_name
+      byPerson: comment.author_kind === 'human' && !comment.rule_name,
+      edited: comment.updated_at > comment.created_at,
+      pinned: comment.pinned_at !== null,
+      can: commentPermissions(
+        role,
+        {
+          authorKind: comment.author_kind as PlanningComment['authorKind'],
+          authorPersonId: comment.author_person_id
+        },
+        me
+      )
     })),
     createdAt: row.created_at,
     updatedAt: row.updated_at
@@ -586,6 +612,20 @@ export function assignablePeople(db: QueryDb, projectId: string): PersonChoice[]
        ORDER BY name COLLATE NOCASE, id`
     )
     .all(projectId) as PersonChoice[]
+}
+
+/** This phone's role in a shared project, or null for a project that is not shared. */
+export function shareRole(db: QueryDb, projectId: string): ShareRole | null {
+  const row = db.prepare('SELECT my_role FROM sync_shares WHERE project_id = ?').get(projectId) as
+    { my_role: ShareRole | null } | undefined
+  return row?.my_role ?? null
+}
+
+/** The person this phone is signed in as, when it knows. */
+function mePerson(db: QueryDb): string | null {
+  const row = db.prepare('SELECT id FROM people WHERE is_me = 1').get() as
+    { id: string } | undefined
+  return row?.id ?? null
 }
 
 /**

@@ -127,7 +127,9 @@
     "partOf": "Teil von: {{title}}",
     "waitingOn": "Wartet auf",
     "waitingOnNone": "Wartet auf keine anderen Aufgaben.",
-    "waitedOnBy": "Darauf warten"
+    "waitedOnBy": "Darauf warten",
+    "edited": "bearbeitet",
+    "pinned": "angeheftet"
   },
   "nav": {
     "projects": "Projekte",
@@ -208,7 +210,14 @@
     "addSubtask": "Unteraufgabe hinzufügen",
     "addWaitingOn": "Aufgabe hinzufügen, auf die diese wartet",
     "stopWaiting": "Nicht mehr auf {{title}} warten",
-    "findTask": "Aufgabe suchen"
+    "findTask": "Aufgabe suchen",
+    "commentActions": "Aktionen für den Kommentar",
+    "pin": "Anheften",
+    "unpin": "Lösen",
+    "editComment": "Bearbeiten",
+    "deleteComment": "Löschen",
+    "commentDeleted": "Kommentar gelöscht.",
+    "undo": "Rückgängig"
   },
   "taskMenu": {
     "addMyDay": "Zu Mein Tag hinzufügen",

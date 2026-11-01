@@ -127,7 +127,9 @@
     "partOf": "親タスク: {{title}}",
     "waitingOn": "待機中のタスク",
     "waitingOnNone": "他のタスクを待っていません。",
-    "waitedOnBy": "このタスクを待つタスク"
+    "waitedOnBy": "このタスクを待つタスク",
+    "edited": "編集済み",
+    "pinned": "ピン留め"
   },
   "nav": {
     "projects": "プロジェクト",
@@ -208,7 +210,14 @@
     "addSubtask": "サブタスクを追加",
     "addWaitingOn": "このタスクが待つタスクを追加",
     "stopWaiting": "{{title}} を待つのをやめる",
-    "findTask": "タスクを検索"
+    "findTask": "タスクを検索",
+    "commentActions": "コメントの操作",
+    "pin": "ピン留め",
+    "unpin": "ピン留めを外す",
+    "editComment": "編集",
+    "deleteComment": "削除",
+    "commentDeleted": "コメントを削除しました。",
+    "undo": "元に戻す"
   },
   "taskMenu": {
     "addMyDay": "マイデイに追加",

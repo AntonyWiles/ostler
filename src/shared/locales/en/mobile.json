@@ -127,7 +127,9 @@
     "partOf": "Part of: {{title}}",
     "waitingOn": "Waiting on",
     "waitingOnNone": "Not waiting on other tasks.",
-    "waitedOnBy": "Waited on by"
+    "waitedOnBy": "Waited on by",
+    "edited": "edited",
+    "pinned": "pinned"
   },
   "nav": {
     "projects": "Projects",
@@ -208,7 +210,14 @@
     "addSubtask": "Add a subtask",
     "addWaitingOn": "Add a task this one waits on",
     "stopWaiting": "Stop waiting on {{title}}",
-    "findTask": "Find a task"
+    "findTask": "Find a task",
+    "commentActions": "Comment actions",
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "editComment": "Edit",
+    "deleteComment": "Delete",
+    "commentDeleted": "Comment deleted.",
+    "undo": "Undo"
   },
   "taskMenu": {
     "addMyDay": "Add to My Day",

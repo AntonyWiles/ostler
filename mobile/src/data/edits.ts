@@ -788,6 +788,82 @@ export function addTaskComment(
   })
 }
 
+interface CommentRow {
+  id: string
+  work_item_id: string
+  author_kind: string
+  author_person_id: string | null
+  body: string
+  created_at: number
+  deleted_at: number | null
+  pinned_at: number | null
+}
+
+function requireComment(db: EditDb, commentId: string): CommentRow {
+  const row = db.prepare('SELECT * FROM planning_comments WHERE id = ?').get(commentId) as
+    CommentRow | undefined
+  if (!row) throw new EditRefused('not-found')
+  return row
+}
+
+/** Changes a comment's text (`PlanningActivity.updateComment`). */
+export function editTaskComment(
+  db: EditDb,
+  commentId: string,
+  body: string,
+  options: EditOptions = {}
+): void {
+  guarded(() => {
+    const current = requireComment(db, commentId)
+    if (current.deleted_at !== null) throw new EditRefused('not-found')
+    if (typeof body !== 'string' || !body.trim()) throw new EditRefused('comment-required')
+    if (body.trim().length > MAX_COMMENT_LENGTH) throw new EditRefused('comment-too-long')
+    const text = body.trim()
+    if (text === current.body) return
+    const at = Math.max(options.now ?? Date.now(), current.created_at + 1)
+    db.prepare('UPDATE planning_comments SET body = ?, updated_at = ? WHERE id = ?').run(
+      text,
+      at,
+      commentId
+    )
+  })
+}
+
+/** Deletes a comment, softly (`PlanningActivity.deleteComment`); `restoreTaskComment` undoes it. */
+export function deleteTaskComment(db: EditDb, commentId: string, options: EditOptions = {}): void {
+  guarded(() => {
+    const current = requireComment(db, commentId)
+    if (current.deleted_at !== null) return
+    db.prepare('UPDATE planning_comments SET deleted_at = ? WHERE id = ?').run(
+      options.now ?? Date.now(),
+      commentId
+    )
+  })
+}
+
+/** Brings a deleted comment back (`PlanningActivity.restoreComment`). */
+export function restoreTaskComment(db: EditDb, commentId: string): void {
+  guarded(() => {
+    requireComment(db, commentId)
+    db.prepare('UPDATE planning_comments SET deleted_at = NULL WHERE id = ?').run(commentId)
+  })
+}
+
+/** Pins a comment to the top of its task's comments, or takes the pin off (`pinComment`). */
+export function pinTaskComment(
+  db: EditDb,
+  commentId: string,
+  pinned: boolean,
+  options: EditOptions = {}
+): void {
+  guarded(() => {
+    const current = requireComment(db, commentId)
+    if (current.deleted_at !== null) throw new EditRefused('not-found')
+    const pinnedAt = pinned ? (current.pinned_at ?? options.now ?? Date.now()) : null
+    db.prepare('UPDATE planning_comments SET pinned_at = ? WHERE id = ?').run(pinnedAt, commentId)
+  })
+}
+
 /**
  * Puts a task in its project's archive (`PlanningService.archiveWorkItem`). `updated_at` is left
  * alone so a restored task keeps its place, as on the PC.

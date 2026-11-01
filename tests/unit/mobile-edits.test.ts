@@ -358,6 +358,31 @@ describe('the phone edits a task the way the desktop does (mobile plan, prompt 1
     db.close()
   })
 
+  it('edits, pins, deletes and restores a comment', () => {
+    const seed = new PlanningService(phonePath, () => [PROJECT])
+    const commentId = seed.addComment(ids.main, 'Plumber booked.', human).id
+    seed.close()
+    fs.copyFileSync(phonePath, desktopPath)
+    const later = new Date(NOW.getTime() + 5000)
+    both(
+      (planning) => {
+        vi.setSystemTime(later)
+        planning.updateComment(commentId, ' Plumber booked for Friday. ', human)
+        planning.pinComment(commentId, true, human)
+        planning.deleteComment(commentId, human)
+        planning.restoreComment(commentId, human)
+        vi.setSystemTime(NOW)
+      },
+      (db) => {
+        const at = { now: later.getTime() }
+        edits.editTaskComment(db, commentId, ' Plumber booked for Friday. ', at)
+        edits.pinTaskComment(db, commentId, true, at)
+        edits.deleteTaskComment(db, commentId, at)
+        edits.restoreTaskComment(db, commentId)
+      }
+    )
+  })
+
   it('ticks and unticks checklist items', () => {
     both(
       (planning) => {

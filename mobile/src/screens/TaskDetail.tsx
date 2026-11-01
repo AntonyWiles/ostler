@@ -11,10 +11,14 @@ import {
   addTaskToMyDay,
   archiveTask,
   closeTaskAsWontDo,
+  deleteTaskComment,
+  editTaskComment,
   inMyDay,
   moveTaskToBin,
+  pinTaskComment,
   removeTaskFromMyDay,
   renameTask,
+  restoreTaskComment,
   setChecklistTick,
   setTaskAssignee,
   setTaskChecklist,
@@ -87,6 +91,10 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }
   const [renaming, setRenaming] = useState<number | null>(null)
   /** The words that narrow the tasks offered to wait on. */
   const [waitFilter, setWaitFilter] = useState('')
+  /** The comment whose actions are open, the one being edited, and the one just deleted. */
+  const [commentMenu, setCommentMenu] = useState<string | null>(null)
+  const [editingComment, setEditingComment] = useState<string | null>(null)
+  const [deletedComment, setDeletedComment] = useState<string | null>(null)
   const task = useMemo(() => (version >= 0 ? readTask(db, taskId) : null), [db, taskId, version])
 
   const people = useMemo(
@@ -933,11 +941,101 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }
                 </Text>
                 <Text style={[styles.when, { color: theme.textMuted }]}>
                   {formatRelativeTime(comment.createdAt)}
+                  {comment.edited ? ` · ${t('mobile:task.edited')}` : ''}
+                  {comment.pinned ? ` · ${t('mobile:task.pinned')}` : ''}
                 </Text>
+                {(comment.can.pin || comment.can.edit || comment.can.delete) && (
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel={t('mobile:edit.commentActions')}
+                    accessibilityState={{ expanded: commentMenu === comment.id }}
+                    onPress={() => setCommentMenu(commentMenu === comment.id ? null : comment.id)}
+                    hitSlop={SPACE.medium}
+                    style={styles.commentMore}
+                  >
+                    <Text style={[styles.lineGlyph, { color: theme.textMuted }]}>⋯</Text>
+                  </Pressable>
+                )}
               </View>
-              <Markdown theme={theme}>{comment.body}</Markdown>
+              {commentMenu === comment.id && (
+                <View style={styles.chips}>
+                  {comment.can.pin && (
+                    <Chip
+                      label={comment.pinned ? t('mobile:edit.unpin') : t('mobile:edit.pin')}
+                      theme={theme}
+                      onPress={() => {
+                        if (attempt(() => pinTaskComment(db, comment.id, !comment.pinned)))
+                          setCommentMenu(null)
+                      }}
+                    />
+                  )}
+                  {comment.can.edit && (
+                    <Chip
+                      label={t('mobile:edit.editComment')}
+                      theme={theme}
+                      onPress={() => {
+                        setEditingComment(comment.id)
+                        setCommentMenu(null)
+                      }}
+                    />
+                  )}
+                  {comment.can.delete && (
+                    <Chip
+                      label={t('mobile:edit.deleteComment')}
+                      theme={theme}
+                      onPress={() => {
+                        if (attempt(() => deleteTaskComment(db, comment.id))) {
+                          setDeletedComment(comment.id)
+                          setCommentMenu(null)
+                        }
+                      }}
+                    />
+                  )}
+                </View>
+              )}
+              {editingComment === comment.id ? (
+                <>
+                  <TextSender
+                    theme={theme}
+                    placeholder={t('mobile:edit.commentLabel')}
+                    button={t('mobile:edit.save')}
+                    initial={comment.body}
+                    multiline
+                    autoFocus
+                    onSend={(text) => {
+                      if (!attempt(() => editTaskComment(db, comment.id, text)))
+                        throw new Error('refused')
+                      setEditingComment(null)
+                    }}
+                  />
+                  <Chip
+                    label={t('mobile:taskMenu.cancel')}
+                    theme={theme}
+                    onPress={() => setEditingComment(null)}
+                  />
+                </>
+              ) : (
+                <Markdown theme={theme}>{comment.body}</Markdown>
+              )}
             </View>
           ))}
+          {deletedComment !== null && (
+            <View
+              style={[styles.undoRow, { backgroundColor: theme.surfaceSunken }]}
+              accessibilityLiveRegion="polite"
+            >
+              <Text style={[styles.body, styles.checkText, { color: theme.text }]}>
+                {t('mobile:edit.commentDeleted')}
+              </Text>
+              <Chip
+                label={t('mobile:edit.undo')}
+                theme={theme}
+                onPress={() => {
+                  if (attempt(() => restoreTaskComment(db, deletedComment))) setDeletedComment(null)
+                }}
+              />
+            </View>
+          )}
           <TextSender
             theme={theme}
             placeholder={t('mobile:edit.commentLabel')}
@@ -1022,6 +1120,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   lineGlyph: { fontSize: 16, fontWeight: '600' },
+  commentMore: { marginLeft: 'auto', paddingHorizontal: SPACE.small },
+  undoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACE.medium,
+    padding: SPACE.small,
+    borderRadius: RADIUS
+  },
   linkedRow: { flexDirection: 'row', alignItems: 'center', paddingRight: SPACE.large },
   filter: {
     minHeight: 44,
