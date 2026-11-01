@@ -88,7 +88,10 @@
     "active": "{{count}} in progress",
     "overdue": "{{count}} overdue",
     "triage": "{{count}} to triage",
-    "signOffs": "{{count}} to sign off"
+    "signOffs": "{{count}} to sign off",
+    "needsYou": "Needs you: {{what}}",
+    "blockedOnYou": "{{count}} blocked on you",
+    "toReview": "{{count}} to review"
   },
   "project": {
     "open": "Open",
@@ -115,7 +118,12 @@
     "noMatches": "No tasks match."
   },
   "list": {
-    "sort": { "doFirst": "Do first", "board": "Board order", "due": "Due date", "priority": "Priority" },
+    "sort": {
+      "doFirst": "Do first",
+      "board": "Board order",
+      "due": "Due date",
+      "priority": "Priority"
+    },
     "filter": "Filter",
     "filterOn": "Filter (on)",
     "doFirstNote": "Open tasks to tackle first: overdue, then due within 3 days, then by priority.",
@@ -128,7 +136,12 @@
     "find": "Find a task, milestone or decision",
     "none": "Nothing matches.",
     "share": "Share link",
-    "kind": { "task": "Task", "milestone": "Milestone", "decision": "Decision", "library": "Library" },
+    "kind": {
+      "task": "Task",
+      "milestone": "Milestone",
+      "decision": "Decision",
+      "library": "Library"
+    },
     "open": {
       "task": "Opens the task",
       "milestone": "Opens the project's milestones",
@@ -232,7 +245,9 @@
     "menu": "More options",
     "closeMenu": "Close menu",
     "inbox": "Inbox",
-    "inboxUnread": "Inbox, {{unread}} unread"
+    "inboxUnread": "Inbox, {{unread}} unread",
+    "needsYou": "Needs you",
+    "needsYouCount": "Needs you, {{count}} waiting"
   },
   "edit": {
     "rename": "Rename",
@@ -282,7 +297,12 @@
       "bad-dependency": "A task can only wait on another task of its project. A subtask can only wait on subtasks next to it.",
       "dependency-loop": "That would make tasks wait on each other in a loop.",
       "bad-reminder-time": "Choose a time in the future, within ten years.",
-      "task-closed": "A finished, archived or deleted task takes no new reminders."
+      "task-closed": "A finished, archived or deleted task takes no new reminders.",
+      "choice-required": "Pick an option first.",
+      "choice-too-long": "That option is too long (300 characters at most).",
+      "note-too-long": "The note is too long (2000 characters at most).",
+      "already-resolved": "This blocker was already resolved.",
+      "not-waiting": "This task has moved on since: it is no longer waiting on you."
     },
     "previousMonth": "Previous month",
     "nextMonth": "Next month",
@@ -347,5 +367,45 @@
     "hint": "Type a word from a task, a comment, a decision, a milestone or a goal.",
     "clear": "Clear",
     "noResults": "Nothing matches every word. Try fewer or different words."
+  },
+  "needsYou": {
+    "title": "Needs you",
+    "groupDecide": "Decide",
+    "groupReview": "Review",
+    "groupBlocked": "Blocked on you",
+    "groupPc": "On your PC",
+    "groupWaiting": "Waiting on other tasks",
+    "pcHint": "These asks look like they need your PC: a key, a sign-in or a command. You can still reply from here.",
+    "show": "Show",
+    "hide": "Hide",
+    "triage": "{{project}}: {{count}} to triage",
+    "emptyTitle": "Nothing waits on you",
+    "emptyBody": "Blockers to decide, tasks to review and tasks blocked on you show here, from every project.",
+    "asked": "asked {{when}}",
+    "waitsOn": "waiting on {{count}} open",
+    "signOffAsked": "Your sign-off is asked for.",
+    "onPc": "Probably needs your PC",
+    "openTask": "Open task",
+    "markResolved": "Mark resolved",
+    "addNote": "Add a note",
+    "notePlaceholder": "Note to send with your choice (optional)",
+    "replyUnblock": "Reply and unblock",
+    "replyOnly": "Reply only",
+    "moveTo": "Then move it to:",
+    "to": {
+      "ready": "Ready",
+      "backlog": "Backlog",
+      "active": "In progress"
+    },
+    "replyPlaceholder": "Your reply",
+    "send": "Send",
+    "more": "More",
+    "less": "Less",
+    "answered": "Answer sent",
+    "approved": "Approved",
+    "sentBack": "Sent back",
+    "unblocked": "Reply sent, task moved",
+    "replied": "Reply sent",
+    "blockers": "Blockers to decide: {{count}}"
   }
 }

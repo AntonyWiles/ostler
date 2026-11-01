@@ -84,7 +84,14 @@
     "empty": "Ainda não há projetos neste celular. Entre em um projeto compartilhado ou configure a partir do seu outro dispositivo.",
     "counts": "{{open}} abertas, {{done}} concluídas",
     "rowLabel": "{{name}}, {{open}} abertas, {{done}} concluídas",
-    "list": "Projetos"
+    "list": "Projetos",
+    "active": "{{count}} em andamento",
+    "overdue": "{{count}} atrasadas",
+    "triage": "{{count}} para triagem",
+    "signOffs": "{{count}} para aprovar",
+    "needsYou": "Precisa de você: {{what}}",
+    "blockedOnYou": "{{count}} bloqueadas por você",
+    "toReview": "{{count}} para revisar"
   },
   "project": {
     "open": "Abertas",
@@ -109,6 +116,94 @@
     "restore": "Restaurar",
     "filter": "Filtrar tarefas",
     "noMatches": "Nenhuma tarefa corresponde."
+  },
+  "list": {
+    "sort": {
+      "doFirst": "Fazer primeiro",
+      "board": "Ordem do quadro",
+      "due": "Vencimento",
+      "priority": "Prioridade"
+    },
+    "filter": "Filtrar",
+    "filterOn": "Filtrar (ativo)",
+    "doFirstNote": "Tarefas abertas para atacar primeiro: atrasadas, depois as que vencem em 3 dias, depois por prioridade.",
+    "overdue": "Atrasada desde {{date}}",
+    "dueToday": "Vence hoje",
+    "waiting": "Aguarda {{count}}"
+  },
+  "links": {
+    "add": "Adicionar um link",
+    "find": "Buscar uma tarefa, um marco ou uma decisão",
+    "none": "Nada encontrado.",
+    "share": "Compartilhar link",
+    "kind": {
+      "task": "Tarefa",
+      "milestone": "Marco",
+      "decision": "Decisão",
+      "library": "Biblioteca"
+    },
+    "open": {
+      "task": "Abre a tarefa",
+      "milestone": "Abre os marcos do projeto",
+      "decision": "Abre as decisões do projeto",
+      "library": "Abre o projeto"
+    },
+    "missing": {
+      "task": "Tarefa não está neste celular",
+      "milestone": "Marco não está neste celular",
+      "decision": "Decisão não está neste celular",
+      "library": "Item da biblioteca"
+    }
+  },
+  "plan": {
+    "triageView": "Para triagem",
+    "triageCount": "Para triagem ({{count}})",
+    "triageEmpty": "Nada aguardando triagem.",
+    "triageNote": "Aceite uma captura no quadro, mova para Algum dia ou feche como “não será feito”.",
+    "somedayView": "Algum dia",
+    "somedayEmpty": "Nada em Algum dia.",
+    "somedayNote": "Ocultas do quadro até você restaurá-las.",
+    "milestonesView": "Marcos",
+    "decisionsView": "Decisões",
+    "signOffsView": "Aprovações",
+    "signOffsCount": "Aprovações ({{count}})",
+    "accept": "Aceitar",
+    "someday": "Algum dia",
+    "wontDo": "Não será feito",
+    "bringBack": "Restaurar",
+    "noMilestones": "Ainda não há marcos.",
+    "noDecisions": "Ainda não há decisões registradas.",
+    "noSignOffs": "Nenhuma aprovação pedida.",
+    "milestonePlanned": "Planejado",
+    "milestoneActive": "Ativo",
+    "milestoneComplete": "Concluído",
+    "noDate": "Sem data",
+    "progress": "{{done}} de {{total}} feitas",
+    "context": "Contexto",
+    "alternatives": "Alternativas consideradas",
+    "consequences": "Consequências",
+    "signOffWaiting": "Aguardando",
+    "signOffApproved": "Aprovada",
+    "signOffChanges": "Devolvida",
+    "kindTask": "Tarefa",
+    "kindMilestone": "Marco",
+    "kindDecision": "Decisão",
+    "signOffLine": "{{kind}} · aprovador: {{name}}",
+    "itemGone": "O item não está mais neste celular",
+    "approve": "Aprovar",
+    "sendBack": "Devolver",
+    "sendBackNote": "O que precisa mudar?",
+    "goalsView": "Metas",
+    "noGoals": "Ainda não há metas.",
+    "goalActive": "Ativa",
+    "goalAchieved": "Atingida",
+    "goalArchived": "Arquivada",
+    "goalMeasure": "{{current}} de {{target}}",
+    "lastCheckIn": "último registro {{date}}",
+    "checkIn": "Registrar progresso",
+    "checkInValue": "Valor de hoje {{unit}}",
+    "record": "Salvar",
+    "goalMilestones": "{{count}} marcos rumo a esta meta"
   },
   "myDay": {
     "empty": "Nada planejado para hoje.",
@@ -150,7 +245,9 @@
     "menu": "Mais opções",
     "closeMenu": "Fechar menu",
     "inbox": "Caixa de entrada",
-    "inboxUnread": "Caixa de entrada, {{unread}} não lidos"
+    "inboxUnread": "Caixa de entrada, {{unread}} não lidos",
+    "needsYou": "Precisa de você",
+    "needsYouCount": "Precisa de você, {{count}} aguardando"
   },
   "edit": {
     "rename": "Renomear",
@@ -200,7 +297,12 @@
       "bad-dependency": "Uma tarefa só pode aguardar outra tarefa do seu projeto. Uma subtarefa, só as subtarefas ao lado dela.",
       "dependency-loop": "Assim tarefas aguardariam umas às outras em ciclo.",
       "bad-reminder-time": "Escolha um horário futuro, dentro de dez anos.",
-      "task-closed": "Uma tarefa concluída, arquivada ou excluída não recebe novos lembretes."
+      "task-closed": "Uma tarefa concluída, arquivada ou excluída não recebe novos lembretes.",
+      "choice-required": "Escolha uma opção primeiro.",
+      "choice-too-long": "Essa opção é longa demais (no máximo 300 caracteres).",
+      "note-too-long": "A nota é longa demais (no máximo 2000 caracteres).",
+      "already-resolved": "Este bloqueio já foi resolvido.",
+      "not-waiting": "Esta tarefa já mudou: não está mais esperando por você."
     },
     "previousMonth": "Mês anterior",
     "nextMonth": "Próximo mês",
@@ -265,5 +367,45 @@
     "hint": "Digite uma palavra de uma tarefa, um comentário, uma decisão, um marco ou uma meta.",
     "clear": "Limpar",
     "noResults": "Nada corresponde a todas as palavras. Tente menos palavras ou outras."
+  },
+  "needsYou": {
+    "title": "Precisa de você",
+    "groupDecide": "Decidir",
+    "groupReview": "Revisar",
+    "groupBlocked": "Bloqueadas por você",
+    "groupPc": "No seu PC",
+    "groupWaiting": "Aguardando outras tarefas",
+    "pcHint": "Estes pedidos parecem precisar do seu PC: uma chave, um login ou um comando. Mesmo assim, você pode responder daqui.",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "triage": "{{project}}: {{count}} para triagem",
+    "emptyTitle": "Nada está esperando por você",
+    "emptyBody": "Bloqueios para decidir, tarefas para revisar e tarefas bloqueadas por você aparecem aqui, de todos os projetos.",
+    "asked": "pedido {{when}}",
+    "waitsOn": "aguarda {{count}} abertas",
+    "signOffAsked": "Sua aprovação foi pedida.",
+    "onPc": "Provavelmente precisa do seu PC",
+    "openTask": "Abrir a tarefa",
+    "markResolved": "Marcar como resolvido",
+    "addNote": "Adicionar uma nota",
+    "notePlaceholder": "Nota para enviar com a sua escolha (opcional)",
+    "replyUnblock": "Responder e desbloquear",
+    "replyOnly": "Só responder",
+    "moveTo": "Depois, mover para:",
+    "to": {
+      "ready": "Pronto",
+      "backlog": "Pendências",
+      "active": "Em andamento"
+    },
+    "replyPlaceholder": "Sua resposta",
+    "send": "Enviar",
+    "more": "Mais",
+    "less": "Menos",
+    "answered": "Resposta enviada",
+    "approved": "Aprovada",
+    "sentBack": "Devolvida",
+    "unblocked": "Resposta enviada, tarefa movida",
+    "replied": "Resposta enviada",
+    "blockers": "Bloqueios para decidir: {{count}}"
   }
 }

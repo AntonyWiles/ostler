@@ -4,6 +4,7 @@ import { t } from '@shared/i18n/index'
 import { projectColor, projectName } from '../data/project-display'
 import { projects, today, type QueryDb } from '../data/queries'
 import { projectAttention, type ProjectAttention } from '../data/plan'
+import { needsYou, needsYouCounts } from '../data/needs-you'
 import { SPACE, useTheme } from '../theme'
 import { Icon } from './Icon'
 
@@ -27,6 +28,14 @@ export function Projects({ db, version, onOpenProject }: Props) {
   )
   const attention = useMemo(
     () => (version >= 0 ? projectAttention(db, today()) : new Map<string, ProjectAttention>()),
+    [db, version]
+  )
+  // Blocked on the person and in review, per project, as the Needs you tab counts them.
+  const asks = useMemo(
+    () =>
+      version >= 0
+        ? needsYouCounts(needsYou(db, today()))
+        : new Map<string, { blocked: number; review: number }>(),
     [db, version]
   )
   if (list.length === 0) {
@@ -97,6 +106,24 @@ export function Projects({ db, version, onOpenProject }: Props) {
                         {part.text}
                       </Text>
                     ))}
+                  </Text>
+                )
+              })()}
+              {(() => {
+                const waiting = asks.get(item.id)
+                if (!waiting) return null
+                const parts = [
+                  waiting.blocked > 0
+                    ? t('mobile:projects.blockedOnYou', { count: waiting.blocked })
+                    : null,
+                  waiting.review > 0
+                    ? t('mobile:projects.toReview', { count: waiting.review })
+                    : null
+                ].filter((part): part is string => part !== null)
+                if (parts.length === 0) return null
+                return (
+                  <Text style={[styles.meta, { color: theme.warning }]}>
+                    {t('mobile:projects.needsYou', { what: parts.join(' · ') })}
                   </Text>
                 )
               })()}

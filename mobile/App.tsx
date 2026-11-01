@@ -11,6 +11,7 @@ import {
   View
 } from 'react-native'
 import { Inbox, type InboxTarget } from './src/screens/Inbox'
+import { NeedsYou } from './src/screens/NeedsYou'
 import { Join } from './src/screens/Join'
 import { Pairing } from './src/screens/Pairing'
 import { MyDay } from './src/screens/MyDay'
@@ -35,6 +36,8 @@ import {
 } from './src/db/database'
 import { currentAccount } from './src/google/account'
 import { inboxList } from './src/data/inbox'
+import { needsYou } from './src/data/needs-you'
+import { today } from './src/data/queries'
 import type { PhonePairing } from './src/sync/phone-pairing'
 import type { PhoneSync } from './src/sync/phone-sync'
 import { createPhoneSync } from './src/sync/phone-sync-runtime'
@@ -63,7 +66,7 @@ export default function App() {
   const [screen, setScreen] = useState<
     'home' | 'settings' | 'join' | 'pairing' | 'project' | 'task' | 'search'
   >('home')
-  const [tab, setTab] = useState<'projects' | 'myDay' | 'inbox'>('projects')
+  const [tab, setTab] = useState<'projects' | 'myDay' | 'inbox' | 'needsYou'>('projects')
   const [projectId, setProjectId] = useState<string | null>(null)
   const [taskId, setTaskId] = useState<string | null>(null)
   // Where Back from a task goes: the project it was opened from, Search, or the home lists.
@@ -257,6 +260,29 @@ export default function App() {
     }
   }, [db, version])
 
+  // The Needs you tab shows how many asks wait on an answer.
+  const asks = useMemo(() => {
+    if (db === null || version < 0) return 0
+    try {
+      return needsYou(db, today()).count
+    } catch {
+      return 0
+    }
+  }, [db, version])
+  // A link in a Needs you card opens from the home lists, like the card's own task.
+  const openItemFromHome = useCallback(
+    (ref: ItemLinkRef) => {
+      if (ref.kind === 'task') openTask(ref.id, 'home')
+      else
+        openProject(
+          ref.projectId,
+          'home',
+          ref.kind === 'milestone' ? 'milestones' : ref.kind === 'decision' ? 'decisions' : 'tasks'
+        )
+    },
+    [openProject, openTask]
+  )
+
   // Every screen sits below the status bar on the theme's background, under its own top bar.
   const padded = [
     styles.page,
@@ -353,20 +379,29 @@ export default function App() {
         style={[styles.tabs, { backgroundColor: theme.surface, borderColor: theme.border }]}
         accessibilityRole="tablist"
       >
-        {(['projects', 'myDay', 'inbox'] as const).map((name) => {
+        {(['projects', 'myDay', 'needsYou', 'inbox'] as const).map((name) => {
           const label =
             name === 'projects'
               ? t('mobile:nav.projects')
               : name === 'myDay'
                 ? t('mobile:nav.myDay')
-                : t('mobile:nav.inbox')
-          const badge = name === 'inbox' && unread > 0
+                : name === 'needsYou'
+                  ? t('mobile:nav.needsYou')
+                  : t('mobile:nav.inbox')
+          const count = name === 'inbox' ? unread : name === 'needsYou' ? asks : 0
+          const badge = count > 0
           const selected = tab === name
           return (
             <Pressable
               key={name}
               accessibilityRole="tab"
-              accessibilityLabel={badge ? t('mobile:nav.inboxUnread', { unread }) : label}
+              accessibilityLabel={
+                !badge
+                  ? label
+                  : name === 'inbox'
+                    ? t('mobile:nav.inboxUnread', { unread })
+                    : t('mobile:nav.needsYouCount', { count })
+              }
               accessibilityState={{ selected }}
               onPress={() => setTab(name)}
               style={[styles.tab, selected && { borderBottomColor: theme.accent }]}
@@ -379,7 +414,7 @@ export default function App() {
               {badge && (
                 <View style={[styles.badge, { backgroundColor: theme.accent }]}>
                   <Text style={[styles.badgeText, { color: theme.accentContrast }]}>
-                    {unread > 99 ? '99+' : unread}
+                    {count > 99 ? '99+' : count}
                   </Text>
                 </View>
               )}
@@ -393,6 +428,16 @@ export default function App() {
         )}
         {db !== null && tab === 'myDay' && (
           <MyDay db={db} version={version} onOpenTask={(id) => openTask(id, 'home')} />
+        )}
+        {db !== null && tab === 'needsYou' && (
+          <NeedsYou
+            db={db}
+            version={version}
+            onOpenTask={(id) => openTask(id, 'home')}
+            onOpenProject={(id, view) => openProject(id, 'home', view)}
+            onOpenItem={openItemFromHome}
+            onEdited={edited}
+          />
         )}
         {db !== null && tab === 'inbox' && (
           <Inbox

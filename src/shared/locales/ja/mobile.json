@@ -84,7 +84,14 @@
     "empty": "このスマートフォンにはまだプロジェクトがありません。共有プロジェクトに参加するか、もう一台のデバイスから設定してください。",
     "counts": "未完了 {{open}}、完了 {{done}}",
     "rowLabel": "{{name}}、未完了 {{open}}、完了 {{done}}",
-    "list": "プロジェクト"
+    "list": "プロジェクト",
+    "active": "進行中 {{count}}件",
+    "overdue": "期限切れ {{count}}件",
+    "triage": "仕分け {{count}}件",
+    "signOffs": "承認待ち {{count}}件",
+    "needsYou": "あなた待ち: {{what}}",
+    "blockedOnYou": "あなたが止めている {{count}}件",
+    "toReview": "レビュー {{count}}件"
   },
   "project": {
     "open": "未完了",
@@ -109,6 +116,94 @@
     "restore": "復元",
     "filter": "タスクを絞り込む",
     "noMatches": "一致するタスクはありません。"
+  },
+  "list": {
+    "sort": {
+      "doFirst": "優先して着手",
+      "board": "ボードの順",
+      "due": "期限",
+      "priority": "優先度"
+    },
+    "filter": "絞り込み",
+    "filterOn": "絞り込み (適用中)",
+    "doFirstNote": "先に取りかかる未完了のタスク: 期限切れ、次に3日以内が期限、次に優先度の順。",
+    "overdue": "{{date}}から期限切れ",
+    "dueToday": "今日が期限",
+    "waiting": "{{count}}件待ち"
+  },
+  "links": {
+    "add": "リンクを追加",
+    "find": "タスク・マイルストーン・意思決定を探す",
+    "none": "一致するものはありません。",
+    "share": "リンクを共有",
+    "kind": {
+      "task": "タスク",
+      "milestone": "マイルストーン",
+      "decision": "意思決定",
+      "library": "ライブラリ"
+    },
+    "open": {
+      "task": "タスクを開く",
+      "milestone": "プロジェクトのマイルストーンを開く",
+      "decision": "プロジェクトの意思決定を開く",
+      "library": "プロジェクトを開く"
+    },
+    "missing": {
+      "task": "このスマホにないタスク",
+      "milestone": "このスマホにないマイルストーン",
+      "decision": "このスマホにない意思決定",
+      "library": "ライブラリの項目"
+    }
+  },
+  "plan": {
+    "triageView": "仕分け",
+    "triageCount": "仕分け ({{count}})",
+    "triageEmpty": "仕分け待ちはありません。",
+    "triageNote": "メモをボードに採用するか、「いつか」に移すか、「やらない」として閉じます。",
+    "somedayView": "いつか",
+    "somedayEmpty": "「いつか」には何もありません。",
+    "somedayNote": "戻すまでボードには表示されません。",
+    "milestonesView": "マイルストーン",
+    "decisionsView": "意思決定",
+    "signOffsView": "承認",
+    "signOffsCount": "承認 ({{count}})",
+    "accept": "採用",
+    "someday": "いつか",
+    "wontDo": "やらない",
+    "bringBack": "戻す",
+    "noMilestones": "マイルストーンはまだありません。",
+    "noDecisions": "記録された意思決定はまだありません。",
+    "noSignOffs": "承認の依頼はありません。",
+    "milestonePlanned": "予定",
+    "milestoneActive": "進行中",
+    "milestoneComplete": "完了",
+    "noDate": "日付なし",
+    "progress": "{{total}}件中{{done}}件完了",
+    "context": "背景",
+    "alternatives": "検討した代替案",
+    "consequences": "影響",
+    "signOffWaiting": "承認待ち",
+    "signOffApproved": "承認済み",
+    "signOffChanges": "差し戻し",
+    "kindTask": "タスク",
+    "kindMilestone": "マイルストーン",
+    "kindDecision": "意思決定",
+    "signOffLine": "{{kind}} · 承認者: {{name}}",
+    "itemGone": "この項目はもうこのスマホにありません",
+    "approve": "承認",
+    "sendBack": "差し戻す",
+    "sendBackNote": "何を変える必要がありますか?",
+    "goalsView": "目標",
+    "noGoals": "目標はまだありません。",
+    "goalActive": "進行中",
+    "goalAchieved": "達成",
+    "goalArchived": "アーカイブ済み",
+    "goalMeasure": "{{target}}中{{current}}",
+    "lastCheckIn": "最終記録 {{date}}",
+    "checkIn": "記録する",
+    "checkInValue": "今日の値 {{unit}}",
+    "record": "保存",
+    "goalMilestones": "この目標に向けたマイルストーン {{count}}件"
   },
   "myDay": {
     "empty": "今日の予定はありません。",
@@ -150,7 +245,9 @@
     "menu": "その他のオプション",
     "closeMenu": "メニューを閉じる",
     "inbox": "受信トレイ",
-    "inboxUnread": "受信トレイ、未読 {{unread}} 件"
+    "inboxUnread": "受信トレイ、未読 {{unread}} 件",
+    "needsYou": "あなた待ち",
+    "needsYouCount": "あなた待ち、{{count}}件"
   },
   "edit": {
     "rename": "名前を変更",
@@ -200,7 +297,12 @@
       "bad-dependency": "タスクは同じプロジェクトのタスクしか待てません。サブタスクは隣のサブタスクしか待てません。",
       "dependency-loop": "タスクが互いに待ち合うループになります。",
       "bad-reminder-time": "10 年以内の未来の時刻を選んでください。",
-      "task-closed": "完了・アーカイブ・削除済みのタスクには新しいリマインダーを追加できません。"
+      "task-closed": "完了・アーカイブ・削除済みのタスクには新しいリマインダーを追加できません。",
+      "choice-required": "先に選択肢を選んでください。",
+      "choice-too-long": "その選択肢は長すぎます (300文字まで)。",
+      "note-too-long": "メモが長すぎます (2000文字まで)。",
+      "already-resolved": "このブロッカーはすでに解決されています。",
+      "not-waiting": "このタスクは先に進みました。もうあなたを待っていません。"
     },
     "previousMonth": "前の月",
     "nextMonth": "次の月",
@@ -265,5 +367,45 @@
     "hint": "タスク、コメント、決定事項、マイルストーン、目標の言葉を入力してください。",
     "clear": "クリア",
     "noResults": "すべての言葉に一致するものはありません。言葉を減らすか、別の言葉を試してください。"
+  },
+  "needsYou": {
+    "title": "あなた待ち",
+    "groupDecide": "判断する",
+    "groupReview": "レビュー",
+    "groupBlocked": "あなたが止めているもの",
+    "groupPc": "PCで",
+    "groupWaiting": "他のタスク待ち",
+    "pcHint": "これらの依頼はPCが必要そうです (キー、サインイン、コマンドなど)。ここから返信することはできます。",
+    "show": "表示",
+    "hide": "隠す",
+    "triage": "{{project}}: 仕分け {{count}}件",
+    "emptyTitle": "あなた待ちのものはありません",
+    "emptyBody": "判断待ちのブロッカー、レビューするタスク、あなたが止めているタスクが、すべてのプロジェクトからここに表示されます。",
+    "asked": "{{when}}に依頼",
+    "waitsOn": "未完了の{{count}}件待ち",
+    "signOffAsked": "あなたの承認が求められています。",
+    "onPc": "PCが必要そうです",
+    "openTask": "タスクを開く",
+    "markResolved": "解決済みにする",
+    "addNote": "メモを追加",
+    "notePlaceholder": "選択に添えるメモ (任意)",
+    "replyUnblock": "返信してブロック解除",
+    "replyOnly": "返信のみ",
+    "moveTo": "移動先:",
+    "to": {
+      "ready": "準備完了",
+      "backlog": "バックログ",
+      "active": "進行中"
+    },
+    "replyPlaceholder": "あなたの返信",
+    "send": "送信",
+    "more": "もっと見る",
+    "less": "閉じる",
+    "answered": "回答しました",
+    "approved": "承認しました",
+    "sentBack": "差し戻しました",
+    "unblocked": "返信してタスクを移動しました",
+    "replied": "返信しました",
+    "blockers": "判断待ちのブロッカー: {{count}}件"
   }
 }

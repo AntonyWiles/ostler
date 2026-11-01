@@ -38,6 +38,13 @@ Help › What's new, and the Unreleased section until a version has its own.
   you, each with its latest comment, and answer them: pick one of a blocker's options, approve or
   send back a review, or reply to a blocked task and move it on. The answers write the same rows as
   on your PC.
+- **A "Needs you" tab on Android**, with a count. Cards are grouped as Decide, Review, Blocked on
+  you, On your PC and Waiting on other tasks, and show the project, the task, the latest comment
+  and how long the ask has waited. Answer with one tap (a blocker's options, Approve, Send back,
+  Reply and unblock, Reply only), with Undo for a few seconds. An ask that reads like it needs
+  your PC (a key, a sign-in, a command) is marked so. The Projects list shows what in each project
+  is blocked on you or waiting for review, and a task shows its open blockers with the same
+  choices. The phone's new screens are now translated into every language the app speaks.
 - **A richer task list on Android.** Sort a project's tasks by Do first, board order, due date or
   priority, and fold status groups (Done starts folded). Rows show priority, a coloured due date,
   checklist progress, what the task waits on, comments, labels and who it is assigned to.

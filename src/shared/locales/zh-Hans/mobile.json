@@ -84,7 +84,14 @@
     "empty": "这部手机上还没有项目。请加入共享项目，或从你的另一台设备进行设置。",
     "counts": "{{open}} 项未完成，{{done}} 项已完成",
     "rowLabel": "{{name}}，{{open}} 项未完成，{{done}} 项已完成",
-    "list": "项目"
+    "list": "项目",
+    "active": "进行中 {{count}} 项",
+    "overdue": "逾期 {{count}} 项",
+    "triage": "待分拣 {{count}} 项",
+    "signOffs": "待签核 {{count}} 项",
+    "needsYou": "等你处理: {{what}}",
+    "blockedOnYou": "被你卡住 {{count}} 项",
+    "toReview": "待审阅 {{count}} 项"
   },
   "project": {
     "open": "未完成",
@@ -109,6 +116,94 @@
     "restore": "恢复",
     "filter": "筛选任务",
     "noMatches": "没有匹配的任务。"
+  },
+  "list": {
+    "sort": {
+      "doFirst": "优先处理",
+      "board": "看板顺序",
+      "due": "截止日期",
+      "priority": "优先级"
+    },
+    "filter": "筛选",
+    "filterOn": "筛选 (已启用)",
+    "doFirstNote": "优先处理的未完成任务: 先是逾期的, 再是 3 天内到期的, 然后按优先级。",
+    "overdue": "自 {{date}} 起逾期",
+    "dueToday": "今天到期",
+    "waiting": "等待 {{count}} 项"
+  },
+  "links": {
+    "add": "添加链接",
+    "find": "查找任务、里程碑或决策",
+    "none": "没有匹配项。",
+    "share": "分享链接",
+    "kind": {
+      "task": "任务",
+      "milestone": "里程碑",
+      "decision": "决策",
+      "library": "资料库"
+    },
+    "open": {
+      "task": "打开任务",
+      "milestone": "打开项目的里程碑",
+      "decision": "打开项目的决策",
+      "library": "打开项目"
+    },
+    "missing": {
+      "task": "任务不在这部手机上",
+      "milestone": "里程碑不在这部手机上",
+      "decision": "决策不在这部手机上",
+      "library": "资料库条目"
+    }
+  },
+  "plan": {
+    "triageView": "待分拣",
+    "triageCount": "待分拣 ({{count}})",
+    "triageEmpty": "没有待分拣的内容。",
+    "triageNote": "把收集项接受到看板, 移到“以后再做”, 或作为“不做”关闭。",
+    "somedayView": "以后再做",
+    "somedayEmpty": "“以后再做”中没有内容。",
+    "somedayNote": "在你恢复之前不会显示在看板上。",
+    "milestonesView": "里程碑",
+    "decisionsView": "决策",
+    "signOffsView": "签核",
+    "signOffsCount": "签核 ({{count}})",
+    "accept": "接受",
+    "someday": "以后再做",
+    "wontDo": "不做",
+    "bringBack": "恢复",
+    "noMilestones": "还没有里程碑。",
+    "noDecisions": "还没有记录决策。",
+    "noSignOffs": "没有请求签核。",
+    "milestonePlanned": "已计划",
+    "milestoneActive": "进行中",
+    "milestoneComplete": "已完成",
+    "noDate": "无日期",
+    "progress": "已完成 {{done}}/{{total}}",
+    "context": "背景",
+    "alternatives": "考虑过的备选方案",
+    "consequences": "影响",
+    "signOffWaiting": "等待中",
+    "signOffApproved": "已批准",
+    "signOffChanges": "已退回",
+    "kindTask": "任务",
+    "kindMilestone": "里程碑",
+    "kindDecision": "决策",
+    "signOffLine": "{{kind}} · 审批人: {{name}}",
+    "itemGone": "该条目已不在这部手机上",
+    "approve": "批准",
+    "sendBack": "退回",
+    "sendBackNote": "需要改什么?",
+    "goalsView": "目标",
+    "noGoals": "还没有设定目标。",
+    "goalActive": "进行中",
+    "goalAchieved": "已达成",
+    "goalArchived": "已归档",
+    "goalMeasure": "{{current}}/{{target}}",
+    "lastCheckIn": "上次签到 {{date}}",
+    "checkIn": "签到",
+    "checkInValue": "今天的数值 {{unit}}",
+    "record": "记录",
+    "goalMilestones": "有 {{count}} 个里程碑通向这个目标"
   },
   "myDay": {
     "empty": "今天没有安排。",
@@ -150,7 +245,9 @@
     "menu": "更多选项",
     "closeMenu": "关闭菜单",
     "inbox": "收件箱",
-    "inboxUnread": "收件箱，{{unread}} 条未读"
+    "inboxUnread": "收件箱，{{unread}} 条未读",
+    "needsYou": "等你处理",
+    "needsYouCount": "等你处理, {{count}} 项"
   },
   "edit": {
     "rename": "重命名",
@@ -200,7 +297,12 @@
       "bad-dependency": "任务只能等待同一项目中的其他任务；子任务只能等待相邻的子任务。",
       "dependency-loop": "这会让任务互相循环等待。",
       "bad-reminder-time": "请选择十年内的未来时间。",
-      "task-closed": "已完成、已归档或已删除的任务不能添加新提醒。"
+      "task-closed": "已完成、已归档或已删除的任务不能添加新提醒。",
+      "choice-required": "请先选择一个选项。",
+      "choice-too-long": "这个选项太长了 (最多 300 个字符)。",
+      "note-too-long": "备注太长了 (最多 2000 个字符)。",
+      "already-resolved": "这个阻塞项已经解决了。",
+      "not-waiting": "这个任务已有进展, 不再等你处理。"
     },
     "previousMonth": "上个月",
     "nextMonth": "下个月",
@@ -265,5 +367,45 @@
     "hint": "输入任务、评论、决策、里程碑或目标中的词语。",
     "clear": "清除",
     "noResults": "没有内容匹配所有词语。请尝试更少或不同的词语。"
+  },
+  "needsYou": {
+    "title": "等你处理",
+    "groupDecide": "做决定",
+    "groupReview": "审阅",
+    "groupBlocked": "被你卡住",
+    "groupPc": "需要电脑",
+    "groupWaiting": "等待其他任务",
+    "pcHint": "这些请求看起来需要你的电脑: 密钥、登录或命令。你仍然可以在这里回复。",
+    "show": "显示",
+    "hide": "隐藏",
+    "triage": "{{project}}: 待分拣 {{count}} 项",
+    "emptyTitle": "没有等你处理的事",
+    "emptyBody": "所有项目中待决定的阻塞项、待审阅的任务和被你卡住的任务都会显示在这里。",
+    "asked": "{{when}}提出",
+    "waitsOn": "等待 {{count}} 项未完成",
+    "signOffAsked": "有人请你签核。",
+    "onPc": "可能需要你的电脑",
+    "openTask": "打开任务",
+    "markResolved": "标记为已解决",
+    "addNote": "添加备注",
+    "notePlaceholder": "随选择一起发送的备注 (可选)",
+    "replyUnblock": "回复并解除阻塞",
+    "replyOnly": "仅回复",
+    "moveTo": "然后移到:",
+    "to": {
+      "ready": "就绪",
+      "backlog": "待规划",
+      "active": "进行中"
+    },
+    "replyPlaceholder": "你的回复",
+    "send": "发送",
+    "more": "更多",
+    "less": "收起",
+    "answered": "已回复",
+    "approved": "已批准",
+    "sentBack": "已退回",
+    "unblocked": "已回复, 任务已移动",
+    "replied": "已回复",
+    "blockers": "待决定的阻塞项: {{count}}"
   }
 }

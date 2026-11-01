@@ -84,7 +84,14 @@
     "empty": "Aucun projet sur ce téléphone pour le moment. Rejoignez un projet partagé ou configurez-le depuis votre autre appareil.",
     "counts": "{{open}} ouvertes, {{done}} terminées",
     "rowLabel": "{{name}}, {{open}} ouvertes, {{done}} terminées",
-    "list": "Projets"
+    "list": "Projets",
+    "active": "{{count}} en cours",
+    "overdue": "{{count}} en retard",
+    "triage": "{{count}} à trier",
+    "signOffs": "{{count}} à valider",
+    "needsYou": "Vous attend : {{what}}",
+    "blockedOnYou": "{{count}} bloquées par vous",
+    "toReview": "{{count}} à examiner"
   },
   "project": {
     "open": "Ouvertes",
@@ -109,6 +116,94 @@
     "restore": "Restaurer",
     "filter": "Filtrer les tâches",
     "noMatches": "Aucune tâche ne correspond."
+  },
+  "list": {
+    "sort": {
+      "doFirst": "À faire d’abord",
+      "board": "Ordre du kanban",
+      "due": "Échéance",
+      "priority": "Priorité"
+    },
+    "filter": "Filtrer",
+    "filterOn": "Filtrer (actif)",
+    "doFirstNote": "Tâches ouvertes à traiter d’abord : en retard, puis échéance sous 3 jours, puis par priorité.",
+    "overdue": "En retard depuis le {{date}}",
+    "dueToday": "Échéance aujourd’hui",
+    "waiting": "Attend {{count}}"
+  },
+  "links": {
+    "add": "Ajouter un lien",
+    "find": "Chercher une tâche, un jalon ou une décision",
+    "none": "Aucun résultat.",
+    "share": "Partager le lien",
+    "kind": {
+      "task": "Tâche",
+      "milestone": "Jalon",
+      "decision": "Décision",
+      "library": "Bibliothèque"
+    },
+    "open": {
+      "task": "Ouvre la tâche",
+      "milestone": "Ouvre les jalons du projet",
+      "decision": "Ouvre les décisions du projet",
+      "library": "Ouvre le projet"
+    },
+    "missing": {
+      "task": "Tâche absente de ce téléphone",
+      "milestone": "Jalon absent de ce téléphone",
+      "decision": "Décision absente de ce téléphone",
+      "library": "Élément de bibliothèque"
+    }
+  },
+  "plan": {
+    "triageView": "À trier",
+    "triageCount": "À trier ({{count}})",
+    "triageEmpty": "Rien n’attend dans À trier.",
+    "triageNote": "Acceptez une capture dans le kanban, passez-la dans Un jour ou fermez-la comme « ne sera pas fait ».",
+    "somedayView": "Un jour",
+    "somedayEmpty": "Rien dans Un jour.",
+    "somedayNote": "Masquées du kanban jusqu’à ce que vous les rétablissiez.",
+    "milestonesView": "Jalons",
+    "decisionsView": "Décisions",
+    "signOffsView": "Validations",
+    "signOffsCount": "Validations ({{count}})",
+    "accept": "Accepter",
+    "someday": "Un jour",
+    "wontDo": "Ne sera pas fait",
+    "bringBack": "Rétablir",
+    "noMilestones": "Pas encore de jalon.",
+    "noDecisions": "Pas encore de décision enregistrée.",
+    "noSignOffs": "Aucune validation demandée.",
+    "milestonePlanned": "Prévu",
+    "milestoneActive": "Actif",
+    "milestoneComplete": "Terminé",
+    "noDate": "Sans date",
+    "progress": "{{done}} sur {{total}} faites",
+    "context": "Contexte",
+    "alternatives": "Alternatives envisagées",
+    "consequences": "Conséquences",
+    "signOffWaiting": "En attente",
+    "signOffApproved": "Approuvée",
+    "signOffChanges": "Renvoyée",
+    "kindTask": "Tâche",
+    "kindMilestone": "Jalon",
+    "kindDecision": "Décision",
+    "signOffLine": "{{kind}} · validation : {{name}}",
+    "itemGone": "Élément absent de ce téléphone",
+    "approve": "Approuver",
+    "sendBack": "Renvoyer",
+    "sendBackNote": "Que faut-il changer ?",
+    "goalsView": "Objectifs",
+    "noGoals": "Pas encore d’objectif.",
+    "goalActive": "Actif",
+    "goalAchieved": "Atteint",
+    "goalArchived": "Archivé",
+    "goalMeasure": "{{current}} sur {{target}}",
+    "lastCheckIn": "dernier relevé {{date}}",
+    "checkIn": "Relevé",
+    "checkInValue": "Valeur du jour {{unit}}",
+    "record": "Enregistrer",
+    "goalMilestones": "{{count}} jalons vers cet objectif"
   },
   "myDay": {
     "empty": "Rien de prévu aujourd’hui.",
@@ -150,7 +245,9 @@
     "menu": "Plus d’options",
     "closeMenu": "Fermer le menu",
     "inbox": "Boîte de réception",
-    "inboxUnread": "Boîte de réception, {{unread}} non lus"
+    "inboxUnread": "Boîte de réception, {{unread}} non lus",
+    "needsYou": "Vous attend",
+    "needsYouCount": "Vous attend, {{count}} en attente"
   },
   "edit": {
     "rename": "Renommer",
@@ -200,7 +297,12 @@
       "bad-dependency": "Une tâche ne peut attendre qu’une autre tâche de son projet. Une sous-tâche, que les sous-tâches à côté d’elle.",
       "dependency-loop": "Des tâches s’attendraient alors en boucle.",
       "bad-reminder-time": "Choisissez une heure à venir, dans les dix ans.",
-      "task-closed": "Une tâche terminée, archivée ou supprimée ne prend pas de nouveau rappel."
+      "task-closed": "Une tâche terminée, archivée ou supprimée ne prend pas de nouveau rappel.",
+      "choice-required": "Choisissez d’abord une option.",
+      "choice-too-long": "Cette option est trop longue (300 caractères au plus).",
+      "note-too-long": "La note est trop longue (2000 caractères au plus).",
+      "already-resolved": "Ce blocage a déjà été résolu.",
+      "not-waiting": "Cette tâche a avancé entre-temps : elle ne vous attend plus."
     },
     "previousMonth": "Mois précédent",
     "nextMonth": "Mois suivant",
@@ -265,5 +367,45 @@
     "hint": "Tapez un mot d’une tâche, d’un commentaire, d’une décision, d’un jalon ou d’un objectif.",
     "clear": "Effacer",
     "noResults": "Rien ne correspond à tous les mots. Essayez moins de mots ou d’autres mots."
+  },
+  "needsYou": {
+    "title": "Vous attend",
+    "groupDecide": "Décider",
+    "groupReview": "Examiner",
+    "groupBlocked": "Bloquées par vous",
+    "groupPc": "Sur votre PC",
+    "groupWaiting": "En attente d’autres tâches",
+    "pcHint": "Ces demandes semblent demander votre PC : une clé, une connexion ou une commande. Vous pouvez quand même répondre d’ici.",
+    "show": "Afficher",
+    "hide": "Masquer",
+    "triage": "{{project}} : {{count}} à trier",
+    "emptyTitle": "Rien ne vous attend",
+    "emptyBody": "Les blocages à trancher, les tâches à examiner et les tâches bloquées par vous apparaissent ici, pour tous les projets.",
+    "asked": "demandé {{when}}",
+    "waitsOn": "attend {{count}} ouvertes",
+    "signOffAsked": "Votre validation est demandée.",
+    "onPc": "Demande sans doute votre PC",
+    "openTask": "Ouvrir la tâche",
+    "markResolved": "Marquer comme résolu",
+    "addNote": "Ajouter une note",
+    "notePlaceholder": "Note à joindre à votre choix (facultatif)",
+    "replyUnblock": "Répondre et débloquer",
+    "replyOnly": "Répondre seulement",
+    "moveTo": "Puis la passer en :",
+    "to": {
+      "ready": "Prêt",
+      "backlog": "En attente",
+      "active": "En cours"
+    },
+    "replyPlaceholder": "Votre réponse",
+    "send": "Envoyer",
+    "more": "Plus",
+    "less": "Moins",
+    "answered": "Réponse envoyée",
+    "approved": "Approuvée",
+    "sentBack": "Renvoyée",
+    "unblocked": "Réponse envoyée, tâche déplacée",
+    "replied": "Réponse envoyée",
+    "blockers": "Blocages à trancher : {{count}}"
   }
 }

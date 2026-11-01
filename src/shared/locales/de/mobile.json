@@ -84,7 +84,14 @@
     "empty": "Auf diesem Telefon sind noch keine Projekte. Tritt einem geteilten Projekt bei oder richte es von deinem anderen Gerät aus ein.",
     "counts": "{{open}} offen, {{done}} erledigt",
     "rowLabel": "{{name}}, {{open}} offen, {{done}} erledigt",
-    "list": "Projekte"
+    "list": "Projekte",
+    "active": "{{count}} in Arbeit",
+    "overdue": "{{count}} überfällig",
+    "triage": "{{count}} zu sortieren",
+    "signOffs": "{{count}} freizugeben",
+    "needsYou": "Wartet auf dich: {{what}}",
+    "blockedOnYou": "{{count}} blockiert durch dich",
+    "toReview": "{{count}} zu prüfen"
   },
   "project": {
     "open": "Offen",
@@ -109,6 +116,94 @@
     "restore": "Wiederherstellen",
     "filter": "Aufgaben filtern",
     "noMatches": "Keine passenden Aufgaben."
+  },
+  "list": {
+    "sort": {
+      "doFirst": "Zuerst erledigen",
+      "board": "Board-Reihenfolge",
+      "due": "Fälligkeit",
+      "priority": "Priorität"
+    },
+    "filter": "Filtern",
+    "filterOn": "Filtern (aktiv)",
+    "doFirstNote": "Offene Aufgaben, die zuerst dran sind: überfällige, dann in den nächsten 3 Tagen fällige, dann nach Priorität.",
+    "overdue": "Überfällig seit {{date}}",
+    "dueToday": "Heute fällig",
+    "waiting": "Wartet auf {{count}}"
+  },
+  "links": {
+    "add": "Link einfügen",
+    "find": "Aufgabe, Meilenstein oder Entscheidung suchen",
+    "none": "Nichts gefunden.",
+    "share": "Link teilen",
+    "kind": {
+      "task": "Aufgabe",
+      "milestone": "Meilenstein",
+      "decision": "Entscheidung",
+      "library": "Bibliothek"
+    },
+    "open": {
+      "task": "Öffnet die Aufgabe",
+      "milestone": "Öffnet die Meilensteine des Projekts",
+      "decision": "Öffnet die Entscheidungen des Projekts",
+      "library": "Öffnet das Projekt"
+    },
+    "missing": {
+      "task": "Aufgabe nicht auf diesem Telefon",
+      "milestone": "Meilenstein nicht auf diesem Telefon",
+      "decision": "Entscheidung nicht auf diesem Telefon",
+      "library": "Bibliothekseintrag"
+    }
+  },
+  "plan": {
+    "triageView": "Zu sortieren",
+    "triageCount": "Zu sortieren ({{count}})",
+    "triageEmpty": "Nichts wartet unter „Zu sortieren“.",
+    "triageNote": "Nimm eine Notiz ins Board auf, schiebe sie auf Irgendwann oder schließe sie als „Wird nicht gemacht“.",
+    "somedayView": "Irgendwann",
+    "somedayEmpty": "Nichts unter Irgendwann.",
+    "somedayNote": "Vom Board ausgeblendet, bis du sie zurückholst.",
+    "milestonesView": "Meilensteine",
+    "decisionsView": "Entscheidungen",
+    "signOffsView": "Freigaben",
+    "signOffsCount": "Freigaben ({{count}})",
+    "accept": "Annehmen",
+    "someday": "Irgendwann",
+    "wontDo": "Wird nicht gemacht",
+    "bringBack": "Zurückholen",
+    "noMilestones": "Noch keine Meilensteine.",
+    "noDecisions": "Noch keine Entscheidungen festgehalten.",
+    "noSignOffs": "Keine Freigaben angefragt.",
+    "milestonePlanned": "Geplant",
+    "milestoneActive": "Aktiv",
+    "milestoneComplete": "Abgeschlossen",
+    "noDate": "Kein Datum",
+    "progress": "{{done}} von {{total}} erledigt",
+    "context": "Kontext",
+    "alternatives": "Erwogene Alternativen",
+    "consequences": "Folgen",
+    "signOffWaiting": "Wartet",
+    "signOffApproved": "Genehmigt",
+    "signOffChanges": "Zurückgeschickt",
+    "kindTask": "Aufgabe",
+    "kindMilestone": "Meilenstein",
+    "kindDecision": "Entscheidung",
+    "signOffLine": "{{kind}} · freigebend: {{name}}",
+    "itemGone": "Eintrag nicht mehr auf diesem Telefon",
+    "approve": "Genehmigen",
+    "sendBack": "Zurückschicken",
+    "sendBackNote": "Was muss sich ändern?",
+    "goalsView": "Ziele",
+    "noGoals": "Noch keine Ziele gesetzt.",
+    "goalActive": "Aktiv",
+    "goalAchieved": "Erreicht",
+    "goalArchived": "Archiviert",
+    "goalMeasure": "{{current}} von {{target}}",
+    "lastCheckIn": "zuletzt eingetragen {{date}}",
+    "checkIn": "Eintragen",
+    "checkInValue": "Heutiger Wert {{unit}}",
+    "record": "Speichern",
+    "goalMilestones": "{{count}} Meilensteine auf dem Weg zu diesem Ziel"
   },
   "myDay": {
     "empty": "Für heute ist nichts geplant.",
@@ -150,7 +245,9 @@
     "menu": "Weitere Optionen",
     "closeMenu": "Menü schließen",
     "inbox": "Eingang",
-    "inboxUnread": "Eingang, {{unread}} ungelesen"
+    "inboxUnread": "Eingang, {{unread}} ungelesen",
+    "needsYou": "Wartet auf dich",
+    "needsYouCount": "Wartet auf dich, {{count}} offen"
   },
   "edit": {
     "rename": "Umbenennen",
@@ -200,7 +297,12 @@
       "bad-dependency": "Eine Aufgabe kann nur auf eine andere Aufgabe ihres Projekts warten. Eine Unteraufgabe nur auf Unteraufgaben daneben.",
       "dependency-loop": "Dann würden Aufgaben im Kreis aufeinander warten.",
       "bad-reminder-time": "Wähle eine Zeit in der Zukunft, innerhalb von zehn Jahren.",
-      "task-closed": "Eine erledigte, archivierte oder gelöschte Aufgabe bekommt keine neuen Erinnerungen."
+      "task-closed": "Eine erledigte, archivierte oder gelöschte Aufgabe bekommt keine neuen Erinnerungen.",
+      "choice-required": "Wähle zuerst eine Option.",
+      "choice-too-long": "Diese Option ist zu lang (höchstens 300 Zeichen).",
+      "note-too-long": "Die Notiz ist zu lang (höchstens 2000 Zeichen).",
+      "already-resolved": "Diese Blockade wurde schon gelöst.",
+      "not-waiting": "Diese Aufgabe ist inzwischen weiter: Sie wartet nicht mehr auf dich."
     },
     "previousMonth": "Vorheriger Monat",
     "nextMonth": "Nächster Monat",
@@ -265,5 +367,45 @@
     "hint": "Gib ein Wort aus einer Aufgabe, einem Kommentar, einer Entscheidung, einem Meilenstein oder einem Ziel ein.",
     "clear": "Leeren",
     "noResults": "Nichts passt zu allen Wörtern. Versuche weniger oder andere Wörter."
+  },
+  "needsYou": {
+    "title": "Wartet auf dich",
+    "groupDecide": "Entscheiden",
+    "groupReview": "Prüfen",
+    "groupBlocked": "Blockiert durch dich",
+    "groupPc": "Am PC",
+    "groupWaiting": "Wartet auf andere Aufgaben",
+    "pcHint": "Diese Anfragen brauchen wohl deinen PC: einen Schlüssel, eine Anmeldung oder einen Befehl. Antworten kannst du trotzdem von hier.",
+    "show": "Anzeigen",
+    "hide": "Ausblenden",
+    "triage": "{{project}}: {{count}} zu sortieren",
+    "emptyTitle": "Nichts wartet auf dich",
+    "emptyBody": "Blockaden zum Entscheiden, Aufgaben zum Prüfen und durch dich blockierte Aufgaben erscheinen hier, aus allen Projekten.",
+    "asked": "gefragt {{when}}",
+    "waitsOn": "wartet auf {{count}} offene",
+    "signOffAsked": "Deine Freigabe wird erbeten.",
+    "onPc": "Braucht wohl deinen PC",
+    "openTask": "Aufgabe öffnen",
+    "markResolved": "Als gelöst markieren",
+    "addNote": "Notiz hinzufügen",
+    "notePlaceholder": "Notiz zu deiner Wahl (optional)",
+    "replyUnblock": "Antworten und freigeben",
+    "replyOnly": "Nur antworten",
+    "moveTo": "Danach verschieben nach:",
+    "to": {
+      "ready": "Bereit",
+      "backlog": "Backlog",
+      "active": "In Arbeit"
+    },
+    "replyPlaceholder": "Deine Antwort",
+    "send": "Senden",
+    "more": "Mehr",
+    "less": "Weniger",
+    "answered": "Antwort gesendet",
+    "approved": "Genehmigt",
+    "sentBack": "Zurückgeschickt",
+    "unblocked": "Antwort gesendet, Aufgabe verschoben",
+    "replied": "Antwort gesendet",
+    "blockers": "Zu entscheidende Blockaden: {{count}}"
   }
 }

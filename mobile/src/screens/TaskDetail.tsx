@@ -65,6 +65,8 @@ import { Chip, editErrorText, editStyles, TextSender } from './EditBits'
 import { RADIUS, SPACE, statusColor, useTheme } from '../theme'
 import { DatePicker } from './DatePicker'
 import { Markdown } from './Markdown'
+import { BlockerAnswer } from './NeedsYou'
+import { openBlockers, resolveTaskBlocker } from '../data/needs-you'
 import { TaskRow } from './TaskRow'
 import { TopBar, type MenuItem } from './TopBar'
 
@@ -102,7 +104,15 @@ type Panel =
  * One task's details; tapping the title, the description or a field opens its edit in place.
  * The ⋮ menu holds what is done to the task as a whole, as the PC's task menu does.
  */
-export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask, onOpenItem }: Props) {
+export function TaskDetail({
+  db,
+  taskId,
+  version,
+  onBack,
+  onEdited,
+  onOpenTask,
+  onOpenItem
+}: Props) {
   const theme = useTheme()
   const [panel, setPanel] = useState<Panel>(null)
   /** Which text box the link picker adds to, and the link it last picked. */
@@ -118,6 +128,12 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask, 
   const [editingComment, setEditingComment] = useState<string | null>(null)
   const [deletedComment, setDeletedComment] = useState<string | null>(null)
   const task = useMemo(() => (version >= 0 ? readTask(db, taskId) : null), [db, taskId, version])
+  /** The task's open blockers, answered here as in Needs you; the note box open on one. */
+  const blockers = useMemo(
+    () => (version >= 0 ? openBlockers(db, taskId) : []),
+    [db, taskId, version]
+  )
+  const [blockerNote, setBlockerNote] = useState<{ id: string; text: string } | null>(null)
 
   const people = useMemo(
     () => (task !== null && panel === 'assignee' ? assignablePeople(db, task.projectId) : []),
@@ -664,6 +680,43 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask, 
           )}
         </View>
 
+        {blockers.length > 0 && (
+          <View style={styles.page}>
+            <Text
+              accessibilityRole="header"
+              style={[styles.heading, { color: theme.textSecondary }]}
+            >
+              {t('mobile:needsYou.blockers', { count: blockers.length })}
+            </Text>
+            {blockers.map((blocker) => (
+              <View
+                key={blocker.id}
+                style={[
+                  styles.blocker,
+                  { borderColor: theme.warning, backgroundColor: theme.surface }
+                ]}
+              >
+                <Text style={[styles.blockerText, { color: theme.text }]}>
+                  {blocker.description}
+                </Text>
+                <BlockerAnswer
+                  blocker={blocker}
+                  theme={theme}
+                  note={blockerNote?.id === blocker.id ? blockerNote.text : ''}
+                  noteOpen={blockerNote?.id === blocker.id}
+                  onNote={(text) => setBlockerNote({ id: blocker.id, text })}
+                  onToggleNote={() => setBlockerNote({ id: blocker.id, text: '' })}
+                  onResolve={(choice) => {
+                    const note = blockerNote?.id === blocker.id ? blockerNote.text : ''
+                    if (attempt(() => resolveTaskBlocker(db, blocker.id, choice, note)))
+                      setBlockerNote(null)
+                  }}
+                />
+              </View>
+            ))}
+          </View>
+        )}
+
         <View style={styles.page}>
           <View style={styles.headingRow}>
             <Text
@@ -1201,6 +1254,8 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask, 
 }
 
 const styles = StyleSheet.create({
+  blocker: { borderWidth: 1, borderRadius: RADIUS, padding: SPACE.medium, gap: SPACE.small },
+  blockerText: { fontSize: 15, fontWeight: '600' },
   container: { paddingVertical: SPACE.large, gap: SPACE.large },
   page: { paddingHorizontal: SPACE.large, gap: SPACE.small },
   missing: { paddingTop: SPACE.large },

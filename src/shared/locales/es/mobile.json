@@ -84,7 +84,14 @@
     "empty": "Aún no hay proyectos en este teléfono. Únete a un proyecto compartido o configúralo desde tu otro dispositivo.",
     "counts": "{{open}} abiertas, {{done}} hechas",
     "rowLabel": "{{name}}, {{open}} abiertas, {{done}} hechas",
-    "list": "Proyectos"
+    "list": "Proyectos",
+    "active": "{{count}} en curso",
+    "overdue": "{{count}} vencidas",
+    "triage": "{{count}} por clasificar",
+    "signOffs": "{{count}} por aprobar",
+    "needsYou": "Te necesita: {{what}}",
+    "blockedOnYou": "{{count}} bloqueadas por ti",
+    "toReview": "{{count}} por revisar"
   },
   "project": {
     "open": "Abiertas",
@@ -109,6 +116,94 @@
     "restore": "Restaurar",
     "filter": "Filtrar tareas",
     "noMatches": "Ninguna tarea coincide."
+  },
+  "list": {
+    "sort": {
+      "doFirst": "Primero lo urgente",
+      "board": "Orden del tablero",
+      "due": "Fecha de vencimiento",
+      "priority": "Prioridad"
+    },
+    "filter": "Filtrar",
+    "filterOn": "Filtrar (activo)",
+    "doFirstNote": "Tareas abiertas que conviene atacar primero: vencidas, luego las que vencen en 3 días, luego por prioridad.",
+    "overdue": "Vencida el {{date}}",
+    "dueToday": "Vence hoy",
+    "waiting": "Espera a {{count}}"
+  },
+  "links": {
+    "add": "Añadir un enlace",
+    "find": "Buscar una tarea, un hito o una decisión",
+    "none": "No hay coincidencias.",
+    "share": "Compartir enlace",
+    "kind": {
+      "task": "Tarea",
+      "milestone": "Hito",
+      "decision": "Decisión",
+      "library": "Biblioteca"
+    },
+    "open": {
+      "task": "Abre la tarea",
+      "milestone": "Abre los hitos del proyecto",
+      "decision": "Abre las decisiones del proyecto",
+      "library": "Abre el proyecto"
+    },
+    "missing": {
+      "task": "La tarea no está en este teléfono",
+      "milestone": "El hito no está en este teléfono",
+      "decision": "La decisión no está en este teléfono",
+      "library": "Elemento de la biblioteca"
+    }
+  },
+  "plan": {
+    "triageView": "Por clasificar",
+    "triageCount": "Por clasificar ({{count}})",
+    "triageEmpty": "No hay nada por clasificar.",
+    "triageNote": "Acepta una captura en el tablero, pásala a Algún día o ciérrala como «no se hará».",
+    "somedayView": "Algún día",
+    "somedayEmpty": "No hay nada en Algún día.",
+    "somedayNote": "Ocultas del tablero hasta que las recuperes.",
+    "milestonesView": "Hitos",
+    "decisionsView": "Decisiones",
+    "signOffsView": "Aprobaciones",
+    "signOffsCount": "Aprobaciones ({{count}})",
+    "accept": "Aceptar",
+    "someday": "Algún día",
+    "wontDo": "No se hará",
+    "bringBack": "Recuperar",
+    "noMilestones": "Aún no hay hitos.",
+    "noDecisions": "Aún no hay decisiones registradas.",
+    "noSignOffs": "No se ha pedido ninguna aprobación.",
+    "milestonePlanned": "Planificado",
+    "milestoneActive": "Activo",
+    "milestoneComplete": "Completado",
+    "noDate": "Sin fecha",
+    "progress": "{{done}} de {{total}} hechas",
+    "context": "Contexto",
+    "alternatives": "Alternativas consideradas",
+    "consequences": "Consecuencias",
+    "signOffWaiting": "Pendiente",
+    "signOffApproved": "Aprobada",
+    "signOffChanges": "Devuelta",
+    "kindTask": "Tarea",
+    "kindMilestone": "Hito",
+    "kindDecision": "Decisión",
+    "signOffLine": "{{kind}} · aprueba: {{name}}",
+    "itemGone": "El elemento ya no está en este teléfono",
+    "approve": "Aprobar",
+    "sendBack": "Devolver",
+    "sendBackNote": "¿Qué hay que cambiar?",
+    "goalsView": "Objetivos",
+    "noGoals": "Aún no hay objetivos.",
+    "goalActive": "Activo",
+    "goalAchieved": "Logrado",
+    "goalArchived": "Archivado",
+    "goalMeasure": "{{current}} de {{target}}",
+    "lastCheckIn": "último registro {{date}}",
+    "checkIn": "Registrar avance",
+    "checkInValue": "Valor de hoy {{unit}}",
+    "record": "Guardar",
+    "goalMilestones": "{{count}} hitos hacia este objetivo"
   },
   "myDay": {
     "empty": "Nada planeado para hoy.",
@@ -150,7 +245,9 @@
     "menu": "Más opciones",
     "closeMenu": "Cerrar menú",
     "inbox": "Bandeja de entrada",
-    "inboxUnread": "Bandeja de entrada, {{unread}} sin leer"
+    "inboxUnread": "Bandeja de entrada, {{unread}} sin leer",
+    "needsYou": "Te necesita",
+    "needsYouCount": "Te necesita, {{count}} pendientes"
   },
   "edit": {
     "rename": "Cambiar nombre",
@@ -200,7 +297,12 @@
       "bad-dependency": "Una tarea solo puede esperar a otra tarea de su proyecto. Una subtarea, solo a subtareas junto a ella.",
       "dependency-loop": "Así unas tareas se esperarían a otras en círculo.",
       "bad-reminder-time": "Elige una hora futura, dentro de diez años.",
-      "task-closed": "Una tarea terminada, archivada o eliminada no admite recordatorios nuevos."
+      "task-closed": "Una tarea terminada, archivada o eliminada no admite recordatorios nuevos.",
+      "choice-required": "Elige una opción primero.",
+      "choice-too-long": "Esa opción es demasiado larga (300 caracteres como máximo).",
+      "note-too-long": "La nota es demasiado larga (2000 caracteres como máximo).",
+      "already-resolved": "Este bloqueo ya se resolvió.",
+      "not-waiting": "Esta tarea ha avanzado: ya no te está esperando."
     },
     "previousMonth": "Mes anterior",
     "nextMonth": "Mes siguiente",
@@ -265,5 +367,45 @@
     "hint": "Escribe una palabra de una tarea, un comentario, una decisión, un hito o un objetivo.",
     "clear": "Borrar",
     "noResults": "Nada coincide con todas las palabras. Prueba con menos palabras o con otras."
+  },
+  "needsYou": {
+    "title": "Te necesita",
+    "groupDecide": "Decidir",
+    "groupReview": "Revisar",
+    "groupBlocked": "Bloqueadas por ti",
+    "groupPc": "En tu PC",
+    "groupWaiting": "Esperando otras tareas",
+    "pcHint": "Estas peticiones parecen necesitar tu PC: una clave, un inicio de sesión o un comando. Aun así puedes responder desde aquí.",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "triage": "{{project}}: {{count}} por clasificar",
+    "emptyTitle": "Nada te está esperando",
+    "emptyBody": "Aquí aparecen, de todos los proyectos, los bloqueos por decidir, las tareas por revisar y las tareas bloqueadas por ti.",
+    "asked": "pedido {{when}}",
+    "waitsOn": "espera a {{count}} abiertas",
+    "signOffAsked": "Se pide tu aprobación.",
+    "onPc": "Probablemente necesita tu PC",
+    "openTask": "Abrir la tarea",
+    "markResolved": "Marcar como resuelto",
+    "addNote": "Añadir una nota",
+    "notePlaceholder": "Nota para enviar con tu elección (opcional)",
+    "replyUnblock": "Responder y desbloquear",
+    "replyOnly": "Solo responder",
+    "moveTo": "Después, moverla a:",
+    "to": {
+      "ready": "Lista",
+      "backlog": "Pendientes",
+      "active": "En curso"
+    },
+    "replyPlaceholder": "Tu respuesta",
+    "send": "Enviar",
+    "more": "Más",
+    "less": "Menos",
+    "answered": "Respuesta enviada",
+    "approved": "Aprobada",
+    "sentBack": "Devuelta",
+    "unblocked": "Respuesta enviada, tarea movida",
+    "replied": "Respuesta enviada",
+    "blockers": "Bloqueos por decidir: {{count}}"
   }
 }
