@@ -2173,6 +2173,12 @@ export async function createAppServices(dir: string): Promise<AppServices> {
       }
       notifyHomeChanged()
     },
+    // A blocker resolved or a status changed on another device wakes dispatch, as the same
+    // change made here does (planning-workflow-handlers resolveBlocker).
+    onDispatchInputsChanged: (projectId) => {
+      const project = configStore.getProjects().find((entry) => entry.id === projectId)
+      if (project) notifyHarnessState(project)
+    },
     // The settings that follow the person: applied through the config store, which saves them.
     settings: configStore,
     // A new device asked to join this person's personal space (D16): the code is checked on both.

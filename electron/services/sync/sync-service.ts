@@ -139,6 +139,11 @@ export interface SyncServiceOptions {
   applyProjectSettings?(projectId: string, project: SnapshotProject): void
   /** Rows of the project changed through sync: the renderer reloads them. */
   onProjectChanged(projectId: string): void
+  /**
+   * A pull changed a blocker or a task's status in the project (an answer from a phone, say):
+   * the PC looks at agent dispatch again, as it does after the same change made on the PC.
+   */
+  onDispatchInputsChanged?(projectId: string): void
   /** The share state of a project changed. */
   onStateChanged(projectId: string): void
   /** Another PC assigned a task to this PC's Me: the person is told once per assignment (D11). */
@@ -1114,6 +1119,7 @@ export class SyncService {
     if (pulled.files > 0 || files.files > 0 || records.people > 0 || records.project) {
       this.options.onProjectChanged(running.projectId)
     }
+    if (pulled.dispatchInputs) this.options.onDispatchInputsChanged?.(running.projectId)
   }
 
   private setStatus(running: Running, status: ShareStatus, problems: ShareProblem[]): void {

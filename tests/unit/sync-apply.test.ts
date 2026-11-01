@@ -36,8 +36,17 @@ const itemChange = (
   actor: { kind: 'human' }
 })
 
-/** The lists applyChanges returns besides its counts, empty when no change touched them. */
-const NOTHING_ELSE = { assigned: [], changed: [], mentioned: [], signOffs: [] }
+/**
+ * The lists applyChanges returns besides its counts, empty when no change touched them; whether
+ * dispatch inputs changed has its own tests below.
+ */
+const NOTHING_ELSE = {
+  assigned: [],
+  changed: [],
+  mentioned: [],
+  signOffs: [],
+  dispatchInputs: expect.any(Boolean) as unknown as boolean
+}
 
 describe('applying sync changes', () => {
   const tempDir = useTempDir('ostler-sync-apply-')
@@ -214,5 +223,72 @@ describe('applying sync changes', () => {
 
     expect(result).toEqual({ applied: 0, skipped: 1, pending: 0, ...NOTHING_ELSE })
     expect(titleOf('item-1')).toBe('Local')
+  })
+})
+
+describe('a pulled change that agent dispatch reads', () => {
+  const tempDir = useTempDir('ostler-sync-dispatch-')
+  let db: Database.Database
+
+  beforeEach(async () => {
+    db = new Database(await createMigratedDatabase(tempDir()))
+    db.prepare(
+      `INSERT INTO sync_shares (project_id, share_id, folder, member_id, device_id, format_version, created_at)
+       VALUES (?, 'share-1', 'x', 'm1', 'dev-a', 1, 1)`
+    ).run(SHARED)
+    applyChanges(db, 'share-1', [
+      itemChange('item-1', 'upsert', itemColumns('item-1', SHARED, 'Paint hall'), at(1))
+    ])
+    db.prepare(
+      `INSERT INTO planning_blockers (id, work_item_id, description, reported_by, reported_at, status)
+       VALUES ('b1', 'item-1', 'Which colour?', 'agent', 1, 'open')`
+    ).run()
+    attachChangeRecorder(db)
+  })
+
+  afterEach(() => {
+    db.close()
+  })
+
+  it('says so for a resolved blocker (an answer from the phone)', () => {
+    const result = applyChanges(db, 'share-1', [
+      {
+        table: 'planning_blockers',
+        rowKey: JSON.stringify(['b1']),
+        op: 'upsert',
+        columns: {
+          status: 'resolved',
+          resolution_choice: 'Blue',
+          resolution_note: '',
+          resolved_at: 5,
+          resolved_by: 'human'
+        },
+        stamp: at(5),
+        actor: { kind: 'human' }
+      }
+    ])
+    expect(result.applied).toBe(1)
+    expect(result.dispatchInputs).toBe(true)
+  })
+
+  it("says so for a task's new status", () => {
+    const result = applyChanges(db, 'share-1', [
+      itemChange('item-1', 'upsert', { status: 'active', updated_at: 5 }, at(5))
+    ])
+    expect(result.dispatchInputs).toBe(true)
+  })
+
+  it('does not for a change dispatch never reads (a title), nor for one that lost', () => {
+    expect(
+      applyChanges(db, 'share-1', [
+        itemChange('item-1', 'upsert', { title: 'Paint the hall', updated_at: 5 }, at(5))
+      ]).dispatchInputs
+    ).toBe(false)
+    db.prepare("UPDATE planning_work_items SET status = 'done' WHERE id = 'item-1'").run()
+    const stale = applyChanges(db, 'share-1', [
+      itemChange('item-1', 'upsert', { status: 'blocked', updated_at: 0 }, at(0))
+    ])
+    expect(stale.applied).toBe(0)
+    expect(stale.dispatchInputs).toBe(false)
   })
 })

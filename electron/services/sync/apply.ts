@@ -93,6 +93,11 @@ export interface ApplyResult {
   changed: ChangedTask[]
   /** Sign-off rows this call wrote, in the order they were applied. */
   signOffs: ArrivedSignOff[]
+  /**
+   * Whether this call changed what the PC's agent dispatch reads: a blocker, or a task's
+   * status. The PC evaluates dispatch again, as after the same change made in its own window.
+   */
+  dispatchInputs: boolean
 }
 
 /**
@@ -115,6 +120,8 @@ interface Context {
   mentioned: MentionedComment[]
   changed: ChangedTask[]
   signOffs: ArrivedSignOff[]
+  /** A blocker or a task's status was applied (`ApplyResult.dispatchInputs`). */
+  dispatchInputs: boolean
   /** The sign-off row of the savepoint being applied; kept only if that savepoint commits. */
   inFlightSignOff: ArrivedSignOff | null
   /** The assignee change of the savepoint being applied; kept only if that savepoint commits. */
@@ -182,7 +189,8 @@ export function applyChanges(
     assigned: ctx.assigned,
     mentioned: ctx.mentioned,
     changed: ctx.changed,
-    signOffs: ctx.signOffs
+    signOffs: ctx.signOffs,
+    dispatchInputs: ctx.dispatchInputs
   }
 }
 
@@ -211,6 +219,7 @@ function newContext(
     mentioned: [],
     changed: [],
     signOffs: [],
+    dispatchInputs: false,
     inFlightSignOff: null,
     inFlight: null,
     inFlightMention: null,
@@ -271,7 +280,8 @@ export function retryWaiting(db: Database.Database, shareId: string): ApplyResul
     assigned: ctx.assigned,
     mentioned: ctx.mentioned,
     changed: ctx.changed,
-    signOffs: ctx.signOffs
+    signOffs: ctx.signOffs,
+    dispatchInputs: ctx.dispatchInputs
   }
 }
 
@@ -287,6 +297,7 @@ function attempt(ctx: Context, change: Change): Outcome {
     if (outcome === 'applied' && ctx.inFlightMention) ctx.mentioned.push(ctx.inFlightMention)
     if (outcome === 'applied' && ctx.inFlightChange) ctx.changed.push(ctx.inFlightChange)
     if (outcome === 'applied' && ctx.inFlightSignOff) ctx.signOffs.push(ctx.inFlightSignOff)
+    if (outcome === 'applied' && changesDispatchInputs(change)) ctx.dispatchInputs = true
     return outcome
   } catch (error) {
     const code = errorCode(error)
@@ -298,6 +309,14 @@ function attempt(ctx: Context, change: Change): Outcome {
     }
     throw error
   }
+}
+
+/** A blocker, or a task's status (or the task itself going): what agent dispatch is gated on. */
+function changesDispatchInputs(change: Change): boolean {
+  if (change.table === 'planning_blockers') return true
+  return (
+    change.table === 'planning_work_items' && (change.op === 'delete' || 'status' in change.columns)
+  )
 }
 
 function errorCode(error: unknown): string | null {

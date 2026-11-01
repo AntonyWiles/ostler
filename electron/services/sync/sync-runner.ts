@@ -87,6 +87,8 @@ export interface PullResult {
   changedTasks: ChangedTaskByOther[]
   /** Files that could not be read yet; that device is retried from this file next time. */
   problems: PullProblem[]
+  /** A blocker or a task's status changed in this pull (`ApplyResult.dispatchInputs`). */
+  dispatchInputs: boolean
 }
 
 /** Most outbox rows written in one change file. */
@@ -192,7 +194,8 @@ export async function pullChanges(
     signOffRequestsForMe: [],
     signOffAnswersForMe: [],
     changedTasks: [],
-    problems: []
+    problems: [],
+    dispatchInputs: false
   }
   // This PC's Me, read once per pull: the assignments that concern it are the ones it reports.
   const me = db.prepare('SELECT id FROM people WHERE is_me = 1').get() as { id: string } | undefined
@@ -308,6 +311,7 @@ export async function pullChanges(
       result.applied += counts.applied
       result.skipped += counts.skipped
       result.pending = counts.pending
+      if (counts.dispatchInputs) result.dispatchInputs = true
       for (const task of counts.assigned) {
         // Not when Me made it, on another of this person's devices: no one else assigned it.
         if (me && task.to === me.id && task.from !== me.id && task.byPersonId !== me.id) {

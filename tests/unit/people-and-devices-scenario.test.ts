@@ -41,6 +41,8 @@ interface Pc {
   service: SyncService
   projects: Map<string, string>
   assigned: AssignedToMe[]
+  /** Projects whose agent dispatch a pull woke (a blocker or a status changed elsewhere). */
+  dispatchWoken: string[]
   errors: string[]
 }
 
@@ -69,6 +71,7 @@ describe('people and devices: the end-to-end scenario (prompt 15)', () => {
     const projects = new Map<string, string>()
     const assigned: AssignedToMe[] = []
     const errors: string[] = []
+    const dispatchWoken: string[] = []
     const service = new SyncService({
       databasePath,
       library: noLibrary,
@@ -86,6 +89,7 @@ describe('people and devices: the end-to-end scenario (prompt 15)', () => {
       onProjectChanged: () => undefined,
       onStateChanged: () => undefined,
       onAssigned: (event) => assigned.push(event),
+      onDispatchInputsChanged: (projectId) => dispatchWoken.push(projectId),
       memberName: () => name,
       // As the app does (services.ts): this PC's Me row, which pairing may change (F4).
       me: () => {
@@ -103,7 +107,7 @@ describe('people and devices: the end-to-end scenario (prompt 15)', () => {
       scanIntervalMs: 60_000
     })
     service.start()
-    const pc = { name, meId, db, service, projects, assigned, errors }
+    const pc = { name, meId, db, service, projects, assigned, dispatchWoken, errors }
     pcs.push(pc)
     return pc
   }
@@ -215,6 +219,23 @@ describe('people and devices: the end-to-end scenario (prompt 15)', () => {
     expect(a1.assigned).toEqual([{ projectId: HOUSE, taskId: 'item-1', byPersonId: 'bob' }])
     expect(b.assigned).toEqual([])
     expect(c.assigned).toEqual([])
+  })
+
+  it("a status Ann changes on her other device wakes this PC's agent dispatch; a title does not", async () => {
+    await syncAll(HOUSE, [a2, a1])
+    a1.dispatchWoken.length = 0
+    await asPerson(() =>
+      a2.db
+        .prepare("UPDATE planning_work_items SET title = 'Paint the hall' WHERE id = 'item-1'")
+        .run()
+    )
+    await syncAll(HOUSE, [a2, a1])
+    expect(a1.dispatchWoken).toEqual([])
+    await asPerson(() =>
+      a2.db.prepare("UPDATE planning_work_items SET status = 'active' WHERE id = 'item-1'").run()
+    )
+    await syncAll(HOUSE, [a2, a1])
+    expect(a1.dispatchWoken).toEqual([HOUSE])
   })
 
   it("Ann's other PC is told too, because the task is assigned to the same Me there (F4)", async () => {
