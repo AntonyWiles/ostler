@@ -411,8 +411,14 @@ export function MilestoneCard({
           <strong>{nextStep.label}.</strong> {nextStep.detail}
         </p>
         {nextStep.action && (
-          <Button size="sm" disabled={ws.busy} onClick={nextStep.action.run}>
-            {nextStep.action.label}
+          <Button
+            size="sm"
+            className="milestone-card__next-action"
+            title={nextStep.action.label}
+            disabled={ws.busy}
+            onClick={nextStep.action.run}
+          >
+            <span className="milestone-card__next-label">{nextStep.action.label}</span>
           </Button>
         )}
       </div>

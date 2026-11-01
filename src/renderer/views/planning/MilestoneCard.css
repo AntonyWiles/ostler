@@ -69,6 +69,21 @@
   font-size: var(--text-body-sm);
 }
 
+/* The action names a task, so a long title is cut to the panel width; the
+   full label stays in the tooltip. */
+.milestone-card__next-action {
+  max-width: 100%;
+}
+
+.milestone-card__next-action .ui-button__content {
+  min-width: 0;
+}
+
+.milestone-card__next-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .milestone-card__disclosure > summary {
   display: flex;
   align-items: center;
