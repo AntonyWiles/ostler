@@ -146,7 +146,7 @@
       "task": "Opens the task",
       "milestone": "Opens the project's milestones",
       "decision": "Opens the project's decisions",
-      "library": "Opens the project"
+      "library": "Opens the Library item"
     },
     "missing": {
       "task": "Task not on this phone",
@@ -438,5 +438,12 @@
   "shopping": {
     "view": "Shopping",
     "unticked": "{{name}} is to buy again"
+  },
+  "library": {
+    "view": "Library",
+    "filter": "Find in the Library",
+    "empty": "Nothing in this project's Library yet.",
+    "missing": "Library item not on this phone",
+    "fileOnPc": "the file is on your PC"
   }
 }

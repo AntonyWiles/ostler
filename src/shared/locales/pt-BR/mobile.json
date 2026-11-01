@@ -146,7 +146,7 @@
       "task": "Abre a tarefa",
       "milestone": "Abre os marcos do projeto",
       "decision": "Abre as decisões do projeto",
-      "library": "Abre o projeto"
+      "library": "Abre o item da biblioteca"
     },
     "missing": {
       "task": "Tarefa não está neste celular",
@@ -438,5 +438,12 @@
   "shopping": {
     "view": "Compras",
     "unticked": "{{name}} voltou para a lista de compras"
+  },
+  "library": {
+    "view": "Biblioteca",
+    "filter": "Buscar na biblioteca",
+    "empty": "A biblioteca deste projeto ainda está vazia.",
+    "missing": "Item da biblioteca não está neste celular",
+    "fileOnPc": "o arquivo está no seu PC"
   }
 }

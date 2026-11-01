@@ -146,7 +146,7 @@
       "task": "Öffnet die Aufgabe",
       "milestone": "Öffnet die Meilensteine des Projekts",
       "decision": "Öffnet die Entscheidungen des Projekts",
-      "library": "Öffnet das Projekt"
+      "library": "Öffnet den Bibliothekseintrag"
     },
     "missing": {
       "task": "Aufgabe nicht auf diesem Telefon",
@@ -438,5 +438,12 @@
   "shopping": {
     "view": "Einkauf",
     "unticked": "{{name}} steht wieder auf der Liste"
+  },
+  "library": {
+    "view": "Bibliothek",
+    "filter": "In der Bibliothek suchen",
+    "empty": "In der Bibliothek dieses Projekts ist noch nichts.",
+    "missing": "Bibliothekseintrag nicht auf diesem Telefon",
+    "fileOnPc": "die Datei ist auf deinem PC"
   }
 }

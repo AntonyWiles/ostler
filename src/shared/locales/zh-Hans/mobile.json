@@ -146,7 +146,7 @@
       "task": "打开任务",
       "milestone": "打开项目的里程碑",
       "decision": "打开项目的决策",
-      "library": "打开项目"
+      "library": "打开资料库条目"
     },
     "missing": {
       "task": "任务不在这部手机上",
@@ -438,5 +438,12 @@
   "shopping": {
     "view": "购物",
     "unticked": "{{name}} 改回待购买"
+  },
+  "library": {
+    "view": "资料库",
+    "filter": "在资料库中查找",
+    "empty": "此项目的资料库还是空的。",
+    "missing": "资料库条目不在这部手机上",
+    "fileOnPc": "文件在你的电脑上"
   }
 }

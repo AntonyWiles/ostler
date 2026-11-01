@@ -146,7 +146,7 @@
       "task": "Apre l’attività",
       "milestone": "Apre i traguardi del progetto",
       "decision": "Apre le decisioni del progetto",
-      "library": "Apre il progetto"
+      "library": "Apre l’elemento della libreria"
     },
     "missing": {
       "task": "Attività non presente su questo telefono",
@@ -438,5 +438,12 @@
   "shopping": {
     "view": "Spesa",
     "unticked": "{{name}} è di nuovo da comprare"
+  },
+  "library": {
+    "view": "Libreria",
+    "filter": "Cerca nella libreria",
+    "empty": "La libreria di questo progetto è ancora vuota.",
+    "missing": "Elemento della libreria non presente su questo telefono",
+    "fileOnPc": "il file è sul tuo PC"
   }
 }

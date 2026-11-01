@@ -40,6 +40,7 @@ import {
 import { DecisionList, GoalList, MilestoneList, SignOffList } from './ProjectPlan'
 import { StatusList } from './ProjectStatus'
 import { ShoppingList } from './ProjectShopping'
+import { LibraryList } from './ProjectLibrary'
 import { deleteStatusUpdate, postStatusUpdate, statusUpdates } from '../data/status-updates'
 import {
   archivedTasks,
@@ -63,6 +64,8 @@ interface Props {
   version: number
   onBack: () => void
   onOpenTask: (taskId: string) => void
+  /** Opens a Library item to read. */
+  onOpenLibraryItem: (itemId: string) => void
   /** Called after a task is added, so the change is pushed and the screens re-read. */
   onEdited: () => void
   /** The view it opens on; a link to a milestone or decision opens that list. */
@@ -107,6 +110,7 @@ export type ProjectView =
   | 'signOffs'
   | 'status'
   | 'shopping'
+  | 'library'
   | 'archive'
   | 'bin'
 
@@ -135,6 +139,7 @@ export function Project({
   version,
   onBack,
   onOpenTask,
+  onOpenLibraryItem,
   onEdited,
   initialView = 'tasks'
 }: Props) {
@@ -406,6 +411,12 @@ export function Project({
                     onPress={() => setView('signOffs')}
                   />
                   <Chip
+                    label={t('mobile:library.view')}
+                    theme={theme}
+                    selected={view === 'library'}
+                    onPress={() => setView('library')}
+                  />
+                  <Chip
                     label={t('mobile:shopping.view')}
                     theme={theme}
                     selected={view === 'shopping'}
@@ -524,6 +535,15 @@ export function Project({
                 onCheckIn={(goalId, value) =>
                   edit(() => recordGoalCheckIn(db, goalId, value, today()))
                 }
+              />
+            )}
+            {view === 'library' && (
+              <LibraryList
+                db={db}
+                projectId={projectId}
+                version={version}
+                theme={theme}
+                onOpen={onOpenLibraryItem}
               />
             )}
             {view === 'shopping' && (

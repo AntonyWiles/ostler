@@ -16,6 +16,7 @@ import { WeeklyReview } from './src/screens/WeeklyReview'
 import { Timesheet } from './src/screens/Timesheet'
 import { Team } from './src/screens/Team'
 import { Contacts } from './src/screens/Contacts'
+import { LibraryReader } from './src/screens/ProjectLibrary'
 import { RunningTimerBar } from './src/screens/TaskTime'
 import { Join } from './src/screens/Join'
 import { Pairing } from './src/screens/Pairing'
@@ -76,6 +77,7 @@ type Screen =
   | 'timesheet'
   | 'team'
   | 'contacts'
+  | 'library'
 
 /** The screens a task can be opened from, where Back returns. */
 type TaskOrigin = 'project' | 'home' | 'search' | 'weeklyReview' | 'timesheet' | 'team' | 'contacts'
@@ -89,6 +91,9 @@ export default function App() {
   const [tab, setTab] = useState<'projects' | 'myDay' | 'inbox' | 'needsYou'>('projects')
   const [projectId, setProjectId] = useState<string | null>(null)
   const [taskId, setTaskId] = useState<string | null>(null)
+  // The Library item being read, and the screen Back returns to from it.
+  const [libraryItemId, setLibraryItemId] = useState<string | null>(null)
+  const [libraryFrom, setLibraryFrom] = useState<'project' | 'task' | 'home'>('project')
   // Where Back from a task goes: the project it was opened from, Search, or the home lists.
   const [taskFrom, setTaskFrom] = useState<TaskOrigin>('home')
   // The tasks a parent or subtask was opened from, newest last: Back steps through them first.
@@ -192,9 +197,10 @@ export default function App() {
       setTaskTrail(taskTrail.slice(0, -1))
     } else if (screen === 'task') setScreen(taskFrom)
     else if (screen === 'project') setScreen(projectFrom)
+    else if (screen === 'library') setScreen(libraryFrom)
     else if (screen === 'join' || screen === 'pairing') setScreen('settings')
     else setScreen('home')
-  }, [screen, taskFrom, projectFrom, taskTrail])
+  }, [screen, taskFrom, projectFrom, libraryFrom, taskTrail])
   // The phone's Back button steps out of a screen instead of closing the app.
   useEffect(() => {
     if (screen === 'home') return
@@ -238,10 +244,16 @@ export default function App() {
     [taskId]
   )
   // A link in a task's text: a task opens on the trail (Back returns), a milestone or decision
-  // opens its project on that list. The phone keeps no Library, so its links open the project.
+  // opens its project on that list, and a Library item opens to read.
+  const openLibraryItem = useCallback((id: string, from: 'project' | 'task' | 'home') => {
+    setLibraryItemId(id)
+    setLibraryFrom(from)
+    setScreen('library')
+  }, [])
   const openItem = useCallback(
     (ref: ItemLinkRef) => {
       if (ref.kind === 'task') openRelatedTask(ref.id)
+      else if (ref.kind === 'library') openLibraryItem(ref.id, 'task')
       else
         openProject(
           ref.projectId,
@@ -249,12 +261,13 @@ export default function App() {
           ref.kind === 'milestone' ? 'milestones' : ref.kind === 'decision' ? 'decisions' : 'tasks'
         )
     },
-    [openProject, openRelatedTask]
+    [openProject, openRelatedTask, openLibraryItem]
   )
   useEffect(() => {
     if (incomingItem === null || db === null) return
     setIncomingItem(null)
     if (incomingItem.kind === 'task') openTask(incomingItem.id, 'home')
+    else if (incomingItem.kind === 'library') openLibraryItem(incomingItem.id, 'home')
     else
       openProject(
         incomingItem.projectId,
@@ -265,7 +278,7 @@ export default function App() {
             ? 'decisions'
             : 'tasks'
       )
-  }, [incomingItem, db, openTask, openProject])
+  }, [incomingItem, db, openTask, openProject, openLibraryItem])
 
   // An Inbox item or a search result opens its task, or its project.
   const openTarget = useCallback(
@@ -299,6 +312,7 @@ export default function App() {
   const openItemFromHome = useCallback(
     (ref: ItemLinkRef) => {
       if (ref.kind === 'task') openTask(ref.id, 'home')
+      else if (ref.kind === 'library') openLibraryItem(ref.id, 'home')
       else
         openProject(
           ref.projectId,
@@ -306,7 +320,7 @@ export default function App() {
           ref.kind === 'milestone' ? 'milestones' : ref.kind === 'decision' ? 'decisions' : 'tasks'
         )
     },
-    [openProject, openTask]
+    [openProject, openTask, openLibraryItem]
   )
 
   // Every screen sits below the status bar on the theme's background, under its own top bar.
@@ -353,6 +367,7 @@ export default function App() {
         version={version}
         onBack={goBack}
         onOpenTask={(id) => openTask(id, 'project')}
+        onOpenLibraryItem={(id) => openLibraryItem(id, 'project')}
         onEdited={edited}
       />
     )
@@ -393,6 +408,17 @@ export default function App() {
         onBack={home}
         onOpenTask={(id) => openTask(id, 'timesheet')}
         onEdited={edited}
+      />
+    )
+  }
+  if (screen === 'library' && db !== null && libraryItemId !== null) {
+    return page(
+      <LibraryReader
+        db={db}
+        itemId={libraryItemId}
+        version={version}
+        onBack={goBack}
+        onOpenItem={openItem}
       />
     )
   }

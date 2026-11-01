@@ -146,7 +146,7 @@
       "task": "Ouvre la tâche",
       "milestone": "Ouvre les jalons du projet",
       "decision": "Ouvre les décisions du projet",
-      "library": "Ouvre le projet"
+      "library": "Ouvre l’élément de bibliothèque"
     },
     "missing": {
       "task": "Tâche absente de ce téléphone",
@@ -438,5 +438,12 @@
   "shopping": {
     "view": "Courses",
     "unticked": "{{name}} est de nouveau à acheter"
+  },
+  "library": {
+    "view": "Bibliothèque",
+    "filter": "Chercher dans la bibliothèque",
+    "empty": "La bibliothèque de ce projet est encore vide.",
+    "missing": "Élément de bibliothèque absent de ce téléphone",
+    "fileOnPc": "le fichier est sur votre PC"
   }
 }

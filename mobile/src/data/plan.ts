@@ -213,8 +213,7 @@ export function signOffs(db: QueryDb, projectId: string): SignOffSummary[] {
     state: row.state,
     note: row.note,
     requestedAt: row.requested_at,
-    canAnswer:
-      row.state === 'waiting' && mayAnswer && me !== null && row.approver_person_id === me
+    canAnswer: row.state === 'waiting' && mayAnswer && me !== null && row.approver_person_id === me
   }))
 }
 
@@ -393,7 +392,9 @@ export function linkedItemTitle(db: QueryDb, kind: LinkKind, id: string): string
         ? 'SELECT name AS title FROM planning_milestones WHERE id = ?'
         : kind === 'decision'
           ? 'SELECT title FROM planning_decisions WHERE id = ?'
-          : null
+          : kind === 'library'
+            ? 'SELECT title FROM library_items WHERE id = ?'
+            : null
   if (sql === null) return null
   const row = db.prepare(sql).get(id) as { title: string } | undefined
   return row?.title ?? null
@@ -546,7 +547,5 @@ export function priorityOrder<T extends TaskSummary>(tasks: T[]): T[] {
 
 /** Tasks by due date, soonest first, undated last. */
 export function dueOrder<T extends TaskSummary>(tasks: T[]): T[] {
-  return [...tasks].sort((a, b) =>
-    (a.targetDate ?? '9999').localeCompare(b.targetDate ?? '9999')
-  )
+  return [...tasks].sort((a, b) => (a.targetDate ?? '9999').localeCompare(b.targetDate ?? '9999'))
 }
