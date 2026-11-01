@@ -46,7 +46,7 @@ function policyPage(markdown) {
 <body>
 <main>
 ${body}
-<footer>The source of this page is <a href="${REPO_URL}/blob/master/docs/mobile/privacy-policy.md">docs/mobile/privacy-policy.md</a> in the Ostler repository.</footer>
+<footer>The source of this page is <a href="${REPO_URL}/blob/main/docs/mobile/privacy-policy.md">docs/mobile/privacy-policy.md</a> in the Ostler repository.</footer>
 </main>
 </body>
 </html>

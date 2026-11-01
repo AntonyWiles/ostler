@@ -89,4 +89,4 @@ Ostler is not made for children under 13 and does not knowingly collect anything
 
 If this policy changes, the new text replaces this page and the date at the top changes. Changes that
 affect what Ostler does with your data are also listed in the CHANGELOG at
-https://github.com/AntonyWiles/ostler/blob/master/CHANGELOG.md.
+https://github.com/AntonyWiles/ostler/blob/main/CHANGELOG.md.
