@@ -445,5 +445,12 @@
     "empty": "A biblioteca deste projeto ainda está vazia.",
     "missing": "Item da biblioteca não está neste celular",
     "fileOnPc": "o arquivo está no seu PC"
+  },
+  "schedule": {
+    "view": "Cronograma",
+    "overdue": "Atrasadas: {{count}}",
+    "week": "Semana de {{date}}",
+    "empty": "Nada com data nas próximas doze semanas.",
+    "undated": "Tarefas abertas sem data: {{count}}"
   }
 }

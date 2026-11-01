@@ -445,5 +445,12 @@
     "empty": "In der Bibliothek dieses Projekts ist noch nichts.",
     "missing": "Bibliothekseintrag nicht auf diesem Telefon",
     "fileOnPc": "die Datei ist auf deinem PC"
+  },
+  "schedule": {
+    "view": "Zeitplan",
+    "overdue": "Überfällig: {{count}}",
+    "week": "Woche vom {{date}}",
+    "empty": "In den nächsten zwölf Wochen ist nichts terminiert.",
+    "undated": "Offene Aufgaben ohne Datum: {{count}}"
   }
 }

@@ -445,5 +445,12 @@
     "empty": "La libreria di questo progetto è ancora vuota.",
     "missing": "Elemento della libreria non presente su questo telefono",
     "fileOnPc": "il file è sul tuo PC"
+  },
+  "schedule": {
+    "view": "Calendario",
+    "overdue": "In ritardo: {{count}}",
+    "week": "Settimana del {{date}}",
+    "empty": "Niente con una data nelle prossime dodici settimane.",
+    "undated": "Attività aperte senza data: {{count}}"
   }
 }

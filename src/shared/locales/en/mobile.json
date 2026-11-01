@@ -445,5 +445,12 @@
     "empty": "Nothing in this project's Library yet.",
     "missing": "Library item not on this phone",
     "fileOnPc": "the file is on your PC"
+  },
+  "schedule": {
+    "view": "Schedule",
+    "overdue": "Overdue: {{count}}",
+    "week": "Week of {{date}}",
+    "empty": "Nothing dated in the next twelve weeks.",
+    "undated": "Open tasks without a date: {{count}}"
   }
 }

@@ -445,5 +445,12 @@
     "empty": "La bibliothèque de ce projet est encore vide.",
     "missing": "Élément de bibliothèque absent de ce téléphone",
     "fileOnPc": "le fichier est sur votre PC"
+  },
+  "schedule": {
+    "view": "Calendrier",
+    "overdue": "En retard : {{count}}",
+    "week": "Semaine du {{date}}",
+    "empty": "Rien de daté dans les douze prochaines semaines.",
+    "undated": "Tâches ouvertes sans date : {{count}}"
   }
 }

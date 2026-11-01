@@ -445,5 +445,12 @@
     "empty": "此项目的资料库还是空的。",
     "missing": "资料库条目不在这部手机上",
     "fileOnPc": "文件在你的电脑上"
+  },
+  "schedule": {
+    "view": "日程",
+    "overdue": "逾期: {{count}}",
+    "week": "{{date}} 那一周",
+    "empty": "未来十二周内没有带日期的内容。",
+    "undated": "没有日期的未完成任务: {{count}}"
   }
 }

@@ -41,6 +41,7 @@ import { DecisionList, GoalList, MilestoneList, SignOffList } from './ProjectPla
 import { StatusList } from './ProjectStatus'
 import { ShoppingList } from './ProjectShopping'
 import { LibraryList } from './ProjectLibrary'
+import { ScheduleList } from './ProjectSchedule'
 import { deleteStatusUpdate, postStatusUpdate, statusUpdates } from '../data/status-updates'
 import {
   archivedTasks,
@@ -111,6 +112,7 @@ export type ProjectView =
   | 'status'
   | 'shopping'
   | 'library'
+  | 'schedule'
   | 'archive'
   | 'bin'
 
@@ -383,6 +385,12 @@ export function Project({
                     onPress={() => setView('someday')}
                   />
                   <Chip
+                    label={t('mobile:schedule.view')}
+                    theme={theme}
+                    selected={view === 'schedule'}
+                    onPress={() => setView('schedule')}
+                  />
+                  <Chip
                     label={t('mobile:plan.milestonesView')}
                     theme={theme}
                     selected={view === 'milestones'}
@@ -535,6 +543,16 @@ export function Project({
                 onCheckIn={(goalId, value) =>
                   edit(() => recordGoalCheckIn(db, goalId, value, today()))
                 }
+              />
+            )}
+            {view === 'schedule' && (
+              <ScheduleList
+                db={db}
+                projectId={projectId}
+                version={version}
+                theme={theme}
+                onOpenTask={onOpenTask}
+                onOpenMilestones={() => setView('milestones')}
               />
             )}
             {view === 'library' && (

@@ -65,6 +65,9 @@ Help › What's new, and the Unreleased section until a version has its own.
   whiteboards, documents and pictures, the primary brief first, with a filter. An item opens to
   read, its text formatted as on the PC; a link opens in the browser, and a file shows what it is
   (the file itself stays on your PC). Links to a Library item in a task now open the item.
+- **A project's schedule on Android.** The Schedule view lists what is overdue, then the next twelve
+  weeks one at a time, with each week's milestones (and their progress) and the tasks due or
+  starting in it.
 - **A richer task list on Android.** Sort a project's tasks by Do first, board order, due date or
   priority, and fold status groups (Done starts folded). Rows show priority, a coloured due date,
   checklist progress, what the task waits on, comments, labels and who it is assigned to.
