@@ -128,7 +128,9 @@
     "projects": "Proyectos",
     "myDay": "Mi día",
     "menu": "Más opciones",
-    "closeMenu": "Cerrar menú"
+    "closeMenu": "Cerrar menú",
+    "inbox": "Bandeja de entrada",
+    "inboxUnread": "Bandeja de entrada, {{unread}} sin leer"
   },
   "edit": {
     "rename": "Cambiar nombre",
@@ -188,5 +190,14 @@
     "binTitle": "¿Mover a la papelera?",
     "binBody": "Puedes restaurarla en tu PC durante 30 días.",
     "cancel": "Cancelar"
+  },
+  "inbox": {
+    "emptyBody": "Aquí aparecen los recordatorios que saltan, tus menciones, las aprobaciones que te piden, las tareas por clasificar y los bloqueos notificados.",
+    "undo": "Deshacer"
+  },
+  "search": {
+    "hint": "Escribe una palabra de una tarea, un comentario, una decisión, un hito o un objetivo.",
+    "clear": "Borrar",
+    "noResults": "Nada coincide con todas las palabras. Prueba con menos palabras o con otras."
   }
 }

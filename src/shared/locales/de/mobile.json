@@ -128,7 +128,9 @@
     "projects": "Projekte",
     "myDay": "Mein Tag",
     "menu": "Weitere Optionen",
-    "closeMenu": "Menü schließen"
+    "closeMenu": "Menü schließen",
+    "inbox": "Eingang",
+    "inboxUnread": "Eingang, {{unread}} ungelesen"
   },
   "edit": {
     "rename": "Umbenennen",
@@ -188,5 +190,14 @@
     "binTitle": "In den Papierkorb verschieben?",
     "binBody": "Du kannst sie 30 Tage lang auf deinem PC wiederherstellen.",
     "cancel": "Abbrechen"
+  },
+  "inbox": {
+    "emptyBody": "Hier erscheinen ausgelöste Erinnerungen, Erwähnungen, Freigaben, um die du gebeten wirst, Aufgaben zum Sichten und gemeldete Blocker.",
+    "undo": "Rückgängig"
+  },
+  "search": {
+    "hint": "Gib ein Wort aus einer Aufgabe, einem Kommentar, einer Entscheidung, einem Meilenstein oder einem Ziel ein.",
+    "clear": "Leeren",
+    "noResults": "Nichts passt zu allen Wörtern. Versuche weniger oder andere Wörter."
   }
 }

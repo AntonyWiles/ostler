@@ -128,7 +128,9 @@
     "projects": "Projects",
     "myDay": "My Day",
     "menu": "More options",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "inbox": "Inbox",
+    "inboxUnread": "Inbox, {{unread}} unread"
   },
   "edit": {
     "rename": "Rename",
@@ -188,5 +190,14 @@
     "binTitle": "Move to the recycle bin?",
     "binBody": "You can restore it on your PC for 30 days.",
     "cancel": "Cancel"
+  },
+  "inbox": {
+    "emptyBody": "Reminders that fire, mentions of you, sign-offs asked of you, tasks to triage and reported blockers show up here.",
+    "undo": "Undo"
+  },
+  "search": {
+    "hint": "Type a word from a task, a comment, a decision, a milestone or a goal.",
+    "clear": "Clear",
+    "noResults": "Nothing matches every word. Try fewer or different words."
   }
 }

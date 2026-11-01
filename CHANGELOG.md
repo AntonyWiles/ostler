@@ -7,6 +7,14 @@ Help › What's new, and the Unreleased section until a version has its own.
 
 ## [Unreleased]
 
+### Added
+
+- **Inbox on Android.** The phone has an Inbox tab with an unread count: reminders that fired,
+  mentions of you, sign-offs asked of you, tasks to triage and reported blockers. Open an item, mark
+  it read or unread, or archive it with Undo. Read and archived items match on your PC.
+- **Search on Android.** Search your tasks, comments, decisions, milestones and goals from the
+  phone's top bar, with the matching words marked.
+
 ### Fixed
 
 - Removing one of your devices no longer shows "Sync folder refused: exists" when nothing else has

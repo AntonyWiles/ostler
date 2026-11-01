@@ -128,7 +128,9 @@
     "projects": "Progetti",
     "myDay": "La mia giornata",
     "menu": "Altre opzioni",
-    "closeMenu": "Chiudi menu"
+    "closeMenu": "Chiudi menu",
+    "inbox": "Posta in arrivo",
+    "inboxUnread": "Posta in arrivo, {{unread}} da leggere"
   },
   "edit": {
     "rename": "Rinomina",
@@ -188,5 +190,14 @@
     "binTitle": "Spostare nel cestino?",
     "binBody": "Puoi ripristinarla sul PC per 30 giorni.",
     "cancel": "Annulla"
+  },
+  "inbox": {
+    "emptyBody": "Qui compaiono i promemoria scattati, le menzioni, le approvazioni richieste a te, le attività da smistare e i blocchi segnalati.",
+    "undo": "Annulla"
+  },
+  "search": {
+    "hint": "Scrivi una parola di un’attività, un commento, una decisione, una milestone o un obiettivo.",
+    "clear": "Cancella",
+    "noResults": "Niente corrisponde a tutte le parole. Prova con meno parole o con parole diverse."
   }
 }

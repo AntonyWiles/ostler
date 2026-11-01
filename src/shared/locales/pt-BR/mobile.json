@@ -128,7 +128,9 @@
     "projects": "Projetos",
     "myDay": "Meu dia",
     "menu": "Mais opções",
-    "closeMenu": "Fechar menu"
+    "closeMenu": "Fechar menu",
+    "inbox": "Caixa de entrada",
+    "inboxUnread": "Caixa de entrada, {{unread}} não lidos"
   },
   "edit": {
     "rename": "Renomear",
@@ -188,5 +190,14 @@
     "binTitle": "Mover para a lixeira?",
     "binBody": "Você pode restaurá-la no PC por 30 dias.",
     "cancel": "Cancelar"
+  },
+  "inbox": {
+    "emptyBody": "Aqui aparecem os lembretes disparados, suas menções, as aprovações pedidas a você, as tarefas para triar e os bloqueios relatados.",
+    "undo": "Desfazer"
+  },
+  "search": {
+    "hint": "Digite uma palavra de uma tarefa, um comentário, uma decisão, um marco ou uma meta.",
+    "clear": "Limpar",
+    "noResults": "Nada corresponde a todas as palavras. Tente menos palavras ou outras."
   }
 }

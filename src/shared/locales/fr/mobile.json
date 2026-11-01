@@ -128,7 +128,9 @@
     "projects": "Projets",
     "myDay": "Ma journée",
     "menu": "Plus d’options",
-    "closeMenu": "Fermer le menu"
+    "closeMenu": "Fermer le menu",
+    "inbox": "Boîte de réception",
+    "inboxUnread": "Boîte de réception, {{unread}} non lus"
   },
   "edit": {
     "rename": "Renommer",
@@ -188,5 +190,14 @@
     "binTitle": "Mettre à la corbeille ?",
     "binBody": "Vous pourrez la restaurer sur votre PC pendant 30 jours.",
     "cancel": "Annuler"
+  },
+  "inbox": {
+    "emptyBody": "Les rappels déclenchés, les mentions, les validations qu’on vous demande, les tâches à trier et les blocages signalés apparaissent ici.",
+    "undo": "Annuler"
+  },
+  "search": {
+    "hint": "Tapez un mot d’une tâche, d’un commentaire, d’une décision, d’un jalon ou d’un objectif.",
+    "clear": "Effacer",
+    "noResults": "Rien ne correspond à tous les mots. Essayez moins de mots ou d’autres mots."
   }
 }

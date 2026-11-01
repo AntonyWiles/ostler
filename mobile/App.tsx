@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import {
   AppState,
@@ -10,11 +10,13 @@ import {
   Text,
   View
 } from 'react-native'
+import { Inbox, type InboxTarget } from './src/screens/Inbox'
 import { Join } from './src/screens/Join'
 import { Pairing } from './src/screens/Pairing'
 import { MyDay } from './src/screens/MyDay'
 import { Project } from './src/screens/Project'
 import { Projects } from './src/screens/Projects'
+import { Search } from './src/screens/Search'
 import { Settings } from './src/screens/Settings'
 import { TaskDetail } from './src/screens/TaskDetail'
 import { TopBar } from './src/screens/TopBar'
@@ -30,6 +32,7 @@ import {
   type OstlerDatabase
 } from './src/db/database'
 import { currentAccount } from './src/google/account'
+import { inboxList } from './src/data/inbox'
 import type { PhonePairing } from './src/sync/phone-pairing'
 import type { PhoneSync } from './src/sync/phone-sync'
 import { createPhoneSync } from './src/sync/phone-sync-runtime'
@@ -56,13 +59,17 @@ export default function App() {
   const theme = useTheme()
   const dark = useIsDark()
   const [screen, setScreen] = useState<
-    'home' | 'settings' | 'join' | 'pairing' | 'project' | 'task'
+    'home' | 'settings' | 'join' | 'pairing' | 'project' | 'task' | 'search'
   >('home')
-  const [tab, setTab] = useState<'projects' | 'myDay'>('projects')
+  const [tab, setTab] = useState<'projects' | 'myDay' | 'inbox'>('projects')
   const [projectId, setProjectId] = useState<string | null>(null)
   const [taskId, setTaskId] = useState<string | null>(null)
-  // Where Back from a task goes: the project it was opened from, or the home lists.
-  const [taskFrom, setTaskFrom] = useState<'project' | 'home'>('home')
+  // Where Back from a task goes: the project it was opened from, Search, or the home lists.
+  const [taskFrom, setTaskFrom] = useState<'project' | 'home' | 'search'>('home')
+  // Where Back from a project goes: Search when it was found there, else the home lists.
+  const [projectFrom, setProjectFrom] = useState<'home' | 'search'>('home')
+  // The words in Search, kept while a result is open so Back returns to them.
+  const [searchQuery, setSearchQuery] = useState('')
   const [db, setDb] = useState<OstlerDatabase | null>(null)
   const [signedIn, setSignedIn] = useState(false)
   const [sync, setSync] = useState<PhoneSync | null>(null)
@@ -141,9 +148,10 @@ export default function App() {
   // Join and Set up from my other device open from Settings, and go back to it.
   const goBack = useCallback(() => {
     if (screen === 'task') setScreen(taskFrom)
+    else if (screen === 'project') setScreen(projectFrom)
     else if (screen === 'join' || screen === 'pairing') setScreen('settings')
     else setScreen('home')
-  }, [screen, taskFrom])
+  }, [screen, taskFrom, projectFrom])
   // The phone's Back button steps out of a screen instead of closing the app.
   useEffect(() => {
     if (screen === 'home') return
@@ -160,15 +168,34 @@ export default function App() {
     setVersion((n) => n + 1)
   }, [sync])
 
-  const openProject = useCallback((id: string) => {
+  const openProject = useCallback((id: string, from: 'home' | 'search' = 'home') => {
     setProjectId(id)
+    setProjectFrom(from)
     setScreen('project')
   }, [])
-  const openTask = useCallback((id: string, from: 'project' | 'home') => {
+  const openTask = useCallback((id: string, from: 'project' | 'home' | 'search') => {
     setTaskId(id)
     setTaskFrom(from)
     setScreen('task')
   }, [])
+  // An Inbox item or a search result opens its task, or its project.
+  const openTarget = useCallback(
+    (target: InboxTarget, from: 'home' | 'search') => {
+      if (target.kind === 'task') openTask(target.taskId, from)
+      else openProject(target.projectId, from)
+    },
+    [openProject, openTask]
+  )
+
+  // The Inbox tab shows how many items are unread.
+  const unread = useMemo(() => {
+    if (db === null || version < 0) return 0
+    try {
+      return inboxList(db).unreadCount
+    } catch {
+      return 0
+    }
+  }, [db, version])
 
   // Every screen sits below the status bar on the theme's background, under its own top bar.
   const padded = [
@@ -210,9 +237,21 @@ export default function App() {
         db={db}
         projectId={projectId}
         version={version}
-        onBack={home}
+        onBack={goBack}
         onOpenTask={(id) => openTask(id, 'project')}
         onEdited={edited}
+      />
+    )
+  }
+  if (screen === 'search' && db !== null) {
+    return page(
+      <Search
+        db={db}
+        version={version}
+        query={searchQuery}
+        onQueryChange={setSearchQuery}
+        onBack={home}
+        onOpen={(target) => openTarget(target, 'search')}
       />
     )
   }
@@ -229,6 +268,11 @@ export default function App() {
         title={BRAND.name}
         actions={[
           {
+            icon: 'search',
+            label: t('views:searchView.search'),
+            onPress: () => setScreen('search')
+          },
+          {
             icon: 'settings',
             label: t('mobile:settings.open'),
             onPress: () => setScreen('settings')
@@ -239,14 +283,20 @@ export default function App() {
         style={[styles.tabs, { backgroundColor: theme.surface, borderColor: theme.border }]}
         accessibilityRole="tablist"
       >
-        {(['projects', 'myDay'] as const).map((name) => {
-          const label = name === 'projects' ? t('mobile:nav.projects') : t('mobile:nav.myDay')
+        {(['projects', 'myDay', 'inbox'] as const).map((name) => {
+          const label =
+            name === 'projects'
+              ? t('mobile:nav.projects')
+              : name === 'myDay'
+                ? t('mobile:nav.myDay')
+                : t('mobile:nav.inbox')
+          const badge = name === 'inbox' && unread > 0
           const selected = tab === name
           return (
             <Pressable
               key={name}
               accessibilityRole="tab"
-              accessibilityLabel={label}
+              accessibilityLabel={badge ? t('mobile:nav.inboxUnread', { unread }) : label}
               accessibilityState={{ selected }}
               onPress={() => setTab(name)}
               style={[styles.tab, selected && { borderBottomColor: theme.accent }]}
@@ -256,6 +306,13 @@ export default function App() {
               >
                 {label}
               </Text>
+              {badge && (
+                <View style={[styles.badge, { backgroundColor: theme.accent }]}>
+                  <Text style={[styles.badgeText, { color: theme.accentContrast }]}>
+                    {unread > 99 ? '99+' : unread}
+                  </Text>
+                </View>
+              )}
             </Pressable>
           )
         })}
@@ -266,6 +323,14 @@ export default function App() {
         )}
         {db !== null && tab === 'myDay' && (
           <MyDay db={db} version={version} onOpenTask={(id) => openTask(id, 'home')} />
+        )}
+        {db !== null && tab === 'inbox' && (
+          <Inbox
+            db={db}
+            version={version}
+            onOpen={(target) => openTarget(target, 'home')}
+            onEdited={edited}
+          />
         )}
         {db === null && failure === null && (
           <Text style={[styles.line, { color: theme.textMuted }]}>Setting up the database…</Text>
@@ -287,12 +352,23 @@ const styles = StyleSheet.create({
   tab: {
     flex: 1,
     minHeight: 44,
+    flexDirection: 'row',
+    gap: 6,
     alignItems: 'center',
     justifyContent: 'center',
     borderBottomWidth: 2,
     borderBottomColor: 'transparent'
   },
   tabText: { fontSize: 15, fontWeight: '600' },
+  badge: {
+    minWidth: 20,
+    height: 20,
+    borderRadius: 10,
+    paddingHorizontal: 5,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  badgeText: { fontSize: 12, fontWeight: '700' },
   line: { fontSize: 16, padding: 16 },
   bad: { fontWeight: '600' }
 })

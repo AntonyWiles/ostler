@@ -78,11 +78,20 @@ export class SearchService {
     private readonly db: Database.Database,
     private readonly getProjectIds: () => string[],
     /** A project's task prefix (N9.8a): a typed ID finds its task first. */
-    private readonly getTaskPrefix: (projectId: string) => string | null = () => null
+    private readonly getTaskPrefix: (projectId: string) => string | null = () => null,
+    /**
+     * False reads the tables directly (the LIKE fallback) even when `search_index` exists: the
+     * phone's copy of the database has the table but never writes to it.
+     */
+    useIndex = true
   ) {
-    this.ftsAvailable = Boolean(
-      db.prepare("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'search_index'").get()
-    )
+    this.ftsAvailable =
+      useIndex &&
+      Boolean(
+        db
+          .prepare("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'search_index'")
+          .get()
+      )
     this.library = new LibraryRepository(db)
     this.links = new ItemLinkIndex(db)
   }
