@@ -293,6 +293,32 @@ describe('the phone edits a task the way the desktop does (mobile plan, prompt 1
     )
   })
 
+  it('adds a subtask, and a subtask of that, under the parent as createWorkItem does', () => {
+    let child = ''
+    both(
+      (planning) => {
+        child = planning.createWorkItem(
+          PROJECT,
+          { title: 'Buy sealant', parentWorkItemId: ids.main },
+          human
+        ).id
+        return child
+      },
+      (db) => edits.addTask(db, PROJECT, 'Buy sealant', { parentId: ids.main })
+    )
+  })
+
+  it('refuses a fourth level of subtasks', () => {
+    const db = new Database(phonePath)
+    const phone = db as unknown as EditDb
+    const second = edits.addTask(phone, PROJECT, 'Level two', { parentId: ids.main })
+    const third = edits.addTask(phone, PROJECT, 'Level three', { parentId: second })
+    expect(() => edits.addTask(phone, PROJECT, 'Level four', { parentId: third })).toThrow(
+      'too-deep'
+    )
+    db.close()
+  })
+
   it('ticks and unticks checklist items', () => {
     both(
       (planning) => {

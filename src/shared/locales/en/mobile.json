@@ -122,7 +122,9 @@
     "archived": "This task is archived.",
     "notFound": "This task is no longer on the phone.",
     "wontDo": "Closed as won't do. It is in the project's archive.",
-    "someday": "In Someday: hidden from the Board until you bring it back."
+    "someday": "In Someday: hidden from the Board until you bring it back.",
+    "subtasks": "Subtasks",
+    "partOf": "Part of: {{title}}"
   },
   "nav": {
     "projects": "Projects",
@@ -175,7 +177,8 @@
       "bad-estimate": "Use a number from 0 to 1,000, or leave it empty.",
       "bad-milestone": "That milestone is not in this project.",
       "bad-label": "A task has at most 20 labels of 80 characters each.",
-      "bad-checklist-line": "A checklist has at most 30 items of 500 characters each, and each one different."
+      "bad-checklist-line": "A checklist has at most 30 items of 500 characters each, and each one different.",
+      "too-deep": "Subtasks can only be nested three levels deep."
     },
     "previousMonth": "Previous month",
     "nextMonth": "Next month",
@@ -196,7 +199,8 @@
     "moveUp": "Move up",
     "moveDown": "Move down",
     "removeItem": "Remove",
-    "done": "Done"
+    "done": "Done",
+    "addSubtask": "Add a subtask"
   },
   "taskMenu": {
     "addMyDay": "Add to My Day",

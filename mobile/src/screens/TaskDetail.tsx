@@ -6,6 +6,7 @@ import { formatDateTime, formatRelativeTime } from '@shared/format'
 import { TASK_STATUSES, taskPriorityLabel, taskStatusLabel } from '@shared/task-labels'
 import { projectName } from '../data/project-display'
 import {
+  addTask,
   addTaskComment,
   addTaskToMyDay,
   archiveTask,
@@ -42,6 +43,7 @@ import { Chip, editErrorText, editStyles, TextSender } from './EditBits'
 import { RADIUS, SPACE, statusColor, useTheme } from '../theme'
 import { DatePicker } from './DatePicker'
 import { Markdown } from './Markdown'
+import { TaskRow } from './TaskRow'
 import { TopBar, type MenuItem } from './TopBar'
 
 interface Props {
@@ -51,6 +53,8 @@ interface Props {
   onBack: () => void
   /** Called after every edit that was saved, so the change is pushed and the screens re-read. */
   onEdited: () => void
+  /** Opens a related task (the parent or a subtask); Back returns here. */
+  onOpenTask: (id: string) => void
 }
 
 type Panel =
@@ -72,7 +76,7 @@ type Panel =
  * One task's details; tapping the title, the description or a field opens its edit in place.
  * The ⋮ menu holds what is done to the task as a whole, as the PC's task menu does.
  */
-export function TaskDetail({ db, taskId, version, onBack, onEdited }: Props) {
+export function TaskDetail({ db, taskId, version, onBack, onEdited, onOpenTask }: Props) {
   const theme = useTheme()
   const [panel, setPanel] = useState<Panel>(null)
   const [error, setError] = useState<string | null>(null)
@@ -296,6 +300,17 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited }: Props) {
             >
               <Text accessibilityRole="header" style={[styles.title, { color: theme.text }]}>
                 {task.title}
+              </Text>
+            </Pressable>
+          )}
+          {task.parent !== null && (
+            <Pressable
+              accessibilityRole="link"
+              onPress={() => onOpenTask(task.parent!.id)}
+              hitSlop={SPACE.small}
+            >
+              <Text numberOfLines={1} style={[styles.body, { color: theme.accent }]}>
+                {t('mobile:task.partOf', { title: task.parent.title })}
               </Text>
             </Pressable>
           )}
@@ -730,6 +745,33 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited }: Props) {
             button={t('mobile:edit.add')}
             onSend={(text) => {
               if (!saveChecklist([...lines, text])) throw new Error('refused')
+            }}
+          />
+
+          <Text accessibilityRole="header" style={[styles.heading, { color: theme.textSecondary }]}>
+            {t('mobile:task.subtasks')}
+          </Text>
+        </View>
+        {task.subtasks.length > 0 && (
+          <View style={[styles.group, { borderColor: theme.border }]}>
+            {task.subtasks.map((subtask) => (
+              <TaskRow
+                key={subtask.id}
+                task={subtask}
+                theme={theme}
+                onPress={() => onOpenTask(subtask.id)}
+              />
+            ))}
+          </View>
+        )}
+        <View style={styles.page}>
+          <TextSender
+            theme={theme}
+            placeholder={t('mobile:edit.addSubtask')}
+            button={t('mobile:edit.add')}
+            onSend={(text) => {
+              if (!attempt(() => void addTask(db, task.projectId, text, { parentId: task.id })))
+                throw new Error('refused')
             }}
           />
 

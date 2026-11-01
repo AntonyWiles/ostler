@@ -122,7 +122,9 @@
     "archived": "Esta tarefa está arquivada.",
     "notFound": "Esta tarefa não está mais no celular.",
     "wontDo": "Fechada como “Não será feita”. Está no arquivo do projeto.",
-    "someday": "Em “Algum dia”: oculta do quadro até você trazê-la de volta."
+    "someday": "Em “Algum dia”: oculta do quadro até você trazê-la de volta.",
+    "subtasks": "Subtarefas",
+    "partOf": "Parte de: {{title}}"
   },
   "nav": {
     "projects": "Projetos",
@@ -175,7 +177,8 @@
       "bad-estimate": "Use um número de 0 a 1.000 ou deixe em branco.",
       "bad-milestone": "Esse marco não é deste projeto.",
       "bad-label": "Uma tarefa tem no máximo 20 etiquetas de 80 caracteres cada.",
-      "bad-checklist-line": "Uma checklist tem no máximo 30 itens diferentes de 500 caracteres cada."
+      "bad-checklist-line": "Uma checklist tem no máximo 30 itens diferentes de 500 caracteres cada.",
+      "too-deep": "Subtarefas só podem ser aninhadas em até três níveis."
     },
     "previousMonth": "Mês anterior",
     "nextMonth": "Próximo mês",
@@ -196,7 +199,8 @@
     "moveUp": "Mover para cima",
     "moveDown": "Mover para baixo",
     "removeItem": "Remover",
-    "done": "Concluído"
+    "done": "Concluído",
+    "addSubtask": "Adicionar uma subtarefa"
   },
   "taskMenu": {
     "addMyDay": "Adicionar a Meu dia",

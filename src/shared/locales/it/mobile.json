@@ -122,7 +122,9 @@
     "archived": "Questa attività è archiviata.",
     "notFound": "Questa attività non è più sul telefono.",
     "wontDo": "Chiusa come «Non verrà fatta». È nell’archivio del progetto.",
-    "someday": "In «Un giorno»: nascosta dalla bacheca finché non la riporti indietro."
+    "someday": "In «Un giorno»: nascosta dalla bacheca finché non la riporti indietro.",
+    "subtasks": "Sottoattività",
+    "partOf": "Parte di: {{title}}"
   },
   "nav": {
     "projects": "Progetti",
@@ -175,7 +177,8 @@
       "bad-estimate": "Scrivi un numero da 0 a 1.000 o lascia vuoto.",
       "bad-milestone": "Questa tappa non è di questo progetto.",
       "bad-label": "Un'attività ha al massimo 20 etichette di 80 caratteri ciascuna.",
-      "bad-checklist-line": "Una checklist ha al massimo 30 voci diverse di 500 caratteri ciascuna."
+      "bad-checklist-line": "Una checklist ha al massimo 30 voci diverse di 500 caratteri ciascuna.",
+      "too-deep": "Le sottoattività si annidano al massimo su tre livelli."
     },
     "previousMonth": "Mese precedente",
     "nextMonth": "Mese successivo",
@@ -196,7 +199,8 @@
     "moveUp": "Sposta su",
     "moveDown": "Sposta giù",
     "removeItem": "Rimuovi",
-    "done": "Fatto"
+    "done": "Fatto",
+    "addSubtask": "Aggiungi una sottoattività"
   },
   "taskMenu": {
     "addMyDay": "Aggiungi a La mia giornata",

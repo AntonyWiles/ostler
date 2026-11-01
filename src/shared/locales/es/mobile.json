@@ -122,7 +122,9 @@
     "archived": "Esta tarea está archivada.",
     "notFound": "Esta tarea ya no está en el teléfono.",
     "wontDo": "Cerrada como «No se hará». Está en el archivo del proyecto.",
-    "someday": "En «Algún día»: oculta en el tablero hasta que la recuperes."
+    "someday": "En «Algún día»: oculta en el tablero hasta que la recuperes.",
+    "subtasks": "Subtareas",
+    "partOf": "Parte de: {{title}}"
   },
   "nav": {
     "projects": "Proyectos",
@@ -175,7 +177,8 @@
       "bad-estimate": "Escribe un número de 0 a 1000 o déjalo vacío.",
       "bad-milestone": "Ese hito no es de este proyecto.",
       "bad-label": "Una tarea tiene como máximo 20 etiquetas de 80 caracteres cada una.",
-      "bad-checklist-line": "Una lista de comprobación tiene como máximo 30 elementos distintos de 500 caracteres cada uno."
+      "bad-checklist-line": "Una lista de comprobación tiene como máximo 30 elementos distintos de 500 caracteres cada uno.",
+      "too-deep": "Las subtareas solo se pueden anidar hasta tres niveles."
     },
     "previousMonth": "Mes anterior",
     "nextMonth": "Mes siguiente",
@@ -196,7 +199,8 @@
     "moveUp": "Subir",
     "moveDown": "Bajar",
     "removeItem": "Quitar",
-    "done": "Listo"
+    "done": "Listo",
+    "addSubtask": "Añadir una subtarea"
   },
   "taskMenu": {
     "addMyDay": "Añadir a Mi día",

@@ -122,7 +122,9 @@
     "archived": "Diese Aufgabe ist archiviert.",
     "notFound": "Diese Aufgabe ist nicht mehr auf dem Telefon.",
     "wontDo": "Als „Wird nicht erledigt“ geschlossen. Die Aufgabe liegt im Archiv des Projekts.",
-    "someday": "In „Irgendwann“: auf dem Board ausgeblendet, bis du sie zurückholst."
+    "someday": "In „Irgendwann“: auf dem Board ausgeblendet, bis du sie zurückholst.",
+    "subtasks": "Unteraufgaben",
+    "partOf": "Teil von: {{title}}"
   },
   "nav": {
     "projects": "Projekte",
@@ -175,7 +177,8 @@
       "bad-estimate": "Gib eine Zahl von 0 bis 1.000 ein oder lass das Feld leer.",
       "bad-milestone": "Dieser Meilenstein gehört nicht zu diesem Projekt.",
       "bad-label": "Eine Aufgabe hat höchstens 20 Labels mit je 80 Zeichen.",
-      "bad-checklist-line": "Eine Checkliste hat höchstens 30 verschiedene Punkte mit je 500 Zeichen."
+      "bad-checklist-line": "Eine Checkliste hat höchstens 30 verschiedene Punkte mit je 500 Zeichen.",
+      "too-deep": "Unteraufgaben lassen sich höchstens drei Ebenen tief verschachteln."
     },
     "previousMonth": "Vorheriger Monat",
     "nextMonth": "Nächster Monat",
@@ -196,7 +199,8 @@
     "moveUp": "Nach oben",
     "moveDown": "Nach unten",
     "removeItem": "Entfernen",
-    "done": "Fertig"
+    "done": "Fertig",
+    "addSubtask": "Unteraufgabe hinzufügen"
   },
   "taskMenu": {
     "addMyDay": "Zu Mein Tag hinzufügen",

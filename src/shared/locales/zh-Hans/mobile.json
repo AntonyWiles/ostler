@@ -122,7 +122,9 @@
     "archived": "此任务已归档。",
     "notFound": "此任务已不在手机上。",
     "wontDo": "已以“不做”关闭，位于项目的归档中。",
-    "someday": "在“将来某天”中：在你移回之前不会显示在看板上。"
+    "someday": "在“将来某天”中：在你移回之前不会显示在看板上。",
+    "subtasks": "子任务",
+    "partOf": "所属任务：{{title}}"
   },
   "nav": {
     "projects": "项目",
@@ -175,7 +177,8 @@
       "bad-estimate": "请输入 0 到 1,000 之间的数字，或留空。",
       "bad-milestone": "该里程碑不属于此项目。",
       "bad-label": "一个任务最多有 20 个标签，每个最多 80 个字符。",
-      "bad-checklist-line": "清单最多有 30 个不同的项目，每项最多 500 个字符。"
+      "bad-checklist-line": "清单最多有 30 个不同的项目，每项最多 500 个字符。",
+      "too-deep": "子任务最多只能嵌套三层。"
     },
     "previousMonth": "上个月",
     "nextMonth": "下个月",
@@ -196,7 +199,8 @@
     "moveUp": "上移",
     "moveDown": "下移",
     "removeItem": "移除",
-    "done": "完成"
+    "done": "完成",
+    "addSubtask": "添加子任务"
   },
   "taskMenu": {
     "addMyDay": "添加到我的一天",

@@ -72,6 +72,7 @@ export type EditRefusal =
   | 'bad-milestone'
   | 'bad-label'
   | 'bad-checklist-line'
+  | 'too-deep' // subtasks nest three levels at most
 
 /** An edit that was refused; nothing was written. `reason` is what the screen shows. */
 export class EditRefused extends Error {
@@ -901,21 +902,78 @@ function nextOrderKey(db: EditDb, projectId: string): string {
   return orderKeyBetween(lastOrderKey(db, projectId), null)
 }
 
+/** How deep a task sits: 1 for a top-level task, one more per parent (`PlanningService.depthOf`). */
+function depthOf(db: EditDb, taskId: string | null): number {
+  let depth = 0
+  let currentId = taskId
+  const seen = new Set<string>()
+  while (currentId && !seen.has(currentId)) {
+    seen.add(currentId)
+    depth++
+    const row = db
+      .prepare('SELECT parent_work_item_id FROM planning_work_items WHERE id = ?')
+      .get(currentId) as { parent_work_item_id: string | null } | undefined
+    currentId = row?.parent_work_item_id ?? null
+  }
+  return depth
+}
+
+/**
+ * Where a new subtask goes under its parent (`PlanningService.validateSubtaskPlacement` with no
+ * phase given): phase 1, named as its phase-1 siblings are, in the parent's workstream.
+ */
+function subtaskPlacement(
+  db: EditDb,
+  projectId: string,
+  parentId: string | null
+): {
+  parentId: string | null
+  phaseNumber: number | null
+  phaseName: string
+  subprojectId: string | null
+} {
+  if (parentId === null) {
+    return { parentId: null, phaseNumber: null, phaseName: '', subprojectId: null }
+  }
+  const parent = db
+    .prepare('SELECT project_id, subproject_id, deleted_at FROM planning_work_items WHERE id = ?')
+    .get(parentId) as
+    { project_id: string; subproject_id: string | null; deleted_at: number | null } | undefined
+  if (!parent || parent.deleted_at !== null || parent.project_id !== projectId) {
+    throw new EditRefused('not-found')
+  }
+  if (depthOf(db, parentId) >= 3) throw new EditRefused('too-deep')
+  const sibling = db
+    .prepare(
+      `SELECT subtask_phase_name FROM planning_work_items
+       WHERE parent_work_item_id = ? AND subtask_phase_number = 1 LIMIT 1`
+    )
+    .get(parentId) as { subtask_phase_name: string } | undefined
+  return {
+    parentId,
+    phaseNumber: 1,
+    phaseName: sibling?.subtask_phase_name ?? '',
+    subprojectId: parent.subproject_id
+  }
+}
+
 /**
  * Adds a task to a project, in Backlog, medium priority, at the end of the project's order
- * (`PlanningService.createWorkItem` with only a title). Returns the new task's id.
+ * (`PlanningService.createWorkItem` with only a title, or a title and `parentWorkItemId`).
+ * Returns the new task's id.
  */
 export function addTask(
   db: EditDb,
   projectId: string,
   title: string,
-  options: EditOptions = {}
+  options: EditOptions & { parentId?: string } = {}
 ): string {
   return guarded(() => {
     const text = validTitle(title)
     const personId = options.personId ?? null
     const at = options.now ?? Date.now()
     const id = uuidv4()
+    const placement = subtaskPlacement(db, projectId, options.parentId ?? null)
     db.transaction(() => {
       const orderKey = nextOrderKey(db, projectId)
       const number = takeTaskNumber(db, projectId)
@@ -948,12 +1006,12 @@ export function addTask(
         0,
         0,
         '',
-        null,
+        placement.parentId,
         '',
         '',
         '',
-        null,
-        '',
+        placement.phaseNumber,
+        placement.phaseName,
         'unverified',
         null,
         null,
@@ -973,7 +1031,7 @@ export function addTask(
         0,
         null,
         null,
-        null
+        placement.subprojectId
       )
       insertStatusHistory(db, id, null, 'backlog', { kind: 'human', personId }, null, at)
       recordChange(db, { id, project_id: projectId }, 'created', undefined, undefined, personId, at)

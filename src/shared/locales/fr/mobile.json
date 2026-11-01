@@ -122,7 +122,9 @@
     "archived": "Cette tâche est archivée.",
     "notFound": "Cette tâche n’est plus sur le téléphone.",
     "wontDo": "Fermée comme « Ne sera pas fait ». Elle est dans les archives du projet.",
-    "someday": "Dans « Un jour » : masquée du tableau jusqu’à ce que vous la rameniez."
+    "someday": "Dans « Un jour » : masquée du tableau jusqu’à ce que vous la rameniez.",
+    "subtasks": "Sous-tâches",
+    "partOf": "Fait partie de : {{title}}"
   },
   "nav": {
     "projects": "Projets",
@@ -175,7 +177,8 @@
       "bad-estimate": "Saisissez un nombre de 0 à 1 000, ou laissez vide.",
       "bad-milestone": "Ce jalon n’appartient pas à ce projet.",
       "bad-label": "Une tâche a au plus 20 étiquettes de 80 caractères chacune.",
-      "bad-checklist-line": "Une liste de contrôle a au plus 30 éléments différents de 500 caractères chacun."
+      "bad-checklist-line": "Une liste de contrôle a au plus 30 éléments différents de 500 caractères chacun.",
+      "too-deep": "Les sous-tâches ne s’imbriquent que sur trois niveaux."
     },
     "previousMonth": "Mois précédent",
     "nextMonth": "Mois suivant",
@@ -196,7 +199,8 @@
     "moveUp": "Monter",
     "moveDown": "Descendre",
     "removeItem": "Retirer",
-    "done": "Terminé"
+    "done": "Terminé",
+    "addSubtask": "Ajouter une sous-tâche"
   },
   "taskMenu": {
     "addMyDay": "Ajouter à Ma journée",

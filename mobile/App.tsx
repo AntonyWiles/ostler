@@ -66,6 +66,8 @@ export default function App() {
   const [taskId, setTaskId] = useState<string | null>(null)
   // Where Back from a task goes: the project it was opened from, Search, or the home lists.
   const [taskFrom, setTaskFrom] = useState<'project' | 'home' | 'search'>('home')
+  // The tasks a parent or subtask was opened from, newest last: Back steps through them first.
+  const [taskTrail, setTaskTrail] = useState<string[]>([])
   // Where Back from a project goes: Search when it was found there, else the home lists.
   const [projectFrom, setProjectFrom] = useState<'home' | 'search'>('home')
   // The words in Search, kept while a result is open so Back returns to them.
@@ -147,11 +149,14 @@ export default function App() {
 
   // Join and Set up from my other device open from Settings, and go back to it.
   const goBack = useCallback(() => {
-    if (screen === 'task') setScreen(taskFrom)
+    if (screen === 'task' && taskTrail.length > 0) {
+      setTaskId(taskTrail[taskTrail.length - 1])
+      setTaskTrail(taskTrail.slice(0, -1))
+    } else if (screen === 'task') setScreen(taskFrom)
     else if (screen === 'project') setScreen(projectFrom)
     else if (screen === 'join' || screen === 'pairing') setScreen('settings')
     else setScreen('home')
-  }, [screen, taskFrom, projectFrom])
+  }, [screen, taskFrom, projectFrom, taskTrail])
   // The phone's Back button steps out of a screen instead of closing the app.
   useEffect(() => {
     if (screen === 'home') return
@@ -176,8 +181,16 @@ export default function App() {
   const openTask = useCallback((id: string, from: 'project' | 'home' | 'search') => {
     setTaskId(id)
     setTaskFrom(from)
+    setTaskTrail([])
     setScreen('task')
   }, [])
+  const openRelatedTask = useCallback(
+    (id: string) => {
+      if (taskId !== null) setTaskTrail((trail) => [...trail, taskId])
+      setTaskId(id)
+    },
+    [taskId]
+  )
   // An Inbox item or a search result opens its task, or its project.
   const openTarget = useCallback(
     (target: InboxTarget, from: 'home' | 'search') => {
@@ -257,7 +270,14 @@ export default function App() {
   }
   if (screen === 'task' && db !== null && taskId !== null) {
     return page(
-      <TaskDetail db={db} taskId={taskId} version={version} onBack={goBack} onEdited={edited} />
+      <TaskDetail
+        db={db}
+        taskId={taskId}
+        version={version}
+        onBack={goBack}
+        onEdited={edited}
+        onOpenTask={openRelatedTask}
+      />
     )
   }
 

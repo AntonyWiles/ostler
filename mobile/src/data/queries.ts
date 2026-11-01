@@ -199,6 +199,10 @@ export interface TaskDetail extends TaskSummary {
   /** Linked to agent work, which cannot go to the recycle bin. */
   agentLinked: boolean
   checklist: ChecklistLine[]
+  /** The task this one is a subtask of. */
+  parent: { id: string; title: string } | null
+  /** Its own subtasks that are not archived or in the bin, by phase, then in the project's order. */
+  subtasks: TaskSummary[]
   comments: TaskComment[]
   createdAt: number
   updatedAt: number
@@ -215,6 +219,7 @@ interface TaskRow extends TaskSummaryRow {
   someday?: number
   in_triage?: number
   linked_harness_task_id: string | null
+  parent_work_item_id: string | null
   acceptance_criteria: string
   created_at: number
   updated_at: number
@@ -277,6 +282,23 @@ export function task(db: QueryDb, id: string): TaskDetail | null {
     inTriage: Boolean(row.in_triage),
     agentLinked: row.linked_harness_task_id !== null,
     checklist: criteria.map((text) => ({ text, checked: checked.has(text) })),
+    parent:
+      row.parent_work_item_id === null
+        ? null
+        : ((db
+            .prepare(
+              'SELECT id, title FROM planning_work_items WHERE id = ? AND deleted_at IS NULL'
+            )
+            .get(row.parent_work_item_id) as { id: string; title: string } | undefined) ?? null),
+    subtasks: (
+      db
+        .prepare(
+          `SELECT ${SUMMARY_COLUMNS} FROM planning_work_items
+           WHERE parent_work_item_id = ? AND deleted_at IS NULL AND archived_at IS NULL
+           ORDER BY subtask_phase_number, order_key`
+        )
+        .all(id) as TaskSummaryRow[]
+    ).map(toSummary),
     comments: comments.map((comment) => ({
       id: comment.id,
       body: comment.body,
