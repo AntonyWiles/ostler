@@ -77,6 +77,9 @@ Help › What's new, and the Unreleased section until a version has its own.
 - A blocker resolved or a task's status changed on another device (your phone, say) now wakes
   agent dispatch on your PC as soon as the change arrives, as the same change made on the PC does.
   Before, the agent waited until something else happened in the project.
+- A blocker reported or resolved on another device now shows on your PC's Overview at once, and
+  agents waiting on the automation API's event feed (`GET /events`) hear `blocker.reported` or
+  `blocker.resolved` for it, as they do for one changed on the PC.
 - Removing one of your devices no longer shows "Sync folder refused: exists" when nothing else has
   changed since the last time.
 - Leaving a project that a PC never joined now takes it off your list, so your other devices stop

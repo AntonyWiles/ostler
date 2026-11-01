@@ -98,6 +98,16 @@ export interface ApplyResult {
    * status. The PC evaluates dispatch again, as after the same change made in its own window.
    */
   dispatchInputs: boolean
+  /** Blockers this call reported or resolved, in the order they were applied. */
+  blockers: ArrivedBlocker[]
+}
+
+/** A blocker whose status a received change set: newly reported (open) or resolved. */
+export interface ArrivedBlocker {
+  projectId: string
+  blockerId: string
+  workItemId: string
+  kind: 'reported' | 'resolved'
 }
 
 /**
@@ -122,6 +132,7 @@ interface Context {
   signOffs: ArrivedSignOff[]
   /** A blocker or a task's status was applied (`ApplyResult.dispatchInputs`). */
   dispatchInputs: boolean
+  blockers: ArrivedBlocker[]
   /** The sign-off row of the savepoint being applied; kept only if that savepoint commits. */
   inFlightSignOff: ArrivedSignOff | null
   /** The assignee change of the savepoint being applied; kept only if that savepoint commits. */
@@ -190,7 +201,8 @@ export function applyChanges(
     mentioned: ctx.mentioned,
     changed: ctx.changed,
     signOffs: ctx.signOffs,
-    dispatchInputs: ctx.dispatchInputs
+    dispatchInputs: ctx.dispatchInputs,
+    blockers: ctx.blockers
   }
 }
 
@@ -220,6 +232,7 @@ function newContext(
     changed: [],
     signOffs: [],
     dispatchInputs: false,
+    blockers: [],
     inFlightSignOff: null,
     inFlight: null,
     inFlightMention: null,
@@ -281,7 +294,8 @@ export function retryWaiting(db: Database.Database, shareId: string): ApplyResul
     mentioned: ctx.mentioned,
     changed: ctx.changed,
     signOffs: ctx.signOffs,
-    dispatchInputs: ctx.dispatchInputs
+    dispatchInputs: ctx.dispatchInputs,
+    blockers: ctx.blockers
   }
 }
 
@@ -291,6 +305,7 @@ function attempt(ctx: Context, change: Change): Outcome {
   ctx.inFlightMention = null
   ctx.inFlightChange = null
   ctx.inFlightSignOff = null
+  const blockerBefore = change.table === 'planning_blockers' ? blockerStatus(ctx, change) : null
   try {
     const outcome = ctx.db.transaction(() => applyOne(ctx, change))()
     if (outcome === 'applied' && ctx.inFlight) ctx.assigned.push(ctx.inFlight)
@@ -298,6 +313,16 @@ function attempt(ctx: Context, change: Change): Outcome {
     if (outcome === 'applied' && ctx.inFlightChange) ctx.changed.push(ctx.inFlightChange)
     if (outcome === 'applied' && ctx.inFlightSignOff) ctx.signOffs.push(ctx.inFlightSignOff)
     if (outcome === 'applied' && changesDispatchInputs(change)) ctx.dispatchInputs = true
+    if (outcome === 'applied' && change.table === 'planning_blockers') {
+      const after = blockerStatus(ctx, change)
+      if (after && after.status !== blockerBefore?.status)
+        ctx.blockers.push({
+          projectId: ctx.projectId,
+          blockerId: after.id,
+          workItemId: after.workItemId,
+          kind: after.status === 'resolved' ? 'resolved' : 'reported'
+        })
+    }
     return outcome
   } catch (error) {
     const code = errorCode(error)
@@ -317,6 +342,24 @@ function changesDispatchInputs(change: Change): boolean {
   return (
     change.table === 'planning_work_items' && (change.op === 'delete' || 'status' in change.columns)
   )
+}
+
+/** A blocker row's status as stored now, for a change to it; null when there is no such row. */
+function blockerStatus(
+  ctx: Context,
+  change: Change
+): { id: string; workItemId: string; status: string } | null {
+  let id: unknown
+  try {
+    id = (JSON.parse(change.rowKey) as unknown[])[0]
+  } catch {
+    return null
+  }
+  if (typeof id !== 'string') return null
+  const row = ctx.db
+    .prepare('SELECT id, work_item_id, status FROM planning_blockers WHERE id = ?')
+    .get(id) as { id: string; work_item_id: string; status: string } | undefined
+  return row ? { id: row.id, workItemId: row.work_item_id, status: row.status } : null
 }
 
 function errorCode(error: unknown): string | null {

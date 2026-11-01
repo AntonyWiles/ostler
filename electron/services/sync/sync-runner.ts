@@ -10,7 +10,7 @@
  * PC's own device folder, and pull never reads it.
  */
 import type Database from 'better-sqlite3'
-import { applyChanges } from './apply'
+import { applyChanges, type ArrivedBlocker } from './apply'
 import {
   ChangeFileError,
   decodeChangeFile,
@@ -89,6 +89,8 @@ export interface PullResult {
   problems: PullProblem[]
   /** A blocker or a task's status changed in this pull (`ApplyResult.dispatchInputs`). */
   dispatchInputs: boolean
+  /** Blockers reported or resolved on another device in this pull. */
+  blockers: ArrivedBlocker[]
 }
 
 /** Most outbox rows written in one change file. */
@@ -195,7 +197,8 @@ export async function pullChanges(
     signOffAnswersForMe: [],
     changedTasks: [],
     problems: [],
-    dispatchInputs: false
+    dispatchInputs: false,
+    blockers: []
   }
   // This PC's Me, read once per pull: the assignments that concern it are the ones it reports.
   const me = db.prepare('SELECT id FROM people WHERE is_me = 1').get() as { id: string } | undefined
@@ -312,6 +315,7 @@ export async function pullChanges(
       result.skipped += counts.skipped
       result.pending = counts.pending
       if (counts.dispatchInputs) result.dispatchInputs = true
+      result.blockers.push(...counts.blockers)
       for (const task of counts.assigned) {
         // Not when Me made it, on another of this person's devices: no one else assigned it.
         if (me && task.to === me.id && task.from !== me.id && task.byPersonId !== me.id) {

@@ -30,7 +30,7 @@ import { Refusal } from '@shared/refusal'
 import { ROLE_CAPABILITIES } from '@shared/share-roles'
 import { canWriteIn, FolderTransport, type SyncTransport } from './folder-transport'
 import { isDriveLocation } from './drive-transport'
-import { retryWaiting } from './apply'
+import { retryWaiting, type ArrivedBlocker } from './apply'
 import { pullLibraryFiles, pushLibraryFiles, type LibraryFileStore } from './library-files'
 import { pullRecords, pushRecords } from './records'
 import {
@@ -144,6 +144,8 @@ export interface SyncServiceOptions {
    * the PC looks at agent dispatch again, as it does after the same change made on the PC.
    */
   onDispatchInputsChanged?(projectId: string): void
+  /** A blocker was reported or resolved on another device: the PC says so as it does for its own. */
+  onBlockerArrived?(blocker: ArrivedBlocker): void
   /** The share state of a project changed. */
   onStateChanged(projectId: string): void
   /** Another PC assigned a task to this PC's Me: the person is told once per assignment (D11). */
@@ -1119,6 +1121,7 @@ export class SyncService {
     if (pulled.files > 0 || files.files > 0 || records.people > 0 || records.project) {
       this.options.onProjectChanged(running.projectId)
     }
+    for (const blocker of pulled.blockers) this.options.onBlockerArrived?.(blocker)
     if (pulled.dispatchInputs) this.options.onDispatchInputsChanged?.(running.projectId)
   }
 

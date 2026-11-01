@@ -45,7 +45,8 @@ const NOTHING_ELSE = {
   changed: [],
   mentioned: [],
   signOffs: [],
-  dispatchInputs: expect.any(Boolean) as unknown as boolean
+  dispatchInputs: expect.any(Boolean) as unknown as boolean,
+  blockers: []
 }
 
 describe('applying sync changes', () => {
@@ -269,6 +270,41 @@ describe('a pulled change that agent dispatch reads', () => {
     ])
     expect(result.applied).toBe(1)
     expect(result.dispatchInputs).toBe(true)
+    expect(result.blockers).toEqual([
+      { projectId: SHARED, blockerId: 'b1', workItemId: 'item-1', kind: 'resolved' }
+    ])
+  })
+
+  it('reports a blocker reported on another device, once', () => {
+    const report = {
+      table: 'planning_blockers',
+      rowKey: JSON.stringify(['b2']),
+      op: 'upsert' as const,
+      columns: {
+        id: 'b2',
+        work_item_id: 'item-1',
+        description: 'Which tiles?',
+        reported_by: 'human',
+        reported_at: 5,
+        status: 'open',
+        resolution_options: '[]',
+        resolution_choice: null,
+        resolution_note: '',
+        resolved_at: null,
+        resolved_by: null
+      },
+      stamp: at(5),
+      actor: { kind: 'human' as const }
+    }
+    expect(applyChanges(db, 'share-1', [report]).blockers).toEqual([
+      { projectId: SHARED, blockerId: 'b2', workItemId: 'item-1', kind: 'reported' }
+    ])
+    // A note on it that keeps it open is not news.
+    expect(
+      applyChanges(db, 'share-1', [
+        { ...report, columns: { description: 'Which tiles, exactly?' }, stamp: at(6) }
+      ]).blockers
+    ).toEqual([])
   })
 
   it("says so for a task's new status", () => {

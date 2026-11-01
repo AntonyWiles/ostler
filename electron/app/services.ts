@@ -42,7 +42,7 @@ import { DispatcherService } from '../services/dispatcher-service'
 import { AutomationHttpServer } from '../services/automation-http-server'
 import { AgentEventStream } from '../services/agent-events'
 import { RunGuidanceService } from '../services/run-guidance'
-import { PlanningService } from '../services/planning-service'
+import { PlanningService, type BlockerChange } from '../services/planning-service'
 import { PeopleService } from '../services/people-service'
 import { DaysOffService } from '../services/days-off-service'
 import { AwaySharingService } from '../services/away-sharing-service'
@@ -1439,6 +1439,24 @@ function blockerTaskId(workItemId: string): { taskId?: string } {
   }
 }
 
+/**
+ * A blocker was reported or resolved, here or on another device (sync): the Overview's Blockers
+ * panel reloads and agents waiting on GET /events hear of it.
+ */
+function publishBlockerChange(projectId: string, change: BlockerChange): void {
+  sendToRenderer(IPC_CHANNELS.ON_PROJECT_STATE_CHANGE, {
+    projectId,
+    field: 'planning',
+    data: { blockers: true }
+  })
+  agentEvents.publish(projectId, {
+    type: change.kind === 'reported' ? 'blocker.reported' : 'blocker.resolved',
+    blockerId: change.blockerId,
+    workItemId: change.workItemId,
+    ...blockerTaskId(change.workItemId)
+  })
+}
+
 function notifyHarnessState(project: WatchedProject): void {
   harnessService.refreshReport(project)
   notifyHomeIfAttentionChanged(project)
@@ -1681,19 +1699,7 @@ export async function createAppServices(dir: string): Promise<AppServices> {
   agentEvents = new AgentEventStream()
   // A blocker reported or resolved anywhere reaches the Overview at once, and
   // the agent event stream.
-  planningService.setBlockersChangedListener((projectId, change) => {
-    sendToRenderer(IPC_CHANNELS.ON_PROJECT_STATE_CHANGE, {
-      projectId,
-      field: 'planning',
-      data: { blockers: true }
-    })
-    agentEvents.publish(projectId, {
-      type: change.kind === 'reported' ? 'blocker.reported' : 'blocker.resolved',
-      blockerId: change.blockerId,
-      workItemId: change.workItemId,
-      ...blockerTaskId(change.workItemId)
-    })
-  })
+  planningService.setBlockersChangedListener(publishBlockerChange)
   const { dueReminders, reminderTime } = configStore.get().notifications
   lastReminderSettings = `${dueReminders}|${reminderTime}`
   const { weeklyReviewDay, weeklyReviewTime } = configStore.get().notifications
@@ -2175,6 +2181,8 @@ export async function createAppServices(dir: string): Promise<AppServices> {
     },
     // A blocker resolved or a status changed on another device wakes dispatch, as the same
     // change made here does (planning-workflow-handlers resolveBlocker).
+    // A blocker reported or resolved on another device is announced as one made here is.
+    onBlockerArrived: (blocker) => publishBlockerChange(blocker.projectId, blocker),
     onDispatchInputsChanged: (projectId) => {
       const project = configStore.getProjects().find((entry) => entry.id === projectId)
       if (project) notifyHarnessState(project)
