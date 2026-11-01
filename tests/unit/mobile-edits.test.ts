@@ -26,6 +26,8 @@ const TABLES = [
   'planning_status_history',
   'planning_comments',
   'planning_checklist_checks',
+  'planning_checklist_details',
+  'planning_description_versions',
   'planning_milestones',
   'project_task_counters',
   'reminders'
@@ -84,7 +86,8 @@ describe('the phone edits a task the way the desktop does (mobile plan, prompt 1
       },
       human
     ).id
-    planning.createWorkItem(PROJECT, { title: 'Pick tiles' }, human)
+    ids.otherMilestone = planning.createMilestone(PROJECT, { name: 'Snagging' }).id
+    planning.createWorkItem(PROJECT, { title: 'Pick tiles', labels: ['Kitchen'] }, human)
     planning.setChecklistItemChecked(ids.main, 'Taps work', true, human)
     planning.close()
     people.close()
@@ -170,6 +173,74 @@ describe('the phone edits a task the way the desktop does (mobile plan, prompt 1
         edits.setTaskDueDate(db, ids.main, null)
       }
     )
+  })
+
+  it('writes a description, twice in one sitting, then again later: history and versions', () => {
+    const later = new Date(NOW.getTime() + 60 * 60 * 1000)
+    both(
+      (planning) => {
+        planning.updateWorkItem(ids.main, { description: 'Use the **grey** sealant.' }, human)
+        planning.updateWorkItem(ids.main, { description: ' Use the grey sealant. ' }, human)
+        vi.setSystemTime(later)
+        planning.updateWorkItem(ids.main, { description: '' }, human)
+        vi.setSystemTime(NOW)
+      },
+      (db) => {
+        edits.setTaskDescription(db, ids.main, 'Use the **grey** sealant.')
+        edits.setTaskDescription(db, ids.main, ' Use the grey sealant. ')
+        edits.setTaskDescription(db, ids.main, '', { now: later.getTime() })
+      }
+    )
+  })
+
+  it('sets priority, start date, estimate, milestone and labels', () => {
+    both(
+      (planning) => {
+        planning.updateWorkItem(ids.main, { priority: 'critical' }, human)
+        planning.updateWorkItem(ids.main, { startDate: '2026-10-20' }, human)
+        planning.updateWorkItem(ids.main, { estimate: 2.5 }, human)
+        planning.updateWorkItem(ids.main, { milestoneId: ids.otherMilestone }, human)
+        planning.updateWorkItem(ids.main, { labels: ['Kitchen', ' Plumbing '] }, human)
+        planning.updateWorkItem(ids.main, { labels: ['Plumbing'] }, human)
+        planning.updateWorkItem(ids.main, { estimate: null, startDate: null }, human)
+        planning.updateWorkItem(ids.main, { milestoneId: null }, human)
+      },
+      (db) => {
+        edits.setTaskPriority(db, ids.main, 'critical')
+        edits.setTaskStartDate(db, ids.main, '2026-10-20')
+        edits.setTaskEstimate(db, ids.main, 2.5)
+        edits.setTaskMilestone(db, ids.main, ids.otherMilestone)
+        edits.setTaskLabels(db, ids.main, ['Kitchen', ' Plumbing '])
+        edits.setTaskLabels(db, ids.main, ['Plumbing'])
+        edits.setTaskEstimate(db, ids.main, null)
+        edits.setTaskStartDate(db, ids.main, null)
+        edits.setTaskMilestone(db, ids.main, null)
+      }
+    )
+  })
+
+  it('refuses a start after the due date, a bad estimate, a milestone of another project', () => {
+    const db = new Database(phonePath)
+    const phone = db as unknown as EditDb
+    const refusal = (edit: () => void) => {
+      try {
+        edit()
+      } catch (error) {
+        return (error as InstanceType<typeof edits.EditRefused>).reason
+      }
+      return null
+    }
+    expect(refusal(() => edits.setTaskStartDate(phone, ids.main, '2026-11-02'))).toBe(
+      'start-after-due'
+    )
+    expect(refusal(() => edits.setTaskEstimate(phone, ids.main, -1))).toBe('bad-estimate')
+    expect(refusal(() => edits.setTaskEstimate(phone, ids.main, Number.NaN))).toBe('bad-estimate')
+    expect(refusal(() => edits.setTaskMilestone(phone, ids.main, 'nope'))).toBe('bad-milestone')
+    expect(refusal(() => edits.setTaskLabels(phone, ids.main, ['  ']))).toBe('bad-label')
+    expect(refusal(() => edits.setTaskDescription(phone, ids.main, 'x'.repeat(8001)))).toBe(
+      'description-too-long'
+    )
+    db.close()
   })
 
   it('ticks and unticks checklist items', () => {

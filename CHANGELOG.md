@@ -14,6 +14,9 @@ Help › What's new, and the Unreleased section until a version has its own.
   it read or unread, or archive it with Undo. Read and archived items match on your PC.
 - **Search on Android.** Search your tasks, comments, decisions, milestones and goals from the
   phone's top bar, with the matching words marked.
+- **More task editing on Android.** Edit a task's description, priority, start date, estimate,
+  milestone and labels from the phone. The changes show in the task's history on your PC, and an
+  earlier description can be brought back there.
 
 ### Fixed
 

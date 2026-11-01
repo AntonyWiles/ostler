@@ -169,10 +169,27 @@
       "not-open": "Só uma tarefa aberta pode ser fechada como “Não será feita”.",
       "reason-too-long": "O motivo é longo demais (no máximo 500 caracteres).",
       "in-triage": "Primeiro aceite a tarefa em “Para triagem” no PC.",
-      "my-day-full": "Meu dia comporta no máximo 200 tarefas."
+      "my-day-full": "Meu dia comporta no máximo 200 tarefas.",
+      "description-too-long": "A descrição é longa demais (no máximo 8.000 caracteres).",
+      "bad-priority": "Isso não é uma prioridade.",
+      "bad-estimate": "Use um número de 0 a 1.000 ou deixe em branco.",
+      "bad-milestone": "Esse marco não é deste projeto.",
+      "bad-label": "Uma tarefa tem no máximo 20 etiquetas de 80 caracteres cada.",
+      "bad-checklist-line": "Uma checklist tem no máximo 30 itens diferentes de 500 caracteres cada."
     },
     "previousMonth": "Mês anterior",
-    "nextMonth": "Próximo mês"
+    "nextMonth": "Próximo mês",
+    "changePriority": "Mudar prioridade",
+    "changeStart": "Data de início",
+    "noStart": "Sem data de início",
+    "changeEstimate": "Mudar estimativa",
+    "noEstimate": "Sem estimativa",
+    "changeMilestone": "Escolher marco",
+    "noMilestone": "Sem marco",
+    "changeLabels": "Mudar etiquetas",
+    "noLabels": "Sem etiquetas",
+    "newLabel": "Nova etiqueta",
+    "editDescription": "Editar"
   },
   "taskMenu": {
     "addMyDay": "Adicionar a Meu dia",

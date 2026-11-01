@@ -16,13 +16,27 @@ import {
   renameTask,
   setChecklistTick,
   setTaskAssignee,
+  setTaskDescription,
   setTaskDueDate,
+  setTaskEstimate,
+  setTaskLabels,
+  setTaskMilestone,
+  setTaskPriority,
   setTaskSomeday,
+  setTaskStartDate,
   setTaskStatus,
+  TASK_PRIORITIES,
   unarchiveTask,
   type EditDb
 } from '../data/edits'
-import { assignablePeople, task as readTask, today, type QueryDb } from '../data/queries'
+import {
+  assignablePeople,
+  milestoneChoices,
+  projectLabels,
+  task as readTask,
+  today,
+  type QueryDb
+} from '../data/queries'
 import { Chip, editErrorText, editStyles, TextSender } from './EditBits'
 import { RADIUS, SPACE, statusColor, useTheme } from '../theme'
 import { DatePicker } from './DatePicker'
@@ -38,10 +52,22 @@ interface Props {
   onEdited: () => void
 }
 
-type Panel = 'title' | 'status' | 'assignee' | 'due' | 'wontDo' | null
+type Panel =
+  | 'title'
+  | 'description'
+  | 'status'
+  | 'priority'
+  | 'assignee'
+  | 'start'
+  | 'due'
+  | 'estimate'
+  | 'milestone'
+  | 'labels'
+  | 'wontDo'
+  | null
 
 /**
- * One task's details; tapping the title, status, assignee or due date opens its edit in place.
+ * One task's details; tapping the title, the description or a field opens its edit in place.
  * The ⋮ menu holds what is done to the task as a whole, as the PC's task menu does.
  */
 export function TaskDetail({ db, taskId, version, onBack, onEdited }: Props) {
@@ -54,6 +80,15 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited }: Props) {
     () => (task !== null && panel === 'assignee' ? assignablePeople(db, task.projectId) : []),
     [db, task, panel]
   )
+  const milestones = useMemo(
+    () => (task !== null && panel === 'milestone' ? milestoneChoices(db, task.projectId) : []),
+    [db, task, panel]
+  )
+  const labelChoices = useMemo(() => {
+    if (task === null || panel !== 'labels') return []
+    const names = new Set([...projectLabels(db, task.projectId), ...task.labels])
+    return [...names].sort((a, b) => a.localeCompare(b))
+  }, [db, task, panel])
   /** Runs one edit; true when it was saved. A refusal (a Viewer, a bad date) is shown, not thrown. */
   const attempt = (edit: () => void): boolean => {
     try {
@@ -72,6 +107,9 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited }: Props) {
   }
   const setDue = (date: string | null) => {
     if (task !== null && attempt(() => setTaskDueDate(db, task.id, date))) setPanel(null)
+  }
+  const setStart = (date: string | null) => {
+    if (task !== null && attempt(() => setTaskStartDate(db, task.id, date))) setPanel(null)
   }
   const day = today()
   const picked = useMemo(
@@ -142,20 +180,14 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited }: Props) {
   ]
 
   const due = task.targetDate === null ? null : formatIsoDateShort(task.targetDate)
-  const facts: [string, string | null][] = [
-    [t('mobile:task.priority'), taskPriorityLabel(task.priority)],
-    [t('mobile:task.milestone'), task.milestoneName],
-    [t('mobile:task.start'), task.startDate === null ? null : formatIsoDateShort(task.startDate)],
-    [t('mobile:task.estimate'), task.estimate === null ? null : String(task.estimate)],
-    [t('mobile:task.labels'), task.labels.length === 0 ? null : task.labels.join(', ')]
-  ]
+  const start = task.startDate === null ? null : formatIsoDateShort(task.startDate)
   const divider = { borderColor: theme.border }
   const valueText = (text: string, muted = false) => (
     <Text style={[styles.factValue, { color: muted ? theme.textMuted : theme.text }]}>{text}</Text>
   )
   /** A field that opens its choices in place, under it, when tapped. */
   const field = (
-    name: Exclude<Panel, 'title' | null>,
+    name: Exclude<Panel, 'title' | 'description' | 'wontDo' | null>,
     label: string,
     hint: string,
     value: ReactNode
@@ -175,6 +207,30 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited }: Props) {
       <View style={styles.factValueRow}>{value}</View>
       <Text style={[styles.chevron, { color: theme.textMuted }]}>{panel === name ? '▴' : '▾'}</Text>
     </Pressable>
+  )
+  /** Quick dates and a calendar, for the due date and the start date. */
+  const datePanel = (
+    value: string | null,
+    clearLabel: string,
+    pick: (date: string | null) => void
+  ) => (
+    <View style={[styles.panel, divider]}>
+      <View style={styles.chips}>
+        <Chip label={t('mobile:edit.today')} theme={theme} onPress={() => pick(today())} />
+        <Chip
+          label={t('mobile:edit.tomorrow')}
+          theme={theme}
+          onPress={() => pick(shiftIsoDate(today(), 1))}
+        />
+        <Chip
+          label={t('mobile:edit.nextWeek')}
+          theme={theme}
+          onPress={() => pick(shiftIsoDate(today(), 7))}
+        />
+        {value !== null && <Chip label={clearLabel} theme={theme} onPress={() => pick(null)} />}
+      </View>
+      <DatePicker theme={theme} value={value} today={today()} onPick={pick} />
+    </View>
   )
 
   return (
@@ -339,55 +395,186 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited }: Props) {
             t('mobile:edit.changeDue'),
             valueText(due ?? t('mobile:edit.clearDate'), due === null)
           )}
-          {panel === 'due' && (
-            <View style={[styles.panel, divider]}>
-              <View style={styles.chips}>
+          {panel === 'due' && datePanel(task.targetDate, t('mobile:edit.clearDate'), setDue)}
+          {field(
+            'priority',
+            t('mobile:task.priority'),
+            t('mobile:edit.changePriority'),
+            valueText(taskPriorityLabel(task.priority))
+          )}
+          {panel === 'priority' && (
+            <View style={[styles.panel, styles.chips, divider]}>
+              {TASK_PRIORITIES.map((priority) => (
                 <Chip
-                  label={t('mobile:edit.today')}
+                  key={priority}
+                  label={taskPriorityLabel(priority)}
                   theme={theme}
-                  onPress={() => setDue(today())}
+                  selected={priority === task.priority}
+                  onPress={() => {
+                    if (priority === task.priority) setPanel(null)
+                    else if (attempt(() => setTaskPriority(db, task.id, priority))) setPanel(null)
+                  }}
                 />
-                <Chip
-                  label={t('mobile:edit.tomorrow')}
-                  theme={theme}
-                  onPress={() => setDue(shiftIsoDate(today(), 1))}
-                />
-                <Chip
-                  label={t('mobile:edit.nextWeek')}
-                  theme={theme}
-                  onPress={() => setDue(shiftIsoDate(today(), 7))}
-                />
-                {task.targetDate !== null && (
-                  <Chip
-                    label={t('mobile:edit.clearDate')}
-                    theme={theme}
-                    onPress={() => setDue(null)}
-                  />
-                )}
-              </View>
-              <DatePicker theme={theme} value={task.targetDate} today={today()} onPick={setDue} />
+              ))}
             </View>
           )}
-          {facts
-            .filter((fact): fact is [string, string] => fact[1] !== null)
-            .map(([label, value]) => (
-              <View
-                key={label}
-                accessible
-                accessibilityLabel={`${label}: ${value}`}
-                style={[styles.fact, divider]}
-              >
-                <Text style={[styles.factLabel, { color: theme.textMuted }]}>{label}</Text>
-                <View style={styles.factValueRow}>{valueText(value)}</View>
+          {field(
+            'start',
+            t('mobile:task.start'),
+            t('mobile:edit.changeStart'),
+            valueText(start ?? t('mobile:edit.noStart'), start === null)
+          )}
+          {panel === 'start' && datePanel(task.startDate, t('mobile:edit.noStart'), setStart)}
+          {field(
+            'estimate',
+            t('mobile:task.estimate'),
+            t('mobile:edit.changeEstimate'),
+            valueText(
+              task.estimate === null ? t('mobile:edit.noEstimate') : String(task.estimate),
+              task.estimate === null
+            )
+          )}
+          {panel === 'estimate' && (
+            <View style={[styles.panel, divider]}>
+              <TextSender
+                theme={theme}
+                placeholder={t('mobile:task.estimate')}
+                button={t('mobile:edit.save')}
+                initial={task.estimate === null ? '' : String(task.estimate)}
+                keyboardType="decimal-pad"
+                autoFocus
+                onSend={(text) => {
+                  const typed = text.trim().replace(',', '.')
+                  const value = typed === '' ? null : Number(typed)
+                  if (!attempt(() => setTaskEstimate(db, task.id, value)))
+                    throw new Error('refused')
+                  setPanel(null)
+                }}
+              />
+            </View>
+          )}
+          {field(
+            'milestone',
+            t('mobile:task.milestone'),
+            t('mobile:edit.changeMilestone'),
+            valueText(task.milestoneName ?? t('mobile:edit.noMilestone'), task.milestoneId === null)
+          )}
+          {panel === 'milestone' && (
+            <View style={[styles.panel, styles.chips, divider]}>
+              <Chip
+                label={t('mobile:edit.noMilestone')}
+                theme={theme}
+                selected={task.milestoneId === null}
+                onPress={() => {
+                  if (task.milestoneId === null) setPanel(null)
+                  else if (attempt(() => setTaskMilestone(db, task.id, null))) setPanel(null)
+                }}
+              />
+              {milestones.map((milestone) => (
+                <Chip
+                  key={milestone.id}
+                  label={milestone.name}
+                  theme={theme}
+                  selected={milestone.id === task.milestoneId}
+                  onPress={() => {
+                    if (milestone.id === task.milestoneId) setPanel(null)
+                    else if (attempt(() => setTaskMilestone(db, task.id, milestone.id)))
+                      setPanel(null)
+                  }}
+                />
+              ))}
+            </View>
+          )}
+          {field(
+            'labels',
+            t('mobile:task.labels'),
+            t('mobile:edit.changeLabels'),
+            valueText(
+              task.labels.length === 0 ? t('mobile:edit.noLabels') : task.labels.join(', '),
+              task.labels.length === 0
+            )
+          )}
+          {panel === 'labels' && (
+            <View style={[styles.panel, divider]}>
+              <View style={styles.chips}>
+                {labelChoices.map((label) => {
+                  const on = task.labels.includes(label)
+                  return (
+                    <Chip
+                      key={label}
+                      label={label}
+                      theme={theme}
+                      selected={on}
+                      onPress={() =>
+                        attempt(() =>
+                          setTaskLabels(
+                            db,
+                            task.id,
+                            on
+                              ? task.labels.filter((name) => name !== label)
+                              : [...task.labels, label]
+                          )
+                        )
+                      }
+                    />
+                  )
+                })}
               </View>
-            ))}
+              <TextSender
+                theme={theme}
+                placeholder={t('mobile:edit.newLabel')}
+                button={t('mobile:edit.add')}
+                onSend={(text) => {
+                  if (!attempt(() => setTaskLabels(db, task.id, [...task.labels, text])))
+                    throw new Error('refused')
+                }}
+              />
+            </View>
+          )}
         </View>
 
         <View style={styles.page}>
-          <Text accessibilityRole="header" style={[styles.heading, { color: theme.textSecondary }]}>
-            {t('mobile:task.description')}
-          </Text>
-          {task.description.trim() ? (
+          <View style={styles.headingRow}>
+            <Text
+              accessibilityRole="header"
+              style={[styles.heading, styles.headingText, { color: theme.textSecondary }]}
+            >
+              {t('mobile:task.description')}
+            </Text>
+            {panel !== 'description' && (
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => toggle('description')}
+                hitSlop={SPACE.medium}
+              >
+                <Text style={[styles.headingAction, { color: theme.accent }]}>
+                  {t('mobile:edit.editDescription')}
+                </Text>
+              </Pressable>
+            )}
+          </View>
+          {panel === 'description' ? (
+            <>
+              <TextSender
+                theme={theme}
+                placeholder={t('mobile:task.description')}
+                button={t('mobile:edit.save')}
+                initial={task.description}
+                multiline
+                autoFocus
+                onSend={(text) => {
+                  if (!attempt(() => setTaskDescription(db, task.id, text)))
+                    throw new Error('refused')
+                  setPanel(null)
+                }}
+              />
+              <Chip
+                label={t('mobile:taskMenu.cancel')}
+                theme={theme}
+                onPress={() => setPanel(null)}
+              />
+            </>
+          ) : task.description.trim() ? (
             <Markdown theme={theme}>{task.description}</Markdown>
           ) : (
             <Text style={[styles.body, { color: theme.textMuted }]}>
@@ -546,6 +733,9 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS
   },
   heading: { fontSize: 13, fontWeight: '600', marginTop: SPACE.small },
+  headingRow: { flexDirection: 'row', alignItems: 'flex-end', gap: SPACE.medium },
+  headingText: { flex: 1 },
+  headingAction: { fontSize: 14, fontWeight: '600' },
   body: { fontSize: 15 },
   checkRow: { flexDirection: 'row', gap: SPACE.medium, alignItems: 'center', minHeight: 44 },
   box: {

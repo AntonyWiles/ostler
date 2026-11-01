@@ -169,10 +169,27 @@
       "not-open": "Only an open task can be closed as won't do.",
       "reason-too-long": "The reason is too long (500 characters at most).",
       "in-triage": "Accept the task from To triage on the PC first.",
-      "my-day-full": "My Day holds at most 200 tasks."
+      "my-day-full": "My Day holds at most 200 tasks.",
+      "description-too-long": "The description is too long (8,000 characters at most).",
+      "bad-priority": "That is not a priority.",
+      "bad-estimate": "Use a number from 0 to 1,000, or leave it empty.",
+      "bad-milestone": "That milestone is not in this project.",
+      "bad-label": "A task has at most 20 labels of 80 characters each.",
+      "bad-checklist-line": "A checklist has at most 30 items of 500 characters each, and each one different."
     },
     "previousMonth": "Previous month",
-    "nextMonth": "Next month"
+    "nextMonth": "Next month",
+    "changePriority": "Change priority",
+    "changeStart": "Start date",
+    "noStart": "No start date",
+    "changeEstimate": "Change estimate",
+    "noEstimate": "No estimate",
+    "changeMilestone": "Choose milestone",
+    "noMilestone": "No milestone",
+    "changeLabels": "Change labels",
+    "noLabels": "No labels",
+    "newLabel": "New label",
+    "editDescription": "Edit"
   },
   "taskMenu": {
     "addMyDay": "Add to My Day",

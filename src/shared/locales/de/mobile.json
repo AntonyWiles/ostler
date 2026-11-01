@@ -169,10 +169,27 @@
       "not-open": "Nur eine offene Aufgabe kann als „Wird nicht erledigt“ geschlossen werden.",
       "reason-too-long": "Der Grund ist zu lang (höchstens 500 Zeichen).",
       "in-triage": "Nimm die Aufgabe zuerst auf dem PC aus „Zu sichten“ an.",
-      "my-day-full": "Mein Tag fasst höchstens 200 Aufgaben."
+      "my-day-full": "Mein Tag fasst höchstens 200 Aufgaben.",
+      "description-too-long": "Die Beschreibung ist zu lang (höchstens 8.000 Zeichen).",
+      "bad-priority": "Das ist keine Priorität.",
+      "bad-estimate": "Gib eine Zahl von 0 bis 1.000 ein oder lass das Feld leer.",
+      "bad-milestone": "Dieser Meilenstein gehört nicht zu diesem Projekt.",
+      "bad-label": "Eine Aufgabe hat höchstens 20 Labels mit je 80 Zeichen.",
+      "bad-checklist-line": "Eine Checkliste hat höchstens 30 verschiedene Punkte mit je 500 Zeichen."
     },
     "previousMonth": "Vorheriger Monat",
-    "nextMonth": "Nächster Monat"
+    "nextMonth": "Nächster Monat",
+    "changePriority": "Priorität ändern",
+    "changeStart": "Startdatum",
+    "noStart": "Kein Startdatum",
+    "changeEstimate": "Schätzung ändern",
+    "noEstimate": "Keine Schätzung",
+    "changeMilestone": "Meilenstein wählen",
+    "noMilestone": "Kein Meilenstein",
+    "changeLabels": "Labels ändern",
+    "noLabels": "Keine Labels",
+    "newLabel": "Neues Label",
+    "editDescription": "Bearbeiten"
   },
   "taskMenu": {
     "addMyDay": "Zu Mein Tag hinzufügen",

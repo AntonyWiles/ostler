@@ -1,6 +1,6 @@
 /**
- * The phone's edits to a task: status, title, assignee, due date, a checklist tick, a comment and
- * a new task. Each one writes the rows the desktop's `PlanningService` writes for the same edit
+ * The phone's edits to a task: its fields (title, description, status, priority, assignee, dates,
+ * estimate, milestone, labels, checklist lines), a checklist tick, a comment and a new task. Each one writes the rows the desktop's `PlanningService` writes for the same edit
  * (the task row, `planning_field_changes`, `planning_status_history`, `planning_comments`,
  * `planning_checklist_checks`, `project_task_counters`, the order key), in one transaction, so a
  * task edited on the phone and the same task edited on the PC end up the same on both.
@@ -19,9 +19,13 @@ import { MAX_ORDER_KEY_LENGTH, orderKeyBetween, spacedOrderKeys } from '@shared/
 import { continuesSitting } from '@shared/planning/sitting'
 import { MAX_COMMENT_LENGTH } from '@shared/ostler-api/activity-types'
 import { MAX_MY_DAY_TASKS } from '@shared/ostler-api/home-types'
-import { MAX_RESOLUTION_REASON_LENGTH } from '@shared/ostler-api/planning-types'
+import {
+  MAX_DESCRIPTION_VERSIONS,
+  MAX_RESOLUTION_REASON_LENGTH
+} from '@shared/ostler-api/planning-types'
 import { TASK_STATUSES } from '@shared/task-labels'
-import type { PlanningWorkItemStatus } from '@shared/ostler-api'
+import type { PlanningPriority, PlanningWorkItemStatus } from '@shared/ostler-api'
+import { MAX_ESTIMATE } from '@shared/ostler-api/people-types'
 import { takeTaskNumber } from '../../../electron/services/sync/task-numbers'
 import {
   closeTaskReminders,
@@ -62,6 +66,12 @@ export type EditRefusal =
   | 'reason-too-long'
   | 'in-triage'
   | 'my-day-full'
+  | 'description-too-long'
+  | 'bad-priority'
+  | 'bad-estimate'
+  | 'bad-milestone'
+  | 'bad-label'
+  | 'bad-checklist-line'
 
 /** An edit that was refused; nothing was written. `reason` is what the screen shows. */
 export class EditRefused extends Error {
@@ -82,7 +92,11 @@ interface TaskRow {
   id: string
   project_id: string
   title: string
+  description: string
   status: PlanningWorkItemStatus
+  priority: PlanningPriority
+  labels: string
+  estimate: number | null
   assignee_id: string | null
   target_date: string | null
   start_date: string | null
@@ -141,11 +155,16 @@ function recordChange(
   )
 }
 
-/** A title edited again within the same sitting by the same person is one history row. */
-function recordTitle(
+/**
+ * A title, description or checklist edited again within the same sitting by the same person is
+ * one history row (`PlanningActivity.recordEdit`).
+ */
+function recordSitting(
   db: EditDb,
   task: TaskRow,
-  to: string,
+  field: 'title' | 'description' | 'checklist',
+  from: unknown,
+  to: unknown,
   personId: string | null,
   at: number
 ): void {
@@ -155,35 +174,185 @@ function recordTitle(
        WHERE work_item_id = ? AND field = ? AND actor_kind = ? AND actor_person_id IS ?
        ORDER BY at DESC, id DESC LIMIT 1`
     )
-    .get(task.id, 'title', 'human', personId) as { id: number; at: number } | undefined
+    .get(task.id, field, 'human', personId) as { id: number; at: number } | undefined
   if (sitting && continuesSitting(sitting.at, at)) {
     db.prepare('UPDATE planning_field_changes SET to_value = ?, at = ? WHERE id = ?').run(
-      JSON.stringify(to),
+      to === undefined ? null : JSON.stringify(to),
       at,
       sitting.id
     )
     return
   }
-  recordChange(db, task, 'title', task.title, to, personId, at)
+  recordChange(db, task, field, from, to, personId, at)
+}
+
+/**
+ * Keeps the description's text from before this sitting of changes
+ * (`PlanningDescriptionVersions.keep`): a change in the same sitting as the newest version only
+ * moves its end.
+ */
+function keepDescriptionVersion(
+  db: EditDb,
+  task: TaskRow,
+  personId: string | null,
+  at: number
+): void {
+  const last = db
+    .prepare(
+      `SELECT id, actor_kind, actor_person_id, rule_name, ended_at
+       FROM planning_description_versions
+       WHERE work_item_id = ? ORDER BY ended_at DESC, id DESC LIMIT 1`
+    )
+    .get(task.id) as
+    | {
+        id: number
+        actor_kind: string
+        actor_person_id: string | null
+        rule_name: string | null
+        ended_at: number
+      }
+    | undefined
+  if (
+    last &&
+    last.actor_kind === 'human' &&
+    last.actor_person_id === personId &&
+    last.rule_name === null &&
+    continuesSitting(last.ended_at, at)
+  ) {
+    db.prepare('UPDATE planning_description_versions SET ended_at = ? WHERE id = ?').run(
+      at,
+      last.id
+    )
+    return
+  }
+  db.prepare(
+    `INSERT INTO planning_description_versions
+       (project_id, work_item_id, text, actor_kind, actor_person_id, rule_name, started_at, ended_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+  ).run(task.project_id, task.id, task.description, 'human', personId, null, at, at)
+  db.prepare(
+    `DELETE FROM planning_description_versions
+     WHERE work_item_id = ? AND id NOT IN (
+       SELECT id FROM planning_description_versions
+       WHERE work_item_id = ? ORDER BY ended_at DESC, id DESC LIMIT ?
+     )`
+  ).run(task.id, task.id, MAX_DESCRIPTION_VERSIONS)
+}
+
+/**
+ * Moves the ticks and details of renamed checklist lines to their new text and drops those of
+ * removed lines (`PlanningService.renameChecks`, `deleteChecksNotIn`, `PlanningChecklistDetails`).
+ */
+function carryChecklist(
+  db: EditDb,
+  taskId: string,
+  checklist: string[],
+  renamed: ReadonlyMap<string, string>
+): void {
+  const moves = [...renamed].filter(([from, to]) => from !== to && checklist.includes(to))
+  const keep = new Set(checklist)
+  // A placeholder no line can hold: lines are trimmed, never start with NUL.
+  const hold = (index: number) => `\u0000rename:${index}`
+  for (const table of ['planning_checklist_checks', 'planning_checklist_details']) {
+    const move = db.prepare(
+      `UPDATE OR IGNORE ${table} SET criterion_text = ? WHERE work_item_id = ? AND criterion_text = ?`
+    )
+    // Two passes through the placeholder, so a swap of two texts cannot collide.
+    moves.forEach(([from], index) => move.run(hold(index), taskId, from))
+    moves.forEach(([, to], index) => move.run(to, taskId, hold(index)))
+    const rows = db
+      .prepare(`SELECT criterion_text FROM ${table} WHERE work_item_id = ?`)
+      .all(taskId) as { criterion_text: string }[]
+    const remove = db.prepare(`DELETE FROM ${table} WHERE work_item_id = ? AND criterion_text = ?`)
+    for (const row of rows) {
+      if (!keep.has(row.criterion_text)) remove.run(taskId, row.criterion_text)
+    }
+  }
 }
 
 interface TaskChanges {
   title?: string
+  description?: string
   status?: PlanningWorkItemStatus
+  priority?: PlanningPriority
   assigneeId?: string | null
+  startDate?: string | null
   targetDate?: string | null
+  estimate?: number | null
+  milestoneId?: string | null
+  labels?: string[]
+  checklist?: string[]
 }
 
-/** The part of `PlanningService.updateWorkItem` the phone does, for the four fields it edits. */
-function updateTask(db: EditDb, taskId: string, changes: TaskChanges, options: EditOptions): void {
+export const TASK_PRIORITIES: readonly PlanningPriority[] = ['low', 'medium', 'high', 'critical']
+const MAX_DESCRIPTION = 8000
+const MAX_LABELS = 20
+const MAX_LABEL = 80
+export const MAX_CHECKLIST_LINES = 30
+const MAX_CHECKLIST_LINE = 500
+
+function jsonList(value: string): string[] {
+  try {
+    const parsed: unknown = JSON.parse(value)
+    return Array.isArray(parsed)
+      ? parsed.filter((item): item is string => typeof item === 'string')
+      : []
+  } catch {
+    return []
+  }
+}
+
+function validDate(value: string | null): string | null {
+  if (value === null) return null
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value) || !isIsoDate(value)) {
+    throw new EditRefused('bad-date')
+  }
+  return value
+}
+
+/** Trimmed, non-empty and unique, as the PC's `textList` keeps a list of texts. */
+function validList(
+  values: string[],
+  maximumItems: number,
+  maximumLength: number,
+  refusal: EditRefusal
+): string[] {
+  if (!Array.isArray(values)) throw new EditRefused(refusal)
+  const list = values.map((value) => (typeof value === 'string' ? value.trim() : ''))
+  if (list.some((value) => !value || value.length > maximumLength)) throw new EditRefused(refusal)
+  const unique = [...new Set(list)]
+  if (unique.length > maximumItems) throw new EditRefused(refusal)
+  return unique
+}
+
+function sameSet(a: string[], b: string[]): boolean {
+  return a.length === b.length && a.every((item) => b.includes(item))
+}
+
+/** The part of `PlanningService.updateWorkItem` the phone does, for the fields it edits. */
+function updateTask(
+  db: EditDb,
+  taskId: string,
+  changes: TaskChanges,
+  options: EditOptions,
+  renamed: ReadonlyMap<string, string> = new Map()
+): void {
   guarded(() => {
     const current = requireTask(db, taskId)
     const personId = options.personId ?? null
     const at = options.now ?? Date.now()
 
     const title = changes.title === undefined ? current.title : validTitle(changes.title)
+    if (changes.description !== undefined && typeof changes.description !== 'string') {
+      throw new EditRefused('description-too-long')
+    }
+    const description =
+      changes.description === undefined ? current.description : changes.description.trim()
+    if (description.length > MAX_DESCRIPTION) throw new EditRefused('description-too-long')
     const status = changes.status === undefined ? current.status : changes.status
     if (!TASK_STATUSES.includes(status)) throw new EditRefused('bad-status')
+    const priority = changes.priority === undefined ? current.priority : changes.priority
+    if (!TASK_PRIORITIES.includes(priority)) throw new EditRefused('bad-priority')
     const assigneeId = changes.assigneeId === undefined ? current.assignee_id : changes.assigneeId
     if (assigneeId !== null && assigneeId !== current.assignee_id) {
       const person = db
@@ -193,16 +362,48 @@ function updateTask(db: EditDb, taskId: string, changes: TaskChanges, options: E
         throw new EditRefused('bad-person')
       }
     }
-    const targetDate = changes.targetDate === undefined ? current.target_date : changes.targetDate
-    if (targetDate !== null) {
-      if (typeof targetDate !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(targetDate)) {
-        throw new EditRefused('bad-date')
-      }
-      if (!isIsoDate(targetDate)) throw new EditRefused('bad-date')
-    }
-    if (current.start_date && targetDate && compareIsoDates(current.start_date, targetDate) > 0) {
+    const startDate =
+      changes.startDate === undefined ? current.start_date : validDate(changes.startDate)
+    const targetDate =
+      changes.targetDate === undefined ? current.target_date : validDate(changes.targetDate)
+    if (startDate && targetDate && compareIsoDates(startDate, targetDate) > 0) {
       throw new EditRefused('start-after-due')
     }
+    const estimate = changes.estimate === undefined ? current.estimate : changes.estimate
+    if (
+      estimate !== null &&
+      (typeof estimate !== 'number' ||
+        !Number.isFinite(estimate) ||
+        estimate < 0 ||
+        estimate > MAX_ESTIMATE)
+    ) {
+      throw new EditRefused('bad-estimate')
+    }
+    const milestoneId =
+      changes.milestoneId === undefined ? current.milestone_id : changes.milestoneId
+    if (milestoneId !== null && milestoneId !== current.milestone_id) {
+      const milestone = db
+        .prepare('SELECT project_id FROM planning_milestones WHERE id = ?')
+        .get(milestoneId) as { project_id: string } | undefined
+      if (!milestone || milestone.project_id !== current.project_id) {
+        throw new EditRefused('bad-milestone')
+      }
+    }
+    const labelsBefore = jsonList(current.labels)
+    const labels =
+      changes.labels === undefined
+        ? labelsBefore
+        : validList(changes.labels, MAX_LABELS, MAX_LABEL, 'bad-label')
+    const checklistBefore = jsonList(current.acceptance_criteria)
+    const checklist =
+      changes.checklist === undefined
+        ? checklistBefore
+        : validList(
+            changes.checklist,
+            MAX_CHECKLIST_LINES,
+            MAX_CHECKLIST_LINE,
+            'bad-checklist-line'
+          )
     const statusChanged = status !== current.status
     if (
       statusChanged &&
@@ -217,14 +418,39 @@ function updateTask(db: EditDb, taskId: string, changes: TaskChanges, options: E
       const columnId = statusChanged ? null : current.column_id
       db.prepare(
         `UPDATE planning_work_items
-         SET title = ?, status = ?, assignee_id = ?, target_date = ?, column_id = ?, updated_at = ?
+         SET title = ?, description = ?, status = ?, priority = ?, assignee_id = ?, start_date = ?,
+             target_date = ?, estimate = ?, milestone_id = ?, labels = ?, acceptance_criteria = ?,
+             column_id = ?, updated_at = ?
          WHERE id = ?`
-      ).run(title, status, assigneeId, targetDate, columnId, at, taskId)
+      ).run(
+        title,
+        description,
+        status,
+        priority,
+        assigneeId,
+        startDate,
+        targetDate,
+        estimate,
+        milestoneId,
+        JSON.stringify(labels),
+        JSON.stringify(checklist),
+        columnId,
+        at,
+        taskId
+      )
+      if (changes.checklist !== undefined) carryChecklist(db, taskId, checklist, renamed)
 
       // `PlanningActivity.recordUpdate`, for these fields, in its order.
-      if (title !== current.title) recordTitle(db, current, title, personId, at)
+      if (title !== current.title)
+        recordSitting(db, current, 'title', current.title, title, personId, at)
+      if (description !== current.description)
+        recordSitting(db, current, 'description', undefined, undefined, personId, at)
+      if (priority !== current.priority)
+        recordChange(db, current, 'priority', current.priority, priority, personId, at)
       if (assigneeId !== current.assignee_id)
         recordChange(db, current, 'assignee', current.assignee_id, assigneeId, personId, at)
+      if (startDate !== current.start_date)
+        recordChange(db, current, 'startDate', current.start_date, startDate, personId, at)
       if (targetDate !== current.target_date) {
         recordChange(db, current, 'dueDate', current.target_date, targetDate, personId, at)
         // A due reminder planned for the old date no longer fits (`PlanningReminders.syncTask`);
@@ -233,6 +459,15 @@ function updateTask(db: EditDb, taskId: string, changes: TaskChanges, options: E
           "DELETE FROM reminders WHERE work_item_id = ? AND kind = 'due' AND delivered_at IS NULL"
         ).run(taskId)
       }
+      if (estimate !== current.estimate)
+        recordChange(db, current, 'estimate', current.estimate, estimate, personId, at)
+      if (milestoneId !== current.milestone_id)
+        recordChange(db, current, 'milestone', current.milestone_id, milestoneId, personId, at)
+      if (!sameSet(labelsBefore, labels))
+        recordChange(db, current, 'labels', labelsBefore, labels, personId, at)
+      if (!sameSet(checklistBefore, checklist))
+        recordSitting(db, current, 'checklist', checklistBefore, checklist, personId, at)
+      if (description !== current.description) keepDescriptionVersion(db, current, personId, at)
 
       if (statusChanged) {
         insertStatusHistory(
@@ -244,7 +479,7 @@ function updateTask(db: EditDb, taskId: string, changes: TaskChanges, options: E
           null,
           at
         )
-        startMilestoneIfPlanned(db, current.milestone_id, status, at)
+        startMilestoneIfPlanned(db, milestoneId, status, at)
         // A task that is no longer open keeps no pending reminder (`PlanningReminders.syncTask`).
         if (status === 'done') closeTaskReminders(db, taskId, at)
       }
@@ -296,6 +531,80 @@ export function setTaskDueDate(
   options: EditOptions = {}
 ): void {
   updateTask(db, taskId, { targetDate: date }, options)
+}
+
+/** Sets or clears a task's start date, `YYYY-MM-DD` (`updateWorkItem`, `startDate`). */
+export function setTaskStartDate(
+  db: EditDb,
+  taskId: string,
+  date: string | null,
+  options: EditOptions = {}
+): void {
+  updateTask(db, taskId, { startDate: date }, options)
+}
+
+/** Replaces a task's description, Markdown text (`updateWorkItem`, `description`). */
+export function setTaskDescription(
+  db: EditDb,
+  taskId: string,
+  description: string,
+  options: EditOptions = {}
+): void {
+  updateTask(db, taskId, { description }, options)
+}
+
+/** Sets a task's priority (`updateWorkItem`, `priority`). */
+export function setTaskPriority(
+  db: EditDb,
+  taskId: string,
+  priority: PlanningPriority,
+  options: EditOptions = {}
+): void {
+  updateTask(db, taskId, { priority }, options)
+}
+
+/** Sets or clears a task's estimate, in the project's estimate unit (`updateWorkItem`, `estimate`). */
+export function setTaskEstimate(
+  db: EditDb,
+  taskId: string,
+  estimate: number | null,
+  options: EditOptions = {}
+): void {
+  updateTask(db, taskId, { estimate }, options)
+}
+
+/** Puts a task in one of its project's milestones, or in none (`updateWorkItem`, `milestoneId`). */
+export function setTaskMilestone(
+  db: EditDb,
+  taskId: string,
+  milestoneId: string | null,
+  options: EditOptions = {}
+): void {
+  updateTask(db, taskId, { milestoneId }, options)
+}
+
+/** Replaces a task's labels (`updateWorkItem`, `labels`). */
+export function setTaskLabels(
+  db: EditDb,
+  taskId: string,
+  labels: string[],
+  options: EditOptions = {}
+): void {
+  updateTask(db, taskId, { labels }, options)
+}
+
+/**
+ * Replaces a task's checklist lines (`updateWorkItem`, `acceptanceCriteria`). `renamed` maps a
+ * line's old text to its new one so its tick and details move with it; a removed line's go.
+ */
+export function setTaskChecklist(
+  db: EditDb,
+  taskId: string,
+  lines: string[],
+  renamed: ReadonlyMap<string, string> = new Map(),
+  options: EditOptions = {}
+): void {
+  updateTask(db, taskId, { checklist: lines }, options, renamed)
 }
 
 /** Ticks or unticks a checklist item (`PlanningService.setChecklistItemChecked`). */

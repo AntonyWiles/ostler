@@ -169,10 +169,27 @@
       "not-open": "Seule une tâche ouverte peut être fermée comme « Ne sera pas fait ».",
       "reason-too-long": "La raison est trop longue (500 caractères au maximum).",
       "in-triage": "Acceptez d’abord la tâche depuis « À trier » sur le PC.",
-      "my-day-full": "Ma journée contient au plus 200 tâches."
+      "my-day-full": "Ma journée contient au plus 200 tâches.",
+      "description-too-long": "La description est trop longue (8 000 caractères au maximum).",
+      "bad-priority": "Ce n’est pas une priorité.",
+      "bad-estimate": "Saisissez un nombre de 0 à 1 000, ou laissez vide.",
+      "bad-milestone": "Ce jalon n’appartient pas à ce projet.",
+      "bad-label": "Une tâche a au plus 20 étiquettes de 80 caractères chacune.",
+      "bad-checklist-line": "Une liste de contrôle a au plus 30 éléments différents de 500 caractères chacun."
     },
     "previousMonth": "Mois précédent",
-    "nextMonth": "Mois suivant"
+    "nextMonth": "Mois suivant",
+    "changePriority": "Changer la priorité",
+    "changeStart": "Date de début",
+    "noStart": "Pas de date de début",
+    "changeEstimate": "Changer l’estimation",
+    "noEstimate": "Pas d’estimation",
+    "changeMilestone": "Choisir le jalon",
+    "noMilestone": "Aucun jalon",
+    "changeLabels": "Changer les étiquettes",
+    "noLabels": "Aucune étiquette",
+    "newLabel": "Nouvelle étiquette",
+    "editDescription": "Modifier"
   },
   "taskMenu": {
     "addMyDay": "Ajouter à Ma journée",

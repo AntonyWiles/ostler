@@ -169,10 +169,27 @@
       "not-open": "Solo una tarea abierta se puede cerrar como «No se hará».",
       "reason-too-long": "El motivo es demasiado largo (500 caracteres como máximo).",
       "in-triage": "Primero acepta la tarea desde «Por clasificar» en el PC.",
-      "my-day-full": "Mi día admite como máximo 200 tareas."
+      "my-day-full": "Mi día admite como máximo 200 tareas.",
+      "description-too-long": "La descripción es demasiado larga (8000 caracteres como máximo).",
+      "bad-priority": "Esa no es una prioridad.",
+      "bad-estimate": "Escribe un número de 0 a 1000 o déjalo vacío.",
+      "bad-milestone": "Ese hito no es de este proyecto.",
+      "bad-label": "Una tarea tiene como máximo 20 etiquetas de 80 caracteres cada una.",
+      "bad-checklist-line": "Una lista de comprobación tiene como máximo 30 elementos distintos de 500 caracteres cada uno."
     },
     "previousMonth": "Mes anterior",
-    "nextMonth": "Mes siguiente"
+    "nextMonth": "Mes siguiente",
+    "changePriority": "Cambiar prioridad",
+    "changeStart": "Fecha de inicio",
+    "noStart": "Sin fecha de inicio",
+    "changeEstimate": "Cambiar estimación",
+    "noEstimate": "Sin estimación",
+    "changeMilestone": "Elegir hito",
+    "noMilestone": "Sin hito",
+    "changeLabels": "Cambiar etiquetas",
+    "noLabels": "Sin etiquetas",
+    "newLabel": "Etiqueta nueva",
+    "editDescription": "Editar"
   },
   "taskMenu": {
     "addMyDay": "Añadir a Mi día",

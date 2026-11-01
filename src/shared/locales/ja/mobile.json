@@ -169,10 +169,27 @@
       "not-open": "「対応しない」として閉じられるのは未完了のタスクだけです。",
       "reason-too-long": "理由が長すぎます（500 文字まで）。",
       "in-triage": "先にPCの「仕分け待ち」でタスクを受け入れてください。",
-      "my-day-full": "マイデイに入れられるタスクは 200 件までです。"
+      "my-day-full": "マイデイに入れられるタスクは 200 件までです。",
+      "description-too-long": "説明が長すぎます（最大 8,000 文字）。",
+      "bad-priority": "優先度ではありません。",
+      "bad-estimate": "0〜1,000 の数値を入力するか、空欄にしてください。",
+      "bad-milestone": "そのマイルストーンはこのプロジェクトにありません。",
+      "bad-label": "ラベルは 1 つのタスクに最大 20 個、各 80 文字までです。",
+      "bad-checklist-line": "チェックリストは異なる項目を最大 30 個、各 500 文字まで持てます。"
     },
     "previousMonth": "前の月",
-    "nextMonth": "次の月"
+    "nextMonth": "次の月",
+    "changePriority": "優先度を変更",
+    "changeStart": "開始日",
+    "noStart": "開始日なし",
+    "changeEstimate": "見積もりを変更",
+    "noEstimate": "見積もりなし",
+    "changeMilestone": "マイルストーンを選択",
+    "noMilestone": "マイルストーンなし",
+    "changeLabels": "ラベルを変更",
+    "noLabels": "ラベルなし",
+    "newLabel": "新しいラベル",
+    "editDescription": "編集"
   },
   "taskMenu": {
     "addMyDay": "マイデイに追加",

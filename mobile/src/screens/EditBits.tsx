@@ -1,5 +1,12 @@
 import { useState } from 'react'
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  type KeyboardTypeOptions
+} from 'react-native'
 import { t } from '@shared/i18n/index'
 import { EditRefused } from '../data/edits'
 import { RADIUS, SPACE, type Theme } from '../theme'
@@ -51,6 +58,7 @@ export function TextSender({
   initial = '',
   multiline,
   autoFocus,
+  keyboardType,
   onSend
 }: {
   theme: Theme
@@ -59,6 +67,7 @@ export function TextSender({
   initial?: string
   multiline?: boolean
   autoFocus?: boolean
+  keyboardType?: KeyboardTypeOptions
   /** Sends the text; throws to keep what was typed. */
   onSend: (text: string) => void
 }) {
@@ -81,6 +90,7 @@ export function TextSender({
         onChangeText={setText}
         multiline={multiline}
         autoFocus={autoFocus}
+        keyboardType={keyboardType}
         returnKeyType={multiline ? 'default' : 'done'}
         onSubmitEditing={multiline ? undefined : send}
         style={[

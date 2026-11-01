@@ -169,10 +169,27 @@
       "not-open": "Solo un’attività aperta può essere chiusa come «Non verrà fatta».",
       "reason-too-long": "Il motivo è troppo lungo (al massimo 500 caratteri).",
       "in-triage": "Prima accetta l’attività da «Da smistare» sul PC.",
-      "my-day-full": "La mia giornata contiene al massimo 200 attività."
+      "my-day-full": "La mia giornata contiene al massimo 200 attività.",
+      "description-too-long": "La descrizione è troppo lunga (al massimo 8.000 caratteri).",
+      "bad-priority": "Questa non è una priorità.",
+      "bad-estimate": "Scrivi un numero da 0 a 1.000 o lascia vuoto.",
+      "bad-milestone": "Questa tappa non è di questo progetto.",
+      "bad-label": "Un'attività ha al massimo 20 etichette di 80 caratteri ciascuna.",
+      "bad-checklist-line": "Una checklist ha al massimo 30 voci diverse di 500 caratteri ciascuna."
     },
     "previousMonth": "Mese precedente",
-    "nextMonth": "Mese successivo"
+    "nextMonth": "Mese successivo",
+    "changePriority": "Cambia priorità",
+    "changeStart": "Data di inizio",
+    "noStart": "Nessuna data di inizio",
+    "changeEstimate": "Cambia stima",
+    "noEstimate": "Nessuna stima",
+    "changeMilestone": "Scegli tappa",
+    "noMilestone": "Nessuna tappa",
+    "changeLabels": "Cambia etichette",
+    "noLabels": "Nessuna etichetta",
+    "newLabel": "Nuova etichetta",
+    "editDescription": "Modifica"
   },
   "taskMenu": {
     "addMyDay": "Aggiungi a La mia giornata",

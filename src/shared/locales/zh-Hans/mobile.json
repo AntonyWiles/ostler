@@ -169,10 +169,27 @@
       "not-open": "只有未完成的任务才能以“不做”关闭。",
       "reason-too-long": "原因太长（最多 500 个字符）。",
       "in-triage": "请先在电脑上的“待分拣”中接受该任务。",
-      "my-day-full": "我的一天最多容纳 200 个任务。"
+      "my-day-full": "我的一天最多容纳 200 个任务。",
+      "description-too-long": "描述太长（最多 8,000 个字符）。",
+      "bad-priority": "这不是一个优先级。",
+      "bad-estimate": "请输入 0 到 1,000 之间的数字，或留空。",
+      "bad-milestone": "该里程碑不属于此项目。",
+      "bad-label": "一个任务最多有 20 个标签，每个最多 80 个字符。",
+      "bad-checklist-line": "清单最多有 30 个不同的项目，每项最多 500 个字符。"
     },
     "previousMonth": "上个月",
-    "nextMonth": "下个月"
+    "nextMonth": "下个月",
+    "changePriority": "更改优先级",
+    "changeStart": "开始日期",
+    "noStart": "无开始日期",
+    "changeEstimate": "更改估算",
+    "noEstimate": "无估算",
+    "changeMilestone": "选择里程碑",
+    "noMilestone": "无里程碑",
+    "changeLabels": "更改标签",
+    "noLabels": "无标签",
+    "newLabel": "新标签",
+    "editDescription": "编辑"
   },
   "taskMenu": {
     "addMyDay": "添加到我的一天",

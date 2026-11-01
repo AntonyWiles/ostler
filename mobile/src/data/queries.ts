@@ -186,6 +186,7 @@ export interface TaskDetail extends TaskSummary {
   labels: string[]
   startDate: string | null
   estimate: number | null
+  milestoneId: string | null
   milestoneName: string | null
   assigneeName: string | null
   archived: boolean
@@ -267,6 +268,7 @@ export function task(db: QueryDb, id: string): TaskDetail | null {
     labels: stringList(row.labels),
     startDate: row.start_date,
     estimate: row.estimate,
+    milestoneId: row.milestone_id,
     milestoneName: named('SELECT name FROM planning_milestones WHERE id = ?', row.milestone_id),
     assigneeName: named('SELECT name FROM people WHERE id = ?', row.assignee_id),
     archived: row.archived_at !== null,
@@ -532,4 +534,35 @@ export function assignablePeople(db: QueryDb, projectId: string): PersonChoice[]
        ORDER BY name COLLATE NOCASE, id`
     )
     .all(projectId) as PersonChoice[]
+}
+
+export interface MilestoneChoice {
+  id: string
+  name: string
+}
+
+/** The milestones a task of the project can go in, soonest target first, then by name. */
+export function milestoneChoices(db: QueryDb, projectId: string): MilestoneChoice[] {
+  return db
+    .prepare(
+      `SELECT id, name FROM planning_milestones WHERE project_id = ?
+       ORDER BY target_date IS NULL, target_date, name COLLATE NOCASE, id`
+    )
+    .all(projectId) as MilestoneChoice[]
+}
+
+/**
+ * The labels the project's kept tasks use, by name (`PlanningService.listProjectLabels`, without
+ * colours), so a label is picked rather than typed again.
+ */
+export function projectLabels(db: QueryDb, projectId: string): string[] {
+  const rows = db
+    .prepare(
+      `SELECT labels FROM planning_work_items
+       WHERE project_id = ? AND deleted_at IS NULL AND labels <> '[]'`
+    )
+    .all(projectId) as { labels: string }[]
+  const names = new Set<string>()
+  for (const row of rows) for (const label of stringList(row.labels)) names.add(label)
+  return [...names].sort((a, b) => a.localeCompare(b))
 }
