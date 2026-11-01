@@ -189,7 +189,14 @@
     "changeLabels": "更改标签",
     "noLabels": "无标签",
     "newLabel": "新标签",
-    "editDescription": "编辑"
+    "editDescription": "编辑",
+    "addChecklistItem": "添加清单项",
+    "checklistItem": "清单项",
+    "editChecklist": "编辑清单",
+    "moveUp": "上移",
+    "moveDown": "下移",
+    "removeItem": "移除",
+    "done": "完成"
   },
   "taskMenu": {
     "addMyDay": "添加到我的一天",

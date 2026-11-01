@@ -16,6 +16,7 @@ import {
   renameTask,
   setChecklistTick,
   setTaskAssignee,
+  setTaskChecklist,
   setTaskDescription,
   setTaskDueDate,
   setTaskEstimate,
@@ -63,6 +64,7 @@ type Panel =
   | 'estimate'
   | 'milestone'
   | 'labels'
+  | 'checklist'
   | 'wontDo'
   | null
 
@@ -74,6 +76,8 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited }: Props) {
   const theme = useTheme()
   const [panel, setPanel] = useState<Panel>(null)
   const [error, setError] = useState<string | null>(null)
+  /** The checklist line being renamed, by its place in the list. */
+  const [renaming, setRenaming] = useState<number | null>(null)
   const task = useMemo(() => (version >= 0 ? readTask(db, taskId) : null), [db, taskId, version])
 
   const people = useMemo(
@@ -187,7 +191,7 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited }: Props) {
   )
   /** A field that opens its choices in place, under it, when tapped. */
   const field = (
-    name: Exclude<Panel, 'title' | 'description' | 'wontDo' | null>,
+    name: Exclude<Panel, 'title' | 'description' | 'checklist' | 'wontDo' | null>,
     label: string,
     hint: string,
     value: ReactNode
@@ -206,6 +210,35 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited }: Props) {
       <Text style={[styles.factLabel, { color: theme.textMuted }]}>{label}</Text>
       <View style={styles.factValueRow}>{value}</View>
       <Text style={[styles.chevron, { color: theme.textMuted }]}>{panel === name ? '▴' : '▾'}</Text>
+    </Pressable>
+  )
+  const lines = task.checklist.map((line) => line.text)
+  /** Saves the checklist's lines; `renamed` maps an old text to its new one. */
+  const saveChecklist = (next: string[], renamed?: ReadonlyMap<string, string>) =>
+    attempt(() => setTaskChecklist(db, task.id, next, renamed))
+  const moveLine = (from: number, to: number) => {
+    const next = [...lines]
+    const [line] = next.splice(from, 1)
+    next.splice(to, 0, line)
+    saveChecklist(next)
+  }
+  /** A square button with a glyph, for moving and removing a checklist line. */
+  const lineButton = (glyph: string, label: string, onPress: () => void, disabled = false) => (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ disabled }}
+      disabled={disabled}
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.lineButton,
+        { borderColor: theme.border },
+        pressed && { backgroundColor: theme.surfaceSunken }
+      ]}
+    >
+      <Text style={[styles.lineGlyph, { color: disabled ? theme.border : theme.textSecondary }]}>
+        {glyph}
+      </Text>
     </Pressable>
   )
   /** Quick dates and a calendar, for the due date and the start date. */
@@ -582,51 +615,123 @@ export function TaskDetail({ db, taskId, version, onBack, onEdited }: Props) {
             </Text>
           )}
 
-          {task.checklist.length > 0 && (
-            <>
-              <Text
-                accessibilityRole="header"
-                style={[styles.heading, { color: theme.textSecondary }]}
+          <View style={styles.headingRow}>
+            <Text
+              accessibilityRole="header"
+              style={[styles.heading, styles.headingText, { color: theme.textSecondary }]}
+            >
+              {t('mobile:task.checklist')}
+            </Text>
+            {lines.length > 0 && (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={
+                  panel === 'checklist' ? t('mobile:edit.done') : t('mobile:edit.editChecklist')
+                }
+                onPress={() => {
+                  setRenaming(null)
+                  toggle('checklist')
+                }}
+                hitSlop={SPACE.medium}
               >
-                {t('mobile:task.checklist')}
-              </Text>
-              {task.checklist.map((line, index) => (
-                <Pressable
-                  key={`${index}:${line.text}`}
-                  accessibilityRole="checkbox"
-                  accessibilityState={{ checked: line.checked }}
-                  accessibilityLabel={line.text}
-                  onPress={() =>
-                    attempt(() => setChecklistTick(db, task.id, line.text, !line.checked))
-                  }
-                  style={styles.checkRow}
-                >
-                  <View
-                    style={[
-                      styles.box,
-                      line.checked
-                        ? { backgroundColor: theme.accent, borderColor: theme.accent }
-                        : { backgroundColor: theme.surface, borderColor: theme.borderStrong }
-                    ]}
-                  >
-                    {line.checked && (
-                      <Text style={[styles.tick, { color: theme.accentContrast }]}>✓</Text>
-                    )}
+                <Text style={[styles.headingAction, { color: theme.accent }]}>
+                  {panel === 'checklist' ? t('mobile:edit.done') : t('mobile:edit.editDescription')}
+                </Text>
+              </Pressable>
+            )}
+          </View>
+          {panel === 'checklist' &&
+            task.checklist.map((line, index) => (
+              <View key={`${index}:${line.text}`} style={styles.checkRow}>
+                {renaming === index ? (
+                  <View style={styles.checkText}>
+                    <TextSender
+                      theme={theme}
+                      placeholder={t('mobile:edit.checklistItem')}
+                      button={t('mobile:edit.save')}
+                      initial={line.text}
+                      autoFocus
+                      onSend={(text) => {
+                        const next = [...lines]
+                        next[index] = text
+                        if (!saveChecklist(next, new Map([[line.text, text.trim()]])))
+                          throw new Error('refused')
+                        setRenaming(null)
+                      }}
+                    />
                   </View>
-                  <Text
-                    style={[
-                      styles.body,
-                      styles.checkText,
-                      { color: line.checked ? theme.textMuted : theme.text },
-                      line.checked && styles.struck
-                    ]}
+                ) : (
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityHint={t('mobile:edit.rename')}
+                    onPress={() => setRenaming(index)}
+                    style={styles.checkText}
                   >
-                    {line.text}
-                  </Text>
-                </Pressable>
-              ))}
-            </>
-          )}
+                    <Text style={[styles.body, { color: theme.text }]}>{line.text}</Text>
+                  </Pressable>
+                )}
+                {lineButton(
+                  '↑',
+                  t('mobile:edit.moveUp'),
+                  () => moveLine(index, index - 1),
+                  index === 0
+                )}
+                {lineButton(
+                  '↓',
+                  t('mobile:edit.moveDown'),
+                  () => moveLine(index, index + 1),
+                  index === lines.length - 1
+                )}
+                {lineButton('✕', t('mobile:edit.removeItem'), () => {
+                  setRenaming(null)
+                  saveChecklist(lines.filter((_, at) => at !== index))
+                })}
+              </View>
+            ))}
+          {panel !== 'checklist' &&
+            task.checklist.map((line, index) => (
+              <Pressable
+                key={`${index}:${line.text}`}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: line.checked }}
+                accessibilityLabel={line.text}
+                onPress={() =>
+                  attempt(() => setChecklistTick(db, task.id, line.text, !line.checked))
+                }
+                style={styles.checkRow}
+              >
+                <View
+                  style={[
+                    styles.box,
+                    line.checked
+                      ? { backgroundColor: theme.accent, borderColor: theme.accent }
+                      : { backgroundColor: theme.surface, borderColor: theme.borderStrong }
+                  ]}
+                >
+                  {line.checked && (
+                    <Text style={[styles.tick, { color: theme.accentContrast }]}>✓</Text>
+                  )}
+                </View>
+                <Text
+                  style={[
+                    styles.body,
+                    styles.checkText,
+                    { color: line.checked ? theme.textMuted : theme.text },
+                    line.checked && styles.struck
+                  ]}
+                >
+                  {line.text}
+                </Text>
+              </Pressable>
+            ))}
+          <TextSender
+            theme={theme}
+            placeholder={t('mobile:edit.addChecklistItem')}
+            button={t('mobile:edit.add')}
+            onSend={(text) => {
+              if (!saveChecklist([...lines, text])) throw new Error('refused')
+            }}
+          />
 
           <Text accessibilityRole="header" style={[styles.heading, { color: theme.textSecondary }]}>
             {t('mobile:task.comments')}
@@ -749,6 +854,15 @@ const styles = StyleSheet.create({
   tick: { fontSize: 13, fontWeight: '700', lineHeight: 15 },
   checkText: { flex: 1 },
   struck: { textDecorationLine: 'line-through' },
+  lineButton: {
+    width: 40,
+    height: 40,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: RADIUS,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  lineGlyph: { fontSize: 16, fontWeight: '600' },
   comment: {
     gap: SPACE.small,
     padding: SPACE.medium,

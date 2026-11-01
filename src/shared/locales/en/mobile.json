@@ -189,7 +189,14 @@
     "changeLabels": "Change labels",
     "noLabels": "No labels",
     "newLabel": "New label",
-    "editDescription": "Edit"
+    "editDescription": "Edit",
+    "addChecklistItem": "Add a checklist item",
+    "checklistItem": "Checklist item",
+    "editChecklist": "Edit checklist",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "removeItem": "Remove",
+    "done": "Done"
   },
   "taskMenu": {
     "addMyDay": "Add to My Day",

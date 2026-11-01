@@ -243,6 +243,56 @@ describe('the phone edits a task the way the desktop does (mobile plan, prompt 1
     db.close()
   })
 
+  it('adds, renames (keeping the tick), reorders and removes checklist lines', () => {
+    const later = new Date(NOW.getTime() + 60 * 60 * 1000)
+    both(
+      (planning) => {
+        planning.updateWorkItem(
+          ids.main,
+          { acceptanceCriteria: ['Pipes tight', 'Taps work', 'Seal dry'] },
+          human
+        )
+        vi.setSystemTime(later)
+        planning.updateWorkItem(
+          ids.main,
+          { acceptanceCriteria: ['Pipes tight', 'Both taps work', 'Seal dry'] },
+          human,
+          { renamedCriteria: new Map([['Taps work', 'Both taps work']]) }
+        )
+        planning.updateWorkItem(
+          ids.main,
+          { acceptanceCriteria: ['Seal dry', 'Pipes tight', 'Both taps work'] },
+          human
+        )
+        planning.updateWorkItem(
+          ids.main,
+          { acceptanceCriteria: ['Seal dry', 'Both taps work'] },
+          human
+        )
+        vi.setSystemTime(NOW)
+      },
+      (db) => {
+        edits.setTaskChecklist(db, ids.main, ['Pipes tight', 'Taps work', ' Seal dry '])
+        const at = { now: later.getTime() }
+        edits.setTaskChecklist(
+          db,
+          ids.main,
+          ['Pipes tight', 'Both taps work', 'Seal dry'],
+          new Map([['Taps work', 'Both taps work']]),
+          at
+        )
+        edits.setTaskChecklist(
+          db,
+          ids.main,
+          ['Seal dry', 'Pipes tight', 'Both taps work'],
+          undefined,
+          at
+        )
+        edits.setTaskChecklist(db, ids.main, ['Seal dry', 'Both taps work'], undefined, at)
+      }
+    )
+  })
+
   it('ticks and unticks checklist items', () => {
     both(
       (planning) => {

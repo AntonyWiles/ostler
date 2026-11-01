@@ -15,7 +15,7 @@ Help › What's new, and the Unreleased section until a version has its own.
 - **Search on Android.** Search your tasks, comments, decisions, milestones and goals from the
   phone's top bar, with the matching words marked.
 - **More task editing on Android.** Edit a task's description, priority, start date, estimate,
-  milestone and labels from the phone. The changes show in the task's history on your PC, and an
+  milestone and labels from the phone, and add, rename, reorder or remove checklist items. The changes show in the task's history on your PC, and an
   earlier description can be brought back there.
 
 ### Fixed
