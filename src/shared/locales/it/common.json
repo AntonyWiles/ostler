@@ -387,5 +387,9 @@
   "mentions": {
     "noLongerHere": "Qualcuno che non c’è più",
     "picker": "Menziona qualcuno"
+  },
+  "markdown": {
+    "openFileTitle": "Apri {{path}} dalla cartella del progetto",
+    "fileNotOpened": "Il file non si è aperto"
   }
 }

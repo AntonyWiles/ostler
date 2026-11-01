@@ -337,5 +337,9 @@
   "mentions": {
     "noLongerHere": "已不在的人",
     "picker": "提及某人"
+  },
+  "markdown": {
+    "openFileTitle": "从项目文件夹打开 {{path}}",
+    "fileNotOpened": "文件未能打开"
   }
 }

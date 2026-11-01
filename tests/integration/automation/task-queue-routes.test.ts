@@ -278,7 +278,7 @@ describe('automation-http-server.ts task queue routes', () => {
 
     const help = (
       await json<{ value: { routes: { method: string; path: string }[] } }>(
-        await call('GET', `/automation/${project.id}/help`)
+        await call('GET', `/automation/${project.id}/help?full=1`)
       )
     ).value.routes
     expect(help).toContainEqual(
@@ -836,7 +836,7 @@ describe('automation-http-server.ts task queue routes', () => {
     )
     expect(invalidPriority.status).toBe(400)
 
-    const help = await call('GET', `/automation/${project.id}/help`, undefined, '')
+    const help = await call('GET', `/automation/${project.id}/help?full=1`, undefined, '')
     const routes = (await json<{ value: { routes: Array<{ path: string }> } }>(help)).value.routes
     expect(routes.map((route) => route.path).join(' ')).not.toMatch(
       /(?:claim|complete|force-release|force-end)/i
@@ -923,7 +923,7 @@ describe('automation-http-server.ts task queue routes', () => {
     expect(badDisposition.status).toBe(400)
     expect((await json<{ error: string }>(badDisposition)).error).toMatch(/disposition/)
 
-    const help = await call('GET', `/automation/${project.id}/help`, undefined, '')
+    const help = await call('GET', `/automation/${project.id}/help?full=1`, undefined, '')
     const paths = (
       await json<{ value: { routes: Array<{ path: string }> } }>(help)
     ).value.routes.map((route) => route.path)
@@ -1041,7 +1041,7 @@ describe('automation-http-server.ts task queue routes', () => {
     ])
     expect(listed?.commentAnswerAlerts).toEqual(['1 of 2 comments answered'])
 
-    const help = await call('GET', `/automation/${project.id}/help`, undefined, '')
+    const help = await call('GET', `/automation/${project.id}/help?full=1`, undefined, '')
     expect(JSON.stringify(await help.json())).toContain('commentAnswerAlerts')
   }, 30_000)
 
@@ -1167,7 +1167,7 @@ describe('automation-http-server.ts task queue routes', () => {
     const listed = await call('GET', '/automation/projects')
     expect((await json<{ value: { hasFolder: boolean }[] }>(listed)).value[0].hasFolder).toBe(false)
     const help = await json<{ value: { instructions: string } }>(
-      await call('GET', `/automation/${project.id}/help`, undefined, '')
+      await call('GET', `/automation/${project.id}/help?full=1`, undefined, '')
     )
     expect(help.value.instructions).toContain('HTTP 409')
   })

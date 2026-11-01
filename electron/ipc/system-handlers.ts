@@ -1,9 +1,10 @@
 import { shell } from 'electron'
 import { spawn } from 'node:child_process'
-import { existsSync } from 'node:fs'
-import { join } from 'node:path'
+import { existsSync, realpathSync, statSync } from 'node:fs'
+import { isAbsolute, join, relative, resolve } from 'node:path'
 import { IPC_CHANNELS } from '@shared/ostler-api'
 import { projectFolder } from '@shared/project-folder'
+import { cleanProjectPath, isOpenableFile } from '@shared/file-links'
 import type { ConfigStore } from '../config-store'
 import { isWatchedProject } from '../paths'
 import type { EventDatabase } from '../services/event-database'
@@ -39,6 +40,38 @@ export function registerSystemHandlers({ configStore, database }: SystemHandlerD
   handleApi('openExternalLink', async (_event, url: unknown) => {
     if (typeof url !== 'string') throw new Error('Send a link to open')
     await openExternalUrl(url)
+  })
+
+  // A file link in a text (`ostler://file/<projectId>/<path>`): only ever
+  // something inside the project's own folder, after links and shortcuts are
+  // followed. Documents and pictures open in their program; folders open in
+  // Explorer; any other file is shown in Explorer, never run.
+  handleApi('openProjectFile', async (_event, projectId: unknown, path: unknown) => {
+    if (typeof projectId !== 'string' || typeof path !== 'string')
+      throw new Error('Send a project and a path')
+    const project = configStore.getProjects().find((entry) => entry.id === projectId)
+    const folder = project ? projectFolder(project) : null
+    if (!folder) throw new Error('This project has no linked folder, so its file links cannot open')
+    const clean = cleanProjectPath(path)
+    if (!clean) throw new Error('That link does not name a file in the project folder')
+    const target = resolve(folder, ...clean.split('/'))
+    if (!existsSync(target)) throw new Error(`There is no ${clean} in the project folder`)
+    const realFolder = realpathSync(folder)
+    const realTarget = realpathSync(target)
+    const inside = relative(realFolder, realTarget)
+    if (inside.startsWith('..') || isAbsolute(inside))
+      throw new Error('That link leads outside the project folder')
+    if (offScreen) {
+      appLog.info(`Off screen: held back opening ${realTarget}`)
+      return { opened: 'held' as const }
+    }
+    if (statSync(realTarget).isDirectory() || isOpenableFile(clean)) {
+      const failure = await shell.openPath(realTarget)
+      if (failure) throw new Error(failure)
+      return { opened: 'opened' as const }
+    }
+    shell.showItemInFolder(realTarget)
+    return { opened: 'shown' as const }
   })
 
   handleApi('openInExplorer', (_event, path: string) => {

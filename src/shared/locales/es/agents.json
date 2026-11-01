@@ -448,7 +448,9 @@
     "lookOverChangesThen": "Revisa los cambios y luego acéptalos o descártalos.",
     "previewRefreshesWhileAgent": "Esta vista previa se actualiza mientras el agente trabaja.",
     "messageAgent": "Escribir al agente",
-    "messageAgentHint": "¿Cambiaste de idea sobre esta tarea mientras se ejecuta? Díselo al agente."
+    "messageAgentHint": "¿Cambiaste de idea sobre esta tarea mientras se ejecuta? Díselo al agente.",
+    "ownerOnly": "Solo para mí",
+    "ownerOnlyHint": "Esta tarea es tuya: los agentes nunca la ponen en cola ni trabajan en ella."
   },
   "transcriptEntry": {
     "toolCall": "Llamada a herramienta",

@@ -410,7 +410,9 @@
     "lookOverChangesThen": "请查看更改，然后接受或放弃。",
     "previewRefreshesWhileAgent": "智能体工作时，此预览会自动刷新。",
     "messageAgent": "给智能体留言",
-    "messageAgentHint": "此任务在运行时你改变了想法？请告诉智能体。"
+    "messageAgentHint": "此任务在运行时你改变了想法？请告诉智能体。",
+    "ownerOnly": "仅限本人",
+    "ownerOnlyHint": "这个任务属于你：智能体不会将它排队，也不会处理它。"
   },
   "transcriptEntry": {
     "toolCall": "工具调用",

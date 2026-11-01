@@ -101,7 +101,7 @@ describe('PATCH /work-items/:workItemId moveDependents (N7.1)', () => {
 
   it('documents moveDependents in /help', async () => {
     const help = await call<{ routes: Array<{ method: string; path: string; request?: string }> }>(
-      '/help',
+      '/help?full=1',
       undefined,
       { method: 'GET' }
     )

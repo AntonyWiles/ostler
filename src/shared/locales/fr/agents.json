@@ -448,7 +448,9 @@
     "lookOverChangesThen": "Examinez les modifications, puis acceptez-les ou écartez-les.",
     "previewRefreshesWhileAgent": "Cet aperçu s’actualise pendant que l’agent travaille.",
     "messageAgent": "Écrire à l’agent",
-    "messageAgentHint": "Vous avez changé d’avis sur cette tâche pendant son exécution ? Dites-le à l’agent."
+    "messageAgentHint": "Vous avez changé d’avis sur cette tâche pendant son exécution ? Dites-le à l’agent.",
+    "ownerOnly": "Pour moi seul",
+    "ownerOnlyHint": "Cette tâche est la vôtre : les agents ne la mettent jamais en file et n’y travaillent jamais."
   },
   "transcriptEntry": {
     "toolCall": "Appel d’outil",

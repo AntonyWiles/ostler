@@ -63,6 +63,20 @@ export function TaskAgentRunSection({
       actions={runState ? <AgentRunBadge state={runState} detail={reviewDetail} /> : undefined}
       className="task-agent-run"
     >
+      {/* Owner only: the person's task, never an agent's; turning it on takes it back from the queue. */}
+      <Checkbox
+        label={t('agents:taskAgentRunSection.ownerOnly')}
+        hint={t('agents:taskAgentRunSection.ownerOnlyHint')}
+        checked={Boolean(item.ownerOnly)}
+        onChange={(event) => {
+          const ownerOnly = event.target.checked
+          void window.ostlerAPI.updatePlanningWorkItem(item.id, { ownerOnly }).then((result) => {
+            if (result.ok) void ws.loadPlanning()
+            else ws.setError(result.error)
+          })
+        }}
+      />
+
       <Checkbox
         label={t('agents:taskAgentRunSection.autoContinue')}
         hint={t('agents:taskAgentRunSection.onceQueueSameAgent')}

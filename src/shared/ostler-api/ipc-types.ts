@@ -722,6 +722,7 @@ export const IPC_CHANNELS = {
   RENAME_PLANNING_CHECKLIST_ITEM: 'ostler:rename-planning-checklist-item',
   GET_PLANNING_WORK_ITEM_LINKS: 'ostler:get-planning-work-item-links',
   RESOLVE_ITEM_LINKS: 'ostler:resolve-item-links',
+  RESOLVE_TASK_KEYS: 'ostler:resolve-task-keys',
   GET_LINKED_FROM: 'ostler:get-linked-from',
   QUERY_LIVE_LISTS: 'ostler:query-live-lists',
   GET_PLANNING_DESCRIPTION_VERSIONS: 'ostler:get-planning-description-versions',
@@ -1064,6 +1065,7 @@ export const IPC_CHANNELS = {
   // System
   OPEN_IN_EXPLORER: 'ostler:open-in-explorer',
   OPEN_EXTERNAL_LINK: 'ostler:open-external-link',
+  OPEN_PROJECT_FILE: 'ostler:open-project-file',
   GET_LOCALE: 'ostler:get-locale',
   OPEN_CHECKOUT: 'ostler:open-checkout',
   COPY_TEXT: 'ostler:copy-text',
@@ -1965,6 +1967,11 @@ export interface OstlerAPI {
   getPlanningWorkItemLinks(workItemId: string): Promise<Result<PlanningTaskLink[]>>
   /** The current titles of the items a text links to (N4.4a): one call per rendered text. */
   resolveItemLinks(refs: ItemLinkRef[]): Promise<Result<ItemLinkInfo[]>>
+  /** The tasks that task IDs written in a project's text (BRI-26) name; IDs no task has are left out. */
+  resolveTaskKeys(
+    projectId: string,
+    keys: string[]
+  ): Promise<Result<Array<{ key: string; id: string }>>>
   /** The texts that link to an item (N4.4a): its Linked from list. */
   getLinkedFrom(kind: LinkTargetKind, id: string): Promise<Result<LinkedFromEntry[]>>
   /**
@@ -2996,6 +3003,11 @@ export interface OstlerAPI {
   openInExplorer(path: string): Promise<Result<void>>
   /** Opens an http or https link in the browser (a user guide link); anything else is refused. */
   openExternalLink(url: string): Promise<Result<void>>
+  /** A file link in a text: opens or shows a file inside the project's linked folder. */
+  openProjectFile(
+    projectId: string,
+    path: string
+  ): Promise<Result<{ opened: 'opened' | 'shown' | 'held' }>>
   /** The interface language and formatting locale now (P11.1): a reloaded window checks its own. */
   getLocale(): Promise<Result<LocaleInfo>>
   openCheckout(path: string, mode: 'vscode' | 'other'): Promise<Result<void>>

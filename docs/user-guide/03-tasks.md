@@ -500,6 +500,13 @@ starts after the new due date stays where it is. Done tasks and tasks without a 
 move; the preview lists them. Moving a task earlier never moves anything else. A task changed
 between the preview and **Move** is left as it is, and the message says so.
 
+### Blocked tasks
+
+When a task is **Blocked**, its drawer asks **Why is it blocked?**: a few words, such as "Waiting on
+you", "Waiting on SHOP-4" or "Waiting on 1 March". The reason clears when the task leaves Blocked.
+If everything the task waits on is done, the drawer says so, because nothing is holding it back any
+more.
+
 ## Links between tasks
 
 Not every connection holds work back. Two people report the same problem, a task is copied from
@@ -549,6 +556,18 @@ it. Milestones, decisions and Library items show the same list.
 
 Links to another project's items still open, but they are not listed under **Linked from**. When
 you import a project file as a new project, links between its own items point at the new items.
+
+A task's ID, such as `SHOP-12`, links itself: written in a description or comment, it shows as a
+chip for that task, as long as the task is in the same project.
+
+A link can also open a file or folder in the project's linked folder: write its path relative to the
+folder, such as `[the plan](docs/plan.md)`, or an `ostler://file/<project id>/docs/plan.md` link.
+Documents and pictures open in their program and folders in Explorer; any other file, such as a
+program or a script, is only shown in Explorer, never run. A link can't reach outside the folder.
+
+Links to `localhost` or `127.0.0.1` point at a server running on one computer, usually an agent's own,
+so nobody else can open them. When an agent or another tool writes one through the automation API,
+Ostler keeps the address as text instead of a link.
 
 ## Repeating tasks
 

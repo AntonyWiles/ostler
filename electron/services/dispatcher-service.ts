@@ -189,6 +189,8 @@ export class DispatcherService {
       if (hasChildren.has(item.id)) continue
       // Someday and hidden-until-later tasks wait for the person (N1.1a).
       if (isHiddenNow(item, today)) continue
+      // An Owner only task is the person's to do, never an agent's.
+      if (item.ownerOnly) continue
       try {
         if (
           this.planningService

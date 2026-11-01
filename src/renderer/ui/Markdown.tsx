@@ -3,6 +3,9 @@ import ReactMarkdown, { defaultUrlTransform, type Components } from 'react-markd
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 import type { ItemLinkInfo, ItemLinkRef } from '@shared/ostler-api'
 import { autolinkBareUrls } from '@shared/autolink'
+import { fileLinkTarget, relativeFileHref, type FileLinkTarget } from '@shared/file-links'
+import { t } from '@shared/i18n'
+import { findTaskKeys, linkTaskKeys } from '@shared/task-key-links'
 import { BRAND } from '@shared/brand'
 import { LEGACY_NAMES } from '@shared/legacy-names'
 import { extractItemLinks, itemLinkTarget } from '@shared/item-links'
@@ -11,6 +14,7 @@ import { findLiveListBlocks, LIVE_LIST_INFO } from '@shared/live-list'
 import { ItemLinkChip } from './ItemLinkChip'
 import { MentionChip } from './MentionChip'
 import { LiveList, liveListKey, useLiveLists } from './LiveList'
+import { useToast } from './Toast'
 import './Markdown.css'
 
 export { ITEM_LINK_ICONS, itemKindLabel } from './ItemLinkChip'
@@ -65,12 +69,64 @@ export function markdownImageSrc(src: string | undefined): string | undefined {
 /** Ours, and the scheme texts written before the rename use (legacy-names.ts). */
 const OWN_SCHEMES = [`${BRAND.urlScheme}:`, `${LEGACY_NAMES.urlScheme}:`]
 
-/** react-markdown's own transform, except that an item link or a mention survives it; any other link of ours does not. */
+/** react-markdown's own transform, except that an item link, a file link or a mention survives it; any other link of ours does not. */
 export function markdownUrlTransform(url: string): string {
   if (OWN_SCHEMES.some((own) => url.slice(0, own.length).toLowerCase() === own)) {
-    return itemLinkTarget(url, BRAND.urlScheme) || mentionPersonId(url, BRAND.urlScheme) ? url : ''
+    return itemLinkTarget(url, BRAND.urlScheme) ||
+      mentionPersonId(url, BRAND.urlScheme) ||
+      fileLinkTarget(url, BRAND.urlScheme)
+      ? url
+      : ''
   }
   return defaultUrlTransform(url)
+}
+
+/**
+ * The file a link in a project's text points at: an `ostler://file/…` link,
+ * or a path written relative to the project (`docs/plan.md`).
+ */
+export function markdownFileTarget(
+  href: string | undefined,
+  projectId: string | null | undefined
+): FileLinkTarget | null {
+  if (!href) return null
+  const linked = fileLinkTarget(href, BRAND.urlScheme)
+  if (linked) return linked
+  const path = projectId ? relativeFileHref(href) : null
+  return path && projectId ? { projectId, path } : null
+}
+
+/**
+ * Links to the tasks a text names by ID (BRI-26), by ID in capitals: one
+ * call per text, again only when the IDs or `refreshKey` change.
+ */
+function useTaskKeyUrls(
+  projectId: string | null | undefined,
+  keys: string[],
+  refreshKey: unknown
+): Map<string, string> {
+  const [urls, setUrls] = useState<Map<string, string>>(() => new Map())
+  const key = keys.join(',')
+  useEffect(() => {
+    if (!projectId || keys.length === 0) return
+    let live = true
+    void window.ostlerAPI.resolveTaskKeys(projectId, keys).then((result) => {
+      if (!live || !result.ok) return
+      setUrls(
+        new Map(
+          result.value.map((entry) => [
+            entry.key.toUpperCase(),
+            `${BRAND.urlScheme}://task/${projectId}/${entry.id}`
+          ])
+        )
+      )
+    })
+    return () => {
+      live = false
+    }
+    // `key` stands for `keys`, which is a new array each render.
+  }, [projectId, key, refreshKey])
+  return urls
 }
 
 const refKey = (ref: { kind: string; id: string }) => `${ref.kind}:${ref.id}`
@@ -131,8 +187,12 @@ export function Markdown({
   projectId,
   listItemAction
 }: MarkdownProps) {
-  // A link pasted as plain text is drawn as a link too.
-  const text = useMemo(() => autolinkBareUrls(children), [children])
+  // A link pasted as plain text is drawn as a link too, and so is a task's ID.
+  const linked = useMemo(() => autolinkBareUrls(children), [children])
+  const keys = useMemo(() => (projectId ? findTaskKeys(linked) : []), [linked, projectId])
+  const keyUrls = useTaskKeyUrls(projectId, keys, refreshKey)
+  const text = useMemo(() => linkTaskKeys(linked, keyUrls), [linked, keyUrls])
+  const { toast } = useToast()
   const refs = useMemo(() => extractItemLinks(text, BRAND.urlScheme), [text])
   const info = useItemLinkInfo(refs, refreshKey)
   const blocks = useMemo(
@@ -147,21 +207,32 @@ export function Markdown({
         const mentioned = href && !ref ? mentionPersonId(href, BRAND.urlScheme) : null
         if (mentioned) return <MentionChip personId={mentioned} />
         if (!ref) {
-          // The window never navigates, so a web link opens in the browser instead.
+          // The window never navigates: a web link opens in the browser, a
+          // file link in the project's folder, and any other link (`/risk`,
+          // `#top`) does nothing.
           const web = href !== undefined && /^https?:/i.test(href)
+          const file = web ? null : markdownFileTarget(href, projectId)
           return (
             <a
               href={href}
               {...rest}
-              onClick={
-                web
-                  ? (event) => {
-                      event.preventDefault()
-                      event.stopPropagation()
-                      void window.ostlerAPI.openExternalLink(href)
-                    }
-                  : undefined
-              }
+              title={file ? t('common:markdown.openFileTitle', { path: file.path }) : undefined}
+              onClick={(event) => {
+                event.preventDefault()
+                event.stopPropagation()
+                if (web) void window.ostlerAPI.openExternalLink(href)
+                else if (file)
+                  void window.ostlerAPI
+                    .openProjectFile(file.projectId, file.path)
+                    .then((result) => {
+                      if (!result.ok)
+                        toast({
+                          title: t('common:markdown.fileNotOpened'),
+                          body: result.error,
+                          tone: 'danger'
+                        })
+                    })
+              }}
             >
               {words}
             </a>
@@ -201,7 +272,7 @@ export function Markdown({
           }
         : {})
     }),
-    [info, lists, projectId, listItemAction]
+    [info, lists, projectId, listItemAction, toast]
   )
   const body = (
     <ReactMarkdown

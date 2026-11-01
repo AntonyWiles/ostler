@@ -15,11 +15,15 @@ Part of the [Ostler Automation API](README.md). Base path for all routes below: 
 
 Every task has a number, unique within its project and never reused (deleting a task, even for
 good, never frees its number), and an ID made of the project's prefix and that number: `SHOP-12`.
-Every work item carries `number` and `key` (the ID). IDs are for people: the `id` stays the key
-every other route takes. Changing the prefix changes every task's `key` at once.
+Every work item carries `number` and `key` (the ID). Every route that takes `:workItemId` takes
+the ID too (`PATCH /work-items/SHOP-12`, `POST /work-items/shop-12/comments`), and so do
+`dependencyIds`, `dependencyLinks[].id` and `parentWorkItemId` in bodies. An ID of this project
+that no task has is HTTP 404 in a path and HTTP 400 in a body. Changing the prefix changes every
+task's `key` at once.
 
 | Method | Path                      | Body             | Response                                                       |
 | ------ | ------------------------- | ---------------- | -------------------------------------------------------------- |
+| GET    | `/work-items/:workItemId` | —                | The work item, by its id or its ID.                            |
 | GET    | `/work-items/by-key/:key` | —                | The work item with that ID (`SHOP-12` or `shop-12`), else 404. |
 | GET    | `/task-prefix`            | —                | `{ taskPrefix }`                                               |
 | PUT    | `/task-prefix`            | `{ taskPrefix }` | `{ taskPrefix }` after the change                              |
@@ -29,6 +33,39 @@ every other route takes. Changing the prefix changes every task's `key` at once.
 - A prefix is two to five letters A to Z, made capital. One another project uses, or one that is
   not two to five letters, is refused with HTTP 400. Old IDs in commits and notes no longer match
   after a change.
+
+### Lists, fields and many changes at once
+
+- `GET /work-items?status=blocked,ready` keeps only those statuses, as the app shows them.
+- `GET /work-items?fields=key,title,status` sends only those fields of each task, plus `id`.
+  Both work with `?filter=` and `?scope=`.
+- `PATCH /work-items/batch` with `{ items: [{ id, ...fields }] }` makes each change as
+  `PATCH /work-items/:workItemId` would (`id` may be the task's ID), up to 500 at once. The
+  planning changes are one transaction: a refused item changes nothing, and the answer (400) names
+  the item (`items[3] (SHOP-12): …`). `moveDependents` isn't taken here.
+
+### Owner only
+
+`ownerOnly: true` marks a task as the person's alone. Agents never queue, claim or work on it: the
+dispatcher skips it, and queuing it for an agent (the app, `POST /tasks`, a playbook or a repeat) is
+refused. Turning it on for a queued task that no agent has started takes it out of the queue; for a
+task an agent is running it is refused. Automation may set `ownerOnly: true` on create or `PATCH`,
+but only the person can set it back to `false`, in Ostler (the API answers 400). Write it once as the
+flag, not as a note pasted into each description.
+
+### Blocked tasks
+
+`blockedReason` says why a blocked task is blocked, in up to 200 characters ("Waiting on you",
+"Waiting on SHOP-4", "Waiting on 1 March"). It is kept only while the status is `blocked`: send it
+with `status: "blocked"`, or on a task that is already blocked, and it clears when the task leaves
+Blocked.
+
+| Method | Path       | Response                                                                                                               |
+| ------ | ---------- | ---------------------------------------------------------------------------------------------------------------------- |
+| GET    | `/blocked` | `Array<{ id, key, title, blockedReason, waitingOn: Array<{ id, key, title, status }>, clear }>` for every blocked task |
+
+`clear` is true when the task waits on at least one task and every one of them is done: nothing it
+waits on holds it back any more, so it is probably ready to move on.
 
 ### Commits
 
@@ -188,6 +225,25 @@ once. There is no decision route; ask `GET /links?to=decision:<id>`.
 - For a comment, `title` is its task's title and `workItemId` its task.
 - A project file carries links as written, with the ids its items had (`linkIds`); importing it as
   a new project points links between its own items at the new ones.
+
+**Task IDs in text.** A task's ID written as words (`SHOP-12`), or as a link's target
+(`[the review](SHOP-12)`), is drawn as a link to the task in the app, as long as it is one of this
+project's tasks. The text stays as written.
+
+**Files in the project's folder.** `[words](ostler://file/<projectId>/<path>)` links a file or folder
+in the project's linked folder, with the path relative to it and each part percent-encoded
+(`ostler://file/<projectId>/docs/story%20review.md`). A path written relative to the project
+(`[plan](docs/plan.md)`) works the same way. Clicking it in the app opens documents and pictures
+(Markdown, text, JSON, YAML, CSV, PDF, PNG and the like) in their program and folders in Explorer;
+any other file is shown in Explorer, never run. A link can't reach outside the folder: no leading
+`/`, drive, `..` or backslash, and shortcuts that lead out are refused. Other links such as `/risk`
+or `#top` do nothing.
+
+**Links to this computer.** `http://localhost:…`, `http://127.0.0.1:…`, `*.localhost`, `0.0.0.0` and
+`[::1]` addresses lead to a server on the machine that wrote them, which the person reading the task
+can't open. In descriptions and comments written through the API they are kept as inline code, not
+links: `[Risk](http://localhost:8513/risk)` is stored as ``Risk (`http://localhost:8513/risk`)``.
+Name the screen in words, or link a file in the folder instead.
 
 ### Description history
 
@@ -942,8 +998,9 @@ attached, and an item that later becomes human-only or archived is skipped when 
 session starts. The one human-only attachment is a screen snip a person attached with Snip to task
 in the app: it is listed here, and skipped for agents like any human-only item.
 
-| Method | Path                                          | Body         | Response                                                                                      |
-| ------ | --------------------------------------------- | ------------ | --------------------------------------------------------------------------------------------- |
-| GET    | `/work-items/:workItemId/attachments`         | —            | Array of `{ item, attachedBy, revisionAtAttach, currentRevision, changedSince, attachedAt }`. |
-| POST   | `/work-items/:workItemId/attachments`         | `{ itemId }` | The work item's attachments. Re-attaching refreshes the revision.                             |
-| DELETE | `/work-items/:workItemId/attachments/:itemId` | —            | The work item's attachments.                                                                  |
+| Method | Path                                          | Body                             | Response                                                                                                                     |
+| ------ | --------------------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| GET    | `/work-items/:workItemId/attachments`         | —                                | Array of `{ item, attachedBy, revisionAtAttach, currentRevision, changedSince, attachedAt }`.                                |
+| POST   | `/work-items/:workItemId/attachments`         | `{ itemId }`                     | The work item's attachments. Re-attaching refreshes the revision.                                                            |
+| POST   | `/work-items/:workItemId/attachments`         | `{ fileName, mimeType, base64 }` | Uploads the file to the Library (as `POST /library/upload`, up to 25 MB; a file it already holds is reused) and attaches it. |
+| DELETE | `/work-items/:workItemId/attachments/:itemId` | —                                | The work item's attachments.                                                                                                 |

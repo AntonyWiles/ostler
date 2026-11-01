@@ -641,6 +641,9 @@ export function registerPlanningHandlers({
   handleApi('resolveItemLinks', async (_event, refs: unknown) =>
     planningService.resolveItemLinks(refs)
   )
+  handleApi('resolveTaskKeys', async (_event, projectId: unknown, keys: unknown) =>
+    planningService.resolveTaskKeys(projectId, keys)
+  )
   handleApi('getLinkedFrom', async (_event, kind: unknown, id: unknown) =>
     planningService.listLinkedFrom(kind, id)
   )

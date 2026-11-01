@@ -362,5 +362,9 @@
   "mentions": {
     "noLongerHere": "Jemand, der nicht mehr dabei ist",
     "picker": "Jemanden erwähnen"
+  },
+  "markdown": {
+    "openFileTitle": "{{path}} aus dem Projektordner öffnen",
+    "fileNotOpened": "Die Datei wurde nicht geöffnet"
   }
 }

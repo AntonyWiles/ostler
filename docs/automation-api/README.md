@@ -30,8 +30,11 @@ Send the token on every request except `GET /automation/<projectId>/help`:
 Authorization: Bearer <token>
 ```
 
-If you ever forget the exact route list, `GET /automation/<projectId>/help` requires no
-token and returns a machine-readable summary of available routes.
+`GET /automation/<projectId>/help` requires no token. It returns the instructions, the rules every
+route follows (`conventions`) and one line per route. `?route=<path>` gives the full text of the
+routes at a path, such as `?route=/work-items/:workItemId&method=PATCH` (a path as sent, like
+`/work-items/SHOP-12`, works too); `?q=<words>` keeps the routes that mention every word; `?full=1`
+is every route in full, which is large.
 
 The API listens only while the human has turned it on, in Settings › Connections, whether AI
 agents are on or off. While agents are off, the routes about agent work (`/tasks`, `/sessions`,

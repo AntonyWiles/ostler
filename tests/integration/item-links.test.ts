@@ -78,7 +78,7 @@ describe('backlinks over the automation API (N4.4a)', () => {
 
   it('describes GET /links in help', async () => {
     const help = await value<{ routes: { method: string; path: string; description: string }[] }>(
-      await call('GET', '/help')
+      await call('GET', '/help?full=1')
     )
     expect(help.routes.map((route) => `${route.method} ${route.path}`)).toContain('GET /links')
     for (const path of ['/work-items', '/milestones', '/library', '/library/:itemId']) {

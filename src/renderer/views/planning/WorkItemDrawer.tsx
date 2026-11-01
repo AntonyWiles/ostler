@@ -71,6 +71,7 @@ import { WorkItemSourcesSection } from './WorkItemSourcesSection'
 import { WorkItemAttachmentsSection } from './WorkItemAttachmentsSection'
 import { WorkItemAttachedFilesSection } from './WorkItemAttachedFilesSection'
 import { TaskDrawerSection } from './TaskDrawerSection'
+import { TaskBlockedReason } from './TaskBlockedReason'
 import { TaskChecklistEditor } from './TaskChecklistEditor'
 import {
   TaskDueDateField,
@@ -791,6 +792,7 @@ function DrawerBody({
 
       <div className="task-drawer__main">
         <fieldset className="task-drawer__lock" disabled={readOnly}>
+          <TaskBlockedReason ws={ws} item={item} />
           <TaskDrawerSection
             title={t('tasks:workItemDrawer.description')}
             actions={

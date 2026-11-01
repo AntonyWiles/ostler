@@ -54,16 +54,18 @@ export function updateWorkItemThroughQueue(
   const current = projectWorkItemStatus(item, state)
   const moves = status !== undefined && status !== current
   const today = todayIsoDate()
+  // Turning on Owner only takes a queued task back from the agents, as hiding it does.
   const hides =
-    !isHiddenNow(item, today) &&
-    isHiddenNow(
-      {
-        inTriage: item.inTriage,
-        someday: updates.someday === undefined ? item.someday : Boolean(updates.someday),
-        showFrom: updates.showFrom === undefined ? item.showFrom : updates.showFrom
-      },
-      today
-    )
+    (updates.ownerOnly === true && !item.ownerOnly) ||
+    (!isHiddenNow(item, today) &&
+      isHiddenNow(
+        {
+          inTriage: item.inTriage,
+          someday: updates.someday === undefined ? item.someday : Boolean(updates.someday),
+          showFrom: updates.showFrom === undefined ? item.showFrom : updates.showFrom
+        },
+        today
+      ))
   if (!moves && !hides) {
     // The column follows the run: a status it already shows is not stored.
     if (status === undefined) return write(updates)

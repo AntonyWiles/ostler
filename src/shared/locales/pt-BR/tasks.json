@@ -2828,5 +2828,13 @@
     "badgeSignedOff": "Aprovado",
     "waitingForTitle": "Aguardando a aprovação de {{name}}",
     "signedOffByTitle": "Aprovado por {{name}}"
+  },
+  "blockedReason": {
+    "label": "Por que está bloqueada?",
+    "placeholder": "Esperando por você, por uma tarefa, por uma data…",
+    "nothingLeft": "Tudo o que esta tarefa espera está concluído, então talvez ela possa seguir."
+  },
+  "ownerOnly": {
+    "badge": "Só para mim"
   }
 }

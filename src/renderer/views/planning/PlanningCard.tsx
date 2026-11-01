@@ -441,6 +441,9 @@ export function PlanningCard({
                   : t('tasks:someday.fromDate', { date: formatIsoDateShort(hidden.showFrom) })}
             </Badge>
           )}
+          {item.ownerOnly && (
+            <Badge className="task-card__owner-only">{t('tasks:ownerOnly.badge')}</Badge>
+          )}
           {taskType && <TaskTypeIcon type={taskType} />}
           {item.priority !== 'medium' &&
             chip(

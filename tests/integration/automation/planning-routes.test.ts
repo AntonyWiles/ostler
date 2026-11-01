@@ -70,7 +70,7 @@ describe('automation-http-server.ts planning routes', () => {
   })
 
   it('lists the planning routes with usable request and response examples', async () => {
-    const response = await call('GET', `/automation/${project.id}/help`, undefined, '')
+    const response = await call('GET', `/automation/${project.id}/help?full=1`, undefined, '')
     expect(response.status).toBe(200)
     const body = await json<{
       ok: boolean
@@ -753,7 +753,7 @@ describe('automation-http-server.ts planning routes', () => {
     const wrong = await call('GET', `/automation/${project.id}/goals`, undefined, 'harness-token')
     expect(wrong.status).toBe(401)
 
-    const help = await call('GET', `/automation/${project.id}/help`, undefined, '')
+    const help = await call('GET', `/automation/${project.id}/help?full=1`, undefined, '')
     expect(help.status).toBe(200)
 
     const missingProjectsToken = await call('GET', '/automation/projects', undefined, '')
@@ -1037,7 +1037,7 @@ describe('automation-http-server.ts planning routes', () => {
     })
 
     it('lists the plan route in /help with the batch rules', async () => {
-      const response = await call('GET', `/automation/${project.id}/help`)
+      const response = await call('GET', `/automation/${project.id}/help?full=1`)
       const body = await json<{ value: { routes: Array<{ path: string; description: string }> } }>(
         response
       )

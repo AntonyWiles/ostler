@@ -410,7 +410,9 @@
     "lookOverChangesThen": "変更を確認してから、承認または破棄してください。",
     "previewRefreshesWhileAgent": "このプレビューは、エージェントの作業中に更新されます。",
     "messageAgent": "エージェントにメッセージ",
-    "messageAgentHint": "実行中に、このタスクについて考えが変わりましたか？ エージェントに伝えてください。"
+    "messageAgentHint": "実行中に、このタスクについて考えが変わりましたか？ エージェントに伝えてください。",
+    "ownerOnly": "自分専用",
+    "ownerOnlyHint": "このタスクはあなたのものです。エージェントがキューに入れたり作業したりすることはありません。"
   },
   "transcriptEntry": {
     "toolCall": "ツール呼び出し",

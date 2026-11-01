@@ -2540,5 +2540,13 @@
     "badgeSignedOff": "已签核",
     "waitingForTitle": "等待 {{name}} 签核",
     "signedOffByTitle": "{{name}} 已签核"
+  },
+  "blockedReason": {
+    "label": "为什么被阻塞？",
+    "placeholder": "在等你、等某个任务、等某个日期…",
+    "nothingLeft": "这个任务等待的所有事项都已完成，或许可以继续了。"
+  },
+  "ownerOnly": {
+    "badge": "仅限本人"
   }
 }

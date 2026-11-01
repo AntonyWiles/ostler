@@ -92,7 +92,7 @@ describe('status updates over the automation API (N5.5)', () => {
 
   it('describes the routes in help', async () => {
     const help = await value<{ routes: { method: string; path: string; description: string }[] }>(
-      await call('GET', '/help')
+      await call('GET', '/help?full=1')
     )
     const routes = help.routes.map((route) => `${route.method} ${route.path}`)
     for (const route of [

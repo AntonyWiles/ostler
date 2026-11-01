@@ -337,5 +337,9 @@
   "mentions": {
     "noLongerHere": "すでにいない人",
     "picker": "メンションする相手"
+  },
+  "markdown": {
+    "openFileTitle": "プロジェクトフォルダーから {{path}} を開く",
+    "fileNotOpened": "ファイルを開けませんでした"
   }
 }

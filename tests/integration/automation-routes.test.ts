@@ -522,9 +522,10 @@ describe('the router refuses a path it does not know', () => {
     )
   })
 
-  it('answers a read of one task, goal, milestone or blocker as a route it does not have', async () => {
+  it('answers a read of one goal, milestone or blocker as a route it does not have', async () => {
     const taskId = await created('/work-items', { title: 'Read me' })
-    expect(await call('GET', `/work-items/${taskId}`)).toEqual(unknownRoute)
+    // One task has its own route: GET /work-items/:workItemId.
+    expect((await call('GET', `/work-items/${taskId}`)).status).toBe(200)
     expect(await call('GET', '/goals/anything')).toEqual(unknownRoute)
     expect(await call('GET', '/milestones/anything')).toEqual(unknownRoute)
     expect(await call('GET', '/blockers/anything')).toEqual(unknownRoute)

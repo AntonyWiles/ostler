@@ -431,7 +431,9 @@
     "lookOverChangesThen": "Look over the changes, then accept or discard them.",
     "previewRefreshesWhileAgent": "This preview refreshes while the agent works.",
     "messageAgent": "Message the agent",
-    "messageAgentHint": "Changed your mind about this task while it runs? Tell the agent."
+    "messageAgentHint": "Changed your mind about this task while it runs? Tell the agent.",
+    "ownerOnly": "Owner only",
+    "ownerOnlyHint": "This task is yours: agents never queue or work on it."
   },
   "transcriptEntry": {
     "toolCall": "Tool call",

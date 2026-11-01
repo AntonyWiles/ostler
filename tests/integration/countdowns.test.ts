@@ -65,7 +65,7 @@ describe('countdowns over the automation API (N5.2b)', () => {
 
   it('describes PATCH /pins/:pinId in help', async () => {
     const help = await value<{ routes: { method: string; path: string; description: string }[] }>(
-      await call('GET', '/help')
+      await call('GET', '/help?full=1')
     )
     const route = help.routes.find(
       (entry) => entry.method === 'PATCH' && entry.path === '/pins/:pinId'

@@ -90,7 +90,7 @@ describe('waits-on types and lag on the automation API (N7.2a)', () => {
   it('documents dependencyLinks, types and lag in /help', async () => {
     const help = await call<{
       routes: Array<{ method: string; path: string; request?: string; response?: string }>
-    }>('/help', undefined, 'GET')
+    }>('/help?full=1', undefined, 'GET')
     const create = help.value.routes.find(
       (entry) => entry.method === 'POST' && entry.path === '/work-items'
     )

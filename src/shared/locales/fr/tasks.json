@@ -2829,5 +2829,13 @@
     "badgeSignedOff": "Validé",
     "waitingForTitle": "En attente de la validation de {{name}}",
     "signedOffByTitle": "Validé par {{name}}"
+  },
+  "blockedReason": {
+    "label": "Pourquoi est-elle bloquée ?",
+    "placeholder": "En attente de vous, d’une tâche, d’une date…",
+    "nothingLeft": "Tout ce que cette tâche attend est terminé : elle peut sans doute avancer."
+  },
+  "ownerOnly": {
+    "badge": "Pour moi seul"
   }
 }

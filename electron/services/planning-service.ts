@@ -132,7 +132,7 @@ import { PlanningRules } from './planning-rules'
 import { TaskTemplates } from './task-templates'
 import type { RuleChange } from '@shared/planning/rules'
 import { currentIteration } from '@shared/planning/iterations'
-import { taskKey } from '@shared/task-key'
+import { parseTaskKey, taskKey } from '@shared/task-key'
 import { attachChangeRecorder } from './change-history/recorder'
 import { myRoleOf } from './sync/roles'
 import { takeTaskNumber } from './sync/task-numbers'
@@ -1421,6 +1421,8 @@ export class PlanningService {
       linkedHarnessTaskId: null,
       autoQueue: Boolean(input.autoQueue),
       planFirst: planFirstChoice(input.planFirst) ?? 'default',
+      blockedReason: optionalText(input.blockedReason, 'Blocked reason', 200),
+      ownerOnly: flag(input.ownerOnly, 'Owner only') ?? false,
       parentWorkItemId,
       taskCode: optionalText(input.taskCode, 'Task code', 40),
       phaseCode: optionalText(input.phaseCode, 'Phase code', 40),
@@ -1446,6 +1448,7 @@ export class PlanningService {
       typeId,
       subprojectId
     }
+    if (item.status !== 'blocked') item.blockedReason = ''
     const fieldValues = this.fields.validate(projectId, input.fieldValues)
     for (const [fieldId, value] of fieldValues)
       if (value !== null) {
@@ -1474,8 +1477,8 @@ export class PlanningService {
              parent_work_item_id, task_code, phase_code, phase_name, subtask_phase_number, subtask_phase_name,
              verification_status, verified_by, verified_at, verification_notes, created_at, updated_at,
              import_batch_id, order_key, iteration_id, show_from, someday, type_id, plan_first, number,
-             impact, effort, in_triage, captured_by, column_id, subproject_id)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+             impact, effort, in_triage, captured_by, column_id, subproject_id, blocked_reason, owner_only)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
           item.id,
@@ -1521,7 +1524,9 @@ export class PlanningService {
           item.inTriage ? 1 : 0,
           item.capturedBy ?? null,
           item.columnId ?? null,
-          item.subprojectId ?? null
+          item.subprojectId ?? null,
+          item.blockedReason ?? '',
+          item.ownerOnly ? 1 : 0
         )
       this.replaceDependencies(item.id, dependencyLinksOf(item))
       this.fields.write(projectId, item.id, fieldValues)
@@ -1814,8 +1819,15 @@ export class PlanningService {
       estimate: updates.estimate === undefined ? current.estimate : estimate(updates.estimate),
       autoQueue: updates.autoQueue === undefined ? current.autoQueue : Boolean(updates.autoQueue),
       planFirst: planFirstChoice(updates.planFirst) ?? current.planFirst ?? 'default',
+      blockedReason:
+        updates.blockedReason === undefined
+          ? (current.blockedReason ?? '')
+          : optionalText(updates.blockedReason, 'Blocked reason', 200),
+      ownerOnly: flag(updates.ownerOnly, 'Owner only') ?? Boolean(current.ownerOnly),
       updatedAt: Date.now()
     }
+    // A reason says why a task is blocked, so it goes when the task leaves Blocked.
+    if (item.status !== 'blocked') item.blockedReason = ''
     // Parking a task in Someday is one of triage's decisions (N4.3a).
     if (item.someday && !current.someday) item.inTriage = false
     const fieldValues = this.fields.validate(current.projectId, updates.fieldValues)
@@ -1862,7 +1874,8 @@ export class PlanningService {
                acceptance_criteria = ?, target_date = ?, start_date = ?, assignee_id = ?, estimate = ?,
                auto_queue = ?, subtask_phase_number = ?, subtask_phase_name = ?, updated_at = ?,
                iteration_id = ?, show_from = ?, someday = ?, type_id = ?, plan_first = ?,
-               impact = ?, effort = ?, column_id = ?, subproject_id = ?
+               impact = ?, effort = ?, column_id = ?, subproject_id = ?, blocked_reason = ?,
+               owner_only = ?
            WHERE id = ?`
         )
         .run(
@@ -1890,6 +1903,8 @@ export class PlanningService {
           item.effort ?? null,
           item.columnId ?? null,
           item.subprojectId ?? null,
+          item.blockedReason ?? '',
+          item.ownerOnly ? 1 : 0,
           item.id
         )
       if (Boolean(current.inTriage) !== Boolean(item.inTriage))
@@ -2755,6 +2770,26 @@ export class PlanningService {
    * rendered text. Links to items in projects Ostler does not know read as
    * deleted; refs that are not well formed are dropped.
    */
+  /**
+   * The tasks a project's text names by ID (BRI-26): its prefix and a number,
+   * in any case. IDs of other projects and numbers no task has are left out.
+   */
+  resolveTaskKeys(projectId: unknown, keys: unknown): Array<{ key: string; id: string }> {
+    if (typeof projectId !== 'string' || !Array.isArray(keys)) return []
+    const prefix = this.getTaskPrefix(projectId)
+    if (!prefix) return []
+    const found: Array<{ key: string; id: string }> = []
+    for (const key of keys.slice(0, 200)) {
+      const parsed = parseTaskKey(key)
+      if (!parsed || parsed.prefix !== prefix.toUpperCase()) continue
+      const row = this.db
+        .prepare('SELECT id FROM planning_work_items WHERE project_id = ? AND number = ?')
+        .get(projectId, parsed.number) as { id: string } | undefined
+      if (row) found.push({ key: key as string, id: row.id })
+    }
+    return found
+  }
+
   resolveItemLinks(refs: unknown): ItemLinkInfo[] {
     if (!Array.isArray(refs)) throw new Refusal('Links must be a list')
     const clean = refs.filter(
@@ -4090,6 +4125,8 @@ export class PlanningService {
       linkedHarnessTaskId: row.linked_harness_task_id,
       autoQueue: Boolean(row.auto_queue),
       planFirst: row.plan_first ?? 'default',
+      blockedReason: row.blocked_reason ?? '',
+      ownerOnly: Boolean(row.owner_only),
       ...(row.scheduled_queue && row.scheduled_queue_at
         ? {
             scheduledQueue: {

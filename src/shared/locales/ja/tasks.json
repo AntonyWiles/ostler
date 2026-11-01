@@ -2540,5 +2540,13 @@
     "badgeSignedOff": "承認済み",
     "waitingForTitle": "{{name}} の承認待ち",
     "signedOffByTitle": "{{name}} が承認"
+  },
+  "blockedReason": {
+    "label": "ブロックされている理由",
+    "placeholder": "あなた待ち、タスク待ち、日付待ちなど…",
+    "nothingLeft": "このタスクが待っているものはすべて完了しています。先に進めるかもしれません。"
+  },
+  "ownerOnly": {
+    "badge": "自分専用"
   }
 }

@@ -2829,5 +2829,13 @@
     "badgeSignedOff": "Approvato",
     "waitingForTitle": "In attesa dell’approvazione di {{name}}",
     "signedOffByTitle": "Approvato da {{name}}"
+  },
+  "blockedReason": {
+    "label": "Perché è bloccata?",
+    "placeholder": "In attesa di te, di un’attività, di una data…",
+    "nothingLeft": "Tutto ciò che questa attività aspetta è fatto, quindi forse può andare avanti."
+  },
+  "ownerOnly": {
+    "badge": "Solo per me"
   }
 }

@@ -137,7 +137,7 @@ describe('goal measures and check-ins over the automation API (N5.6a)', () => {
 
   it('describes the routes in help', async () => {
     const help = await value<{ routes: { method: string; path: string; request?: string }[] }>(
-      await call('GET', '/help')
+      await call('GET', '/help?full=1')
     )
     const routes = help.routes.map((route) => `${route.method} ${route.path}`)
     expect(routes).toEqual(

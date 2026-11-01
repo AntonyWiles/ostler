@@ -132,6 +132,9 @@ import { PINS_ROUTES } from './automation/pins'
 import { TIME_ROUTES } from './automation/time'
 import { MONEY_ROUTES } from './automation/money'
 import { CALENDARS_ROUTES } from './automation/calendars'
+import { localLinksAsText } from '@shared/local-links'
+import { buildHelp } from './automation/help'
+import { pickFields, workItemBodyFromApi, taskIdForKey } from './automation/task-keys'
 import { PEOPLE_ROUTES } from './automation/people'
 import { DAYS_OFF_ROUTES } from './automation/days-off'
 import { CONTACTS_ROUTES } from './automation/contacts'
@@ -224,8 +227,11 @@ const ROUTES: AutomationRouteDef[] = [
     method: 'GET',
     path: '/help',
     mcp: { excluded: 'MCP lists its own tools.' },
-    description: 'Describe this API, response envelopes, and the typical flow.',
-    response: '{ ok: true, value: { instructions, routes } }'
+    description:
+      "Describe this API: the instructions, the rules every route follows, and one line per route. ?route=<path> (a pattern such as /work-items/:workItemId, or a path as sent) gives those routes' full text, with &method= for one; ?q=<words> keeps the routes that mention every word; ?full=1 is every route in full.",
+    request: '?route=/work-items/:workItemId&method=PATCH, ?q=attach, or ?full=1',
+    response:
+      '{ ok: true, value: { instructions, conventions: string[], routes: Array<{ method, path, summary }> } }; with ?route= or ?full=1, routes are the full AutomationRoute records'
   },
   {
     method: 'GET',
@@ -535,7 +541,7 @@ const ROUTES: AutomationRouteDef[] = [
     method: 'GET',
     path: '/work-items',
     description:
-      'List work items on the Board, in manual order (the order the Board shows under Manual order; move one with POST /work-items/:workItemId/move). ?scope=archived lists the project archive; ?scope=deleted lists the recycle bin (each item has deletedAt; it is purged 30 days after). ?filter=<JSON TaskFilter> keeps only the tasks that match, by the same rule as every view in the app: { match: "all" | "any", conditions: [{ field, op, value }] }. Fields and operators: text contains|notContains "words"; status, priority is|isNot [values]; assignee is|isNot [person ids, "me", "nobody"]; labels hasAny|hasAll|hasNone [labels]; milestone, goal is|isNot [ids, "none"]; subproject is|isNot [workstream ids, "none"] (a workstream is a sub-project; see GET /subprojects); iteration is|isNot [iteration ids, "none", "current"] ("current" is the active iteration, or with none active the unfinished one whose dates include today, its end day too); due, start is "today"|"overdue"|"thisWeek"|"next7Days"|"none"|"any", or before|after "YYYY-MM-DD"; created, updated is "today"|"thisWeek"|"last7Days", or before|after a date; estimate, impact, effort is "set"|"empty", or equals|lessThan|greaterThan a number; checklist is "complete"|"incomplete"; hasComments, recurring, someday, inTriage is true|false (inTriage: waiting in To triage; ?scope=triage lists only those, oldest first); showFrom is "hidden"|"shown"|"today"|"none"|"any", or before|after "YYYY-MM-DD" ("hidden" is a task in Someday or shown from a later day, by the same rule that keeps it off Home, My work, the Board and the List; "shown" is every other task). Custom fields: { field: "custom", fieldId, op, value }: text contains|notContains "words"; number equals|lessThan|greaterThan a number, or between [low, high]; date before|after "YYYY-MM-DD"; choice is|isNot [option ids]; choices hasAny|hasAll|hasNone [option ids]; checkbox is true|false; any field isEmpty "empty"|"set". An invalid filter is refused with HTTP 400 and a message saying what is wrong. URL-encode the JSON. ?include=linkedFrom adds linkedFrom to each: the texts of this project that link to it, as in GET /links.',
+      'List work items on the Board, in manual order (the order the Board shows under Manual order; move one with POST /work-items/:workItemId/move). ?status=blocked,ready keeps only those statuses (as the app shows them). ?fields=key,title,status sends only those fields of each task, plus id; without it every field is sent. ?scope=archived lists the project archive; ?scope=deleted lists the recycle bin (each item has deletedAt; it is purged 30 days after). ?filter=<JSON TaskFilter> keeps only the tasks that match, by the same rule as every view in the app: { match: "all" | "any", conditions: [{ field, op, value }] }. Fields and operators: text contains|notContains "words"; status, priority is|isNot [values]; assignee is|isNot [person ids, "me", "nobody"]; labels hasAny|hasAll|hasNone [labels]; milestone, goal is|isNot [ids, "none"]; subproject is|isNot [workstream ids, "none"] (a workstream is a sub-project; see GET /subprojects); iteration is|isNot [iteration ids, "none", "current"] ("current" is the active iteration, or with none active the unfinished one whose dates include today, its end day too); due, start is "today"|"overdue"|"thisWeek"|"next7Days"|"none"|"any", or before|after "YYYY-MM-DD"; created, updated is "today"|"thisWeek"|"last7Days", or before|after a date; estimate, impact, effort is "set"|"empty", or equals|lessThan|greaterThan a number; checklist is "complete"|"incomplete"; hasComments, recurring, someday, inTriage is true|false (inTriage: waiting in To triage; ?scope=triage lists only those, oldest first); showFrom is "hidden"|"shown"|"today"|"none"|"any", or before|after "YYYY-MM-DD" ("hidden" is a task in Someday or shown from a later day, by the same rule that keeps it off Home, My work, the Board and the List; "shown" is every other task). Custom fields: { field: "custom", fieldId, op, value }: text contains|notContains "words"; number equals|lessThan|greaterThan a number, or between [low, high]; date before|after "YYYY-MM-DD"; choice is|isNot [option ids]; choices hasAny|hasAll|hasNone [option ids]; checkbox is true|false; any field isEmpty "empty"|"set". An invalid filter is refused with HTTP 400 and a message saying what is wrong. URL-encode the JSON. ?include=linkedFrom adds linkedFrom to each: the texts of this project that link to it, as in GET /links.',
     request:
       '?filter=%7B%22conditions%22%3A%5B%7B%22field%22%3A%22due%22%2C%22op%22%3A%22is%22%2C%22value%22%3A%22overdue%22%7D%5D%7D (the URL-encoded form of {"conditions":[{"field":"due","op":"is","value":"overdue"}]})',
     response:
@@ -611,7 +617,7 @@ const ROUTES: AutomationRouteDef[] = [
     path: '/work-items',
     description: 'Create a work item without queueing or touching the harness.',
     request:
-      'JSON body: { title: string, description?, status?, columnId?, priority?, milestoneId?, subprojectId?, iterationId?, typeId?, labels?, acceptanceCriteria?, dependencyIds?, dependencyLinks?, targetDate?, startDate?, showFrom?, someday?, impact?, effort?, assigneeId?, estimate?, autoQueue?, planFirst?, parentWorkItemId?, subtaskPhaseNumber?, subtaskPhaseName?, fieldValues?, triage? }. triage: true makes it a quick capture: when the project has Triage new captures on (GET /triage) it waits in To triage (inTriage: true, capturedBy: "api") and counts nowhere until it is accepted (POST /work-items/:workItemId/accept); with the setting off it is an ordinary task. planFirst is "default" (follow the project\'s agentsPlanFirst, GET /auto-dispatch), "yes" or "no": whether an agent on this task sends a plan and waits for approval before it changes anything; it is read when the task is queued. showFrom (YYYY-MM-DD, or null) hides the task until that day, and someday: true parks it in Someday: either way it stays off Today, Upcoming, My work, the Board and the List, is never auto-queued, and queueing it for an agent is refused until it is brought back (PATCH someday: false, or showFrom: null). Reminders still fire. impact and effort score an idea: each a whole number from 1 to 5, or null for none; anything else (0, 6, 2.5, text) is refused. The app’s Someday view sorts and grids ideas by them (impact high to low, then effort low to high), and impact 4 or 5 with effort 1 or 2 is a quick win. fieldValues sets custom fields by field id (see GET /fields); a value the field does not take is refused. targetDate is the due date and startDate the start date, both YYYY-MM-DD; a start date after the due date is refused. assigneeId is a person id from GET /people, or null. estimate is a number from 0 to 1000 in the project\'s unit (points or hours). dependencyIds are tasks in this project that must be done first. subprojectId puts the task in one of this project\'s workstreams (see GET /subprojects), or null for none (the top level of the project); a workstream of another project is refused. iterationId puts the task in one of this project\'s iterations (see GET /iterations), or null for none; a task is in at most one. typeId gives it one of this project\'s task types (see GET /task-types), or null for none. parentWorkItemId makes the task a subtask of that task (up to three levels); subtaskPhaseNumber (default 1) and subtaskPhaseName place it in a phase of its parent. The returned item\'s checkedCriteria lists the ticked acceptance criteria; tick them with POST /work-items/:workItemId/checklist. columnId puts the task in one of the project\'s own columns (the id from GET /columns custom): its status becomes the one that column counts as. On PATCH, columnId null puts it back in its status\'s own column, and a new status without columnId moves it there too. dependencyLinks is Array<{ id, type?, lagDays? }>: each waits-on link with its type, "finish-to-start" (the default: starts on or after the other is due), "start-to-start" (starts on or after the other starts) or "finish-to-finish" (is due on or after the other is due), and lagDays, a whole number of calendar days from -365 to 365 (0 by default; negative is a lead). Given, it replaces every link; dependencyIds alone still works and means finish-to-start, 0 days for a new link (a link kept keeps its type and lag). Only finish-to-start links hold a task back from Ready and the agent queue; the others are about dates only. The returned PlanningWorkItem has dependencyIds and dependencyLinks, in the same order.',
+      'JSON body: { title: string, description?, status?, columnId?, priority?, milestoneId?, subprojectId?, iterationId?, typeId?, labels?, acceptanceCriteria?, dependencyIds?, dependencyLinks?, targetDate?, startDate?, showFrom?, someday?, impact?, effort?, assigneeId?, estimate?, autoQueue?, planFirst?, blockedReason?, ownerOnly?, parentWorkItemId?, subtaskPhaseNumber?, subtaskPhaseName?, fieldValues?, triage? }. triage: true makes it a quick capture: when the project has Triage new captures on (GET /triage) it waits in To triage (inTriage: true, capturedBy: "api") and counts nowhere until it is accepted (POST /work-items/:workItemId/accept); with the setting off it is an ordinary task. planFirst is "default" (follow the project\'s agentsPlanFirst, GET /auto-dispatch), "yes" or "no": whether an agent on this task sends a plan and waits for approval before it changes anything; it is read when the task is queued. showFrom (YYYY-MM-DD, or null) hides the task until that day, and someday: true parks it in Someday: either way it stays off Today, Upcoming, My work, the Board and the List, is never auto-queued, and queueing it for an agent is refused until it is brought back (PATCH someday: false, or showFrom: null). Reminders still fire. impact and effort score an idea: each a whole number from 1 to 5, or null for none; anything else (0, 6, 2.5, text) is refused. The app’s Someday view sorts and grids ideas by them (impact high to low, then effort low to high), and impact 4 or 5 with effort 1 or 2 is a quick win. fieldValues sets custom fields by field id (see GET /fields); a value the field does not take is refused. targetDate is the due date and startDate the start date, both YYYY-MM-DD; a start date after the due date is refused. assigneeId is a person id from GET /people, or null. estimate is a number from 0 to 1000 in the project\'s unit (points or hours). dependencyIds are tasks in this project that must be done first. subprojectId puts the task in one of this project\'s workstreams (see GET /subprojects), or null for none (the top level of the project); a workstream of another project is refused. iterationId puts the task in one of this project\'s iterations (see GET /iterations), or null for none; a task is in at most one. typeId gives it one of this project\'s task types (see GET /task-types), or null for none. parentWorkItemId makes the task a subtask of that task (up to three levels); subtaskPhaseNumber (default 1) and subtaskPhaseName place it in a phase of its parent. The returned item\'s checkedCriteria lists the ticked acceptance criteria; tick them with POST /work-items/:workItemId/checklist. columnId puts the task in one of the project\'s own columns (the id from GET /columns custom): its status becomes the one that column counts as. On PATCH, columnId null puts it back in its status\'s own column, and a new status without columnId moves it there too. dependencyLinks is Array<{ id, type?, lagDays? }>: each waits-on link with its type, "finish-to-start" (the default: starts on or after the other is due), "start-to-start" (starts on or after the other starts) or "finish-to-finish" (is due on or after the other is due), and lagDays, a whole number of calendar days from -365 to 365 (0 by default; negative is a lead). Given, it replaces every link; dependencyIds alone still works and means finish-to-start, 0 days for a new link (a link kept keeps its type and lag). Only finish-to-start links hold a task back from Ready and the agent queue; the others are about dates only. The returned PlanningWorkItem has dependencyIds and dependencyLinks, in the same order.',
     response: '{ ok: true, value: PlanningWorkItem }',
     exampleBody: {
       title: 'Document the sea-trial checklist',
@@ -657,6 +663,36 @@ const ROUTES: AutomationRouteDef[] = [
   },
   {
     method: 'GET',
+    path: '/blocked',
+    description:
+      'The blocked tasks, each with why (blockedReason, empty when it says nothing) and the tasks it waits on. clear is true when it waits on at least one task and every one of them is done: nothing it waits on holds it back now, so it can probably move on.',
+    response:
+      '{ ok: true, value: Array<{ id, key, title, blockedReason, waitingOn: Array<{ id, key, title, status }>, clear: boolean }> }'
+  },
+  {
+    method: 'PATCH',
+    path: '/work-items/batch',
+    description:
+      'Change many tasks in one call: each item is the changes PATCH /work-items/:workItemId takes, with the task’s id or ID (BRI-26) as id. The planning changes are one transaction: a refused item changes nothing, and the answer (400) names the item and the reason. moveDependents is not taken here. Up to 500 items.',
+    request:
+      'JSON body: { items: Array<{ id, ...any field PATCH /work-items/:workItemId accepts }> }',
+    response: '{ ok: true, value: PlanningWorkItem[] } in the order sent',
+    exampleBody: {
+      items: [
+        { id: 'BRI-3', status: 'done' },
+        { id: 'BRI-4', status: 'blocked', blockedReason: 'Waiting on you' }
+      ]
+    }
+  },
+  {
+    method: 'GET',
+    path: '/work-items/:workItemId',
+    description:
+      'Return one work item, by its id or its ID (BRI-26), with its status as the app shows it. Finds it in the archive and the recycle bin too.',
+    response: '{ ok: true, value: PlanningWorkItem }'
+  },
+  {
+    method: 'GET',
     path: '/work-items/by-key/:key',
     description:
       "Return one work item by its ID, such as SHOP-12: this project's prefix (GET /task-prefix) and the task's number, in capitals or small letters. Finds it in the archive and the recycle bin too. An ID of another project, or a number no task has, is HTTP 404. Every work item carries number (never reused in its project, even after a task is deleted) and key (the ID); the id stays the key every other route takes.",
@@ -666,7 +702,7 @@ const ROUTES: AutomationRouteDef[] = [
     method: 'PATCH',
     path: '/work-items/:workItemId',
     description:
-      'Update work-item title, description, status, priority, milestone, labels, acceptance criteria, dependencies, due date (targetDate), start date, show-from date (showFrom), Someday (someday: true moves the task to Someday, false brings it back), impact and effort (1 to 5, or null to clear), assignee, estimate, autoQueue, planFirst ("default", "yes" or "no"; read when the task is next queued), or custom field values (fieldValues: only the fields you send change; null clears one). Changing acceptanceCriteria drops the ticks of items whose text is no longer on the list. A queued item follows the app’s queue rule: while no agent has claimed its task, status blocked holds the task and ready releases it, and any other status, someday: true or a showFrom later than today cancels the task and clears the link (the returned item has leftQueue: true; queue it again with POST /tasks to undo); while an agent runs it or its work waits for review, the change is refused. The project’s rules (GET /rules) run on this change as on one made in the app; when they did something, the returned item has ruleRun { id, ruleNames }, and a later PATCH that puts the old values back can send undoRuleRun: <that id> to undo what the rules did too (the undo itself sets off no rules). Note: parentWorkItemId, taskCode, phaseCode, phaseName, and the verification fields are not writable here — they are read-only on the returned PlanningWorkItem, set only by the guided Agent Plan & Split workflow (task/phase identity) or the in-app AI review accept flow (verification).',
+      'Update work-item title, description, status, priority, milestone, labels, acceptance criteria, dependencies, due date (targetDate), start date, show-from date (showFrom), Someday (someday: true moves the task to Someday, false brings it back), impact and effort (1 to 5, or null to clear), assignee, estimate, autoQueue, planFirst ("default", "yes" or "no"; read when the task is next queued), blockedReason (why it is blocked, up to 200 characters; kept only while the status is blocked, so send it with status: "blocked" or on a blocked task), ownerOnly (true makes the task the person’s alone: agents never queue or work on it, and a queued task not yet claimed leaves the queue; only the person can set it back to false, in Ostler), or custom field values (fieldValues: only the fields you send change; null clears one). Changing acceptanceCriteria drops the ticks of items whose text is no longer on the list. A queued item follows the app’s queue rule: while no agent has claimed its task, status blocked holds the task and ready releases it, and any other status, someday: true or a showFrom later than today cancels the task and clears the link (the returned item has leftQueue: true; queue it again with POST /tasks to undo); while an agent runs it or its work waits for review, the change is refused. The project’s rules (GET /rules) run on this change as on one made in the app; when they did something, the returned item has ruleRun { id, ruleNames }, and a later PATCH that puts the old values back can send undoRuleRun: <that id> to undo what the rules did too (the undo itself sets off no rules). Note: parentWorkItemId, taskCode, phaseCode, phaseName, and the verification fields are not writable here — they are read-only on the returned PlanningWorkItem, set only by the guided Agent Plan & Split workflow (task/phase identity) or the in-app AI review accept flow (verification).',
     request:
       'JSON body with any fields accepted by POST /work-items, plus optional moveDependents: true | "preview". When the due date moves later by N days, moveDependents: true also moves every task that waits on this one and is now too early for its link (as GET /dependency-conflicts judges it, with the link’s type and lag; a start-to-start link is pushed by how far this task’s first day moved) later by N days, keeping its start-to-due gap and landing on one of Me’s working days (GET /people; Monday to Friday when unknown; Me’s days off and everyone’s, GET /days-off, are not working days), then the tasks waiting on those, each once, all in the same transaction. Done tasks and tasks without a due date never move. Moving a task earlier moves nothing else. moveDependents: "preview" changes nothing and returns the plan for the change as sent.',
     response:
@@ -1144,10 +1180,10 @@ const ROUTES: AutomationRouteDef[] = [
   {
     method: 'POST',
     path: '/work-items/:workItemId/attachments',
-    description: `Attach a library item for the work item's agent, recorded as attachedBy "automation" (re-attaching refreshes the revision). Only live items Ostler AI may read can be attached: human-only and archived items are refused, and a work item carries at most ${LIBRARY_MAX_TASK_ATTACHMENTS}. The task text lists attachments, and every coding session can read the files, read-only: embedded sessions as copies, external harness sessions through GET /tasks/:taskId/attachments on the harness API.`,
-    request: 'JSON body: { itemId }.',
+    description: `Attach a library item for the work item's agent, recorded as attachedBy "automation" (re-attaching refreshes the revision). Send { itemId } for an item already in the Library, or { fileName, mimeType, base64 } to upload a file (as POST /library/upload does, up to 25 MB; a file the Library already holds is reused) and attach it in one call. Only live items Ostler AI may read can be attached: human-only and archived items are refused, and a work item carries at most ${LIBRARY_MAX_TASK_ATTACHMENTS}. The task text lists attachments, and every coding session can read the files, read-only: embedded sessions as copies, external harness sessions through GET /tasks/:taskId/attachments on the harness API.`,
+    request: 'JSON body: { itemId } or { fileName, mimeType, base64 }.',
     response: '{ ok: true, value: Array<WorkItemAttachment> }',
-    exampleBody: { itemId: '<library-item-id>' }
+    exampleBody: { fileName: 'notes.md', mimeType: 'text/markdown', base64: '<base64>' }
   },
   {
     method: 'DELETE',
@@ -1557,7 +1593,11 @@ export class AutomationHttpServer {
     if (!isHelp && (!project.automationToken || token !== project.automationToken)) {
       return respondJson(res, 401, { ok: false, error: 'Invalid or missing automation token' })
     }
-    if (isHelp) return respondJson(res, 200, { ok: true, value: buildHelp(project.id) })
+    if (isHelp)
+      return respondJson(res, 200, {
+        ok: true,
+        value: buildHelp(project.id, HELP_ROUTES, url.searchParams)
+      })
     if (!project.enabled && req.method !== 'GET') {
       return respondJson(res, 403, {
         ok: false,
@@ -1573,10 +1613,20 @@ export class AutomationHttpServer {
     }
     try {
       const resource = parts[2]
+      // A task's ID (BRI-26) stands for its id wherever a route takes :workItemId.
+      if (resource === 'work-items' && parts[3] && this.planning) {
+        const byKey = taskIdForKey(this.planning, project, safeDecode(parts[3]))
+        if (byKey === null)
+          return respondJson(res, 404, { ok: false, error: 'No task of this project has that ID' })
+        if (byKey) parts[3] = byKey
+      }
       const id = parts[3]
       const action = parts[4]
       // Uploads carry base64 (4/3 of the 25 MB file cap); everything else stays small.
-      const isUpload = req.method === 'POST' && resource === 'library' && id === 'upload'
+      const isUpload =
+        req.method === 'POST' &&
+        ((resource === 'library' && id === 'upload') ||
+          (resource === 'work-items' && action === 'attachments' && parts.length === 5))
       // An import carries its CSV text (up to 50 MB, as from a file).
       const isImport = req.method === 'POST' && resource === 'import'
       // A project file is the request body itself, streamed to disk by the import.
@@ -2039,6 +2089,24 @@ export class AutomationHttpServer {
           value: { ...found, status: projectWorkItemStatus(found, harness) }
         })
       }
+      if (
+        req.method === 'GET' &&
+        resource === 'work-items' &&
+        id &&
+        !action &&
+        id !== 'by-key' &&
+        id !== 'batch'
+      ) {
+        // One task, by its id or (resolved above) its ID.
+        const found = this.planning.getWorkItem(id)
+        if (found.projectId !== project.id)
+          throw new Refusal('Planning work item belongs to another project')
+        const harness = this.harness?.getState(project)
+        return respondJson(res, 200, {
+          ok: true,
+          value: { ...found, status: projectWorkItemStatus(found, harness) }
+        })
+      }
       if (req.method === 'GET' && resource === 'work-items' && !id) {
         const params = new URL(req.url ?? '/', 'http://127.0.0.1').searchParams
         const scope = params.get('scope')
@@ -2051,8 +2119,18 @@ export class AutomationHttpServer {
             scope === 'archived' || scope === 'deleted' || scope === 'triage' ? scope : 'live'
           )
         )
+        const statusText = params.get('status')
+        const statuses = statusText ? statusText.split(',').map((entry) => entry.trim()) : []
+        for (const status of statuses)
+          if (!API_STATUSES.includes(status))
+            throw new Refusal(`status must be one or more of ${API_STATUSES.join(', ')}`)
+        const byStatus = statuses.length
+          ? items.filter((item) => statuses.includes(item.status))
+          : items
+        const fields = params.get('fields')
         const filterText = params.get('filter')
-        if (filterText === null) return respondJson(res, 200, { ok: true, value: items })
+        if (filterText === null)
+          return respondJson(res, 200, { ok: true, value: pickFields(byStatus, fields) })
         let raw: unknown
         try {
           raw = JSON.parse(filterText)
@@ -2066,7 +2144,10 @@ export class AutomationHttpServer {
         const context = this.planning.taskFilterContext(project.id)
         return respondJson(res, 200, {
           ok: true,
-          value: items.filter((item) => matchesFilter(item, filter, context))
+          value: pickFields(
+            byStatus.filter((item) => matchesFilter(item, filter, context)),
+            fields
+          )
         })
       }
       if (req.method === 'GET' && resource === 'reports' && !id) {
@@ -2102,6 +2183,11 @@ export class AutomationHttpServer {
           value: criticalPath(this.projectedWorkItems(project, 'live'), milestone ?? null)
         })
       }
+      if (req.method === 'GET' && resource === 'blocked' && !id)
+        return respondJson(res, 200, {
+          ok: true,
+          value: blockedTasks(this.projectedWorkItems(project, 'live'))
+        })
       if (req.method === 'GET' && resource === 'blockers' && !id)
         return respondJson(res, 200, {
           ok: true,
@@ -2110,7 +2196,15 @@ export class AutomationHttpServer {
       let value: unknown
       if (req.method === 'POST' && resource === 'work-items' && id === 'batch' && !action) {
         // A whole plan: one transaction, refused as a whole. ?dryRun=1 only checks it.
-        const rows = batchRowsFrom(body.items)
+        const rows = batchRowsFrom(
+          Array.isArray(body.items)
+            ? body.items.map((item: unknown) =>
+                item && typeof item === 'object'
+                  ? workItemBodyFromApi(this.planning!, project, item as Record<string, unknown>)
+                  : item
+              )
+            : body.items
+        )
         const dryRun = new URL(req.url ?? '/', 'http://127.0.0.1').searchParams.get('dryRun')
         if (dryRun === '1' || dryRun === 'true') {
           const errors = checkWorkItemBatch(this.planning, project.id, rows, AUTOMATION_ACTOR)
@@ -2127,7 +2221,11 @@ export class AutomationHttpServer {
         value = this.planning.createWorkItem(
           project.id,
           {
-            ...(input as unknown as CreatePlanningWorkItemInput),
+            ...(workItemBodyFromApi(
+              this.planning,
+              project,
+              input
+            ) as unknown as CreatePlanningWorkItemInput),
             ...(triage ? { capture: 'api' as const } : {})
           },
           AUTOMATION_ACTOR,
@@ -2166,11 +2264,17 @@ export class AutomationHttpServer {
           AUTOMATION_ACTOR
         )
         if (this.library) this.library.notify(toProject)
+      } else if (req.method === 'PATCH' && resource === 'work-items' && id === 'batch' && !action) {
+        value = this.updateWorkItemBatch(project, body)
       } else if (req.method === 'PATCH' && resource === 'work-items' && id && !action) {
         const current = this.planning.getWorkItem(id)
         if (current.projectId !== project.id)
           throw new Refusal('Planning work item belongs to another project')
-        value = this.updateWorkItem(project, current, body)
+        value = this.updateWorkItem(
+          project,
+          current,
+          workItemBodyFromApi(this.planning, project, body)
+        )
       } else if (req.method === 'DELETE' && resource === 'work-items' && id && !action) {
         const permanent =
           new URL(req.url ?? '/', 'http://127.0.0.1').searchParams.get('permanent') === 'true'
@@ -2694,10 +2798,10 @@ export class AutomationHttpServer {
       mutated = false
     } else if (req.method === 'POST' && resource === 'work-items' && id && action === 'comments') {
       ownWorkItem(id)
-      value = planning.addComment(id, body.body as string, AUTOMATION_ACTOR)
+      value = planning.addComment(id, apiText(body.body) as string, AUTOMATION_ACTOR)
     } else if (req.method === 'PATCH' && resource === 'comments' && id && !action) {
       ownComment(id)
-      value = planning.updateComment(id, body.body as string, AUTOMATION_ACTOR)
+      value = planning.updateComment(id, apiText(body.body) as string, AUTOMATION_ACTOR)
     } else if (req.method === 'DELETE' && resource === 'comments' && id && !action) {
       ownComment(id)
       value = planning.deleteComment(id, AUTOMATION_ACTOR)
@@ -3146,8 +3250,22 @@ export class AutomationHttpServer {
         })
       }
       if (req.method === 'POST' && !extra) {
-        const itemId = typeof body.itemId === 'string' ? body.itemId : ''
-        if (!itemId) throw new Refusal('itemId is required')
+        let itemId = typeof body.itemId === 'string' ? body.itemId : ''
+        if (!itemId && typeof body.base64 === 'string') {
+          // A file sent with the call: into the Library first, then attached.
+          if (this.planning && this.planning.getWorkItem(id).projectId !== project.id)
+            throw new Refusal('Planning work item belongs to another project')
+          const fileName = typeof body.fileName === 'string' ? body.fileName : ''
+          const mimeType = typeof body.mimeType === 'string' ? body.mimeType : ''
+          if (!fileName) throw new Refusal('fileName is required with base64')
+          const bytes = new Uint8Array(Buffer.from(body.base64, 'base64'))
+          if (bytes.byteLength === 0) throw new Refusal('base64 holds no file')
+          if (bytes.byteLength > LIBRARY_MAX_FILE_BYTES)
+            throw new Refusal(`Files are limited to ${LIBRARY_MAX_FILE_BYTES / 1024 / 1024} MB`)
+          const [result] = await library.importFiles(project.id, [{ fileName, mimeType, bytes }])
+          itemId = result.item.id
+        }
+        if (!itemId) throw new Refusal('Send itemId, or fileName, mimeType and base64')
         return mutated(
           library.attachToWorkItem(project.id, id, itemId, 'automation').map(markSource)
         )
@@ -3449,6 +3567,45 @@ export class AutomationHttpServer {
    * wait on it and now start too early move too, in the same transaction
    * (N7.1); with `"preview"` nothing changes and the plan comes back.
    */
+  /**
+   * PATCH /work-items/batch: each item's changes as PATCH /work-items/:workItemId
+   * makes them, in one transaction, so a refused item changes nothing.
+   */
+  private updateWorkItemBatch(project: WatchedProject, body: Record<string, unknown>): unknown {
+    const planning = this.planning!
+    const items = body.items
+    if (!Array.isArray(items) || items.length === 0)
+      throw new Refusal('items must be a list of { id, ...fields }')
+    if (items.length > MAX_BATCH_UPDATES)
+      throw new Refusal(`A batch changes at most ${MAX_BATCH_UPDATES} tasks`)
+    return planning.runInTransaction(() =>
+      items.map((entry: unknown, index) => {
+        if (!entry || typeof entry !== 'object')
+          throw new Refusal(`items[${index}] must be an object`)
+        const { id: rawId, ...fields } = entry as Record<string, unknown>
+        if (typeof rawId !== 'string' || !rawId) throw new Refusal(`items[${index}].id is required`)
+        const byKey = taskIdForKey(planning, project, rawId)
+        if (byKey === null) throw new Refusal(`items[${index}]: no task has the ID ${rawId}`)
+        const current = planning.getWorkItem(byKey ?? rawId)
+        if (current.projectId !== project.id)
+          throw new Refusal(`items[${index}] belongs to another project`)
+        if (fields.moveDependents !== undefined)
+          throw new Refusal(`items[${index}]: moveDependents is for PATCH /work-items/:workItemId`)
+        try {
+          return this.updateWorkItem(
+            project,
+            current,
+            workItemBodyFromApi(planning, project, fields)
+          )
+        } catch (error) {
+          if (error instanceof Refusal)
+            throw new Refusal(`items[${index}] (${current.key ?? current.id}): ${error.message}`)
+          throw error
+        }
+      })
+    )
+  }
+
   private updateWorkItem(
     project: WatchedProject,
     current: PlanningWorkItem,
@@ -3457,6 +3614,9 @@ export class AutomationHttpServer {
     const planning = this.planning!
     const { moveDependents, ...patch } = body
     const input = patch as UpdatePlanningWorkItemInput
+    // Owner only keeps a task from agents, so an agent's token must not lift it.
+    if (input.ownerOnly === false && current.ownerOnly)
+      throw new Refusal('Only the person can turn off Owner only, in Ostler')
     // A queued task's move out of Ready or into Someday: the app's queue rule.
     const update = () => {
       const saved = updateWorkItemThroughQueue(
@@ -3532,14 +3692,44 @@ function countStatuses<T extends { status: string }, S extends string>(
   ) as Record<S, number>
 }
 
-function buildHelp(projectId: string) {
-  return {
-    instructions: `Ostler automation API for project ${projectId}. Responses use { ok: true, value } or { ok: false, error }. Typical flow: call GET /help, then call documented routes with Authorization: Bearer <automation token>. A project can live only in Ostler, with no folder linked (hasFolder: false in GET /projects). Then the routes that need its folder (queuing tasks for agents, starting embedded sessions, applying a task's work) answer HTTP 409 with a message saying the project needs a linked folder; planning and Library routes keep working. Only the human can link a folder, in Ostler.`,
-    routes: HELP_ROUTES
-  }
+const API_STATUSES = ['backlog', 'ready', 'active', 'blocked', 'review', 'done']
+
+/**
+ * GET /blocked: each blocked task with its reason and what it waits on, and
+ * whether everything it waits on is done (it is blocked by nothing left).
+ */
+export function blockedTasks(items: readonly PlanningWorkItem[]) {
+  const byId = new Map(items.map((item) => [item.id, item]))
+  return items
+    .filter((item) => item.status === 'blocked')
+    .map((item) => {
+      const waitingOn = item.dependencyIds
+        .map((dependencyId) => byId.get(dependencyId))
+        .filter((found): found is PlanningWorkItem => Boolean(found))
+        .map((found) => ({
+          id: found.id,
+          key: found.key ?? null,
+          title: found.title,
+          status: found.status
+        }))
+      return {
+        id: item.id,
+        key: item.key ?? null,
+        title: item.title,
+        blockedReason: item.blockedReason ?? '',
+        waitingOn,
+        clear: waitingOn.length > 0 && waitingOn.every((found) => found.status === 'done')
+      }
+    })
 }
 
-const API_STATUSES = ['backlog', 'ready', 'active', 'blocked', 'review', 'done']
+/** A text sent to the API with its links to this computer kept as text (`local-links.ts`). */
+function apiText(value: unknown): unknown {
+  return typeof value === 'string' ? localLinksAsText(value) : value
+}
+
+/** The most tasks one PATCH /work-items/batch changes. */
+const MAX_BATCH_UPDATES = 500
 const API_PRIORITIES = ['low', 'medium', 'high', 'critical']
 
 /** `POST /import/csv`'s preset: a tool's id, "none" to map by hand, or left out to detect. */

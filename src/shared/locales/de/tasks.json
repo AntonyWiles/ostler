@@ -2684,5 +2684,13 @@
     "badgeSignedOff": "Freigegeben",
     "waitingForTitle": "Wartet auf die Freigabe von {{name}}",
     "signedOffByTitle": "Freigegeben von {{name}}"
+  },
+  "blockedReason": {
+    "label": "Warum ist sie blockiert?",
+    "placeholder": "Wartet auf dich, auf eine Aufgabe, auf ein Datum…",
+    "nothingLeft": "Alles, worauf diese Aufgabe wartet, ist erledigt. Vielleicht kann sie weitergehen."
+  },
+  "ownerOnly": {
+    "badge": "Nur für mich"
   }
 }
