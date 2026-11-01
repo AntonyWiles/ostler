@@ -78,6 +78,11 @@ export type EditRefusal =
   | 'dependency-loop'
   | 'bad-reminder-time' // in the past, or more than ten years ahead
   | 'task-closed' // a done, archived or binned task takes no new reminder
+  | 'choice-required' // a blocker is resolved with one of its options, or "resolved"
+  | 'choice-too-long'
+  | 'note-too-long'
+  | 'already-resolved' // the blocker was resolved elsewhere first
+  | 'not-waiting' // the task is no longer in review or blocked
 
 /** An edit that was refused; nothing was written. `reason` is what the screen shows. */
 export class EditRefused extends Error {
@@ -94,7 +99,7 @@ export interface EditOptions {
   now?: number
 }
 
-interface TaskRow {
+export interface TaskRow {
   id: string
   project_id: string
   title: string
@@ -123,7 +128,7 @@ interface TaskRow {
 const MAX_TITLE = 200
 
 /** Runs an edit, turning the database's read-only refusal (a Viewer) into `EditRefused`. */
-function guarded<T>(run: () => T): T {
+export function guarded<T>(run: () => T): T {
   try {
     return run()
   } catch (error) {
@@ -135,7 +140,7 @@ function guarded<T>(run: () => T): T {
   }
 }
 
-function requireTask(db: EditDb, taskId: string): TaskRow {
+export function requireTask(db: EditDb, taskId: string): TaskRow {
   const row = db.prepare('SELECT * FROM planning_work_items WHERE id = ?').get(taskId) as
     TaskRow | undefined
   if (!row || row.deleted_at !== null) throw new EditRefused('not-found')

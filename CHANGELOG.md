@@ -33,6 +33,11 @@ Help › What's new, and the Unreleased section until a version has its own.
   and comments turn into links. On the PC, web links open in your browser. On the phone, an item
   link shows the item's title and opens it, a task can be shared as a link, and "Add a link" puts a
   link to another task, milestone or decision into a description or comment.
+- **Answer what waits on you, from the phone.** The phone can gather, across every project, the
+  blockers waiting for your decision, tasks in review, tasks blocked on you and sign-offs asked of
+  you, each with its latest comment, and answer them: pick one of a blocker's options, approve or
+  send back a review, or reply to a blocked task and move it on. The answers write the same rows as
+  on your PC.
 - **A richer task list on Android.** Sort a project's tasks by Do first, board order, due date or
   priority, and fold status groups (Done starts folded). Rows show priority, a coloured due date,
   checklist progress, what the task waits on, comments, labels and who it is assigned to.
