@@ -57,6 +57,10 @@ Help › What's new, and the Unreleased section until a version has its own.
 - **Shopping lists on Android.** A project's Shopping view is made for the shop: add an item in
   one line ("3 packs wall plugs £4.50"), tick it bought (a paid cost at its estimate), and bought
   items fold away. Every change has Undo.
+- **Team and Contacts on Android.** The ⋮ menu opens the Team: a card per person across projects
+  with open, overdue, due this week, blocked and stalled work, hours this week and time away,
+  opening to their open tasks. Contacts lists your clients and suppliers: search them, add one,
+  call, email or open their website with one tap, and see the tasks that name them.
 - **A richer task list on Android.** Sort a project's tasks by Do first, board order, due date or
   priority, and fold status groups (Done starts folded). Rows show priority, a coloured due date,
   checklist progress, what the task waits on, comments, labels and who it is assigned to.

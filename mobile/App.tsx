@@ -14,6 +14,8 @@ import { Inbox, type InboxTarget } from './src/screens/Inbox'
 import { NeedsYou } from './src/screens/NeedsYou'
 import { WeeklyReview } from './src/screens/WeeklyReview'
 import { Timesheet } from './src/screens/Timesheet'
+import { Team } from './src/screens/Team'
+import { Contacts } from './src/screens/Contacts'
 import { RunningTimerBar } from './src/screens/TaskTime'
 import { Join } from './src/screens/Join'
 import { Pairing } from './src/screens/Pairing'
@@ -61,29 +63,34 @@ function checkDatabase(db: OstlerDatabase): Check {
   }
 }
 
+/** The full-page screens. */
+type Screen =
+  | 'home'
+  | 'settings'
+  | 'join'
+  | 'pairing'
+  | 'project'
+  | 'task'
+  | 'search'
+  | 'weeklyReview'
+  | 'timesheet'
+  | 'team'
+  | 'contacts'
+
+/** The screens a task can be opened from, where Back returns. */
+type TaskOrigin = 'project' | 'home' | 'search' | 'weeklyReview' | 'timesheet' | 'team' | 'contacts'
+
 export default function App() {
   const [check, setCheck] = useState<Check | null>(null)
   const [failure, setFailure] = useState<string | null>(null)
   const theme = useTheme()
   const dark = useIsDark()
-  const [screen, setScreen] = useState<
-    | 'home'
-    | 'settings'
-    | 'join'
-    | 'pairing'
-    | 'project'
-    | 'task'
-    | 'search'
-    | 'weeklyReview'
-    | 'timesheet'
-  >('home')
+  const [screen, setScreen] = useState<Screen>('home')
   const [tab, setTab] = useState<'projects' | 'myDay' | 'inbox' | 'needsYou'>('projects')
   const [projectId, setProjectId] = useState<string | null>(null)
   const [taskId, setTaskId] = useState<string | null>(null)
   // Where Back from a task goes: the project it was opened from, Search, or the home lists.
-  const [taskFrom, setTaskFrom] = useState<
-    'project' | 'home' | 'search' | 'weeklyReview' | 'timesheet'
-  >('home')
+  const [taskFrom, setTaskFrom] = useState<TaskOrigin>('home')
   // The tasks a parent or subtask was opened from, newest last: Back steps through them first.
   const [taskTrail, setTaskTrail] = useState<string[]>([])
   // Where Back from a project goes: Search when it was found there, the task whose link opened
@@ -217,15 +224,12 @@ export default function App() {
     },
     []
   )
-  const openTask = useCallback(
-    (id: string, from: 'project' | 'home' | 'search' | 'weeklyReview' | 'timesheet') => {
-      setTaskId(id)
-      setTaskFrom(from)
-      setTaskTrail([])
-      setScreen('task')
-    },
-    []
-  )
+  const openTask = useCallback((id: string, from: TaskOrigin) => {
+    setTaskId(id)
+    setTaskFrom(from)
+    setTaskTrail([])
+    setScreen('task')
+  }, [])
   const openRelatedTask = useCallback(
     (id: string) => {
       if (taskId !== null) setTaskTrail((trail) => [...trail, taskId])
@@ -392,6 +396,22 @@ export default function App() {
       />
     )
   }
+  if (screen === 'team' && db !== null) {
+    return page(
+      <Team db={db} version={version} onBack={home} onOpenTask={(id) => openTask(id, 'team')} />
+    )
+  }
+  if (screen === 'contacts' && db !== null) {
+    return page(
+      <Contacts
+        db={db}
+        version={version}
+        onBack={home}
+        onOpenTask={(id) => openTask(id, 'contacts')}
+        onEdited={edited}
+      />
+    )
+  }
   if (screen === 'task' && db !== null && taskId !== null) {
     return page(
       <TaskDetail
@@ -425,7 +445,9 @@ export default function App() {
         ]}
         menu={[
           { label: t('views:weeklyReview.start'), onPress: () => setScreen('weeklyReview') },
-          { label: t('mobile:time.timesheet'), onPress: () => setScreen('timesheet') }
+          { label: t('mobile:time.timesheet'), onPress: () => setScreen('timesheet') },
+          { label: t('views:team.title'), onPress: () => setScreen('team') },
+          { label: t('views:contacts.title'), onPress: () => setScreen('contacts') }
         ]}
       />
       <View
