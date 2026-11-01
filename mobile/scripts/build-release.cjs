@@ -26,6 +26,11 @@ function fail(message) {
   process.exit(1)
 }
 
+// The dev variant (app.config.ts) is a separate test app with its own package; Play never gets it.
+if (process.env.OSTLER_ANDROID_VARIANT) {
+  fail('OSTLER_ANDROID_VARIANT is set; unset it, a release is always the real app')
+}
+
 function readVersion() {
   const text = fs.readFileSync(configPath, 'utf8')
   const version = /^\s*version: '(\d+)\.(\d+)\.(\d+)',$/m.exec(text)

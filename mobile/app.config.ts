@@ -17,6 +17,13 @@ const IOS_URL_SCHEME =
   process.env.OSTLER_GOOGLE_IOS_URL_SCHEME ?? 'com.googleusercontent.apps.ostler-android-only'
 
 /**
+ * `OSTLER_ANDROID_VARIANT=dev` builds a separate test app beside the real one: its own package
+ * (`<package>.dev`), name and link scheme, so it has its own empty database, never shares the real
+ * app's data, and can be filled with made-up data for trying screens out. Never for Play.
+ */
+const DEV_VARIANT = process.env.OSTLER_ANDROID_VARIANT === 'dev'
+
+/**
  * Signs release builds with the Play upload key named in the user's own
  * `%USERPROFILE%\.gradle\gradle.properties` (OSTLER_UPLOAD_*; docs/mobile/releasing.md). Without
  * those properties a release build keeps the debug key, which Play refuses. Done here, not by
@@ -68,16 +75,16 @@ const withNativeCompileCap: ConfigPlugin = (expoConfig) =>
   })
 
 const config: ExpoConfig = {
-  name: BRAND.name,
+  name: DEV_VARIANT ? `${BRAND.name} Dev` : BRAND.name,
   slug: BRAND.appUserModelId.replace(/[^a-z0-9]+/gi, '-').toLowerCase(),
   version: '1.0.2',
   orientation: 'portrait',
   icon: './assets/icon.png',
   userInterfaceStyle: 'automatic',
-  scheme: BRAND.urlScheme,
+  scheme: DEV_VARIANT ? `${BRAND.urlScheme}-dev` : BRAND.urlScheme,
   platforms: ['android'],
   android: {
-    package: BRAND.appUserModelId,
+    package: DEV_VARIANT ? `${BRAND.appUserModelId}.dev` : BRAND.appUserModelId,
     // Raise by one for every bundle uploaded to Play; Play refuses a number it has seen.
     versionCode: 3,
     adaptiveIcon: {
