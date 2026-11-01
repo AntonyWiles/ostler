@@ -203,7 +203,15 @@
     "checkIn": "Registrar progresso",
     "checkInValue": "Valor de hoje {{unit}}",
     "record": "Salvar",
-    "goalMilestones": "{{count}} marcos rumo a esta meta"
+    "goalMilestones": "{{count}} marcos rumo a esta meta",
+    "optional": "{{label}} (opcional)",
+    "addMilestone": "Novo marco",
+    "milestoneName": "Nome",
+    "milestoneOutcome": "O que ele entrega",
+    "milestoneDate": "Data-alvo",
+    "recordDecision": "Registrar uma decisão",
+    "decisionTitle": "Sobre o que é",
+    "decisionText": "O que foi decidido"
   },
   "myDay": {
     "today": "Hoje, {{date}}"

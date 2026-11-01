@@ -203,7 +203,15 @@
     "checkIn": "Eintragen",
     "checkInValue": "Heutiger Wert {{unit}}",
     "record": "Speichern",
-    "goalMilestones": "{{count}} Meilensteine auf dem Weg zu diesem Ziel"
+    "goalMilestones": "{{count}} Meilensteine auf dem Weg zu diesem Ziel",
+    "optional": "{{label}} (kann leer bleiben)",
+    "addMilestone": "Neuer Meilenstein",
+    "milestoneName": "Name",
+    "milestoneOutcome": "Was er liefert",
+    "milestoneDate": "Zieldatum",
+    "recordDecision": "Entscheidung festhalten",
+    "decisionTitle": "Worum es geht",
+    "decisionText": "Was entschieden wurde"
   },
   "myDay": {
     "today": "Heute, {{date}}"

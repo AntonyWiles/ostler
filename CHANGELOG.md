@@ -78,6 +78,9 @@ Help › What's new, and the Unreleased section until a version has its own.
   checklist progress, what the task waits on, comments, labels and who it is assigned to.
 - **Quick capture on Android.** The + on the home screen takes one line into a project's To triage,
   to sort out later on the phone or your PC. The project you used last is picked again.
+- **Add milestones and record decisions on Android.** A project's Milestones view has New
+  milestone (a name, what it delivers and a target date), and its Decisions view has Record a
+  decision (what it's about, what was decided, the context, alternatives and consequences).
 
 ### Fixed
 

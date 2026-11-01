@@ -1,15 +1,11 @@
 import { useState } from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import { t } from '@shared/i18n/index'
 import { formatIsoDateShort } from '@shared/dates'
 import { today, type TaskSummary } from '../data/queries'
-import type {
-  DecisionSummary,
-  GoalSummary,
-  MilestoneSummary,
-  SignOffSummary
-} from '../data/plan'
+import type { DecisionSummary, GoalSummary, MilestoneSummary, SignOffSummary } from '../data/plan'
 import { RADIUS, SPACE, type Theme } from '../theme'
+import { DatePicker } from './DatePicker'
 import { Chip, TextSender } from './EditBits'
 import { TaskRow } from './TaskRow'
 
@@ -48,6 +44,115 @@ function Empty({ theme, text }: { theme: Theme; text: string }) {
   return <Text style={[styles.empty, { color: theme.textMuted }]}>{text}</Text>
 }
 
+interface FormField {
+  key: string
+  label: string
+  required?: boolean
+  multiline?: boolean
+}
+
+/**
+ * A button that opens a short form above a list: text boxes, an optional day, Save and Cancel.
+ * `onSave` returns false to keep the form open (the edit was refused).
+ */
+function AddForm({
+  theme,
+  button,
+  fields,
+  dateLabel,
+  onSave
+}: {
+  theme: Theme
+  button: string
+  fields: FormField[]
+  /** Offers a day to pick when given. */
+  dateLabel?: string
+  onSave: (values: Record<string, string>, date: string | null) => boolean
+}) {
+  const [open, setOpen] = useState(false)
+  const [values, setValues] = useState<Record<string, string>>({})
+  const [date, setDate] = useState<string | null>(null)
+  const [picking, setPicking] = useState(false)
+  const close = () => {
+    setOpen(false)
+    setValues({})
+    setDate(null)
+    setPicking(false)
+  }
+  if (!open)
+    return (
+      <View style={styles.actions}>
+        <Chip label={button} theme={theme} onPress={() => setOpen(true)} />
+      </View>
+    )
+  const ready = fields.every((field) => !field.required || (values[field.key] ?? '').trim())
+  return (
+    <View style={[styles.card, { backgroundColor: theme.surface, borderColor: theme.accent }]}>
+      <Text style={[styles.title, { color: theme.text }]}>{button}</Text>
+      {fields.map((field, index) => (
+        <TextInput
+          key={field.key}
+          accessibilityLabel={field.label}
+          placeholder={
+            field.required ? field.label : t('mobile:plan.optional', { label: field.label })
+          }
+          placeholderTextColor={theme.textMuted}
+          value={values[field.key] ?? ''}
+          onChangeText={(text) => setValues((now) => ({ ...now, [field.key]: text }))}
+          multiline={field.multiline}
+          autoFocus={index === 0}
+          style={[
+            styles.input,
+            field.multiline && styles.inputTall,
+            { color: theme.text, borderColor: theme.borderStrong }
+          ]}
+        />
+      ))}
+      {dateLabel !== undefined && (
+        <>
+          <View style={styles.actions}>
+            <Chip
+              label={date === null ? dateLabel : `${dateLabel}: ${formatIsoDateShort(date)}`}
+              theme={theme}
+              selected={picking}
+              onPress={() => setPicking(!picking)}
+            />
+            {date !== null && (
+              <Chip
+                label={t('mobile:edit.clearDate')}
+                theme={theme}
+                onPress={() => setDate(null)}
+              />
+            )}
+          </View>
+          {picking && (
+            <DatePicker
+              theme={theme}
+              value={date}
+              today={today()}
+              onPick={(day) => {
+                setDate(day)
+                setPicking(false)
+              }}
+            />
+          )}
+        </>
+      )}
+      <View style={styles.actions}>
+        <Chip
+          label={t('mobile:edit.save')}
+          theme={theme}
+          selected
+          onPress={() => {
+            if (ready && onSave(values, date)) close()
+          }}
+        />
+        <Chip label={t('mobile:taskMenu.cancel')} theme={theme} onPress={close} />
+      </View>
+    </View>
+  )
+}
+
 const MILESTONE_STATUS: Record<MilestoneSummary['status'], string> = {
   planned: 'mobile:plan.milestonePlanned',
   active: 'mobile:plan.milestoneActive',
@@ -60,17 +165,32 @@ export function MilestoneList({
   theme,
   items,
   tasksOf,
-  onOpenTask
+  onOpenTask,
+  onAdd
 }: {
   theme: Theme
   items: MilestoneSummary[]
   tasksOf: (milestoneId: string) => TaskSummary[]
   onOpenTask: (taskId: string) => void
+  /** Adds a milestone; false when it was refused. */
+  onAdd: (input: { name: string; outcome: string; targetDate: string | null }) => boolean
 }) {
   const [open, setOpen] = useState<string | null>(null)
-  if (items.length === 0) return <Empty theme={theme} text={t('mobile:plan.noMilestones')} />
   return (
     <View style={styles.list}>
+      <AddForm
+        theme={theme}
+        button={t('mobile:plan.addMilestone')}
+        fields={[
+          { key: 'name', label: t('mobile:plan.milestoneName'), required: true },
+          { key: 'outcome', label: t('mobile:plan.milestoneOutcome'), multiline: true }
+        ]}
+        dateLabel={t('mobile:plan.milestoneDate')}
+        onSave={(values, date) =>
+          onAdd({ name: values.name ?? '', outcome: values.outcome ?? '', targetDate: date })
+        }
+      />
+      {items.length === 0 && <Muted theme={theme}>{t('mobile:plan.noMilestones')}</Muted>}
       {items.map((milestone) => {
         const shown = open === milestone.id
         const share = milestone.total === 0 ? 0 : milestone.done / milestone.total
@@ -138,9 +258,23 @@ export function MilestoneList({
 }
 
 /** The project's decisions; one opens to show its context, alternatives and consequences. */
-export function DecisionList({ theme, items }: { theme: Theme; items: DecisionSummary[] }) {
+export function DecisionList({
+  theme,
+  items,
+  onRecord
+}: {
+  theme: Theme
+  items: DecisionSummary[]
+  /** Records a decision; false when it was refused. */
+  onRecord: (input: {
+    title: string
+    decision: string
+    context: string
+    alternatives: string
+    consequences: string
+  }) => boolean
+}) {
   const [open, setOpen] = useState<string | null>(null)
-  if (items.length === 0) return <Empty theme={theme} text={t('mobile:plan.noDecisions')} />
   const part = (heading: string, text: string) =>
     text.trim() === '' ? null : (
       <View key={heading}>
@@ -150,6 +284,32 @@ export function DecisionList({ theme, items }: { theme: Theme; items: DecisionSu
     )
   return (
     <View style={styles.list}>
+      <AddForm
+        theme={theme}
+        button={t('mobile:plan.recordDecision')}
+        fields={[
+          { key: 'title', label: t('mobile:plan.decisionTitle'), required: true },
+          {
+            key: 'decision',
+            label: t('mobile:plan.decisionText'),
+            required: true,
+            multiline: true
+          },
+          { key: 'context', label: t('mobile:plan.context'), multiline: true },
+          { key: 'alternatives', label: t('mobile:plan.alternatives'), multiline: true },
+          { key: 'consequences', label: t('mobile:plan.consequences'), multiline: true }
+        ]}
+        onSave={(values) =>
+          onRecord({
+            title: values.title ?? '',
+            decision: values.decision ?? '',
+            context: values.context ?? '',
+            alternatives: values.alternatives ?? '',
+            consequences: values.consequences ?? ''
+          })
+        }
+      />
+      {items.length === 0 && <Muted theme={theme}>{t('mobile:plan.noDecisions')}</Muted>}
       {items.map((decision) => {
         const shown = open === decision.id
         return (
@@ -298,7 +458,15 @@ const styles = StyleSheet.create({
   bar: { height: 6, borderRadius: 3, overflow: 'hidden' },
   barFill: { height: 6, borderRadius: 3 },
   actions: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACE.small },
-  empty: { fontSize: 15, marginHorizontal: SPACE.large, marginTop: SPACE.medium }
+  empty: { fontSize: 15, marginHorizontal: SPACE.large, marginTop: SPACE.medium },
+  input: {
+    borderWidth: 1,
+    borderRadius: RADIUS,
+    paddingHorizontal: SPACE.medium,
+    minHeight: 44,
+    fontSize: 15
+  },
+  inputTall: { minHeight: 88, paddingVertical: SPACE.small, textAlignVertical: 'top' }
 })
 
 const GOAL_STATUS: Record<string, string> = {

@@ -203,7 +203,15 @@
     "checkIn": "Relevé",
     "checkInValue": "Valeur du jour {{unit}}",
     "record": "Enregistrer",
-    "goalMilestones": "{{count}} jalons vers cet objectif"
+    "goalMilestones": "{{count}} jalons vers cet objectif",
+    "optional": "{{label}} (facultatif)",
+    "addMilestone": "Nouveau jalon",
+    "milestoneName": "Nom",
+    "milestoneOutcome": "Ce qu’il apporte",
+    "milestoneDate": "Date cible",
+    "recordDecision": "Noter une décision",
+    "decisionTitle": "Sujet",
+    "decisionText": "Ce qui a été décidé"
   },
   "myDay": {
     "today": "Aujourd’hui, {{date}}"

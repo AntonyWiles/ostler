@@ -203,7 +203,15 @@
     "checkIn": "签到",
     "checkInValue": "今天的数值 {{unit}}",
     "record": "记录",
-    "goalMilestones": "有 {{count}} 个里程碑通向这个目标"
+    "goalMilestones": "有 {{count}} 个里程碑通向这个目标",
+    "optional": "{{label}}（可选）",
+    "addMilestone": "新建里程碑",
+    "milestoneName": "名称",
+    "milestoneOutcome": "交付内容",
+    "milestoneDate": "目标日期",
+    "recordDecision": "记录决定",
+    "decisionTitle": "主题",
+    "decisionText": "决定内容"
   },
   "myDay": {
     "today": "今天，{{date}}"

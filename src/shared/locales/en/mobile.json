@@ -203,7 +203,15 @@
     "checkIn": "Check in",
     "checkInValue": "Today's value {{unit}}",
     "record": "Record",
-    "goalMilestones": "{{count}} milestones towards this goal"
+    "goalMilestones": "{{count}} milestones towards this goal",
+    "optional": "{{label}} (optional)",
+    "addMilestone": "New milestone",
+    "milestoneName": "Name",
+    "milestoneOutcome": "What it delivers",
+    "milestoneDate": "Target date",
+    "recordDecision": "Record a decision",
+    "decisionTitle": "What it's about",
+    "decisionText": "What was decided"
   },
   "myDay": {
     "today": "Today, {{date}}"

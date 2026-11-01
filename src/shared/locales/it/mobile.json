@@ -203,7 +203,15 @@
     "checkIn": "Registra aggiornamento",
     "checkInValue": "Valore di oggi {{unit}}",
     "record": "Salva",
-    "goalMilestones": "{{count}} traguardi verso questo obiettivo"
+    "goalMilestones": "{{count}} traguardi verso questo obiettivo",
+    "optional": "{{label}} (facoltativo)",
+    "addMilestone": "Nuova milestone",
+    "milestoneName": "Nome",
+    "milestoneOutcome": "Cosa consegna",
+    "milestoneDate": "Data obiettivo",
+    "recordDecision": "Registra una decisione",
+    "decisionTitle": "Di cosa si tratta",
+    "decisionText": "Cosa è stato deciso"
   },
   "myDay": {
     "today": "Oggi, {{date}}"

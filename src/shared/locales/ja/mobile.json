@@ -203,7 +203,15 @@
     "checkIn": "記録する",
     "checkInValue": "今日の値 {{unit}}",
     "record": "保存",
-    "goalMilestones": "この目標に向けたマイルストーン {{count}}件"
+    "goalMilestones": "この目標に向けたマイルストーン {{count}}件",
+    "optional": "{{label}}（任意）",
+    "addMilestone": "新しいマイルストーン",
+    "milestoneName": "名前",
+    "milestoneOutcome": "達成すること",
+    "milestoneDate": "目標日",
+    "recordDecision": "決定を記録",
+    "decisionTitle": "件名",
+    "decisionText": "決まったこと"
   },
   "myDay": {
     "today": "今日、{{date}}"

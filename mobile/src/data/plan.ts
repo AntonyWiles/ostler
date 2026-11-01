@@ -10,7 +10,14 @@
  */
 import type { PlanningMilestoneStatus, SignOffKind, SignOffState } from '@shared/ostler-api'
 import { capabilitiesOf } from '@shared/share-roles'
-import type { EditDb } from './edits'
+import { todayIsoDate } from '@shared/dates'
+import { v4 as uuidv4 } from 'uuid'
+import {
+  optionalText,
+  requiredText,
+  targetDate
+} from '../../../electron/services/planning-work-item-input'
+import { guarded, type EditDb } from './edits'
 import { shareRole, type QueryDb, type TaskSummary } from './queries'
 
 const SUMMARY_COLUMNS = 'id, project_id, title, status, priority, target_date, assignee_id'
@@ -298,6 +305,74 @@ export function projectAttention(db: QueryDb, today: string): Map<string, Projec
     for (const row of waiting) entry(row.project_id).signOffs = Number(row.n)
   }
   return result
+}
+
+/**
+ * Adds a milestone to a project, as the PC's `createMilestone` does: planned, with no goal or
+ * workstream, its text checked by the same rules. Returns its id.
+ */
+export function addMilestone(
+  db: EditDb,
+  projectId: string,
+  input: { name: string; outcome?: string; targetDate?: string | null },
+  now = Date.now()
+): string {
+  return guarded(() => {
+    const id = uuidv4()
+    db.prepare(
+      `INSERT INTO planning_milestones
+        (id, project_id, goal_id, name, outcome, target_date, success_criteria, status, created_at, updated_at, subproject_id)
+       VALUES (?, ?, NULL, ?, ?, ?, '[]', 'planned', ?, ?, NULL)`
+    ).run(
+      id,
+      projectId,
+      requiredText(input.name, 'Milestone name', 160),
+      optionalText(input.outcome, 'Milestone outcome', 4000),
+      targetDate(input.targetDate ?? null),
+      now,
+      now
+    )
+    return id
+  })
+}
+
+/**
+ * Records a decision in a project, as the PC's `createDecision` does for a person: dated today
+ * unless given a day, linked to no tasks. Returns its id.
+ */
+export function recordDecision(
+  db: EditDb,
+  projectId: string,
+  input: {
+    title: string
+    decision: string
+    context?: string
+    alternatives?: string
+    consequences?: string
+    date?: string
+  },
+  now = Date.now()
+): string {
+  return guarded(() => {
+    const id = uuidv4()
+    db.prepare(
+      `INSERT INTO planning_decisions
+        (id, project_id, title, context, decision, alternatives_considered, consequences, date, linked_work_item_ids, origin, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, '[]', 'human', ?, ?)`
+    ).run(
+      id,
+      projectId,
+      requiredText(input.title, 'Decision title', 200),
+      optionalText(input.context, 'Decision context', 8000),
+      requiredText(input.decision, 'Decision summary', 8000),
+      optionalText(input.alternatives, 'Alternatives considered', 8000),
+      optionalText(input.consequences, 'Consequences', 8000),
+      targetDate(input.date) ?? todayIsoDate(),
+      now,
+      now
+    )
+    return id
+  })
 }
 
 export interface GoalSummary {

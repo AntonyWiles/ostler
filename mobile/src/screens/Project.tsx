@@ -25,12 +25,14 @@ import {
 import {
   answerSignOff,
   decisions,
+  addMilestone,
   doFirstOrder,
   dueOrder,
   goals,
   milestones,
   milestoneTasks,
   priorityOrder,
+  recordDecision,
   recordGoalCheckIn,
   signOffs,
   somedayTasks,
@@ -258,6 +260,15 @@ export function Project({
     }
     setError(null)
     onEdited()
+  }
+  /** As `edit`, saying whether the edit went in, so a form knows to close. */
+  const saved = (run: () => void): boolean => {
+    let ok = false
+    edit(() => {
+      run()
+      ok = true
+    })
+    return ok
   }
   const waitingSignOffs = (data?.signOffs ?? []).filter((item) => item.canAnswer).length
   const triageCount = data?.triage.length ?? 0
@@ -533,9 +544,16 @@ export function Project({
                 items={data?.milestones ?? []}
                 tasksOf={(milestoneId) => milestoneTasks(db, milestoneId)}
                 onOpenTask={onOpenTask}
+                onAdd={(input) => saved(() => addMilestone(db, projectId, input))}
               />
             )}
-            {view === 'decisions' && <DecisionList theme={theme} items={data?.decisions ?? []} />}
+            {view === 'decisions' && (
+              <DecisionList
+                theme={theme}
+                items={data?.decisions ?? []}
+                onRecord={(input) => saved(() => recordDecision(db, projectId, input))}
+              />
+            )}
             {view === 'goals' && (
               <GoalList
                 theme={theme}
