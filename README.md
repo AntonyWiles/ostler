@@ -20,14 +20,7 @@ trust. AI only if you want it.
 
 </div>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/images/board-full-dark.png" />
-  <img alt="The whole window. The Board of a café refit project, with tasks in columns from Backlog to Client sign-off" src="docs/images/board-full-light.png" />
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/images/board-dark.png" />
-  <img alt="The Board of a café refit project, with tasks in columns from Backlog to Client sign-off" src="docs/images/board-light.png" />
-</picture>
+<img alt="A card dragged from Backlog to Ready to start on the Board of a café refit project, then a task's bar stretched on the Timeline" src="docs/images/demo-board.gif" />
 
 ## Why Ostler
 
@@ -49,6 +42,8 @@ trust. AI only if you want it.
 Board, List, Timeline and Calendar all show the same tasks, each with filters, search and saved
 views. Drag a card on the Board, stretch a bar on the Timeline or drop a task on a date, and every
 view keeps up. The Overview adds reports and charts.
+
+<img alt="A task dragged from Unscheduled onto a day on the Calendar, then opened to show its new due date" src="docs/images/demo-calendar.gif" />
 
 <table>
   <tr>
