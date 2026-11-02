@@ -146,8 +146,8 @@ When it is ready, you get a message and an Inbox item: **Update ready. Restart t
 never restarts on its own. If agents are working, choose **Restart when agents finish** in
 Settings › About, where you can also check now, see what's new in the update, stop automatic checks
 or downloads, and get beta versions early. Uninstalling keeps your data unless you tick **Also
-remove my Ostler data**. The portable Ostler does not update itself: download the new version when
-you want it.
+remove my Ostler data**. A portable Ostler, built from source with `npm run package:portable`, does
+not update itself.
 
 Ostler is open source, under the GNU General Public License, version 3 (GPL-3.0). Settings › About › **Open source licences** lists
 the open source packages it is built with, each with its licence.

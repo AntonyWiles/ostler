@@ -84,6 +84,11 @@ Help › What's new, and the Unreleased section until a version has its own.
 - **Write notes in the Library on Android.** A project's Library view has New note, for a title
   and text formatted as on the PC. The note opens once it is saved, and shows on your PC.
 
+### Changed
+
+- **Releases carry only the installer.** The portable `.exe` is no longer published. Build one
+  from source with `npm run package:portable`.
+
 ### Fixed
 
 - Links to tasks, milestones, decisions and Library items written on the phone, in a description,

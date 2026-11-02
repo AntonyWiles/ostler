@@ -177,7 +177,7 @@ Nothing else is sent: no usage data, no crash reports and nothing about you. The
   control that. Revoke the project's token to cut it off.
 - **Updates.** The installed Ostler asks GitHub whether there is a new version when it starts, and
   downloads it if there is. It sends nothing about you or your data. Turn either off in
-  Settings › About. The portable Ostler never checks.
+  Settings › About. A portable Ostler you build yourself never checks.
 - **GitHub.** Ostler asks `api.github.com` about an issue or pull request only when you open a task
   that links one, press **Refresh**, link one, or read a repository's issues to import. It sends
   the repository and issue number (or the import's filters), your GitHub token if you saved one, and

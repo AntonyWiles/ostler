@@ -42,8 +42,7 @@ trust. AI only if you want it.
   your own PC.
 - **Free and open source** under the GPL-3.0, so anyone can read, check and change it.
 
-> Ostler is a working name (see [Licence and links](#licence-and-links)). The app is in active
-> development; see the [changelog](CHANGELOG.md) for what is new.
+> Ostler is in active development; see the [changelog](CHANGELOG.md) for what is new.
 
 ## One plan, every angle
 
@@ -214,8 +213,7 @@ a repeating task done, and your personal data is read-only there. Release steps 
 Ostler runs on Windows 10 22H2 and Windows 11, x64.
 
 1. Download `Ostler-Setup-<version>.exe` from the
-   [latest release](https://github.com/AntonyWiles/ostler/releases/latest). A portable
-   `.exe` that needs no installation is there too.
+   [latest release](https://github.com/AntonyWiles/ostler/releases/latest).
 2. Run it. The installer is per-user and needs no administrator rights.
 
 **While the installer is unsigned**, Windows SmartScreen shows "Windows protected your PC". Choose
@@ -248,7 +246,8 @@ $env:OSTLER_USER_DATA = "$env:TEMP\ostler-dev-data"
 npm run dev
 ```
 
-To build the installer: `npm run package:win` (output in `dist/ostler/`). To run the whole
+To build the installer: `npm run package:win` (output in `dist/ostler/`). For a portable `.exe`
+that needs no installation: `npm run package:portable`. To run the whole
 quality gate: `npm run verify`. [CONTRIBUTING.md](CONTRIBUTING.md) explains the native-module
 rebuild, every test suite and how changes are reviewed.
 
@@ -325,7 +324,7 @@ a calendar link or turn on AI, and then only what that feature needs, to the pla
   to put in them and go wherever you save or send them. Ostler uploads none of them. A calendar file
   is a copy, not a live feed, and a shared web page makes no requests of its own.
 - **Updates** ask GitHub's release feed whether there is a new version. Nothing about you or your
-  data is sent. The portable Ostler never checks.
+  data is sent. A portable Ostler you build yourself never checks.
 
 </details>
 

@@ -70,8 +70,8 @@ npm run package:dir
 npm run package:win
 ```
 
-`package:win` builds the installer, the portable exe, `latest.yml` and the blockmap into
-`dist/ostler/`. Releasing, signing and updates are in [releasing.md](releasing.md).
+`package:win` builds the installer, `latest.yml` and the blockmap into `dist/ostler/`.
+`package:portable` builds a portable exe there instead. Releases don't include one. Releasing, signing and updates are in [releasing.md](releasing.md).
 
 ### Performance: the scale dataset and the perf suite
 

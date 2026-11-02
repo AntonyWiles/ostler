@@ -4,8 +4,8 @@ import { describe, expect, it } from 'vitest'
 import { BRAND } from '@shared/brand'
 
 /**
- * package.json's electron-builder `build` block (P10.1): what the installer,
- * the portable exe and the update feed are made from.
+ * package.json's electron-builder `build` block (P10.1): what the installer
+ * and the update feed are made from.
  */
 const root = join(__dirname, '..', '..')
 const packageJson = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
@@ -31,15 +31,15 @@ describe('package.json build', () => {
     }
   })
 
-  it('builds the NSIS installer and the portable exe for x64', () => {
+  it('builds only the NSIS installer for x64; a portable exe is built on request', () => {
     const targets = build.win.target.map((entry: { target: string; arch: string[] }) => [
       entry.target,
       entry.arch
     ])
     expect(targets).toEqual([
-      ['nsis', ['x64']],
-      ['portable', ['x64']]
+      ['nsis', ['x64']]
     ])
+    expect(packageJson.scripts['package:portable']).toContain('--win portable --x64')
   })
 
   it('makes an assisted, per-user installer with the brief’s choices', () => {

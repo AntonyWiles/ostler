@@ -1,8 +1,7 @@
 name: Release
 
 # Pushing a tag `v1.2.3` builds Ostler for Windows and uploads it to a DRAFT
-# GitHub release: the installer, the portable exe, latest.yml and the
-# blockmaps, with that version's CHANGELOG.md section as the release notes.
+# GitHub release: the installer, latest.yml and the blockmap, with that version's CHANGELOG.md section as the release notes.
 # Nobody gets the update until a maintainer checks the draft and publishes it
 # (docs/releasing.md).
 #
@@ -100,9 +99,9 @@ jobs:
             echo "**Unsigned build.** No WIN_CSC_LINK secret is set, so Windows SmartScreen will warn on first run. Updates are still checked against the sha512 in latest.yml." >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      # electron-builder publishes the installer and the portable exe in
-      # parallel, and when no release exists yet each makes its own draft.
-      # Make the one draft first so both upload to it.
+      # Make the one draft first, so every upload goes to it. When no release
+      # exists, each electron-builder upload that runs in parallel makes its
+      # own draft (v0.1.0 got two this way).
       - name: Create the draft release
         if: steps.version.outputs.publish == 'always'
         shell: bash

@@ -18,6 +18,7 @@
     "rebuild:test": "node scripts/rebuild-test.cjs && npm rebuild better-sqlite3",
     "package:dir": "npm run rebuild:native && npm run build && electron-builder --dir --publish never",
     "package:win": "npm run rebuild:native && npm run build && electron-builder --win --x64 --publish never",
+    "package:portable": "npm run rebuild:native && npm run build && electron-builder --win portable --x64 --publish never",
     "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json && tsc --noEmit -p tsconfig.test.json && tsc --noEmit -p tsconfig.monkey.json && tsc --noEmit -p tsconfig.e2e.json",
     "i18n:stamp": "node scripts/check-i18n.cjs --stamp",
     "lint": "node scripts/check-brand.cjs && node scripts/check-hygiene.cjs && node scripts/check-workflows.cjs && node scripts/check-sync-core.cjs && node scripts/check-design-tokens.cjs && node scripts/check-i18n.cjs && node scripts/generate-shortcuts-doc.cjs --check && node scripts/generate-third-party-notices.cjs --check && eslint .",
@@ -87,12 +88,6 @@
       "target": [
         {
           "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "portable",
           "arch": [
             "x64"
           ]

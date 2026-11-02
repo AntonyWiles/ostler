@@ -34,7 +34,6 @@ stops.
    version has a `-beta` part), builds the app and uploads to it:
    - `Ostler-Setup-1.0.0.exe` (the installer)
    - `Ostler-Setup-1.0.0.exe.blockmap` (lets the next update download only what changed)
-   - `Ostler-1.0.0-x64-portable.exe` (the portable exe)
    - `latest.yml` (what installed copies read to find the update)
 
    The release body is the CHANGELOG section. The job summary says whether the build is signed.
@@ -54,8 +53,8 @@ the files as a workflow artifact.
 
 ### Building locally
 
-`npm run package:win` builds the installer and the portable exe into `dist/ostler/`
-without publishing. `npm run package:dir` builds only the unpacked app
+`npm run package:win` builds the installer into `dist/ostler/` without publishing, and
+`npm run package:portable` a portable exe. Releases carry only the installer. `npm run package:dir` builds only the unpacked app
 (`dist/ostler/win-unpacked/`). Neither needs a certificate. Both rebuild `better-sqlite3` for Electron first, and the
 build stops if the packed app can't open a database (`scripts/check-packed-sqlite.cjs`).
 

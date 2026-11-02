@@ -42,7 +42,7 @@ body:
       label: How do you run Ostler?
       options:
         - Installed (Setup .exe)
-        - Portable .exe
+        - Portable .exe (built from source)
         - Built from source
     validations:
       required: true
