@@ -49,7 +49,8 @@ function main() {
   const config = { ...SCRATCH_CONFIG, ui: { firstRunCompleted: true, lastSeenVersion: version } }
   fs.writeFileSync(path.join(dataDirectory, 'config.json'), `${JSON.stringify(config, null, 2)}\n`)
 
-  if (!skipBuild) run('npx', ['electron-vite', 'build'], process.env)
+  if (!skipBuild)
+    run('npx', ['electron-vite', 'build', '-c', 'config/electron.vite.config.ts'], process.env)
   const electron = require('electron')
   const env = { ...process.env, OSTLER_USER_DATA: dataDirectory, OSTLER_SEED_SCALE: projectsParent }
   delete env.ELECTRON_RUN_AS_NODE

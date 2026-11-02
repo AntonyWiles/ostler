@@ -6,7 +6,7 @@
  *
  * The flags become MONKEY_* environment variables for tests/monkey (read in
  * tests/monkey/lib/options.ts, where the defaults live), and the run itself
- * goes through Playwright with playwright.monkey.config.ts.
+ * goes through Playwright with config/playwright.monkey.config.ts.
  */
 const fs = require('node:fs')
 const path = require('node:path')
@@ -132,7 +132,7 @@ function main() {
       require.resolve('@playwright/test/cli'),
       'test',
       '-c',
-      path.join(root, 'playwright.monkey.config.ts')
+      path.join(root, 'config', 'playwright.monkey.config.ts')
     ],
     env
   )

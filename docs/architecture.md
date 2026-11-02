@@ -1,8 +1,8 @@
 # Ostler architecture
 
 A tour of the code for contributors: how the pieces fit. Setup, tests and the
-[rules every change follows](../CONTRIBUTING.md#rules-for-every-change) are in
-[CONTRIBUTING.md](../CONTRIBUTING.md).
+[rules every change follows](../.github/CONTRIBUTING.md#rules-for-every-change) are in
+[CONTRIBUTING.md](../.github/CONTRIBUTING.md).
 
 ## What Ostler is
 
@@ -116,7 +116,7 @@ folder, and a project's folder is optional (`projectFolder`, `requireProjectFold
 
 Everything Ostler keeps lives in one data folder: `%APPDATA%\ostler` for an installed Ostler,
 or wherever `OSTLER_USER_DATA` points. Nothing is written into the repository or, except in the
-cases the person confirms ([the project-folder rule](../CONTRIBUTING.md#rules-for-every-change)), into a project's folder.
+cases the person confirms ([the project-folder rule](../.github/CONTRIBUTING.md#rules-for-every-change)), into a project's folder.
 
 - `config.json`: settings and the project list, owned by `electron/config-store.ts`, with numbered
   config migrations in the same file.
@@ -157,7 +157,7 @@ both task-version prefixes.
 ## The agent harness
 
 AI coding agents are an optional layer, off for new installs. The rules that bind this area are in
-[CONTRIBUTING.md › Agents, the harness and Ostler AI](../CONTRIBUTING.md#agents-the-harness-and-ostler-ai). When agents are on:
+[CONTRIBUTING.md › Agents, the harness and Ostler AI](../.github/CONTRIBUTING.md#agents-the-harness-and-ostler-ai). When agents are on:
 
 - The **harness** (`electron/services/harness-service.ts` and `harness/`) manages the task queue,
   sessions, agent questions and review. Each queued task gets its own copy as soon as it is queued:
@@ -410,7 +410,7 @@ sign-in every 7 days. Release and store steps are in [docs/mobile/](mobile/).
   (`run.cjs`); a new script uses these rather than its own copies. The `dev`, `monkey` and `perf`
   scripts keep their own.
 
-`npm run verify` runs the gate the release workflow runs. [CONTRIBUTING.md](../CONTRIBUTING.md#tests) lists every
+`npm run verify` runs the gate the release workflow runs. [CONTRIBUTING.md](../.github/CONTRIBUTING.md#tests) lists every
 command.
 
 ## Assets and their sources

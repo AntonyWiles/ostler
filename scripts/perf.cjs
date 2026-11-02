@@ -18,7 +18,7 @@ function run(command, args, env = process.env) {
 }
 
 function main() {
-  if (run('npx', ['electron-vite', 'build']) !== 0) return 1
+  if (run('npx', ['electron-vite', 'build', '-c', 'config/electron.vite.config.ts']) !== 0) return 1
   if (run('npm', ['run', 'rebuild:native']) !== 0) return 1
   const data = process.env.OSTLER_PERF_DATA || scratchDataDir('p9-1-scale')
   if (!fs.existsSync(path.join(data, 'ostler.db'))) {
@@ -31,7 +31,7 @@ function main() {
   }
   return run(
     'npx',
-    ['playwright', 'test', '-c', 'playwright.perf.config.ts', ...process.argv.slice(2)],
+    ['playwright', 'test', '-c', 'config/playwright.perf.config.ts', ...process.argv.slice(2)],
     {
       ...process.env,
       OSTLER_PERF_DATA: data

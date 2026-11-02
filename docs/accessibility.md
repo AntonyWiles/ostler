@@ -45,7 +45,7 @@ the welcome. AAA criteria and screen-reader-specific alternative interfaces are 
   one note per line, and the board as it was after a restart.
 - **ARIA snapshots** (`tests/e2e/a11y.spec.ts-snapshots/*.aria.yml`) hold the roles and names of
   Home, the Board, the task drawer and Settings › General, so a change to them shows up in review.
-  `npx playwright test a11y --update-snapshots` rewrites them; then prune the parts that change by
+  `npx playwright test -c config/playwright.config.ts a11y --update-snapshots` rewrites them; then prune the parts that change by
   the day (greetings, dates, the OS user name) again before committing.
 - **Zoom:** the same spec zooms to 200% in a 900 × 600 window, restarts, and checks the zoom was
   kept and that Home, the Board and Settings still fit.

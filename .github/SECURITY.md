@@ -27,7 +27,7 @@ credit you in the advisory unless you would rather not be named.
 
 Ostler is a desktop app that keeps all data on the person's computer. It defends that data, the
 person's project folders and their secrets against other processes, web content and AI agents. These
-are the boundaries; [CONTRIBUTING.md](CONTRIBUTING.md#rules-for-every-change) and [docs/architecture.md](docs/architecture.md) have the
+are the boundaries; [CONTRIBUTING.md](CONTRIBUTING.md#rules-for-every-change) and [docs/architecture.md](../docs/architecture.md) have the
 detail.
 
 - **Sandboxed windows.** Every window runs with `contextIsolation`, `sandbox` and no
@@ -76,7 +76,7 @@ detail.
   it sees whether a key is set and a masked hint. Diagnostics and logs redact them.
 - **Update integrity.** Updates come from GitHub Releases over HTTPS. electron-updater checks each
   installer against the sha512 in the release's `latest.yml`, and once releases are signed, refuses
-  an update not signed by the same publisher ([docs/releasing.md](docs/releasing.md#signing)).
+  an update not signed by the same publisher ([docs/releasing.md](../docs/releasing.md#signing)).
 - **Project folders are read-only** to Ostler, apart from the exceptions listed in
   [CONTRIBUTING.md](CONTRIBUTING.md#rules-for-every-change) (creating a new project folder, and applying, undoing or restoring an agent's work, each
   only when the person asks).

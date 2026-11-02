@@ -6,5 +6,5 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": ["node"]
   },
-  "include": ["playwright.monkey.config.ts", "tests/monkey/**/*.ts"]
+  "include": ["../tests/e2e/**/*.ts", "../tests/helpers/needless-scroll.ts"]
 }

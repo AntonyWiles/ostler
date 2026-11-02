@@ -8,6 +8,6 @@
  * Node, and nothing is unpacked or started. A test that needs an Electron API
  * mocks `electron` itself (`vi.mock('electron', ...)`), which replaces this.
  *
- * vitest.config.ts points `electron` here.
+ * config/vitest.config.ts points `electron` here.
  */
 export const OUTSIDE_ELECTRON = true

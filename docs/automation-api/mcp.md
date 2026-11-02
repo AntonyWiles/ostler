@@ -4,7 +4,7 @@ Part of the [Ostler Automation API](README.md). An AI assistant or coding tool t
 [Model Context Protocol](https://modelcontextprotocol.io) (MCP) can use a project through the
 automation API without anyone writing HTTP calls: each API route is an MCP tool. MCP adds reach,
 not power. A tool has exactly the rights of the route it stands for, and the token's: one project,
-the automation agent's rights ([CONTRIBUTING.md](../../CONTRIBUTING.md#agents-the-harness-and-ostler-ai)).
+the automation agent's rights ([CONTRIBUTING.md](../../.github/CONTRIBUTING.md#agents-the-harness-and-ostler-ai)).
 
 MCP works while the automation API is on (Settings › Connections, **Turn on the automation API**),
 whether AI agents are on or off. The project needs an automation token, created in the same place.

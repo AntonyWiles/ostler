@@ -2,7 +2,11 @@ import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 
+// The repository root, which is the folder above this config.
+const root = resolve(__dirname, '..')
+
 export default defineConfig({
+  root,
   plugins: [react()],
   test: {
     globals: true,
@@ -19,12 +23,12 @@ export default defineConfig({
     setupFiles: ['./tests/setup-components.ts'],
     include: ['tests/**/*.test.ts', 'tests/**/*.test.tsx'],
     alias: [
-      { find: '@shared', replacement: resolve(__dirname, 'src/shared') },
-      { find: '@renderer', replacement: resolve(__dirname, 'src/renderer') },
+      { find: '@shared', replacement: resolve(root, 'src/shared') },
+      { find: '@renderer', replacement: resolve(root, 'src/renderer') },
       // Tests run in Node, not Electron: see the file for what that means.
       {
         find: /^electron$/,
-        replacement: resolve(__dirname, 'tests/helpers/electron-outside-electron.ts')
+        replacement: resolve(root, 'tests/helpers/electron-outside-electron.ts')
       }
     ]
   }

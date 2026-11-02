@@ -122,7 +122,14 @@ async function prettier(files) {
 async function eslint(files) {
   const code = files.filter((f) => CODE.test(f))
   if (code.length === 0) return result(true, 'no code files')
-  const r = await run(bin.eslint, ['--format', 'json', '--no-warn-ignored', ...code])
+  const r = await run(bin.eslint, [
+    '-c',
+    'config/eslint.config.mjs',
+    '--format',
+    'json',
+    '--no-warn-ignored',
+    ...code
+  ])
   let report
   try {
     report = JSON.parse(r.out.slice(r.out.indexOf('[')))
@@ -169,7 +176,7 @@ async function typecheck() {
         p,
         '--incremental',
         '--tsBuildInfoFile',
-        path.join(cacheDir, `${p}.tsbuildinfo`)
+        path.join(cacheDir, `${path.basename(p)}.tsbuildinfo`)
       ])
     )
   )
@@ -194,6 +201,8 @@ async function vitestRelated(files) {
   const report = path.join(os.tmpdir(), `check-changed-${process.pid}.json`)
   const argv = [
     'related',
+    '--config',
+    'config/vitest.config.ts',
     ...files,
     '--run',
     '--silent',

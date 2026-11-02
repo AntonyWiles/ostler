@@ -32,7 +32,7 @@ Ostler is a Windows desktop app, and its full test suite needs Windows 10 22H2 o
    ```
 
    `npm run dev:scratch -- <name>` does this for you with a throwaway folder under
-   `C:\temp\ostler-roadmap\<name>`. The [developer guide](docs/developer-guide.md) has the rest: the
+   `C:\temp\ostler-roadmap\<name>`. The [developer guide](../docs/developer-guide.md) has the rest: the
    scale dataset, Windows integration in development and building the installer.
 
 ### The native-module rebuild
@@ -52,7 +52,7 @@ different ones, so:
 
 ## Architecture tour
 
-[docs/architecture.md](docs/architecture.md) is the map: the processes, the typed IPC contract, the
+[docs/architecture.md](../docs/architecture.md) is the map: the processes, the typed IPC contract, the
 services, where data lives, the agent harness, the design system, navigation and the tests. Read the
 rules below before your first change.
 
@@ -74,7 +74,7 @@ rules below before your first change.
    every window. Preload builds as CJS.
 3. **Typed IPC**: all IPC goes through the contract in `src/shared/ostler-api.ts`, and results are
    `{ ok, value } | { ok, error }`, never raw exceptions
-   ([how to add a call](docs/architecture.md#the-ipc-contract)).
+   ([how to add a call](../docs/architecture.md#the-ipc-contract)).
 4. **Path validation**: the main process checks every path against the registered projects before
    touching the file system. A project's folder is optional (`WatchedProject.path` is
    `string | null`), so every reader goes through `projectFolder` or `requireProjectFolder`
@@ -93,14 +93,14 @@ rules below before your first change.
 - Ostler AI is optional and appears only once it is set up. Agent and AI controls show only while
   their feature is on (`useFeatures()`).
 - AI coding agents are off for new installs. The harness HTTP server listens only while they are on.
-- The automation HTTP server and its MCP server ([docs/automation-api/mcp.md](docs/automation-api/mcp.md))
+- The automation HTTP server and its MCP server ([docs/automation-api/mcp.md](../docs/automation-api/mcp.md))
   have their own switch in Settings › Connections. MCP tools are generated from the automation route
   table (`HELP_ROUTES`), never listed twice, and never reach agent work.
 
 ### Agents, the harness and Ostler AI
 
-How they work: [the agent harness](docs/architecture.md#the-agent-harness) and
-[Ostler AI](docs/architecture.md#ostler-ai).
+How they work: [the agent harness](../docs/architecture.md#the-agent-harness) and
+[Ostler AI](../docs/architecture.md#ostler-ai).
 
 - Each `HarnessSession` mints its own token, valid only while that session is active. There is no
   project-wide token and no self-registration.
@@ -125,7 +125,7 @@ How they work: [the agent harness](docs/architecture.md#the-agent-harness) and
   (`electron/services/database/migrations/`); services contain no DDL. A new table of the person's
   data is added to `TRACKED_TABLES` (`change-history/tables.ts`); logs, indexes, counters and agent
   tables are not.
-- Old Nexus Dashboard names ([list](docs/architecture.md#old-names)) are read and moved, and never
+- Old Nexus Dashboard names ([list](../docs/architecture.md#old-names)) are read and moved, and never
   written again.
 - An Ostler started by tests goes through `offScreen` (`electron/app/off-screen.ts`): it never shows
   a window, takes focus, notifies or writes the clipboard. E2e specs start the app only through
@@ -162,7 +162,7 @@ change might need one.
 | `npm run test:integration` | The HTTP APIs and harness workflows (`tests/integration`)                          |
 | `npm run test:startup`     | Builds and starts the real Electron app once                                       |
 | `npm run test:e2e:clean`   | Builds, then the Playwright suites (`tests/e2e`), accessibility included           |
-| `npm run perf`             | The performance budgets ([docs/performance.md](docs/performance.md))               |
+| `npm run perf`             | The performance budgets ([docs/performance.md](../docs/performance.md))            |
 
 Run `npm run verify` before you open a pull request, and `npm run test:e2e:clean` too when you change
 something a person does in the app. New behaviour gets a focused test in the matching folder.
@@ -182,16 +182,16 @@ something a person does in the app. New behaviour gets a focused test in the mat
   recorded with `npm run i18n:stamp`. `npm run lint` fails on strings that are untranslated or were
   translated from older English.
 - A database or `config.json` change is a new numbered migration
-  ([developer guide](docs/developer-guide.md#writing-a-migration)).
+  ([developer guide](../docs/developer-guide.md#writing-a-migration)).
 - A new production dependency must be MIT, Apache-2.0, BSD or ISC licensed. `npm run lint` refuses
   GPL, AGPL and unknown licences.
-- A user-visible change updates the [user guide](docs/user-guide/) and the Unreleased section of
-  [CHANGELOG.md](CHANGELOG.md) in the same pull request.
+- A user-visible change updates the [user guide](../docs/user-guide/) and the Unreleased section of
+  [CHANGELOG.md](../CHANGELOG.md) in the same pull request.
 
 ## Translating Ostler
 
 Ostler's interface is translatable, and translations come from contributors. To add or improve a
-language, follow [docs/translating.md](docs/translating.md): it covers the language folder, the key
+language, follow [docs/translating.md](../docs/translating.md): it covers the language folder, the key
 conventions, plurals, testing with the `en-XA` pseudo-locale, and how a translation pull request is
 reviewed.
 
@@ -216,4 +216,4 @@ Commit in small, logical steps, and keep unrelated changes in separate pull requ
    `npm run test:startup` and `npm run test:e2e:clean` yourself and say in the pull request that they pass.
 5. A maintainer reviews for correctness, the [rules](#rules-for-every-change), tests and wording. Expect questions;
    they are how review works, not a verdict.
-6. A maintainer merges. Releases are cut from version tags ([docs/releasing.md](docs/releasing.md)).
+6. A maintainer merges. Releases are cut from version tags ([docs/releasing.md](../docs/releasing.md)).

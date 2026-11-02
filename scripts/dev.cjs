@@ -146,7 +146,14 @@ async function main() {
     )
   }
 
-  const devServer = runNpm(['exec', 'electron-vite', '--', 'dev'])
+  const devServer = runNpm([
+    'exec',
+    'electron-vite',
+    '--',
+    'dev',
+    '-c',
+    'config/electron.vite.config.ts'
+  ])
   const forwardSignal = (signal) => {
     if (!devServer.killed) devServer.kill(signal)
   }

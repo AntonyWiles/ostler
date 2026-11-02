@@ -115,7 +115,7 @@ explains the modes.
 npm run verify
 ```
 
-This is the whole quality gate: typecheck (including the unit and integration tests through `tsconfig.test.json`), lint, format check, unit, component and integration tests, in that order, stopping at the first failure. It rebuilds `better-sqlite3` for Node before the Vitest suites and always rebuilds it for Electron at the end, even after a failure, so `npm run dev` works straight afterwards. Stop `npm run dev` first: the rebuild refuses while Electron holds the native module.
+This is the whole quality gate: typecheck (including the unit and integration tests through `config/tsconfig.test.json`), lint, format check, unit, component and integration tests, in that order, stopping at the first failure. It rebuilds `better-sqlite3` for Node before the Vitest suites and always rebuilds it for Electron at the end, even after a failure, so `npm run dev` works straight afterwards. Stop `npm run dev` first: the rebuild refuses while Electron holds the native module.
 
 There is no CI on pushes or pull requests, so run `npm run test:startup` and `npm run test:e2e:clean` yourself as well, and `npm run package:dir` when you change packaging. The release workflow (`.github/workflows/release.yml`) still runs the gate before it builds a release.
 
@@ -191,7 +191,7 @@ Run a single test file directly with Vitest (rebuild for the Node ABI first):
 
 ```powershell
 npm run rebuild:test
-npx vitest run tests/unit/harness-service.test.ts
+npx vitest run --config config/vitest.config.ts tests/unit/harness-service.test.ts
 ```
 
 Component tests fake the preload API with `installOstlerApi()` from `tests/renderer/fixtures/ostler-api.ts`, typed against `OstlerAPI`, and build planning views on the real workspace hook with `renderPlanningWorkspace()` from `tests/renderer/fixtures/planning-workspace.ts`. Do not hand-write a `window.ostlerAPI` object or cast a fake to `PlanningWorkspace`: a fixture that drifts from the code should fail typecheck, not hide.
@@ -199,7 +199,7 @@ Component tests fake the preload API with `installOstlerApi()` from `tests/rende
 Run a single Playwright e2e test by title:
 
 ```powershell
-npx playwright test -g "drives a harness session over the agent HTTP API"
+npx playwright test -c config/playwright.config.ts -g "drives a harness session over the agent HTTP API"
 ```
 
 After running any Vitest-based test command, rebuild back to the Electron ABI before `npm run dev`:

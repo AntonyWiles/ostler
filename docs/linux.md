@@ -39,7 +39,7 @@ ends on the Electron build. If you run `npm test` by hand, run `npm run rebuild:
 anything that launches Electron.
 
 Nothing runs these on GitHub: there is deliberately no CI job for them
-([CONTRIBUTING.md › No GitHub workflows](../CONTRIBUTING.md#no-github-workflows)). Run them in your session before you push.
+([CONTRIBUTING.md › No GitHub workflows](../.github/CONTRIBUTING.md#no-github-workflows)). Run them in your session before you push.
 
 ## Launch Electron headless
 
@@ -48,13 +48,13 @@ Anything that starts Electron (e2e, the monkey, the screenshot tools) goes throu
 a throwaway GNOME keyring that is unlocked and deleted afterwards:
 
 ```
-sh scripts/linux-headless.sh npx playwright test
+sh scripts/linux-headless.sh npx playwright test -c config/playwright.config.ts
 sh scripts/linux-headless.sh npm run monkey -- journey --speed instant
 sh scripts/linux-headless.sh npm run monkey -- explore --steps 100
 ```
 
 The keyring matters: Ostler encrypts API keys with Electron's `safeStorage` and refuses to store them
-otherwise ([CONTRIBUTING.md, rule 5](../CONTRIBUTING.md#rules-for-every-change)). Electron's `basic` password store is a fixed built-in key, which
+otherwise ([CONTRIBUTING.md, rule 5](../.github/CONTRIBUTING.md#rules-for-every-change)). Electron's `basic` password store is a fixed built-in key, which
 `safeStorage` rightly reports as unavailable, so the tests use a real keyring instead.
 `tests/e2e/electron-args.ts` adds the two Linux switches every Playwright launch needs:
 `--no-sandbox`, because containers usually run as root, and `--password-store=gnome-libsecret`, because a headless

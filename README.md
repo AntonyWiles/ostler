@@ -16,7 +16,7 @@ trust. AI only if you want it.
 
 **[Download for Windows](https://github.com/AntonyWiles/ostler/releases/latest)** ·
 [User guide](docs/user-guide/01-getting-started.md) · [What's new](CHANGELOG.md) ·
-[Contribute](CONTRIBUTING.md)
+[Contribute](.github/CONTRIBUTING.md)
 
 </div>
 
@@ -243,7 +243,7 @@ npm run dev
 
 To build the installer: `npm run package:win` (output in `dist/ostler/`). For a portable `.exe`
 that needs no installation: `npm run package:portable`. To run the whole
-quality gate: `npm run verify`. [CONTRIBUTING.md](CONTRIBUTING.md) explains the native-module
+quality gate: `npm run verify`. [CONTRIBUTING.md](.github/CONTRIBUTING.md) explains the native-module
 rebuild, every test suite and how changes are reviewed.
 
 ## Privacy
@@ -334,9 +334,9 @@ source packages it ships are listed with their licences in the app under Setting
 source licences.
 
 - [User guide](docs/user-guide/01-getting-started.md) · [Changelog](CHANGELOG.md)
-- [Contributing](CONTRIBUTING.md) · [Translating Ostler](docs/translating.md) ·
+- [Contributing](.github/CONTRIBUTING.md) · [Translating Ostler](docs/translating.md) ·
   [Architecture](docs/architecture.md)
 - [Report a bug or ask for a feature](https://github.com/AntonyWiles/ostler/issues/new/choose)
-  · [Report a security issue](SECURITY.md)
+  · [Report a security issue](.github/SECURITY.md)
 - [Automation API](docs/automation-api/README.md) for scripts and agents that drive Ostler
 - [Releasing](docs/releasing.md) for maintainers

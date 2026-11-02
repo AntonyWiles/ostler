@@ -33,8 +33,8 @@ for stage in $stages; do
     electron)
       npm run build
       npm run rebuild:native
-      sh scripts/linux-headless.sh npx vitest run tests/integration/startup-smoke.test.ts
-      sh scripts/linux-headless.sh npx playwright test
+      sh scripts/linux-headless.sh npx vitest run --config config/vitest.config.ts tests/integration/startup-smoke.test.ts
+      sh scripts/linux-headless.sh npx playwright test -c config/playwright.config.ts
       ;;
     *)
       echo "linux-test: unknown stage '$stage' (static, node, electron)" >&2

@@ -6,7 +6,7 @@
 # private session bus, a throwaway keyring in a temporary folder (never the
 # user's own), and a virtual display.
 #
-#   sh scripts/linux-headless.sh npx playwright test
+#   sh scripts/linux-headless.sh npx playwright test -c config/playwright.config.ts
 #   sh scripts/linux-headless.sh npm run monkey -- explore --steps 50
 #
 # Needs: xvfb, dbus, gnome-keyring (apt install xvfb dbus-x11 gnome-keyring).
