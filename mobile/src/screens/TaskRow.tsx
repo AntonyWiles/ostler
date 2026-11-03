@@ -65,7 +65,11 @@ export function TaskRow({ task, theme, note, details, showStatus, onPress }: Pro
     )
   }
   if (!done && (task.priority === 'critical' || task.priority === 'high')) {
-    parts.push({ text: taskPriorityLabel(task.priority), color: strip ?? theme.textMuted, bold: true })
+    parts.push({
+      text: taskPriorityLabel(task.priority),
+      color: strip ?? theme.textMuted,
+      bold: true
+    })
   }
   if (details && details.checklist > 0) {
     parts.push({
@@ -74,7 +78,10 @@ export function TaskRow({ task, theme, note, details, showStatus, onPress }: Pro
     })
   }
   if (details && details.waitingOn > 0 && !done) {
-    parts.push({ text: t('mobile:list.waiting', { count: details.waitingOn }), color: theme.danger })
+    parts.push({
+      text: t('mobile:list.waiting', { count: details.waitingOn }),
+      color: theme.danger
+    })
   }
   if (details && details.comments > 0) {
     parts.push({ text: `💬 ${details.comments}`, color: theme.textMuted })

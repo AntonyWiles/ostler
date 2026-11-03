@@ -36,9 +36,7 @@ describe('package.json build', () => {
       entry.target,
       entry.arch
     ])
-    expect(targets).toEqual([
-      ['nsis', ['x64']]
-    ])
+    expect(targets).toEqual([['nsis', ['x64']]])
     expect(packageJson.scripts['package:portable']).toContain('--win portable --x64')
   })
 

@@ -375,7 +375,10 @@ function loadRow(
       `INSERT INTO ${quote(shape.table)} (${columns.map(quote).join(', ')})
        VALUES (${columns.map((_, index) => `@c${index}`).join(', ')})`
     ).run(values(columns))
-    return { row: Object.fromEntries(columns.map((column) => [column, row[column]])), inserted: true }
+    return {
+      row: Object.fromEntries(columns.map((column) => [column, row[column]])),
+      inserted: true
+    }
   }
 
   const winners = columns.filter(

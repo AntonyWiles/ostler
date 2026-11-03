@@ -87,7 +87,10 @@ describe('automation-http-server.ts people, task fields, checklist and label rou
   })
 
   it('lists the new routes in /help', async () => {
-    const help = await call<{ routes: Array<{ method: string; path: string }> }>('GET', '/help?full=1')
+    const help = await call<{ routes: Array<{ method: string; path: string }> }>(
+      'GET',
+      '/help?full=1'
+    )
     for (const [method, route] of [
       ['GET', '/people'],
       ['POST', '/people'],
@@ -217,7 +220,10 @@ describe('automation-http-server.ts people, task fields, checklist and label rou
   })
 
   it('sets a repeat and custom reminders, and repeats the task when it is done', async () => {
-    const help = await call<{ routes: Array<{ method: string; path: string }> }>('GET', '/help?full=1')
+    const help = await call<{ routes: Array<{ method: string; path: string }> }>(
+      'GET',
+      '/help?full=1'
+    )
     for (const [method, route] of [
       ['GET', '/work-items/:workItemId/recurrence'],
       ['POST', '/work-items/:workItemId/recurrence'],
@@ -429,7 +435,10 @@ describe('automation-http-server.ts people, task fields, checklist and label rou
       (await call<Array<{ title: string }>>('GET', '/work-items')).value.map((item) => item.title)
     expect(await order()).toEqual(['A', 'B', 'C', 'Backlog'])
 
-    const help = await call<{ routes: Array<{ method: string; path: string }> }>('GET', '/help?full=1')
+    const help = await call<{ routes: Array<{ method: string; path: string }> }>(
+      'GET',
+      '/help?full=1'
+    )
     expect(
       help.value.routes.some(
         (route) => route.method === 'POST' && route.path === '/work-items/:workItemId/move'
@@ -543,7 +552,10 @@ describe('automation-http-server.ts people, task fields, checklist and label rou
   })
 
   it('manages custom fields, writes values on work items and filters by them (R2.2)', async () => {
-    const help = await call<{ routes: Array<{ method: string; path: string }> }>('GET', '/help?full=1')
+    const help = await call<{ routes: Array<{ method: string; path: string }> }>(
+      'GET',
+      '/help?full=1'
+    )
     for (const [method, route] of [
       ['GET', '/fields'],
       ['POST', '/fields'],
@@ -630,7 +642,10 @@ describe('automation-http-server.ts people, task fields, checklist and label rou
   })
 
   it('filters work items by the shared filter, searches, and manages saved views (P5.7)', async () => {
-    const help = await call<{ routes: Array<{ method: string; path: string }> }>('GET', '/help?full=1')
+    const help = await call<{ routes: Array<{ method: string; path: string }> }>(
+      'GET',
+      '/help?full=1'
+    )
     for (const [method, route] of [
       ['GET', '/search'],
       ['GET', '/views'],
@@ -748,7 +763,10 @@ describe('automation-http-server.ts people, task fields, checklist and label rou
   })
 
   it('lists, creates, updates, deletes and restores time entries (R2.3)', async () => {
-    const help = await call<{ routes: Array<{ method: string; path: string }> }>('GET', '/help?full=1')
+    const help = await call<{ routes: Array<{ method: string; path: string }> }>(
+      'GET',
+      '/help?full=1'
+    )
     for (const [method, route] of [
       ['GET', '/time-entries'],
       ['GET', '/time-entries/:entryId'],

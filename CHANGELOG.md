@@ -7,6 +7,8 @@ Help › What's new, and the Unreleased section until a version has its own.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-03
+
 ### Added
 
 - **Inbox on Android.** The phone has an Inbox tab with an unread count: reminders that fired,

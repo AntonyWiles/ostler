@@ -1,13 +1,5 @@
 import { useMemo, useState, type ReactNode } from 'react'
-import {
-  Linking,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  type TextStyle
-} from 'react-native'
+import { Linking, Platform, ScrollView, StyleSheet, Text, View, type TextStyle } from 'react-native'
 import { marked, type Token, type Tokens } from 'marked'
 import { t } from '@shared/i18n/index'
 import { autolinkBareUrls } from '@shared/autolink'
@@ -91,9 +83,7 @@ export function Markdown({ theme, children, onOpenItem, itemTitle }: Props) {
                 style={{ color: theme.accent, fontWeight: '600' }}
                 onPress={() => onOpenItem(ref)}
               >
-                {bare
-                  ? (title ?? t(`mobile:links.missing.${ref.kind}`))
-                  : inline(link.tokens, k)}
+                {bare ? (title ?? t(`mobile:links.missing.${ref.kind}`)) : inline(link.tokens, k)}
               </Text>
             )
           }

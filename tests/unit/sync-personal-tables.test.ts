@@ -399,20 +399,19 @@ describe('personal tables travel in the personal share', () => {
     expect(loaded.rows).toBe(1)
     expect(countOf(dbB, 'SELECT COUNT(*) AS n FROM contacts')).toBe(1)
     expect(countOf(dbB, 'SELECT COUNT(*) AS n FROM reminders')).toBe(0)
+    expect(dbB.prepare('SELECT table_name, row_key, waiting_for FROM sync_pending').all()).toEqual([
+      { table_name: 'reminders', row_key: '["rem-1"]', waiting_for: 'parent' }
+    ])
     expect(
-      dbB.prepare('SELECT table_name, row_key, waiting_for FROM sync_pending').all()
-    ).toEqual([{ table_name: 'reminders', row_key: '["rem-1"]', waiting_for: 'parent' }])
-    expect(
-      countOf(
-        dbB,
-        "SELECT COUNT(*) AS n FROM sync_field_stamps WHERE table_name = 'reminders'"
-      )
+      countOf(dbB, "SELECT COUNT(*) AS n FROM sync_field_stamps WHERE table_name = 'reminders'")
     ).toBe(0)
 
     loadSnapshot(dbB, PROJECT, readSnapshot(dbA, PROJECT))
     const retried = retryWaiting(dbB, PERSONAL_SHARE)
     expect(retried.pending).toBe(0)
-    expect(dbB.prepare("SELECT work_item_id, remind_at FROM reminders WHERE id = 'rem-1'").get()).toEqual({
+    expect(
+      dbB.prepare("SELECT work_item_id, remind_at FROM reminders WHERE id = 'rem-1'").get()
+    ).toEqual({
       work_item_id: 'item-1',
       remind_at: 5
     })
