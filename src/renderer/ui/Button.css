@@ -151,3 +151,15 @@
     color: GrayText;
   }
 }
+
+/* A toggle that is on (`aria-pressed`), lit as a pressed icon button is. */
+.ui-button[aria-pressed='true'] {
+  background: var(--color-surface-selected);
+  color: var(--color-link);
+}
+
+@media (forced-colors: active) {
+  .ui-button[aria-pressed='true'] {
+    border-color: Highlight;
+  }
+}

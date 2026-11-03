@@ -283,6 +283,16 @@
   line-height: var(--leading-body-sm);
 }
 
+/* "No description yet" starts editing when clicked. */
+.task-drawer__empty-description {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: start;
+  cursor: text;
+}
+
 .task-drawer__section-body {
   display: flex;
   flex-direction: column;

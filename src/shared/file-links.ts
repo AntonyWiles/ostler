@@ -78,6 +78,25 @@ export function relativeFileHref(href: string): string | null {
   return cleanProjectPath(decoded)
 }
 
+/** A full Windows path on a drive (`C:\work\docs\plan.md`), not a network share. */
+export function isWindowsPath(text: string): boolean {
+  return /^[a-z]:[\\/][^\0\n*?"<>|]*$/i.test(text)
+}
+
+/**
+ * A file path as people write one in a text, usually in `code`: a full
+ * Windows path, or one relative to the project with a folder and a file name
+ * (`docs/plan.md`). Null for anything else (`npm run panel`, `STYLE.md`).
+ * Whether a full path is inside the project's folder is checked when it opens.
+ */
+export function writtenFilePath(text: string): string | null {
+  const trimmed = text.trim()
+  if (isWindowsPath(trimmed)) return trimmed
+  if (/\s/.test(trimmed) || !trimmed.includes('/')) return null
+  const path = relativeFileHref(trimmed)
+  return path && /\.[a-z0-9]+$/i.test(path) ? path : null
+}
+
 /**
  * Files opened in the program Windows has for them. Anything else (programs,
  * scripts, shortcuts, unknown types) is shown in Explorer instead, never run.

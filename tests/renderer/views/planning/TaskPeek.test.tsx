@@ -48,7 +48,7 @@ describe('Tasks open where they were clicked (MOP-30)', () => {
   it('opens the task’s drawer over the page and stays on it', async () => {
     renderLinks(true)
     fireEvent.click(screen.getByRole('link', { name: 'Write brief' }))
-    expect(await screen.findByRole('textbox', { name: 'Description' })).toBeTruthy()
+    expect(await screen.findByRole('textbox', { name: 'Title' })).toBeTruthy()
     expect(screen.getByTestId('where').textContent).toBe('/')
   })
 

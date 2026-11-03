@@ -232,8 +232,12 @@ async function renderLiveDrawer(
   }
 }
 
-const description = () =>
-  screen.getByRole('textbox', { name: 'Description' }) as HTMLTextAreaElement
+/** The description's editor, turning Edit on first when it is off. */
+const description = () => {
+  if (!screen.queryByRole('textbox', { name: 'Description' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Edit' }))
+  return screen.getByRole('textbox', { name: 'Description' }) as HTMLTextAreaElement
+}
 const priority = () => screen.getByRole('combobox', { name: 'Priority' }) as HTMLSelectElement
 
 describe('Task drawer saves as you go', () => {

@@ -1,10 +1,10 @@
 import { shell } from 'electron'
 import { spawn } from 'node:child_process'
 import { existsSync, realpathSync, statSync } from 'node:fs'
-import { isAbsolute, join, relative, resolve } from 'node:path'
+import { isAbsolute, join, relative, resolve, sep } from 'node:path'
 import { IPC_CHANNELS } from '@shared/ostler-api'
 import { projectFolder } from '@shared/project-folder'
-import { cleanProjectPath, isOpenableFile } from '@shared/file-links'
+import { cleanProjectPath, isOpenableFile, isWindowsPath } from '@shared/file-links'
 import type { ConfigStore } from '../config-store'
 import { isWatchedProject } from '../paths'
 import type { EventDatabase } from '../services/event-database'
@@ -52,7 +52,15 @@ export function registerSystemHandlers({ configStore, database }: SystemHandlerD
     const project = configStore.getProjects().find((entry) => entry.id === projectId)
     const folder = project ? projectFolder(project) : null
     if (!folder) throw new Error('This project has no linked folder, so its file links cannot open')
-    const clean = cleanProjectPath(path)
+    // A full path written in a text counts only inside the project's folder.
+    let wanted = path
+    if (isWindowsPath(path)) {
+      const within = relative(resolve(folder), resolve(path))
+      if (!within || within.startsWith('..') || isAbsolute(within))
+        throw new Error(`${path} is outside the project folder (${folder}), so it cannot open`)
+      wanted = within.split(sep).join('/')
+    }
+    const clean = cleanProjectPath(wanted)
     if (!clean) throw new Error('That link does not name a file in the project folder')
     const target = resolve(folder, ...clean.split('/'))
     if (!existsSync(target)) throw new Error(`There is no ${clean} in the project folder`)

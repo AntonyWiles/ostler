@@ -6,7 +6,8 @@ import {
   fileLinkTarget,
   fileLinkUrl,
   isOpenableFile,
-  relativeFileHref
+  relativeFileHref,
+  writtenFilePath
 } from '../../src/shared/file-links'
 import { routeSummary } from '../../electron/services/automation/help'
 
@@ -82,6 +83,16 @@ describe('file-links.ts', () => {
     expect(relativeFileHref('/risk')).toBeNull()
     expect(relativeFileHref('#heading')).toBeNull()
     expect(relativeFileHref('mailto:a@example.com')).toBeNull()
+  })
+
+  it('finds file paths written as code', () => {
+    expect(writtenFilePath('C:\\work\\docs\\review.md')).toBe('C:\\work\\docs\\review.md')
+    expect(writtenFilePath('src/content/stories/a-story.md')).toBe('src/content/stories/a-story.md')
+    expect(writtenFilePath('npm run panel')).toBeNull()
+    expect(writtenFilePath('STYLE.md')).toBeNull()
+    expect(writtenFilePath('../outside/plan.md')).toBeNull()
+    expect(writtenFilePath('\\\\server\\share\\plan.md')).toBeNull()
+    expect(writtenFilePath('https://example.com/a.md')).toBeNull()
   })
 
   it('opens documents and shows anything that could run', () => {

@@ -161,3 +161,10 @@ blockquote > :last-child {
 .ui-mention {
   cursor: default;
 }
+
+/* A file path written as code, which opens the file: underlined like a link. */
+.ui-markdown-file code {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

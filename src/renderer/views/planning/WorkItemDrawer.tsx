@@ -6,6 +6,7 @@ import { projectAndSubprojectName } from '@shared/subproject-label'
 import { subprojectPath } from '../../navigation/paths'
 import { SubprojectField } from './subproject-ui'
 import {
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -35,7 +36,6 @@ import {
   Menu,
   PriorityIcon,
   STATUS_ICONS,
-  SegmentedControl,
   Select,
   TextArea,
   TextField,
@@ -43,6 +43,7 @@ import {
 } from '../../ui'
 import {
   AppWindow,
+  ArrowLeft,
   Archive,
   Ban,
   ExternalLink,
@@ -55,6 +56,7 @@ import {
   Link2,
   ListPlus,
   Paperclip,
+  Pencil,
   Plus,
   Sparkles,
   Trash2,
@@ -201,6 +203,43 @@ export function WorkItemDrawer({
     then?.()
   }
 
+  /**
+   * The tasks this drawer showed before the current one, oldest first, so a
+   * task opened from another (a link, a subtask, a dependency) has a way back.
+   * Closing the drawer forgets them.
+   */
+  const [trail, setTrail] = useState<string[]>([])
+  const shownId = useRef<string | null>(null)
+  const goingBack = useRef(false)
+  useEffect(() => {
+    const id = item?.id ?? null
+    const previous = shownId.current
+    shownId.current = id
+    if (id === previous) return
+    if (id === null) {
+      setTrail([])
+    } else if (goingBack.current) {
+      goingBack.current = false
+    } else if (previous) {
+      setTrail((current) => [...current, previous])
+    }
+  }, [item?.id])
+  const backTarget = useMemo(() => {
+    for (let index = trail.length - 1; index >= 0; index--) {
+      const found = ws.workItems.find((candidate) => candidate.id === trail[index])
+      if (found) return { item: found, index }
+    }
+    return null
+  }, [trail, ws.workItems])
+  const goBack = () => {
+    if (!backTarget) return
+    void requestLeave(() => {
+      goingBack.current = true
+      setTrail((current) => current.slice(0, backTarget.index))
+      ws.openWorkItem(backTarget.item)
+    })
+  }
+
   const descriptionRef = useRef<HTMLTextAreaElement>(null)
   const { attachFiles } = useAttachFiles(item?.projectId ?? '', item?.id ?? '')
 
@@ -235,6 +274,12 @@ export function WorkItemDrawer({
    * that field's own undo, as everywhere else (`isEditable`).
    */
   const undoWithKeyboard = (event: KeyboardEvent<HTMLElement>) => {
+    // Alt + Left goes back to the task shown before, as in a browser.
+    if (event.altKey && event.key === 'ArrowLeft' && backTarget && !isEditable(event.target)) {
+      event.preventDefault()
+      goBack()
+      return
+    }
     if (!(event.ctrlKey || event.metaKey) || event.shiftKey || event.altKey) return
     if (event.key.toLowerCase() !== 'z' || isEditable(event.target)) return
     if (!ws.undoLastSave()) return
@@ -256,7 +301,21 @@ export function WorkItemDrawer({
         className="task-drawer"
         onKeyDown={undoWithKeyboard}
         onPaste={pastePicture}
-        headerStart={item ? <StatusSelect ws={ws} item={item} /> : null}
+        headerStart={
+          item ? (
+            <>
+              {backTarget && (
+                <IconButton
+                  size="sm"
+                  icon={ArrowLeft}
+                  label={t('tasks:workItemDrawer.backTo', { title: backTarget.item.title })}
+                  onClick={goBack}
+                />
+              )}
+              <StatusSelect ws={ws} item={item} />
+            </>
+          ) : null
+        }
         title={
           // A one-line textarea that grows, so a long title wraps instead of
           // scrolling out of sight. Enter saves the title now.
@@ -579,7 +638,15 @@ function DrawerBody({
   const { pickFiles } = useAttachFiles(item.projectId, item.id)
   const features = useFeatures()
   const project = useProjectList().find((candidate) => candidate.id === item.projectId)
-  const [mode, setMode] = useState<'write' | 'preview'>('write')
+  // The description reads as formatted text until Edit is turned on; each
+  // task opens that way. Turning Edit off saves what was typed.
+  const [editing, setEditingState] = useState(false)
+  const setEditing = (next: boolean) => {
+    if (next === editing) return
+    if (!next) ws.endEdit('description')
+    setEditingState(next)
+    if (next) requestAnimationFrame(() => descriptionRef.current?.focus())
+  }
   const writingHelp = useWritingHelp({
     projectId: item.projectId,
     target: { kind: 'task', workItemId: item.id },
@@ -811,7 +878,7 @@ function DrawerBody({
                       : t('tasks:workItemDrawer.improveScope')}
                   </Button>
                 )}
-                {mode === 'write' && writingHelp.button}
+                {editing && writingHelp.button}
                 <IconButton
                   size="sm"
                   icon={Paperclip}
@@ -824,24 +891,19 @@ function DrawerBody({
                   updatedAt={item.updatedAt}
                   onRestore={ws.restoreDescriptionVersion}
                 />
-                <SegmentedControl
-                  label={t('tasks:workItemDrawer.descriptionView')}
+                <Button
                   size="sm"
-                  value={mode}
-                  onChange={(next) => {
-                    // Leaving the editor saves what was typed in it.
-                    if (next !== mode) ws.endEdit('description')
-                    setMode(next)
-                  }}
-                  options={[
-                    { value: 'write', label: t('tasks:workItemDrawer.write') },
-                    { value: 'preview', label: t('tasks:workItemDrawer.preview') }
-                  ]}
-                />
+                  variant="ghost"
+                  icon={Pencil}
+                  aria-pressed={editing}
+                  onClick={() => setEditing(!editing)}
+                >
+                  {t('tasks:workItemDrawer.edit')}
+                </Button>
               </>
             }
           >
-            {mode === 'write' ? (
+            {editing ? (
               <WritingHelpLayout suggestion={writingHelp.suggestion}>
                 <TextArea
                   ref={descriptionRef}
@@ -868,7 +930,13 @@ function DrawerBody({
                     {ws.editDescription}
                   </Markdown>
                 ) : (
-                  <p className="task-drawer__muted">{t('tasks:workItemDrawer.noDescriptionYet')}</p>
+                  <button
+                    type="button"
+                    className="task-drawer__muted task-drawer__empty-description"
+                    onClick={() => setEditing(true)}
+                  >
+                    {t('tasks:workItemDrawer.noDescriptionYet')}
+                  </button>
                 )}
               </div>
             )}

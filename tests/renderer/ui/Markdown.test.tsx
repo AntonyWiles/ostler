@@ -142,3 +142,26 @@ describe('Markdown mentions (prompt 14)', () => {
     expect(screen.getByText('Someone no longer here')).toBeTruthy()
   })
 })
+
+describe('file paths written as code', () => {
+  it('open the file in the project folder; other code stays code', async () => {
+    const openProjectFile = vi.fn(async () => ({ ok: true as const, value: undefined }))
+    installOstlerApi({
+      openProjectFile: openProjectFile as never,
+      resolveTaskKeys: async () => ({ ok: true as const, value: {} }) as never
+    })
+    render(
+      <MemoryRouter>
+        <Markdown projectId={P}>
+          {'Read `C:\\work\\docs\\review.md` and `src/a-story.md`, then run `npm run panel`.'}
+        </Markdown>
+      </MemoryRouter>
+    )
+    fireEvent.click(screen.getByText('C:\\work\\docs\\review.md'))
+    fireEvent.click(screen.getByText('src/a-story.md'))
+    await waitFor(() => expect(openProjectFile).toHaveBeenCalledTimes(2))
+    expect(openProjectFile).toHaveBeenCalledWith(P, 'C:\\work\\docs\\review.md')
+    expect(openProjectFile).toHaveBeenCalledWith(P, 'src/a-story.md')
+    expect(screen.getByText('npm run panel').closest('a')).toBeNull()
+  })
+})

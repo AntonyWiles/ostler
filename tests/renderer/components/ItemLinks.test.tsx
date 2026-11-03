@@ -223,6 +223,7 @@ describe('typing [[ (N4.4a)', () => {
       return <WorkItemDrawer ws={ws} />
     }
     render(shell(<Drawer />))
+    fireEvent.click(screen.getByRole('button', { name: 'Edit' }))
     const description = area('Description')
     typeInto(description, 'Needs [[fix')
     await screen.findByRole('option', { name: /Fix the header/ })

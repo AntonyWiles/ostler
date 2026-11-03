@@ -112,9 +112,11 @@ describe('Improve writing in the three editors', () => {
       editDependencyIds: item.dependencyIds
     })
     const { unmount } = render(shell(<WorkItemDrawer ws={ws} />))
+    fireEvent.click(screen.getByRole('button', { name: 'Edit' }))
     expect(improveButtons()).toHaveLength(1)
     unmount()
     render(shell(<WorkItemDrawer ws={ws} />, false))
+    fireEvent.click(screen.getByRole('button', { name: 'Edit' }))
     expect(improveButtons()).toHaveLength(0)
   })
 })

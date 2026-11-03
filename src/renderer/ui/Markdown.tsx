@@ -3,7 +3,12 @@ import ReactMarkdown, { defaultUrlTransform, type Components } from 'react-markd
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 import type { ItemLinkInfo, ItemLinkRef } from '@shared/ostler-api'
 import { autolinkBareUrls } from '@shared/autolink'
-import { fileLinkTarget, relativeFileHref, type FileLinkTarget } from '@shared/file-links'
+import {
+  fileLinkTarget,
+  relativeFileHref,
+  writtenFilePath,
+  type FileLinkTarget
+} from '@shared/file-links'
 import { t } from '@shared/i18n'
 import { findTaskKeys, linkTaskKeys } from '@shared/task-key-links'
 import { BRAND } from '@shared/brand'
@@ -200,8 +205,38 @@ export function Markdown({
     [children, projectId]
   )
   const lists = useLiveLists(projectId, blocks, refreshKey)
-  const components = useMemo<Components>(
-    () => ({
+  const components = useMemo<Components>(() => {
+    const openFile = (file: FileLinkTarget) =>
+      void window.ostlerAPI.openProjectFile(file.projectId, file.path).then((result) => {
+        if (!result.ok)
+          toast({ title: t('common:markdown.fileNotOpened'), body: result.error, tone: 'danger' })
+      })
+    return {
+      // A file path written as code (`docs/plan.md`, or a full path inside
+      // the project's folder) opens the file too.
+      code: ({ node: _node, children: inner, ...rest }) => {
+        // A fenced block's code ends in a line break; only inline code counts.
+        const written =
+          typeof inner === 'string' && !inner.includes('\n') && !rest.className
+            ? writtenFilePath(inner)
+            : null
+        const file = written && projectId ? { projectId, path: written } : null
+        if (!file) return <code {...rest}>{inner}</code>
+        return (
+          <a
+            href="#"
+            className="ui-markdown-file"
+            title={t('common:markdown.openFileTitle', { path: file.path })}
+            onClick={(event) => {
+              event.preventDefault()
+              event.stopPropagation()
+              openFile(file)
+            }}
+          >
+            <code {...rest}>{inner}</code>
+          </a>
+        )
+      },
       a: ({ href, children: words, node: _node, ...rest }) => {
         const ref = href ? itemLinkTarget(href, BRAND.urlScheme) : null
         const mentioned = href && !ref ? mentionPersonId(href, BRAND.urlScheme) : null
@@ -221,17 +256,7 @@ export function Markdown({
                 event.preventDefault()
                 event.stopPropagation()
                 if (web) void window.ostlerAPI.openExternalLink(href)
-                else if (file)
-                  void window.ostlerAPI
-                    .openProjectFile(file.projectId, file.path)
-                    .then((result) => {
-                      if (!result.ok)
-                        toast({
-                          title: t('common:markdown.fileNotOpened'),
-                          body: result.error,
-                          tone: 'danger'
-                        })
-                    })
+                else if (file) openFile(file)
               }}
             >
               {words}
@@ -271,9 +296,8 @@ export function Markdown({
             }
           }
         : {})
-    }),
-    [info, lists, projectId, listItemAction, toast]
-  )
+    }
+  }, [info, lists, projectId, listItemAction, toast])
   const body = (
     <ReactMarkdown
       rehypePlugins={[[rehypeSanitize, SCHEMA]]}

@@ -88,6 +88,7 @@ async function openDrawer(initialDescription = '') {
     return <WorkItemDrawer ws={ws} />
   }
   render(shell(<Drawer />))
+  fireEvent.click(screen.getByRole('button', { name: 'Edit' }))
   return { task, importLibraryFiles, attachToWorkItem }
 }
 
