@@ -13,6 +13,7 @@ const os = require('node:os')
 const path = require('node:path')
 const { spawn } = require('node:child_process')
 const { scratchDataDir, assertDeletable } = require('./scratch-paths.cjs')
+const { brandedElectronPath } = require('./dev-electron.cjs')
 
 const projectRoot = path.resolve(__dirname, '..')
 const defaultUserDataDirectory = path.join(
@@ -145,6 +146,9 @@ async function main() {
       `third-party notices failed (exit ${noticesResult.code ?? noticesResult.signal ?? 'unknown'})`
     )
   }
+
+  const brandedElectron = brandedElectronPath((message) => write(message, process.stdout))
+  if (brandedElectron) process.env.ELECTRON_EXEC_PATH = brandedElectron
 
   const devServer = runNpm([
     'exec',
