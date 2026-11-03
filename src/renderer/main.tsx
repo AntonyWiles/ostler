@@ -23,8 +23,10 @@ import { App } from './App'
 import { lazyNamed } from './lib/lazy-named'
 import './styles/global.css'
 import { forwardRendererErrors } from './lib/report-renderer-errors'
+import { keepReactPerfBufferSmall } from './lib/react-perf-buffer'
 
 forwardRendererErrors()
+keepReactPerfBufferSmall()
 
 // Before anything renders: the language the window opened in (P11.1).
 applyInitialLocale()
