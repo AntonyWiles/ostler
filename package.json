@@ -1,6 +1,6 @@
 {
   "name": "ostler",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "A local-first project manager for Windows, with AI agents as an optional layer.",
   "author": "Ostler",
