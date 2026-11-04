@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
+import { useEffect, useMemo, useState, type ReactElement } from 'react'
+import { FlatList, Pressable, StyleSheet, Text, View, type RefreshControlProps } from 'react-native'
 import { t } from '@shared/i18n/index'
 import { formatRelativeTime } from '@shared/format'
 import type { InboxEntry } from '@shared/ostler-api'
@@ -18,6 +18,8 @@ interface Props {
   onOpen: (target: InboxTarget) => void
   /** After a change to the Inbox's state, so the app pushes it and re-reads. */
   onEdited: () => void
+  /** Pull-to-refresh for the list (the home screen syncs on a pull). */
+  refreshControl?: ReactElement<RefreshControlProps>
 }
 
 /** How long an Undo stays offered after archiving. */
@@ -52,7 +54,7 @@ function targetOf(item: InboxEntry): InboxTarget | null {
  * phone. An item opens its task or project and is marked read; each can be marked read or unread
  * and archived, with an Undo. Read and archived state syncs with the PC.
  */
-export function Inbox({ db, version, onOpen, onEdited }: Props) {
+export function Inbox({ db, version, onOpen, onEdited, refreshControl }: Props) {
   const theme = useTheme()
   const [show, setShow] = useState<'all' | 'unread'>('all')
   const [archived, setArchived] = useState<string | null>(null)
@@ -155,6 +157,7 @@ export function Inbox({ db, version, onOpen, onEdited }: Props) {
       )}
       <FlatList
         accessibilityLabel={t('views:inboxView.inboxItems')}
+        refreshControl={refreshControl}
         data={items}
         keyExtractor={(item) => item.key}
         ListEmptyComponent={

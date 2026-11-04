@@ -1,5 +1,12 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { useEffect, useMemo, useState, type ReactElement, type ReactNode } from 'react'
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  type RefreshControlProps
+} from 'react-native'
 import { t } from '@shared/i18n/index'
 import { formatIsoDate, formatIsoDateShort } from '@shared/dates'
 import type { HomeTask, PlanningWorkItemStatus } from '@shared/ostler-api'
@@ -15,6 +22,8 @@ interface Props {
   version: number
   onOpenTask: (taskId: string) => void
   onEdited: () => void
+  /** Pull-to-refresh for the list (the home screen syncs on a pull). */
+  refreshControl?: ReactElement<RefreshControlProps>
 }
 
 const UNDO_MS = 5000
@@ -47,7 +56,7 @@ function reasonText(task: HomeTask): string | null {
  * today, in progress, new today: Me's or nobody's) and the next seven days, day by day. A task's
  * circle marks it done, with Undo; the row opens it.
  */
-export function MyDay({ db, version, onOpenTask, onEdited }: Props) {
+export function MyDay({ db, version, onOpenTask, onEdited, refreshControl }: Props) {
   const theme = useTheme()
   const day = todayOf()
   const work = useMemo(() => (version >= 0 ? myWork(db, info, day) : null), [db, day, version])
@@ -96,7 +105,7 @@ export function MyDay({ db, version, onOpenTask, onEdited }: Props) {
 
   return (
     <View style={styles.page}>
-      <ScrollView contentContainerStyle={styles.body}>
+      <ScrollView contentContainerStyle={styles.body} refreshControl={refreshControl}>
         <Text style={[styles.date, { color: theme.textSecondary }]}>
           {t('mobile:myDay.today', { date: formatIsoDateShort(day) })}
         </Text>

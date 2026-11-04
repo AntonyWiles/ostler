@@ -251,6 +251,7 @@
     "myDay": "My Day",
     "menu": "More options",
     "closeMenu": "Close menu",
+    "syncNow": "Sync now",
     "inbox": "Inbox",
     "inboxUnread": "Inbox, {{unread}} unread",
     "needsYou": "Needs you",

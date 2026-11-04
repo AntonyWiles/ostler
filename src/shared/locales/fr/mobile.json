@@ -251,6 +251,7 @@
     "myDay": "Ma journée",
     "menu": "Plus d’options",
     "closeMenu": "Fermer le menu",
+    "syncNow": "Synchroniser maintenant",
     "inbox": "Boîte de réception",
     "inboxUnread": "Boîte de réception, {{unread}} non lus",
     "needsYou": "Vous attend",

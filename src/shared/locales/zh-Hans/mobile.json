@@ -251,6 +251,7 @@
     "myDay": "我的一天",
     "menu": "更多选项",
     "closeMenu": "关闭菜单",
+    "syncNow": "立即同步",
     "inbox": "收件箱",
     "inboxUnread": "收件箱，{{unread}} 条未读",
     "needsYou": "等你处理",

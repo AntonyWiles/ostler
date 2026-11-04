@@ -5,6 +5,7 @@ import {
   BackHandler,
   Linking,
   Pressable,
+  RefreshControl,
   StatusBar as NativeStatusBar,
   StyleSheet,
   Text,
@@ -255,6 +256,20 @@ export default function App() {
     setVersion((n) => n + 1)
   }, [sync])
 
+  // Sync now (pull down on a home tab, or the ⋮ menu): push and pull every share, look for R2
+  // changes, then re-read. The spinner stays until the round trip is done.
+  const [refreshing, setRefreshing] = useState(false)
+  const syncNow = useCallback(async () => {
+    setRefreshing(true)
+    try {
+      await sync?.syncAll()
+      await r2Changes?.check().catch(() => false)
+    } finally {
+      setRefreshing(false)
+      setVersion((n) => n + 1)
+    }
+  }, [sync, r2Changes])
+
   const openProject = useCallback(
     (
       id: string,
@@ -385,11 +400,7 @@ export default function App() {
           lastSyncedAt: sync?.lastSyncedAt() ?? null,
           incomingCode: incomingSetupCode,
           onCodeUsed: () => setIncomingSetupCode(null),
-          onSyncNow: async () => {
-            await sync?.syncAll()
-            void r2Changes?.check()
-            setVersion((n) => n + 1)
-          }
+          onSyncNow: syncNow
         }}
       />
     )
@@ -501,6 +512,14 @@ export default function App() {
     )
   }
 
+  const homeRefresh = (
+    <RefreshControl
+      refreshing={refreshing}
+      onRefresh={() => void syncNow()}
+      colors={[theme.accent]}
+      progressBackgroundColor={theme.surface}
+    />
+  )
   return page(
     <>
       <TopBar
@@ -524,6 +543,7 @@ export default function App() {
           }
         ]}
         menu={[
+          { label: t('mobile:nav.syncNow'), onPress: () => void syncNow() },
           { label: t('views:weeklyReview.start'), onPress: () => setScreen('weeklyReview') },
           { label: t('mobile:time.timesheet'), onPress: () => setScreen('timesheet') },
           { label: t('views:team.title'), onPress: () => setScreen('team') },
@@ -607,7 +627,12 @@ export default function App() {
       )}
       <View style={styles.content}>
         {db !== null && tab === 'projects' && (
-          <Projects db={db} version={version} onOpenProject={openProject} />
+          <Projects
+            db={db}
+            version={version}
+            onOpenProject={openProject}
+            refreshControl={homeRefresh}
+          />
         )}
         {db !== null && tab === 'myDay' && (
           <MyDay
@@ -615,6 +640,7 @@ export default function App() {
             version={version}
             onOpenTask={(id) => openTask(id, 'home')}
             onEdited={edited}
+            refreshControl={homeRefresh}
           />
         )}
         {db !== null && tab === 'needsYou' && (
@@ -625,6 +651,7 @@ export default function App() {
             onOpenProject={(id, view) => openProject(id, 'home', view)}
             onOpenItem={openItemFromHome}
             onEdited={edited}
+            refreshControl={homeRefresh}
           />
         )}
         {db !== null && tab === 'inbox' && (
@@ -633,6 +660,7 @@ export default function App() {
             version={version}
             onOpen={(target) => openTarget(target, 'home')}
             onEdited={edited}
+            refreshControl={homeRefresh}
           />
         )}
         {db === null && failure === null && (

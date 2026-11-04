@@ -1,5 +1,5 @@
-import { useMemo } from 'react'
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
+import { useMemo, type ReactElement } from 'react'
+import { FlatList, Pressable, StyleSheet, Text, View, type RefreshControlProps } from 'react-native'
 import { t } from '@shared/i18n/index'
 import { projectColor, projectName } from '../data/project-display'
 import { projects, today, type QueryDb } from '../data/queries'
@@ -15,10 +15,12 @@ interface Props {
   /** Bumped by the app whenever a pull changed the database. */
   version: number
   onOpenProject: (projectId: string) => void
+  /** Pull-to-refresh for the list (the home screen syncs on a pull). */
+  refreshControl?: ReactElement<RefreshControlProps>
 }
 
 /** The projects on this phone: each one's colour and name, and how many tasks are open and done. */
-export function Projects({ db, version, onOpenProject }: Props) {
+export function Projects({ db, version, onOpenProject, refreshControl }: Props) {
   const theme = useTheme()
   // `version` changes when a pull changed the database; reading it re-runs the query.
   const list = useMemo(
@@ -42,15 +44,14 @@ export function Projects({ db, version, onOpenProject }: Props) {
         : new Map<string, { blocked: number; review: number }>(),
     [db, version]
   )
-  if (list.length === 0) {
-    return (
-      <Text style={[styles.empty, { color: theme.textMuted }]}>{t('mobile:projects.empty')}</Text>
-    )
-  }
   return (
     <FlatList
       accessibilityLabel={t('mobile:projects.list')}
+      refreshControl={refreshControl}
       data={list}
+      ListEmptyComponent={
+        <Text style={[styles.empty, { color: theme.textMuted }]}>{t('mobile:projects.empty')}</Text>
+      }
       keyExtractor={(project) => project.id}
       renderItem={({ item }) => {
         const name = item.name

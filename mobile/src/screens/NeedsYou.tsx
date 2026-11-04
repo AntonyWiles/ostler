@@ -1,5 +1,13 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { useEffect, useMemo, useState, type ReactElement, type ReactNode } from 'react'
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  type RefreshControlProps
+} from 'react-native'
 import { t } from '@shared/i18n/index'
 import { formatRelativeTime } from '@shared/format'
 import type { ItemLinkRef } from '@shared/ostler-api'
@@ -37,6 +45,8 @@ interface Props {
   onOpenItem: (ref: ItemLinkRef) => void
   /** After an answer, so the app pushes it and re-reads. */
   onEdited: () => void
+  /** Pull-to-refresh for the list (the home screen syncs on a pull). */
+  refreshControl?: ReactElement<RefreshControlProps>
 }
 
 /** How long an Undo stays offered after an answer. */
@@ -59,7 +69,15 @@ type Open = { key: string; box: 'note' | 'sendBack' | 'reply' | 'unblock' } | nu
  * the latest comment and one-tap answers. An answer that only moved a task and added a comment
  * offers Undo for a few seconds.
  */
-export function NeedsYou({ db, version, onOpenTask, onOpenProject, onOpenItem, onEdited }: Props) {
+export function NeedsYou({
+  db,
+  version,
+  onOpenTask,
+  onOpenProject,
+  onOpenItem,
+  onEdited,
+  refreshControl
+}: Props) {
   const theme = useTheme()
   const [open, setOpen] = useState<Open>(null)
   const [notes, setNotes] = useState<Record<string, string>>({})
@@ -170,6 +188,7 @@ export function NeedsYou({ db, version, onOpenTask, onOpenProject, onOpenItem, o
       )}
       <ScrollView
         accessibilityLabel={t('mobile:needsYou.title')}
+        refreshControl={refreshControl}
         contentContainerStyle={styles.list}
         keyboardShouldPersistTaps="handled"
       >

@@ -251,6 +251,7 @@
     "myDay": "Meu dia",
     "menu": "Mais opções",
     "closeMenu": "Fechar menu",
+    "syncNow": "Sincronizar agora",
     "inbox": "Caixa de entrada",
     "inboxUnread": "Caixa de entrada, {{unread}} não lidos",
     "needsYou": "Precisa de você",

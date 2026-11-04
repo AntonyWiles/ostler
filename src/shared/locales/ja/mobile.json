@@ -251,6 +251,7 @@
     "myDay": "今日の予定",
     "menu": "その他のオプション",
     "closeMenu": "メニューを閉じる",
+    "syncNow": "今すぐ同期",
     "inbox": "受信トレイ",
     "inboxUnread": "受信トレイ、未読 {{unread}} 件",
     "needsYou": "あなた待ち",
