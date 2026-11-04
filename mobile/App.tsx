@@ -49,6 +49,9 @@ import { today } from './src/data/queries'
 import type { PhonePairing } from './src/sync/phone-pairing'
 import type { PhoneSync } from './src/sync/phone-sync'
 import { createPhoneSync } from './src/sync/phone-sync-runtime'
+import { loadR2Setup, onR2SetupChanged } from './src/sync/r2-phone-settings'
+import type { R2Setup } from '../electron/services/sync/r2-setup-code'
+import type { R2Changes } from '../electron/services/sync/r2-transport'
 
 interface Check {
   fileVersion: number
@@ -115,6 +118,11 @@ export default function App() {
   const [signedIn, setSignedIn] = useState(false)
   const [sync, setSync] = useState<PhoneSync | null>(null)
   const [pairing, setPairing] = useState<PhonePairing | null>(null)
+  // Advanced sync: the R2 bucket from a setup code; undefined until the secure store has answered.
+  const [r2Setup, setR2Setup] = useState<R2Setup | null | undefined>(undefined)
+  const [r2Changes, setR2Changes] = useState<R2Changes | null>(null)
+  // A setup code that arrived as a link (`<scheme>://r2-setup/<code>`), for Settings to fill in.
+  const [incomingSetupCode, setIncomingSetupCode] = useState<string | null>(null)
   const [version, setVersion] = useState(0)
   const [pendingInvite, setPendingInvite] = useState<string | null>(null)
   // Quick capture is open on the home screen; what was captured last, said for a few seconds.
@@ -158,15 +166,27 @@ export default function App() {
     }
   }, [screen])
 
-  // The sync loop exists while signed in, and runs only while the app is in the foreground.
   useEffect(() => {
-    if (db === null || !signedIn) return
-    const { sync: created, pairing: pairingCreated } = createPhoneSync(db, () =>
-      setVersion((n) => n + 1)
-    )
+    void loadR2Setup().then(setR2Setup)
+    return onR2SetupChanged(setR2Setup)
+  }, [])
+
+  // The sync loop exists while signed in to Google or set up with an R2 bucket, and runs only
+  // while the app is in the foreground.
+  useEffect(() => {
+    if (db === null || r2Setup === undefined || (!signedIn && r2Setup === null)) return
+    const {
+      sync: created,
+      pairing: pairingCreated,
+      r2Changes: changes
+    } = createPhoneSync(db, () => setVersion((n) => n + 1), { drive: signedIn, r2: r2Setup })
     setSync(created)
     setPairing(pairingCreated)
+    setR2Changes(changes)
     if (AppState.currentState === 'active') created.start()
+    // With a bucket, joining the person's other devices needs nothing from them: ask straight away
+    // (a PC that allows devices by itself answers within a minute).
+    if (r2Setup && pairingCreated.state().phase !== 'paired') void pairingCreated.start()
     const subscription = AppState.addEventListener('change', (state) => {
       if (state === 'active') created.start()
       else void created.stop()
@@ -175,14 +195,22 @@ export default function App() {
       subscription.remove()
       setSync(null)
       setPairing(null)
+      setR2Changes(null)
+      changes?.stop()
       pairingCreated.cancel()
       void created.dispose()
     }
-  }, [db, signedIn])
+  }, [db, signedIn, r2Setup])
 
   // An invite link (`<scheme>://join/<invite>`) opens the Join screen and joins; an item link
   // (`<scheme>://task/<project>/<task>`, and milestones and decisions) opens that item.
   const openLink = useCallback((url: string | null | undefined) => {
+    const setupCode = url == null ? null : /^[a-z][a-z0-9+.-]*:\/\/r2-setup\/(.+)$/i.exec(url)?.[1]
+    if (setupCode) {
+      setIncomingSetupCode(decodeURIComponent(setupCode))
+      setScreen('settings')
+      return
+    }
     const item = url == null ? null : itemLinkTarget(url, BRAND.urlScheme)
     if (item !== null) {
       setIncomingItem(item)
@@ -352,6 +380,17 @@ export default function App() {
         onBack={home}
         onJoin={() => setScreen('join')}
         onPairing={() => setScreen('pairing')}
+        r2={{
+          setup: r2Setup ?? null,
+          lastSyncedAt: sync?.lastSyncedAt() ?? null,
+          incomingCode: incomingSetupCode,
+          onCodeUsed: () => setIncomingSetupCode(null),
+          onSyncNow: async () => {
+            await sync?.syncAll()
+            void r2Changes?.check()
+            setVersion((n) => n + 1)
+          }
+        }}
       />
     )
   }

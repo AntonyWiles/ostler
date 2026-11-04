@@ -1,6 +1,12 @@
 import type { TryRun } from '../try-it'
 import type { RequestSignOffInput, SignOff, SignOffItem } from './sign-off-types'
-import type { PersonalSpaceState, SyncPlaceView } from './personal-space-types'
+import type {
+  PersonalSpaceState,
+  R2SetupCodeView,
+  R2SyncState,
+  SetR2SyncInput,
+  SyncPlaceView
+} from './personal-space-types'
 import type {
   ChangeDetail,
   ChangeHistoryClear,
@@ -1106,6 +1112,13 @@ export const IPC_CHANNELS = {
   ANSWER_PERSON_LINK: 'ostler:answer-person-link',
   // The personal space: this person's devices (people and devices, D13, D16, D20)
   GET_PERSONAL_SPACE: 'ostler:get-personal-space',
+  GET_R2_SYNC: 'ostler:get-r2-sync',
+  SET_R2_SYNC: 'ostler:set-r2-sync',
+  TEST_R2_SYNC: 'ostler:test-r2-sync',
+  CLEAR_R2_SYNC: 'ostler:clear-r2-sync',
+  R2_SYNC_NOW: 'ostler:r2-sync-now',
+  EXPORT_R2_SETUP: 'ostler:export-r2-setup',
+  IMPORT_R2_SETUP: 'ostler:import-r2-setup',
   CREATE_PERSONAL_SPACE: 'ostler:create-personal-space',
   REQUEST_PAIRING: 'ostler:request-pairing',
   CHOOSE_PERSONAL_SPACE: 'ostler:choose-personal-space',
@@ -3126,6 +3139,19 @@ export interface OstlerAPI {
   // --- The personal space: this person's devices (people and devices, D13, D16, D20) ---
   /** This PC's personal space: its devices, and the devices asking to join with their codes. */
   getPersonalSpace(): Promise<Result<PersonalSpaceState>>
+  // --- Advanced sync: the personal space copied to a Cloudflare R2 bucket ---
+  getR2Sync(): Promise<Result<R2SyncState>>
+  /** Saves the bucket and the schedule (a blank secret keeps the saved one) and restarts copying. */
+  setR2Sync(input: SetR2SyncInput): Promise<Result<R2SyncState>>
+  /** Tries the bucket with these settings (or the saved ones); an error says what failed. */
+  testR2Sync(input?: SetR2SyncInput): Promise<Result<true>>
+  clearR2Sync(): Promise<Result<R2SyncState>>
+  /** Copies both ways now, whatever the schedule. */
+  r2SyncNow(): Promise<Result<R2SyncState>>
+  /** A sealed setup code with the saved bucket, and its passphrase, for a phone or another PC. */
+  exportR2Setup(): Promise<Result<R2SetupCodeView>>
+  /** Saves the bucket from a setup code and turns copying on. */
+  importR2Setup(code: string, passphrase: string): Promise<Result<R2SyncState>>
   /**
    * Makes this PC's personal space in `place`, one of the state's `places` or
    * `DRIVE_PLACE_CHOICE` (Google Drive, when the state's `driveReady`), or, without one, in a

@@ -118,6 +118,20 @@ describe('formatting', () => {
       Object.defineProperty(Intl, 'RelativeTimeFormat', original)
     }
   })
+
+  it('lists without ListFormat, as on the phone', () => {
+    applyLocale({ language: 'en', formatLocale: 'en-NZ' })
+    const original = Object.getOwnPropertyDescriptor(Intl, 'ListFormat')!
+    Object.defineProperty(Intl, 'ListFormat', { value: undefined, configurable: true })
+    try {
+      expect(formatList(['a', 'b', 'c'])).toBe('a, b and c')
+      expect(formatList(['a', 'b'], 'or')).toBe('a or b')
+      expect(formatList(['a'])).toBe('a')
+      expect(formatDuration(2 * 3_600_000 + 5 * 60_000, { long: true })).toBe('2 hours, 5 minutes')
+    } finally {
+      Object.defineProperty(Intl, 'ListFormat', original)
+    }
+  })
 })
 
 describe('matchBundled', () => {

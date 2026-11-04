@@ -105,7 +105,7 @@ When you come back to Home after at least eight hours away, a card at the top sa
 while you were gone, project by project:
 
 - tasks finished and tasks added, counted by who did it: a person, agents, a rule, an import or the
-  Automation API, with the first five titles and "and 214 more" for the rest;
+  Automation API, with the first three titles and "and 214 more" for the rest;
 - new comments, and the tasks they are on;
 - due dates that passed while you were away, for tasks still open;
 - reminders that went off;
@@ -116,8 +116,9 @@ Each title opens its task; runs open the project's Agents view, and questions op
 project where nothing happened is left out. Ostler writes the card from its own records, so it works
 without AI and never guesses.
 
-- **Dismiss** closes the card. Looking at Home without a card, or dismissing one, counts as your
-  last visit, so the next card starts from there. The first time you start Ostler there is no card.
+- **Dismiss** closes the card. Every time you open or leave Home counts as your last visit, so the
+  next card starts from there, whether or not you dismissed this one. Until you dismiss it, the card
+  stays on Home for the rest of the day. The first time you start Ostler there is no card.
 - **Show what changed** in Home's menu (**…** beside the date) opens the card for the last 24
   hours, 3 days or 7 days whenever you like.
 - **Listen** reads the card aloud, in the same words and order, with the Windows voice for your

@@ -41,11 +41,48 @@ export function briefingSince(lastLooked: number | null, now: number): number | 
 }
 
 /**
- * Home opened: the span to brief, or null. With no card, looking at Home
- * moves "last looked" to now; with one, it stays until the card is dismissed.
+ * The start of a card shown but not yet dismissed, so it stays on Home while
+ * the person moves around the app that day.
+ */
+const PENDING_KEY = 'ostler.home.pendingBriefing'
+
+function readPending(): number | null {
+  try {
+    const stored = Number(localStorage.getItem(PENDING_KEY))
+    return Number.isSafeInteger(stored) && stored > 0 ? stored : null
+  } catch {
+    return null
+  }
+}
+
+function writePending(since: number | null): void {
+  try {
+    if (since === null) localStorage.removeItem(PENDING_KEY)
+    else localStorage.setItem(PENDING_KEY, String(since))
+  } catch {
+    // ignore -- see readLastLooked
+  }
+}
+
+/**
+ * Home opened: the span to brief, or null. Looking at Home always moves "last
+ * looked" to now, so the next card starts from this visit rather than from
+ * the last time a card was dismissed. A card shown earlier and not dismissed
+ * keeps showing until the person is away long enough for a new one.
  */
 export function openHome(now: number): number | null {
   const since = briefingSince(readLastLooked(), now)
-  if (since === null) writeLastLooked(now)
-  return since
+  writeLastLooked(now)
+  if (since !== null) {
+    writePending(since)
+    return since
+  }
+  const pending = readPending()
+  return pending !== null && pending <= now ? pending : null
+}
+
+/** Leaving Home, or dismissing its card: "last looked" is now. */
+export function leaveHome(now: number, dismissed = false): void {
+  writeLastLooked(now)
+  if (dismissed) writePending(null)
 }

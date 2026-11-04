@@ -8,6 +8,7 @@ import { BriefingCard } from '@renderer/views/home/BriefingCard'
 import {
   BRIEFING_AWAY_MS,
   briefingSince,
+  leaveHome,
   openHome,
   readLastLooked,
   writeLastLooked
@@ -127,9 +128,16 @@ describe('Since you were last here: when it shows (N1.6)', () => {
     expect(readLastLooked()).toBe(now)
     expect(openHome(now + HOUR)).toBeNull()
     expect(readLastLooked()).toBe(now + HOUR)
-    // Away for the night: the card shows, and "last looked" waits for Dismiss.
+    // Away for the night: the card shows, and "last looked" moves on anyway.
     expect(openHome(now + 12 * HOUR)).toBe(now + HOUR)
-    expect(readLastLooked()).toBe(now + HOUR)
+    expect(readLastLooked()).toBe(now + 12 * HOUR)
+    // Back to Home later that day: the same card, until it is dismissed.
+    expect(openHome(now + 13 * HOUR)).toBe(now + HOUR)
+    leaveHome(now + 13 * HOUR, true)
+    expect(openHome(now + 14 * HOUR)).toBeNull()
+    // Used daily without dismissing: each card starts from the day before.
+    expect(openHome(now + 36 * HOUR)).toBe(now + 14 * HOUR)
+    expect(openHome(now + 60 * HOUR)).toBe(now + 36 * HOUR)
   })
 })
 
@@ -137,7 +145,7 @@ describe('BriefingCard (N1.6)', () => {
   beforeEach(() => localStorage.clear())
   afterEach(() => vi.unstubAllGlobals())
 
-  it('shows each line with links, five titles then "and 2 more", and Dismiss moves "last looked"', async () => {
+  it('shows each line with links, three titles then "and 4 more", and Dismiss moves "last looked"', async () => {
     const since = Date.now() - 14 * HOUR
     writeLastLooked(since)
     const getBriefing = vi.fn(async (from: number) => ({
@@ -162,7 +170,7 @@ describe('BriefingCard (N1.6)', () => {
       'href',
       '/projects/web/tasks/t1'
     )
-    expect(within(website).getByText('and 2 more')).toBeInTheDocument()
+    expect(within(website).getByText('and 4 more')).toBeInTheDocument()
     expect(within(website).getByText('1 due date passed, still open')).toBeInTheDocument()
     expect(within(website).getByText('2 agent questions wait for an answer')).toBeInTheDocument()
     expect(within(website).getByRole('link', { name: 'Open the Inbox' })).toHaveAttribute(

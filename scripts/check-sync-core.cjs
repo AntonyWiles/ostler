@@ -34,7 +34,9 @@ const CORE = [
   'drive-transport',
   'drive-changes',
   'invite-message',
-  'joined-project'
+  'joined-project',
+  'r2-transport',
+  'r2-setup-code'
 ]
 
 const directory = path.join(projectRoot, 'electron', 'services', 'sync')

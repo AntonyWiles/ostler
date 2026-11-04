@@ -172,7 +172,12 @@ export function BriefingCard({
   )
 }
 
+/** Titles under each line on the card; Listen still reads all the briefing has. */
+const CARD_TITLES = 3
+
 function BriefingLineItem({ projectId, line }: { projectId: string; line: BriefingLine }) {
+  const tasks = line.tasks.slice(0, CARD_TITLES)
+  const more = line.more + line.tasks.length - tasks.length
   const elsewhere =
     line.link === 'inbox'
       ? { to: inboxPath(), label: t('views:briefing.openInbox') }
@@ -182,9 +187,9 @@ function BriefingLineItem({ projectId, line }: { projectId: string; line: Briefi
   return (
     <li className="ostler-briefing__line">
       <span className="ostler-briefing__text">{line.text}</span>
-      {(line.tasks.length > 0 || elsewhere) && (
+      {(tasks.length > 0 || elsewhere) && (
         <span className="ostler-briefing__tasks">
-          {line.tasks.map((task, index) =>
+          {tasks.map((task, index) =>
             line.link === 'task' && task.id ? (
               <TaskLink key={`${task.id}-${index}`} projectId={projectId} taskId={task.id}>
                 {task.title}
@@ -193,9 +198,7 @@ function BriefingLineItem({ projectId, line }: { projectId: string; line: Briefi
               <span key={`${task.id ?? 'run'}-${index}`}>{task.title}</span>
             )
           )}
-          {line.more > 0 && (
-            <span className="ostler-briefing__more">{briefingMoreText(line.more)}</span>
-          )}
+          {more > 0 && <span className="ostler-briefing__more">{briefingMoreText(more)}</span>}
           {elsewhere && <Link to={elsewhere.to}>{elsewhere.label}</Link>}
         </span>
       )}

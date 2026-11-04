@@ -57,6 +57,10 @@ read it. People do not read your data: there are no servers for them to read it 
 
 - **Google**, because your encrypted project files are in your Drive. Google can see file names,
   sizes and when they changed. It cannot read what is inside them.
+- **Your storage provider, if you turn on Advanced sync.** You can sync through your own Cloudflare
+  R2 bucket (or another S3-compatible store) instead of Google Drive. The same encrypted files go
+  there, so the provider sees file names, sizes and times, not what is inside. The bucket's keys
+  stay in the phone's secure store and the PC's protected storage, and go only to that bucket.
 - **People you give access to.** If you share a project through Google Drive, the people you name get
   access to that project's folder, and the invite you send them carries the key to open it. Anyone
   with both can read the project, so treat an invite like a password.

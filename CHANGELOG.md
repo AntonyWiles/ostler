@@ -7,6 +7,21 @@ Help › What's new, and the Unreleased section until a version has its own.
 
 ## [Unreleased]
 
+### Added
+
+- **Advanced sync through your own Cloudflare R2 bucket.** Settings › Devices › Advanced sync
+  copies your personal space to an R2 bucket (or another S3-compatible store), and the Android app
+  can sync through that bucket instead of Google Drive. Every project in your personal space
+  reaches the phone, with nothing to share. Files stay sealed with your projects' keys, a new
+  device still needs your OK with its code, and the bucket's secret key never leaves the PC's
+  protected storage or the phone's secure store. Choose how often to look for changes (from every
+  minute to only on Sync now); looking costs one small request, and the bucket is only listed when
+  another device changed something, so a person's use stays well inside R2's free tier. A sealed
+  setup code with a one-time passphrase carries the settings to the phone or another PC.
+- **A sideload build for trying phone changes.** `npm run sideload:android` in `mobile/` builds
+  "Ostler Dev" as a standalone APK from the working tree and installs it over adb (USB or wireless
+  debugging), keeping its data and sync settings.
+
 ### Fixed
 
 - **A task marked Done is no longer blocked.** Moving a task to Done, on the PC or the phone,

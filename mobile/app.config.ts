@@ -113,4 +113,6 @@ const config: ExpoConfig = {
   ]
 }
 
-export default withNativeCompileCap(withReleaseSigning(config))
+// The dev variant is never uploaded: its release build (the sideload APK) keeps the debug key, so it
+// installs over a debug build of the same variant without losing its data.
+export default withNativeCompileCap(DEV_VARIANT ? config : withReleaseSigning(config))

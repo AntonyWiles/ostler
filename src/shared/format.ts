@@ -142,6 +142,12 @@ export function formatList(
         : style === 'narrow'
           ? { type: 'unit', style: 'narrow' }
           : { type: 'conjunction' }
+  // Hermes, the phone's engine, has no ListFormat: commas, with "and"/"or" before the last item.
+  if (typeof Intl.ListFormat !== 'function') {
+    if (items.length < 2 || style === 'unit' || style === 'narrow') return items.join(', ')
+    const word = t(style === 'or' ? 'common:list.or' : 'common:list.and')
+    return `${items.slice(0, -1).join(', ')} ${word} ${items[items.length - 1]}`
+  }
   return cached('list', options, (locale) => new Intl.ListFormat(locale, options)).format(items)
 }
 

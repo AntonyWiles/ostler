@@ -17,12 +17,15 @@ import type { DriveSyncSettings } from '../services/sync/drive-sync-settings'
 import { joinPlace, readShareFile } from '../services/sync/sharing'
 import { syncedRoots, syncPlaces } from '../services/sync/share-folder-finder'
 import type { SyncService } from '../services/sync/sync-service'
+import type { R2Bridge } from '../services/sync/r2-bridge'
 import { handleApi } from './handle-ipc'
 
 export interface DevicesHandlerDependencies {
   syncService: SyncService
   /** Google Drive (mobile plan, phase 5); null when it can't be kept. */
   driveSync: DriveSyncSettings | null
+  /** Advanced sync through an R2 bucket; null when it couldn't start. */
+  r2Bridge?: () => R2Bridge | null
   dataDir: string
   getMainWindow(): BrowserWindow | null
 }
@@ -39,9 +42,25 @@ const DEVICE_NAME_MAX = 100
 export function registerDevicesHandlers({
   syncService,
   driveSync,
+  r2Bridge,
   dataDir,
   getMainWindow
 }: DevicesHandlerDependencies): void {
+  const bridge = (): R2Bridge => {
+    const found = r2Bridge?.()
+    if (!found) throw new Error(t('errors:r2Sync.notSetUp'))
+    return found
+  }
+  handleApi('getR2Sync', () => bridge().state())
+  handleApi('setR2Sync', (_event, input) => bridge().set(input))
+  handleApi('testR2Sync', async (_event, input) => {
+    await bridge().test(input)
+    return true as const
+  })
+  handleApi('clearR2Sync', () => bridge().clear())
+  handleApi('r2SyncNow', () => bridge().syncNow())
+  handleApi('exportR2Setup', () => bridge().exportSetup())
+  handleApi('importR2Setup', (_event, code, passphrase) => bridge().importSetup(code, passphrase))
   // Set when this PC asked to join; cleared once it has joined.
   let requested = false
   // The space the person chose by hand to join, which the search under the synced roots may not find.

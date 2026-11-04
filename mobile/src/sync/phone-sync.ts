@@ -58,6 +58,12 @@ export interface PhoneSyncOptions {
    * desktop (a `…\My Drive\…` path) can be joined at the same folder in Drive (my-drive-path.ts).
    */
   findInRoot?(name: string): Promise<DriveFile[]>
+  /**
+   * Advanced sync: the place for an invite's place or a personal-space entry's folder (given as
+   * its path from the root that holds the space), when shares are reached through an R2 bucket
+   * instead of Drive. Null when that place can't be reached from here.
+   */
+  placeFor?(written: string, belowRoot: boolean): Promise<string | null>
   /** The account's one poller; `kick()` asks Drive what changed right after a push. */
   poller: { kick(): void }
   now(): number
@@ -181,11 +187,13 @@ export class PhoneSync {
     const place =
       written === undefined
         ? null
-        : findInRoot
-          ? await drivePlaceFor(written, findInRoot)
-          : isDriveLocation(written)
-            ? written
-            : null
+        : this.options.placeFor
+          ? await this.options.placeFor(written, false)
+          : findInRoot
+            ? await drivePlaceFor(written, findInRoot)
+            : isDriveLocation(written)
+              ? written
+              : null
     if (place === null) {
       throw new PhoneJoinError('not-a-drive-invite')
     }
@@ -219,6 +227,23 @@ export class PhoneSync {
     if (!running) return
     void this.enqueue(running, () => this.pushStep(running))
     await this.enqueue(running, () => this.pullStep(running))
+  }
+
+  /** Pushes and then pulls every running share, the personal one too (Sync now); resolves when all are done. */
+  async syncAll(): Promise<void> {
+    const steps: Promise<void>[] = []
+    for (const running of this.running.values()) {
+      void this.enqueue(running, () => this.pushStep(running))
+      steps.push(this.enqueue(running, () => this.pullStep(running)))
+    }
+    await Promise.allSettled(steps)
+  }
+
+  /** When the last pull of any share finished, as `sync_shares` records it; null before the first. */
+  lastSyncedAt(): number | null {
+    const row = this.db.prepare('SELECT MAX(last_synced_at) AS at FROM sync_shares').get() as
+      { at: number | null } | undefined
+    return row?.at ?? null
   }
 
   /** Opens every joined share: watches its Drive folder and reads what is new. Call when the app comes to the foreground. */
@@ -417,6 +442,11 @@ export class PhoneSync {
     folderRelativeToRoot: string | null
   }): Promise<string | null> {
     if (entry.location) return entry.location
+    if (this.options.placeFor) {
+      return entry.folderRelativeToRoot
+        ? this.options.placeFor(entry.folderRelativeToRoot, true)
+        : null
+    }
     const findInRoot = this.options.findInRoot
     if (!entry.folderRelativeToRoot || !findInRoot) return null
     const segments = entry.folderRelativeToRoot.split('/').filter((part) => part !== '')

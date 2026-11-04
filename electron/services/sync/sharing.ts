@@ -38,6 +38,7 @@ import {
 import { SyncTransportError } from './transport-paths'
 import type { SyncTransport } from './folder-transport'
 import { driveLocation, isDriveLocation, parseDriveLocation } from './drive-transport'
+import { isR2Location, parseR2Location, r2Location } from './r2-transport'
 import { type SnapshotProject } from './snapshot-file'
 import { loadSnapshot, readSnapshotFile, snapshotsNewestFirst, writeSnapshot } from './snapshots'
 import { newerGeneration, refreshKeys, unreadRoster } from './rotation'
@@ -107,6 +108,10 @@ export function joinPlace(place: string, child: string): string {
     return driveLocation(folderId, subPath === '' ? child : `${subPath}/${child}`)
   }
   if (isServerLocation(place)) throw new SharingError('not-an-invite')
+  if (isR2Location(place)) {
+    const inside = parseR2Location(place)
+    return r2Location(inside === '' ? child : `${inside}/${child}`)
+  }
   return path.join(place, child)
 }
 
@@ -115,6 +120,9 @@ export function parentPlace(place: string): string {
   if (isDriveLocation(place)) {
     const { folderId, subPath } = parseDriveLocation(place)
     return driveLocation(folderId, subPath.split('/').filter(Boolean).slice(0, -1).join('/'))
+  }
+  if (isR2Location(place)) {
+    return r2Location(parseR2Location(place).split('/').filter(Boolean).slice(0, -1).join('/'))
   }
   return path.dirname(place)
 }

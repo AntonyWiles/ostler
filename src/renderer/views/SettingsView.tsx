@@ -23,6 +23,7 @@ import { AiSection } from './settings/sections/AiSection'
 import { AgentsSection } from './settings/sections/AgentsSection'
 import { ConnectionsSection } from './settings/sections/ConnectionsSection'
 import { DevicesSection } from './settings/sections/DevicesSection'
+import { AdvancedSyncGroup } from './settings/sections/AdvancedSyncGroup'
 import { DataSection } from './settings/sections/DataSection'
 import { AdvancedSection } from './settings/sections/AdvancedSection'
 import { GitSection } from './settings/sections/GitSection'
@@ -39,7 +40,12 @@ const SECTION_CONTENT: Record<SettingsSectionId, () => ReactNode> = {
   ai: () => <AiSection />,
   agents: () => <AgentsSection />,
   connections: () => <ConnectionsSection />,
-  devices: () => <DevicesSection />,
+  devices: () => (
+    <>
+      <DevicesSection />
+      <AdvancedSyncGroup />
+    </>
+  ),
   data: () => <DataSection />,
   advanced: () => <AdvancedSection />,
   git: () => <GitSection />,

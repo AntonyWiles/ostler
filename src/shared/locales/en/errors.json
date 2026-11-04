@@ -1082,5 +1082,20 @@
     "notFound": "That sign-off is no longer here.",
     "noteTooLong": "That note is too long.",
     "notYoursToCancel": "Only the person who asked, or an Owner, can take back a sign-off request."
+  },
+  "r2Sync": {
+    "notSetUp": "Advanced sync isn’t set up yet. Fill in your bucket’s details first.",
+    "badConfig": "Those bucket details don’t look right. Check the account ID (32 letters and digits), the bucket name and both keys.",
+    "cannotSeal": "Windows couldn’t protect the secret key on this PC, so it wasn’t saved.",
+    "noSpaceFolder": "There’s no personal space folder on this PC to copy. Set up your devices first (Settings › Devices), in a folder.",
+    "notACode": "That isn’t an Ostler setup code. Copy the whole code, starting with ostler-r2:.",
+    "wrongPassphrase": "That passphrase doesn’t open this setup code. Check it and try again.",
+    "call": {
+      "bad-config": "The bucket wasn’t found. Check the account ID and the bucket name.",
+      "signIn": "The bucket refused the keys. Check the access key ID and the secret, and that the token can read and write this bucket.",
+      "missing": "A file in the bucket has gone missing.",
+      "unreachable": "Couldn’t reach the bucket. Check your connection and try again.",
+      "bad-answer": "The bucket gave an answer Ostler didn’t understand."
+    }
   }
 }

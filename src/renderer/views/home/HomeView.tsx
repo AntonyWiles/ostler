@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import type {
   HomeChecklistItem,
@@ -79,7 +79,7 @@ import { ProgressCard } from './ProgressCard'
 import { HomeCountdowns } from './HomeCountdowns'
 import { WaitingForSignOff } from './WaitingForSignOff'
 import { useShowProgress } from '../../hooks/useShowProgress'
-import { BRIEFING_SPANS, openHome, writeLastLooked, type BriefingSpan } from './last-looked'
+import { BRIEFING_SPANS, leaveHome, openHome, type BriefingSpan } from './last-looked'
 import { NeedsYouList, type NeedsYouItem } from '../../components/NeedsYouList'
 import { PlanDialog } from '../planning/PlanDialog'
 import { QuickAddForm } from '../../components/quick-add/QuickAddForm'
@@ -139,8 +139,10 @@ export function HomeView() {
     const since = openHome(Date.now())
     return since === null ? null : { since, away: true }
   })
+  // Leaving Home counts as having looked, so the next card starts from here.
+  useEffect(() => () => leaveHome(Date.now()), [])
   const dismissBriefing = () => {
-    writeLastLooked(Date.now())
+    leaveHome(Date.now(), true)
     setBriefing(null)
   }
   const showWhatChanged = (hours: BriefingSpan) =>

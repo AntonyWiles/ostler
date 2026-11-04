@@ -60,21 +60,21 @@
   "pairing": {
     "open": "Set up from my other device",
     "title": "Set up from my other device",
-    "signInFirst": "Sign in with Google in Settings first.",
-    "intro": "Link this phone to your other {{brand}} devices through your Google Drive.",
+    "signInFirst": "Sign in with Google, or set up Advanced sync, in Settings first.",
+    "intro": "Link this phone to your other {{brand}} devices through your Google Drive or your own R2 bucket.",
     "step1": "1. On your PC, open {{brand}} and go to Settings › Devices.",
     "step2": "2. Tap Start here and wait for a code to appear.",
     "step3": "3. On the PC, allow the device that shows the same code.",
     "start": "Start",
-    "looking": "Looking for {{brand}}'s folder in your Google Drive…",
+    "looking": "Looking for {{brand}}'s folder…",
     "codeLabel": "Allow the device that shows this code:",
-    "noCodeYet": "Waiting for your PC to put its details in Google Drive…",
+    "noCodeYet": "Waiting for your PC to put its details in the shared folder…",
     "waiting": "Waiting for you to allow this phone on your PC…",
     "cancel": "Cancel",
     "tryAgain": "Try again",
     "paired": "This phone is now one of your devices. Your projects will arrive here by themselves.",
     "errors": {
-      "noSpace": "No personal space was found in your Google Drive. On your PC, turn on Keep my devices in step in Settings › Devices, using Google Drive, then try again.",
+      "noSpace": "No personal space was found. On your PC, turn on Keep my devices in step in Settings › Devices (and, for an R2 bucket, Sync now under Advanced sync), then try again.",
       "badKeys": "The details from your PC did not match. On your PC, allow this phone again, then try again.",
       "failed": "Pairing did not work. Check your connection and try again."
     }
@@ -479,5 +479,29 @@
     "hint": "It goes to the project's To triage, to sort out later here or on your PC.",
     "close": "Close",
     "done": "“{{title}}” added to {{project}}'s To triage."
+  },
+  "advancedSync": {
+    "heading": "Advanced sync (Cloudflare R2)",
+    "intro": "Sync through your own Cloudflare R2 bucket instead of Google Drive. On your PC, open Settings › Devices › Advanced sync, set up the bucket and make a setup code. Paste it here with its passphrase.",
+    "code": "Setup code (ostler-r2:…)",
+    "passphrase": "Passphrase",
+    "import": "Use this bucket",
+    "imported": "Bucket set up. Now use Set up from my other device above, unless this phone is already one of your devices.",
+    "notACode": "That isn't a setup code. Copy the whole code, starting with ostler-r2:.",
+    "wrongPassphrase": "That passphrase doesn't open this code.",
+    "bucket": "Bucket: {{bucket}}",
+    "lastSynced": "Last synced {{time}}",
+    "notSyncedYet": "Not synced yet",
+    "syncNow": "Sync now",
+    "synced": "Up to date.",
+    "syncFailed": "Couldn't reach the bucket. Check your connection and try again.",
+    "checkEvery": "Look for changes from your other devices:",
+    "onlySyncNow": "Only on Sync now",
+    "minutes_one": "Every minute",
+    "minutes_other": "Every {{count}} min",
+    "costNote": "While the app is open. Your own changes go up a few seconds after you make them. R2's free tier allows plenty for one person; a longer interval uses less.",
+    "shareCode": "Share a setup code",
+    "passphraseIs": "The code is in the share sheet. Its passphrase, to type or send separately:",
+    "remove": "Stop using this bucket"
   }
 }

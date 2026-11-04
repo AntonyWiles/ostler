@@ -674,6 +674,13 @@ export const API_CHANNELS = {
   answerPersonLink: IPC_CHANNELS.ANSWER_PERSON_LINK,
   // --- The personal space: this person's devices ---
   getPersonalSpace: IPC_CHANNELS.GET_PERSONAL_SPACE,
+  getR2Sync: IPC_CHANNELS.GET_R2_SYNC,
+  setR2Sync: IPC_CHANNELS.SET_R2_SYNC,
+  testR2Sync: IPC_CHANNELS.TEST_R2_SYNC,
+  clearR2Sync: IPC_CHANNELS.CLEAR_R2_SYNC,
+  r2SyncNow: IPC_CHANNELS.R2_SYNC_NOW,
+  exportR2Setup: IPC_CHANNELS.EXPORT_R2_SETUP,
+  importR2Setup: IPC_CHANNELS.IMPORT_R2_SETUP,
   createPersonalSpace: IPC_CHANNELS.CREATE_PERSONAL_SPACE,
   requestPairing: IPC_CHANNELS.REQUEST_PAIRING,
   choosePersonalSpace: IPC_CHANNELS.CHOOSE_PERSONAL_SPACE,

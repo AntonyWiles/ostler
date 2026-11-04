@@ -60,3 +60,54 @@ export interface PersonalSpaceState {
   /** Google Drive sync is ready (a connected account can use Drive), so the space can be kept there. */
   driveReady: boolean
 }
+
+/**
+ * Advanced sync: this PC copies its personal space folder to and from a Cloudflare R2 bucket (or
+ * another S3-compatible store), so a phone can sync through the bucket. The secret key never
+ * comes back to the renderer.
+ */
+export interface R2SyncState {
+  /** A bucket is set up. */
+  configured: boolean
+  /** Copying is on. */
+  enabled: boolean
+  accountId: string
+  bucket: string
+  prefix: string
+  endpoint: string
+  accessKeyId: string
+  hasSecret: boolean
+  /** How often to look for other devices' changes, in minutes; 0 = only on Sync now. */
+  checkMinutes: number
+  /** Send this PC's changes soon after they happen (at most every 30 s), not only at the check. */
+  uploadSoon: boolean
+  /** The personal space folder that is copied; null when there is none on this PC (or it is in Drive, not a folder). */
+  spaceFolder: string | null
+  /** Share folders that are not below the space's parent, so they can't be copied. */
+  skippedFolders: number
+  running: boolean
+  lastRunAt: number | null
+  /** The last run's error, already in the person's language; null after a good run. */
+  lastError: string | null
+  lastUploaded: number
+  lastDownloaded: number
+}
+
+export interface SetR2SyncInput {
+  accountId: string
+  bucket: string
+  prefix?: string
+  endpoint?: string
+  accessKeyId: string
+  /** Blank keeps the saved one. */
+  secretAccessKey?: string
+  checkMinutes: number
+  uploadSoon: boolean
+  enabled: boolean
+}
+
+/** A sealed setup code and the passphrase that opens it, shown once. */
+export interface R2SetupCodeView {
+  code: string
+  passphrase: string
+}

@@ -210,6 +210,10 @@ export const SETTINGS_GROUPS = [
     label: () => t('settings:devicesSection.yourPcs'),
     palette: false
   }),
+  group('advanced-sync', 'devices', {
+    label: () => t('settings:advancedSync.title'),
+    keywords: () => ['R2', 'Cloudflare', 'S3', 'bucket', 'sync', 'phone']
+  }),
   // Data
   group('storage', 'data', {
     label: () => t('settings:dataSection.storage'),

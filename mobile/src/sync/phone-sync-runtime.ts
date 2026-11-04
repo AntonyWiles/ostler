@@ -2,6 +2,17 @@ import { Platform } from 'react-native'
 import { DriveChangesPoller } from '../../../electron/services/sync/drive-changes'
 import { DriveTransport, pollerSubscription } from '../../../electron/services/sync/drive-transport'
 import { PERSONAL_PROJECT_ID } from '../../../electron/services/sync/synced-tables'
+import {
+  isR2Location,
+  R2Changes,
+  R2Client,
+  r2Location,
+  R2Transport
+} from '../../../electron/services/sync/r2-transport'
+import type { R2Setup } from '../../../electron/services/sync/r2-setup-code'
+import { PERSONAL_FOLDER } from '../../../electron/services/sync/pairing'
+import { joinPlace, readShareFile } from '../../../electron/services/sync/sharing'
+import { SyncTransportError } from '../../../electron/services/sync/transport-paths'
 import { BRAND } from '../../../src/shared/brand'
 import type { OstlerDatabase } from '../db/database'
 import { createPhoneDriveClient } from '../google/drive'
@@ -19,6 +30,14 @@ function deviceName(): string {
 export interface PhoneDevices {
   sync: PhoneSync
   pairing: PhonePairing
+  /** Advanced sync: asks the bucket what changed now (Sync now); null without a bucket. */
+  r2Changes: R2Changes | null
+}
+
+/** Where the phone's shares are kept: Google Drive (signed in), an R2 bucket, or both. */
+export interface PhoneSyncPlaces {
+  drive: boolean
+  r2: R2Setup | null
 }
 
 /**
@@ -28,17 +47,46 @@ export interface PhoneDevices {
  */
 export function createPhoneSync(
   db: OstlerDatabase,
-  onChanged: (projectId: string) => void
+  onChanged: (projectId: string) => void,
+  places: PhoneSyncPlaces = { drive: true, r2: null }
 ): PhoneDevices {
   const client = createPhoneDriveClient()
   const poller = new DriveChangesPoller(client)
-  const openTransport = (place: string) =>
-    new DriveTransport(client, place, { subscribe: pollerSubscription(poller) })
+  const r2 = places.r2
+  const bucket = r2 ? new R2Client(r2.config, { fetch: (url, init) => fetch(url, init) }) : null
+  const r2Changes = bucket
+    ? new R2Changes(bucket, {
+        intervalMs: r2 && r2.checkMinutes > 0 ? r2.checkMinutes * 60_000 : null,
+        log: (message, error) =>
+          console.log(`OSTLER11 ${message}`, error instanceof Error ? error.message : '')
+      })
+    : null
+  const openTransport = (place: string) => {
+    if (isR2Location(place)) {
+      if (!bucket) throw new SyncTransportError('bad-path')
+      return new R2Transport(bucket, place, r2Changes)
+    }
+    return new DriveTransport(client, place, { subscribe: pollerSubscription(poller) })
+  }
+  // With a bucket, a share kept in a folder on the PC is reached at the same path in the bucket.
+  const placeFor = r2
+    ? async (written: string, belowRoot: boolean): Promise<string | null> => {
+        if (isR2Location(written)) return written
+        if (!belowRoot) return null
+        const segments = written.split('/').filter((part) => part !== '')
+        try {
+          return r2Location(segments.join('/'))
+        } catch {
+          return null
+        }
+      }
+    : undefined
   const sync = new PhoneSync({
     // The adapter has the calls the engine's core files make (report 07).
     db: db as unknown as SyncDatabase,
     openTransport,
-    findInRoot: (name) => client.findInRoot(name),
+    ...(places.drive && !r2 ? { findInRoot: (name: string) => client.findInRoot(name) } : {}),
+    ...(placeFor ? { placeFor } : {}),
     poller,
     now: Date.now,
     deviceName: deviceName(),
@@ -55,6 +103,19 @@ export function createPhoneSync(
   const pairing = new PhonePairing({
     db: db as unknown as SyncDatabase,
     client,
+    ...(r2
+      ? {
+          findSpace: async () => {
+            const space = r2Location(r2.space)
+            try {
+              await readShareFile(openTransport(joinPlace(space, PERSONAL_FOLDER)))
+              return space
+            } catch {
+              return null
+            }
+          }
+        }
+      : {}),
     openTransport,
     deviceName: deviceName(),
     // The personal share is joined: run it, so its projects arrive.
@@ -68,5 +129,5 @@ export function createPhoneSync(
         error instanceof Error ? error.message : typeof error === 'string' ? error : ''
       )
   })
-  return { sync, pairing }
+  return { sync, pairing, r2Changes }
 }

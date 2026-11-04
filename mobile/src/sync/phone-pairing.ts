@@ -41,8 +41,10 @@ export interface PairingState {
 
 export interface PhonePairingOptions {
   db: SyncDatabase
-  /** Only the Drive call that finds a folder in My Drive's root. */
-  client: Pick<DriveClient, 'findInRoot'>
+  /** Only the Drive call that finds a folder in My Drive's root (when `findSpace` isn't given). */
+  client?: Pick<DriveClient, 'findInRoot'>
+  /** Advanced sync: finds the personal space somewhere else (an R2 bucket); null when it isn't there. */
+  findSpace?(): Promise<string | null>
   /** Opens a Drive place (`gdrive:<folderId>/…`) as a transport. */
   openTransport(place: string): SyncTransport
   /** This phone's name as the PC lists it in the allow notice. */
@@ -152,6 +154,8 @@ export class PhonePairing {
 
   /** Ostler's folder in the root of My Drive (the oldest if there are several), when it holds a personal space. */
   private async findSpace(): Promise<string | null> {
+    if (this.options.findSpace) return this.options.findSpace()
+    if (!this.options.client) return null
     const roots = await this.options.client.findInRoot(BRAND.name)
     const oldest = [...roots].sort((a, b) => a.createdTime.localeCompare(b.createdTime))[0]
     if (!oldest) return null

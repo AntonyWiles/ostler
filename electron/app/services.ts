@@ -92,6 +92,9 @@ import { SyncService } from '../services/sync/sync-service'
 import { registerJoinedProject } from '../services/sync/joined-project'
 import { syncedRoots } from '../services/sync/share-folder-finder'
 import { SyncServerSettings } from '../services/sync/sync-server-settings'
+import { R2Bridge } from '../services/sync/r2-bridge'
+import { isDriveLocation as isDrivePlace } from '../services/sync/drive-transport'
+import { isR2Location } from '../services/sync/r2-transport'
 import { DriveSyncSettings } from '../services/sync/drive-sync-settings'
 import { isDriveLocation } from '../services/sync/drive-transport'
 import { readPolicy, systemPolicySources } from '../services/policy'
@@ -287,6 +290,7 @@ let libraryService!: LibraryService
 let syncService: SyncService | null = null
 let syncServerSettings: SyncServerSettings | null = null
 let driveSyncSettings: DriveSyncSettings | null = null
+let r2Bridge: R2Bridge | null = null
 /** The organisation's policy (integrations phase 7), read once at start. */
 let orgPolicy: OrgPolicy = EMPTY_POLICY
 let accountsService: ConnectedAccountsService | null = null
@@ -923,6 +927,7 @@ async function stopServices(): Promise<void> {
   libraryTextPassTimer = null
   await libraryTextPass?.stop()
   // Before the database closes: a push or pull in hand finishes first.
+  r2Bridge?.stop()
   await syncService?.stop()
   fileWatcher.stopAll()
   gitReader.stopAll()
@@ -1261,6 +1266,7 @@ function registerHandlers(): void {
     registerDevicesHandlers({
       syncService,
       driveSync: driveSyncSettings,
+      r2Bridge: () => r2Bridge,
       dataDir,
       getMainWindow: dialogParent
     })
@@ -2198,6 +2204,8 @@ export async function createAppServices(dir: string): Promise<AppServices> {
         null,
         { kind: 'devices' }
       ),
+    // A development build lets the person's own test phones in without asking (OSTLER_ALLOW_DEVICES=0 turns it off).
+    allowDevicesAutomatically: !app.isPackaged && process.env.OSTLER_ALLOW_DEVICES !== '0',
     // Every project of this PC: each one without a share is shared into the personal space (D17).
     projectIds: () => configStore.getProjects().map((project) => project.id),
     // A project joined from the personal space is listed here as the join by invite lists it.
@@ -2303,6 +2311,24 @@ export async function createAppServices(dir: string): Promise<AppServices> {
     logError: (message, error) => console.error(message, error)
   })
   syncService.start()
+  // Advanced sync: the personal space folder copied to and from an R2 bucket, for the phone.
+  const syncForR2 = syncService
+  r2Bridge = new R2Bridge({
+    dataDir,
+    seal: encryptApiKey,
+    open: decryptApiKey,
+    fetch: (url, init) => net.fetch(url, init),
+    spaceFolder: () => {
+      const space = syncForR2.personalSpaceFolder()
+      return space && !isDrivePlace(space) && !isR2Location(space) && !/^https?:/.test(space)
+        ? space
+        : null
+    },
+    shareFolders: () => syncForR2.shareFolders(),
+    log: (message, error) =>
+      console.error(message, error instanceof Error ? error.message : (error ?? ''))
+  })
+  r2Bridge.start()
   libraryTextPass = new LibraryTextPass({
     library: libraryService,
     isBusy: () => powerMonitor.getSystemIdleTime() < LIBRARY_TEXT_PASS_IDLE_SECONDS,

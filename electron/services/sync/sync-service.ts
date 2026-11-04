@@ -160,6 +160,8 @@ export interface SyncServiceOptions {
   onTaskChanged?(event: ChangedTaskByOther): void
   /** A device asked to join this PC's personal share: the notice says its name and code. */
   onPairingRequest?(request: PendingRequest): void
+  /** Lets every device that asks in without the person allowing it (development builds). */
+  allowDevicesAutomatically?: boolean
   /** Every project this PC has, by id: each one that has no share yet is shared into the personal space (D17). */
   projectIds?(): string[]
   /** A joined share's project is made in the config store (registerJoinedProject), by the caller. */
@@ -767,6 +769,15 @@ export class SyncService {
   // ─── Personal space (prompt 09) ─────────────────────────────────────────
 
   /** The space folder (the Ostler folder) of this PC's personal share; null when it has none. */
+  /** Every project share's place on this PC (folders, Drive and server places alike). */
+  shareFolders(): string[] {
+    return (
+      this.db.prepare("SELECT folder FROM sync_shares WHERE kind = 'project'").all() as {
+        folder: string
+      }[]
+    ).map((row) => row.folder)
+  }
+
   personalSpaceFolder(): string | null {
     const row = this.shareRow(PERSONAL_PROJECT_ID)
     return row ? parentPlace(row.folder) : null
@@ -879,6 +890,13 @@ export class SyncService {
           for (const request of requests) {
             if (this.announcedRequests.has(request.deviceId)) continue
             this.announcedRequests.add(request.deviceId)
+            if (this.options.allowDevicesAutomatically) {
+              void allowDevice(this.db, space, request.deviceId, this.opener).catch((error) => {
+                this.announcedRequests.delete(request.deviceId)
+                this.options.logError('A device could not be let in:', error)
+              })
+              continue
+            }
             this.options.onPairingRequest?.(request)
           }
         })

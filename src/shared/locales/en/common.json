@@ -2,6 +2,12 @@
   "time": {
     "justNow": "just now"
   },
+  "list": {
+    "and": "and",
+    "and_comment": "Before the last item of a list: “a, b and c”. Used only where the system can't format lists.",
+    "or": "or",
+    "or_comment": "Before the last item of a list: “a, b or c”."
+  },
   "date": {
     "today": "Today",
     "tomorrow": "Tomorrow",

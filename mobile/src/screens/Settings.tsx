@@ -7,6 +7,7 @@ import { Chip, editStyles } from './EditBits'
 import { formStyles } from './formStyles'
 import { Icon } from './Icon'
 import { TopBar } from './TopBar'
+import { AdvancedSync, type AdvancedSyncProps } from './AdvancedSync'
 import { currentAccount, signIn, signOut, type SignInResult } from '../google/account'
 import { SignInRequiredError } from '../google/drive-request'
 import { listOstlerFolder } from '../google/drive'
@@ -26,6 +27,8 @@ interface Props {
   onJoin: () => void
   /** Opens Set up from my other device. */
   onPairing: () => void
+  /** Advanced sync through an R2 bucket. */
+  r2: AdvancedSyncProps
 }
 
 /**
@@ -33,7 +36,7 @@ interface Props {
  * Drive access is proved by listing Ostler's folders), getting projects onto the phone, the theme
  * and about.
  */
-export function Settings({ check, onBack, onJoin, onPairing }: Props) {
+export function Settings({ check, onBack, onJoin, onPairing, r2 }: Props) {
   const theme = useTheme()
   const themeSetting = useThemeSetting()
   const s = formStyles(theme)
@@ -179,6 +182,11 @@ export function Settings({ check, onBack, onJoin, onPairing }: Props) {
             onPress={onJoin}
           />
         </View>
+
+        <Text accessibilityRole="header" style={s.heading}>
+          {t('mobile:advancedSync.heading')}
+        </Text>
+        <AdvancedSync theme={theme} {...r2} />
 
         <Text accessibilityRole="header" style={s.heading}>
           {t('mobile:settings.theme')}
