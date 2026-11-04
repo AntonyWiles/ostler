@@ -2784,6 +2784,7 @@
     "noPicture": "Não há nenhuma imagem na área de transferência",
     "preview": "Pré-visualização",
     "noPreview": "Este arquivo não tem pré-visualização.",
+    "noTranscript": "Este memorando de voz não tem transcrição.",
     "previewTitle": "Pré-visualizar {{title}}",
     "showPictures": "Mostrar imagens",
     "hidePictures": "Ocultar imagens",

@@ -309,7 +309,8 @@
       "choice-too-long": "这个选项太长了 (最多 300 个字符)。",
       "note-too-long": "备注太长了 (最多 2000 个字符)。",
       "already-resolved": "这个阻塞项已经解决了。",
-      "not-waiting": "这个任务已有进展, 不再等你处理。"
+      "not-waiting": "这个任务已有进展, 不再等你处理。",
+      "bad-recording": "无法读取录音。请重新录制。"
     },
     "previousMonth": "上个月",
     "nextMonth": "下个月",
@@ -479,5 +480,32 @@
     "hint": "它会进入项目的“待分拣”，稍后可在这里或电脑上整理。",
     "close": "关闭",
     "done": "已将“{{title}}”加入 {{project}} 的待分拣。"
+  },
+  "voiceMemo": {
+    "title": "语音备忘录",
+    "record": "录制语音备忘录",
+    "transcribe": "转写",
+    "onDevice": "文字在这部手机上转写。",
+    "online": "文字由 Google 语音服务转写，因此声音会发送给 Google。",
+    "stop": "停止",
+    "listening": "正在听…",
+    "recorded": "已录制 {{duration}}。",
+    "transcript": "转写文字",
+    "noWords": "没有识别到文字。你可以在这里输入。",
+    "attachWithTranscript": "连同转写文字附加",
+    "attachAudioOnly": "仅音频",
+    "attach": "附加到任务",
+    "discard": "丢弃",
+    "discardTitle": "丢弃这段录音？",
+    "discardBody": "录音将被删除。",
+    "saving": "正在保存…",
+    "play": "播放",
+    "pause": "暂停",
+    "playOnPc": "在另一台设备上录制。请在电脑上播放。",
+    "memoTitle": "语音备忘录，{{when}}",
+    "noMicrophone": "{{brand}} 需要麦克风来录音。请在手机设置中允许。",
+    "recordFailed": "无法录音：{{message}}",
+    "transcribeFailed": "无法转写文字：{{message}}。声音仍在录制。",
+    "nothingRecorded": "没有录到任何内容。"
   }
 }

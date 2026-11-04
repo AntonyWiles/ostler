@@ -309,7 +309,8 @@
       "choice-too-long": "That option is too long (300 characters at most).",
       "note-too-long": "The note is too long (2000 characters at most).",
       "already-resolved": "This blocker was already resolved.",
-      "not-waiting": "This task has moved on since: it is no longer waiting on you."
+      "not-waiting": "This task has moved on since: it is no longer waiting on you.",
+      "bad-recording": "The recording could not be read. Try recording again."
     },
     "previousMonth": "Previous month",
     "nextMonth": "Next month",
@@ -503,5 +504,32 @@
     "shareCode": "Share a setup code",
     "passphraseIs": "The code is in the share sheet. Its passphrase, to type or send separately:",
     "remove": "Stop using this bucket"
+  },
+  "voiceMemo": {
+    "title": "Voice memos",
+    "record": "Record voice memo",
+    "transcribe": "Transcribe",
+    "onDevice": "Words are written out on this phone.",
+    "online": "Words are written out by Google's speech service, so the sound is sent to Google.",
+    "stop": "Stop",
+    "listening": "Listening…",
+    "recorded": "Recorded {{duration}}.",
+    "transcript": "Transcript",
+    "noWords": "No words were picked up. You can type them here.",
+    "attachWithTranscript": "Attach with transcript",
+    "attachAudioOnly": "Audio only",
+    "attach": "Attach to task",
+    "discard": "Discard",
+    "discardTitle": "Discard this recording?",
+    "discardBody": "The recording will be deleted.",
+    "saving": "Saving…",
+    "play": "Play",
+    "pause": "Pause",
+    "playOnPc": "Recorded on another device. Play it on the PC.",
+    "memoTitle": "Voice memo, {{when}}",
+    "noMicrophone": "{{brand}} needs the microphone to record. Allow it in the phone's settings.",
+    "recordFailed": "Could not record: {{message}}",
+    "transcribeFailed": "Could not write out the words: {{message}}. The sound is still recorded.",
+    "nothingRecorded": "Nothing was recorded."
   }
 }

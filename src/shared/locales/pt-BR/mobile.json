@@ -309,7 +309,8 @@
       "choice-too-long": "Essa opção é longa demais (no máximo 300 caracteres).",
       "note-too-long": "A nota é longa demais (no máximo 2000 caracteres).",
       "already-resolved": "Este bloqueio já foi resolvido.",
-      "not-waiting": "Esta tarefa já mudou: não está mais esperando por você."
+      "not-waiting": "Esta tarefa já mudou: não está mais esperando por você.",
+      "bad-recording": "Não foi possível ler a gravação. Grave novamente."
     },
     "previousMonth": "Mês anterior",
     "nextMonth": "Próximo mês",
@@ -479,5 +480,32 @@
     "hint": "Vai para Para triagem do projeto, para organizar depois aqui ou no PC.",
     "close": "Fechar",
     "done": "“{{title}}” adicionado a Para triagem de {{project}}."
+  },
+  "voiceMemo": {
+    "title": "Memorandos de voz",
+    "record": "Gravar memorando de voz",
+    "transcribe": "Transcrever",
+    "onDevice": "O texto é escrito neste telefone.",
+    "online": "O texto é escrito pelo serviço de voz do Google, então o áudio é enviado ao Google.",
+    "stop": "Parar",
+    "listening": "Ouvindo…",
+    "recorded": "Gravado {{duration}}.",
+    "transcript": "Transcrição",
+    "noWords": "Nenhuma palavra foi captada. Você pode digitá-las aqui.",
+    "attachWithTranscript": "Anexar com transcrição",
+    "attachAudioOnly": "Só áudio",
+    "attach": "Anexar à tarefa",
+    "discard": "Descartar",
+    "discardTitle": "Descartar esta gravação?",
+    "discardBody": "A gravação será excluída.",
+    "saving": "Salvando…",
+    "play": "Reproduzir",
+    "pause": "Pausar",
+    "playOnPc": "Gravado em outro dispositivo. Ouça no PC.",
+    "memoTitle": "Memorando de voz, {{when}}",
+    "noMicrophone": "O {{brand}} precisa do microfone para gravar. Permita nas configurações do telefone.",
+    "recordFailed": "Não foi possível gravar: {{message}}",
+    "transcribeFailed": "Não foi possível escrever o texto: {{message}}. O áudio continua sendo gravado.",
+    "nothingRecorded": "Nada foi gravado."
   }
 }

@@ -16,6 +16,7 @@ import { SyncTransportError } from '../../../electron/services/sync/transport-pa
 import { BRAND } from '../../../src/shared/brand'
 import type { OstlerDatabase } from '../db/database'
 import { createPhoneDriveClient } from '../google/drive'
+import { phoneLibraryFiles } from '../data/voice-memo-files'
 import { PhoneSync, type SyncDatabase } from './phone-sync'
 import { PhonePairing } from './phone-pairing'
 import { rememberProjectColor, rememberProjectName } from './project-names'
@@ -88,6 +89,8 @@ export function createPhoneSync(
     ...(places.drive && !r2 ? { findInRoot: (name: string) => client.findInRoot(name) } : {}),
     ...(placeFor ? { placeFor } : {}),
     poller,
+    // Voice memos recorded here go to the project's share; the PC's files are not fetched.
+    library: phoneLibraryFiles,
     now: Date.now,
     deviceName: deviceName(),
     // Only the message of an error is logged, never a request or a key.

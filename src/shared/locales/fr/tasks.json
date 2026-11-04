@@ -2785,6 +2785,7 @@
     "noPicture": "Le presse-papiers ne contient pas d’image",
     "preview": "Aperçu",
     "noPreview": "Ce fichier n’a pas d’aperçu.",
+    "noTranscript": "Ce mémo vocal n’a pas de transcription.",
     "previewTitle": "Aperçu de {{title}}",
     "showPictures": "Afficher les images",
     "hidePictures": "Masquer les images",

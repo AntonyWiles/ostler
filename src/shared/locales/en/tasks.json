@@ -2659,6 +2659,7 @@
     "noPicture": "There's no picture on the clipboard",
     "preview": "Preview",
     "noPreview": "No preview for this file.",
+    "noTranscript": "This voice memo has no transcript.",
     "previewTitle": "Preview {{title}}",
     "showPictures": "Show pictures",
     "hidePictures": "Hide pictures",

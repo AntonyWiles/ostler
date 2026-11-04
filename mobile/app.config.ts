@@ -109,7 +109,21 @@ const config: ExpoConfig = {
         dark: { image: './assets/splash-icon.png', backgroundColor: '#111318' }
       }
     ],
-    ['@react-native-google-signin/google-signin', { iosUrlScheme: IOS_URL_SCHEME }]
+    ['@react-native-google-signin/google-signin', { iosUrlScheme: IOS_URL_SCHEME }],
+    // Voice memos on tasks: recording, and writing out what was said as it is said.
+    ['expo-audio', { microphonePermission: 'Record voice memos for your tasks.' }],
+    [
+      'expo-speech-recognition',
+      {
+        microphonePermission: 'Record voice memos for your tasks.',
+        speechRecognitionPermission: 'Write out what you say in a voice memo.',
+        androidSpeechServicePackages: [
+          'com.google.android.googlequicksearchbox',
+          'com.google.android.as',
+          'com.google.android.tts'
+        ]
+      }
+    ]
   ]
 }
 

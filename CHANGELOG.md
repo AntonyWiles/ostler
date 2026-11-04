@@ -9,6 +9,12 @@ Help › What's new, and the Unreleased section until a version has its own.
 
 ### Added
 
+- **Voice memos on tasks, from the phone.** A task's screen in the Android app records a voice
+  memo, and can write out the words as you speak (on the phone when its speech language is
+  installed, otherwise through Google's speech service, as the screen says). Check the transcript,
+  then attach the memo with it or as sound only. The memo is kept in the project's Library,
+  attached to the task with a comment that links to it, and reaches the PC with the next sync,
+  where its preview plays it and shows the transcript.
 - **Advanced sync through your own Cloudflare R2 bucket.** Settings › Devices › Advanced sync
   copies your personal space to an R2 bucket (or another S3-compatible store), and the Android app
   can sync through that bucket instead of Google Drive. Every project in your personal space

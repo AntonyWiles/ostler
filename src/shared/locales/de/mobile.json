@@ -309,7 +309,8 @@
       "choice-too-long": "Diese Option ist zu lang (höchstens 300 Zeichen).",
       "note-too-long": "Die Notiz ist zu lang (höchstens 2000 Zeichen).",
       "already-resolved": "Diese Blockade wurde schon gelöst.",
-      "not-waiting": "Diese Aufgabe ist inzwischen weiter: Sie wartet nicht mehr auf dich."
+      "not-waiting": "Diese Aufgabe ist inzwischen weiter: Sie wartet nicht mehr auf dich.",
+      "bad-recording": "Die Aufnahme konnte nicht gelesen werden. Nehmen Sie erneut auf."
     },
     "previousMonth": "Vorheriger Monat",
     "nextMonth": "Nächster Monat",
@@ -479,5 +480,32 @@
     "hint": "Es landet unter „Zu sortieren“ im Projekt, zum Einordnen später hier oder am PC.",
     "close": "Schließen",
     "done": "„{{title}}“ unter „Zu sortieren“ in {{project}} hinzugefügt."
+  },
+  "voiceMemo": {
+    "title": "Sprachmemos",
+    "record": "Sprachmemo aufnehmen",
+    "transcribe": "Abschreiben",
+    "onDevice": "Der Text wird auf diesem Telefon erstellt.",
+    "online": "Der Text wird vom Sprachdienst von Google erstellt, der Ton wird also an Google gesendet.",
+    "stop": "Stopp",
+    "listening": "Hört zu…",
+    "recorded": "{{duration}} aufgenommen.",
+    "transcript": "Abschrift",
+    "noWords": "Es wurden keine Wörter erkannt. Sie können sie hier eintippen.",
+    "attachWithTranscript": "Mit Abschrift anhängen",
+    "attachAudioOnly": "Nur Ton",
+    "attach": "An Aufgabe anhängen",
+    "discard": "Verwerfen",
+    "discardTitle": "Diese Aufnahme verwerfen?",
+    "discardBody": "Die Aufnahme wird gelöscht.",
+    "saving": "Wird gespeichert…",
+    "play": "Abspielen",
+    "pause": "Pause",
+    "playOnPc": "Auf einem anderen Gerät aufgenommen. Spielen Sie es am PC ab.",
+    "memoTitle": "Sprachmemo, {{when}}",
+    "noMicrophone": "{{brand}} braucht das Mikrofon für Aufnahmen. Erlauben Sie es in den Einstellungen des Telefons.",
+    "recordFailed": "Aufnahme fehlgeschlagen: {{message}}",
+    "transcribeFailed": "Der Text konnte nicht erstellt werden: {{message}}. Der Ton wird weiter aufgenommen.",
+    "nothingRecorded": "Es wurde nichts aufgenommen."
   }
 }

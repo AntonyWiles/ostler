@@ -2785,6 +2785,7 @@
     "noPicture": "Negli appunti non c’è nessuna immagine",
     "preview": "Anteprima",
     "noPreview": "Questo file non ha un’anteprima.",
+    "noTranscript": "Questo memo vocale non ha una trascrizione.",
     "previewTitle": "Anteprima di {{title}}",
     "showPictures": "Mostra immagini",
     "hidePictures": "Nascondi immagini",

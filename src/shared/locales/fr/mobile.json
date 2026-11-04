@@ -309,7 +309,8 @@
       "choice-too-long": "Cette option est trop longue (300 caractères au plus).",
       "note-too-long": "La note est trop longue (2000 caractères au plus).",
       "already-resolved": "Ce blocage a déjà été résolu.",
-      "not-waiting": "Cette tâche a avancé entre-temps : elle ne vous attend plus."
+      "not-waiting": "Cette tâche a avancé entre-temps : elle ne vous attend plus.",
+      "bad-recording": "L’enregistrement n’a pas pu être lu. Réessayez."
     },
     "previousMonth": "Mois précédent",
     "nextMonth": "Mois suivant",
@@ -479,5 +480,32 @@
     "hint": "Il va dans « À trier » du projet, à traiter plus tard ici ou sur votre PC.",
     "close": "Fermer",
     "done": "« {{title}} » ajouté à « À trier » de {{project}}."
+  },
+  "voiceMemo": {
+    "title": "Mémos vocaux",
+    "record": "Enregistrer un mémo vocal",
+    "transcribe": "Transcrire",
+    "onDevice": "Le texte est écrit sur ce téléphone.",
+    "online": "Le texte est écrit par le service vocal de Google : le son est donc envoyé à Google.",
+    "stop": "Arrêter",
+    "listening": "Écoute…",
+    "recorded": "{{duration}} enregistré.",
+    "transcript": "Transcription",
+    "noWords": "Aucun mot n’a été capté. Vous pouvez les saisir ici.",
+    "attachWithTranscript": "Joindre avec la transcription",
+    "attachAudioOnly": "Son seul",
+    "attach": "Joindre à la tâche",
+    "discard": "Abandonner",
+    "discardTitle": "Abandonner cet enregistrement ?",
+    "discardBody": "L’enregistrement sera supprimé.",
+    "saving": "Enregistrement…",
+    "play": "Lire",
+    "pause": "Pause",
+    "playOnPc": "Enregistré sur un autre appareil. Écoutez-le sur le PC.",
+    "memoTitle": "Mémo vocal, {{when}}",
+    "noMicrophone": "{{brand}} a besoin du micro pour enregistrer. Autorisez-le dans les réglages du téléphone.",
+    "recordFailed": "Enregistrement impossible : {{message}}",
+    "transcribeFailed": "Impossible d’écrire le texte : {{message}}. Le son est toujours enregistré.",
+    "nothingRecorded": "Rien n’a été enregistré."
   }
 }

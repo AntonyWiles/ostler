@@ -991,6 +991,16 @@ button.task-library-list__open:hover .task-library-list__title {
   object-fit: contain;
 }
 
+.task-attachment-preview__audio {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+}
+
+.task-attachment-preview__audio audio {
+  width: 100%;
+}
+
 .task-attachment-preview__text {
   max-height: 70vh;
   margin: 0;

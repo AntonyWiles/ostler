@@ -45,6 +45,7 @@ import {
   validateProjectId
 } from './storage-paths'
 import { t } from '@shared/i18n'
+import { AUDIO_MIME } from '@shared/audio-files'
 import { isMarkableImage, isPng, markedUpFileName } from '@shared/markup'
 import { readFileText, renderPdfPage, textSourceFor, type TextSource } from './library-file-text'
 import { OFFICE_MIME, officeKind } from './office-text'
@@ -1565,6 +1566,8 @@ function classifyFile(fileName: string, buffer: Buffer): FileClass {
   if (office) {
     return { kind: 'document', text: office, extension, mimeType: OFFICE_MIME[office] }
   }
+  const audio = AUDIO_MIME[extension]
+  if (audio) return { kind: 'document', text: null, extension, mimeType: audio }
   return {
     kind: 'document',
     text: null,

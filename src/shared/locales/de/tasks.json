@@ -2640,6 +2640,7 @@
     "noPicture": "In der Zwischenablage ist kein Bild",
     "preview": "Vorschau",
     "noPreview": "Für diese Datei gibt es keine Vorschau.",
+    "noTranscript": "Dieses Sprachmemo hat keine Abschrift.",
     "previewTitle": "Vorschau von {{title}}",
     "showPictures": "Bilder anzeigen",
     "hidePictures": "Bilder ausblenden",

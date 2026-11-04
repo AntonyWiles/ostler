@@ -18,6 +18,8 @@ import {
   PhoneSync,
   PUSH_DEBOUNCE_MS
 } from '../../mobile/src/sync/phone-sync'
+import { addVoiceMemo, taskVoiceMemos } from '../../mobile/src/data/voice-memos'
+import { createHash } from 'node:crypto'
 import { createMigratedDatabase } from '../helpers/database'
 import { FakeDrive } from '../helpers/fake-drive'
 import { useTempDir } from '../helpers/temp-dir'
@@ -52,7 +54,7 @@ describe('the phone joins a shared project and syncs it both ways (mobile plan, 
   })
 
   /** The desktop: a `SyncService` through the fake Drive, plus the connection the planning code writes with. */
-  const desktop = async (name: string) => {
+  const desktop = async (name: string, library: LibraryFileStore = noLibrary) => {
     const databasePath = await createMigratedDatabase(fs.mkdtempSync(path.join(tempDir(), name)))
     const settings = new DriveSyncSettings({
       accountsWithDrive: () => [googleAccount],
@@ -61,7 +63,7 @@ describe('the phone joins a shared project and syncs it both ways (mobile plan, 
     })
     const service = new SyncService({
       databasePath,
-      library: noLibrary,
+      library,
       projectSettings: () => SETTINGS,
       onProjectChanged: () => undefined,
       onStateChanged: () => undefined,
@@ -83,7 +85,7 @@ describe('the phone joins a shared project and syncs it both ways (mobile plan, 
   }
 
   /** The phone: a `PhoneSync` on its own migrated database, one poller, no timers. */
-  const phone = async () => {
+  const phone = async (library?: LibraryFileStore) => {
     const db = new Database(
       await createMigratedDatabase(fs.mkdtempSync(path.join(tempDir(), 'phone-')))
     )
@@ -106,6 +108,7 @@ describe('the phone joins a shared project and syncs it both ways (mobile plan, 
       },
       now: () => Date.now(),
       deviceName: 'Test phone',
+      ...(library ? { library } : {}),
       log: (message, error) => logged.push(`${message} ${String(error)}`),
       setTimer: (fn, ms) => {
         timers.push({ fn, ms })
@@ -148,8 +151,8 @@ describe('the phone joins a shared project and syncs it both ways (mobile plan, 
       .run(id, PROJECT, 'person-phone', body)
 
   /** The desktop shares a project with two tasks through Drive; returns its invite. */
-  const shareFromDesktop = async () => {
-    const ann = await desktop('ann-')
+  const shareFromDesktop = async (library?: LibraryFileStore) => {
+    const ann = await desktop('ann-', library)
     ann.service.start()
     insertItem(ann.db, 'item-1', 'Paint hall')
     insertItem(ann.db, 'item-2', 'Fix gate')
@@ -217,6 +220,49 @@ describe('the phone joins a shared project and syncs it both ways (mobile plan, 
     // Sent, so the phone's outbox is empty again.
     expect(mobile.db.prepare('SELECT COUNT(*) AS n FROM sync_outbox').get()).toEqual({ n: 0 })
     expect(mobile.kicks()).toBeGreaterThan(0)
+    expect(mobile.logged).toEqual([])
+  })
+
+  it('sends a voice memo recorded on the phone, its file too, to the desktop', async () => {
+    const received = new Map<string, Buffer>()
+    const desktopLibrary: LibraryFileStore = {
+      syncedOriginal: (_project, itemId) => received.get(itemId) ?? null,
+      receiveSyncedOriginal: async (_project, itemId, bytes) => {
+        received.set(itemId, bytes)
+      }
+    }
+    const recording = Buffer.from('RIFF....WAVEfmt made-up sound for a test')
+    const onPhone = new Map([['memo-1', recording]])
+    const { ann, invite } = await shareFromDesktop(desktopLibrary)
+    const mobile = await phone({
+      syncedOriginal: (_project, itemId) => onPhone.get(itemId) ?? null,
+      receiveSyncedOriginal: () => Promise.reject(new Error('not fetched on the phone'))
+    })
+    mobile.sync.start()
+    await mobile.sync.join(invite)
+
+    addVoiceMemo(mobile.db, 'item-1', {
+      itemId: 'memo-1',
+      title: 'Voice memo',
+      fileName: 'voice-memo.wav',
+      mimeType: 'audio/wav',
+      sizeBytes: recording.length,
+      sha256: createHash('sha256').update(recording).digest('hex'),
+      durationMs: 42_000,
+      transcript: 'Buy two tins of white paint'
+    })
+    await mobile.sync.syncNow(PROJECT)
+    await ann.service.syncNow(PROJECT)
+
+    expect(taskVoiceMemos(ann.db, 'item-1')).toMatchObject([
+      { itemId: 'memo-1', mimeType: 'audio/wav', transcript: 'Buy two tins of white paint' }
+    ])
+    expect(received.get('memo-1')?.equals(recording)).toBe(true)
+    const comment = ann.db
+      .prepare('SELECT body FROM planning_comments WHERE work_item_id = ?')
+      .get('item-1') as { body: string }
+    expect(comment.body).toContain('library/house-project/memo-1')
+    expect(comment.body).toContain('0:42')
     expect(mobile.logged).toEqual([])
   })
 

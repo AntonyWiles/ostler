@@ -256,6 +256,7 @@
   "Pages": ["fr"],
   "Palette": ["de", "fr"],
   "Password": ["it"],
+  "Pause": ["de", "fr"],
   "Person": ["de"],
   "Phase": ["de", "fr"],
   "Phase {{code}}": ["de", "fr"],

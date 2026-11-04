@@ -309,7 +309,8 @@
       "choice-too-long": "Questa opzione è troppo lunga (al massimo 300 caratteri).",
       "note-too-long": "La nota è troppo lunga (al massimo 2000 caratteri).",
       "already-resolved": "Questo blocco è già stato risolto.",
-      "not-waiting": "Questa attività è andata avanti: non aspetta più te."
+      "not-waiting": "Questa attività è andata avanti: non aspetta più te.",
+      "bad-recording": "Impossibile leggere la registrazione. Riprova a registrare."
     },
     "previousMonth": "Mese precedente",
     "nextMonth": "Mese successivo",
@@ -479,5 +480,32 @@
     "hint": "Finisce in Da smistare del progetto, da sistemare dopo qui o sul PC.",
     "close": "Chiudi",
     "done": "«{{title}}» aggiunto a Da smistare di {{project}}."
+  },
+  "voiceMemo": {
+    "title": "Memo vocali",
+    "record": "Registra memo vocale",
+    "transcribe": "Trascrivi",
+    "onDevice": "Il testo viene scritto su questo telefono.",
+    "online": "Il testo viene scritto dal servizio vocale di Google, quindi l’audio viene inviato a Google.",
+    "stop": "Ferma",
+    "listening": "In ascolto…",
+    "recorded": "Registrato {{duration}}.",
+    "transcript": "Trascrizione",
+    "noWords": "Non è stata riconosciuta nessuna parola. Puoi scriverle qui.",
+    "attachWithTranscript": "Allega con trascrizione",
+    "attachAudioOnly": "Solo audio",
+    "attach": "Allega all’attività",
+    "discard": "Scarta",
+    "discardTitle": "Scartare questa registrazione?",
+    "discardBody": "La registrazione verrà eliminata.",
+    "saving": "Salvataggio…",
+    "play": "Riproduci",
+    "pause": "Pausa",
+    "playOnPc": "Registrato su un altro dispositivo. Ascoltalo sul PC.",
+    "memoTitle": "Memo vocale, {{when}}",
+    "noMicrophone": "{{brand}} ha bisogno del microfono per registrare. Consentilo nelle impostazioni del telefono.",
+    "recordFailed": "Impossibile registrare: {{message}}",
+    "transcribeFailed": "Impossibile scrivere il testo: {{message}}. L’audio viene comunque registrato.",
+    "nothingRecorded": "Non è stato registrato nulla."
   }
 }

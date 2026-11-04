@@ -2496,6 +2496,7 @@
     "noPicture": "クリップボードに画像がありません",
     "preview": "プレビュー",
     "noPreview": "このファイルにはプレビューがありません。",
+    "noTranscript": "このボイスメモには文字起こしがありません。",
     "previewTitle": "{{title}}をプレビュー",
     "showPictures": "画像を表示",
     "hidePictures": "画像を非表示",

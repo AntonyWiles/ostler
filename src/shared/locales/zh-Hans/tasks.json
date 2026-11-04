@@ -2496,6 +2496,7 @@
     "noPicture": "剪贴板中没有图片",
     "preview": "预览",
     "noPreview": "此文件无法预览。",
+    "noTranscript": "此语音备忘录没有转写文字。",
     "previewTitle": "预览 {{title}}",
     "showPictures": "显示图片",
     "hidePictures": "隐藏图片",

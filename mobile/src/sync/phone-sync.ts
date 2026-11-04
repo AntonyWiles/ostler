@@ -6,8 +6,8 @@
  *
  * It does what `SyncService` does for a project share, using only the engine's core files: `join`
  * is `SyncService.join`, a pull is the project half of `SyncService.pullStep`, a push is the project
- * half of `pushStep`. What it leaves out on purpose: library files (no file store on the phone yet),
- * snapshots (the PCs write them) and background sync. Once the phone is paired (phone-pairing.ts) it
+ * half of `pushStep`. Library files go one way: the phone sends the ones recorded on it (voice memos,
+ * through `library`) and does not fetch the PC's. What it leaves out on purpose: snapshots (the PCs write them) and background sync. Once the phone is paired (phone-pairing.ts) it
  * also runs the personal share, which only reads: the projects the person's other devices list there
  * are joined here (the "every project arrives" half of `SyncService`).
  *
@@ -20,6 +20,10 @@ import type { DriveFile } from '../../../electron/services/sync/drive-client'
 import { isDriveLocation } from '../../../electron/services/sync/drive-transport'
 import type { SyncTransport } from '../../../electron/services/sync/folder-transport'
 import { refreshLeft } from '../../../electron/services/sync/leaving'
+import {
+  pushLibraryFiles,
+  type LibraryFileStore
+} from '../../../electron/services/sync/library-files'
 import { pullRecords, pushRecords } from '../../../electron/services/sync/records'
 import { refreshRoles } from '../../../electron/services/sync/roles'
 import { inviteShareId, readShareEntries } from '../../../electron/services/sync/pairing'
@@ -70,6 +74,11 @@ export interface PhoneSyncOptions {
   /** This phone's name as the other members see it. */
   deviceName: string
   log(message: string, error?: unknown): void
+  /**
+   * The Library files kept on this phone (voice memos), sent to a project's share after its
+   * changes. Without it no files are sent.
+   */
+  library?: LibraryFileStore
   /** Called after a pull brought changes in, or a share's status changed. */
   onChanged?(projectId: string): void
   /** Called after this phone joined a project, by invite or from the personal share's list. */
@@ -352,7 +361,7 @@ export class PhoneSync {
     }
   }
 
-  /** The project half of `SyncService.pushStep`, without library files and snapshots. */
+  /** The project half of `SyncService.pushStep`, without snapshots; Library files only the phone has. */
   private async pushStep(running: Running): Promise<void> {
     const keys = this.keysFor(running.projectId)
     if (!keys || running.removed || running.personal) return
@@ -363,6 +372,20 @@ export class PhoneSync {
       const result = await pushChanges(this.db, running.transport, running.projectId, keys)
       pushed += result.written
       if (result.written === 0) break
+    }
+    const library = this.options.library
+    if (library) {
+      const files = await pushLibraryFiles(
+        this.db as unknown as Parameters<typeof pushLibraryFiles>[0],
+        running.transport,
+        running.projectId,
+        keys,
+        library
+      )
+      pushed += files.files
+      for (const problem of files.problems) {
+        this.options.log(`A Library file could not be sent: ${problem.reason}`)
+      }
     }
     if (pushed > 0) this.options.poller.kick()
   }

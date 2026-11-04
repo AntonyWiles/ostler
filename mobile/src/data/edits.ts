@@ -85,6 +85,7 @@ export type EditRefusal =
   | 'note-too-long'
   | 'already-resolved' // the blocker was resolved elsewhere first
   | 'not-waiting' // the task is no longer in review or blocked
+  | 'bad-recording' // a voice memo whose file is missing, empty or not a sound file
 
 /** An edit that was refused; nothing was written. `reason` is what the screen shows. */
 export class EditRefused extends Error {

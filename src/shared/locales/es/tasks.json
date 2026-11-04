@@ -2784,6 +2784,7 @@
     "noPicture": "No hay ninguna imagen en el portapapeles",
     "preview": "Vista previa",
     "noPreview": "Este archivo no tiene vista previa.",
+    "noTranscript": "Esta nota de voz no tiene transcripción.",
     "previewTitle": "Vista previa de {{title}}",
     "showPictures": "Mostrar imágenes",
     "hidePictures": "Ocultar imágenes",

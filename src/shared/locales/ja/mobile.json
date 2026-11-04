@@ -309,7 +309,8 @@
       "choice-too-long": "その選択肢は長すぎます (300文字まで)。",
       "note-too-long": "メモが長すぎます (2000文字まで)。",
       "already-resolved": "このブロッカーはすでに解決されています。",
-      "not-waiting": "このタスクは先に進みました。もうあなたを待っていません。"
+      "not-waiting": "このタスクは先に進みました。もうあなたを待っていません。",
+      "bad-recording": "録音を読み取れませんでした。もう一度録音してください。"
     },
     "previousMonth": "前の月",
     "nextMonth": "次の月",
@@ -479,5 +480,32 @@
     "hint": "プロジェクトの「仕分け」に入ります。あとでここか PC で整理できます。",
     "close": "閉じる",
     "done": "「{{title}}」を {{project}} の仕分けに追加しました。"
+  },
+  "voiceMemo": {
+    "title": "ボイスメモ",
+    "record": "ボイスメモを録音",
+    "transcribe": "文字起こし",
+    "onDevice": "文字起こしはこの電話で行われます。",
+    "online": "文字起こしは Google の音声サービスで行われるため、音声が Google に送信されます。",
+    "stop": "停止",
+    "listening": "聞き取り中…",
+    "recorded": "{{duration}} 録音しました。",
+    "transcript": "文字起こし",
+    "noWords": "言葉を聞き取れませんでした。ここに入力できます。",
+    "attachWithTranscript": "文字起こし付きで添付",
+    "attachAudioOnly": "音声のみ",
+    "attach": "タスクに添付",
+    "discard": "破棄",
+    "discardTitle": "この録音を破棄しますか？",
+    "discardBody": "録音は削除されます。",
+    "saving": "保存中…",
+    "play": "再生",
+    "pause": "一時停止",
+    "playOnPc": "別のデバイスで録音されました。PC で再生してください。",
+    "memoTitle": "ボイスメモ、{{when}}",
+    "noMicrophone": "{{brand}} で録音するにはマイクが必要です。電話の設定で許可してください。",
+    "recordFailed": "録音できませんでした: {{message}}",
+    "transcribeFailed": "文字起こしできませんでした: {{message}}。音声の録音は続いています。",
+    "nothingRecorded": "何も録音されませんでした。"
   }
 }
