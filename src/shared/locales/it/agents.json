@@ -448,9 +448,7 @@
     "lookOverChangesThen": "Controlla le modifiche, poi accettale o scartale.",
     "previewRefreshesWhileAgent": "Questa anteprima si aggiorna mentre l’agente lavora.",
     "messageAgent": "Scrivi all’agente",
-    "messageAgentHint": "Hai cambiato idea su questa attività mentre è in esecuzione? Dillo all’agente.",
-    "ownerOnly": "Solo per me",
-    "ownerOnlyHint": "Questa attività è tua: gli agenti non la mettono mai in coda e non ci lavorano mai."
+    "messageAgentHint": "Hai cambiato idea su questa attività mentre è in esecuzione? Dillo all’agente."
   },
   "transcriptEntry": {
     "toolCall": "Chiamata di strumento",

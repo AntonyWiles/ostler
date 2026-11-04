@@ -429,9 +429,7 @@
     "lookOverChangesThen": "Sehen Sie die Änderungen durch und nehmen Sie sie dann an oder verwerfen Sie sie.",
     "previewRefreshesWhileAgent": "Diese Vorschau aktualisiert sich, während der Agent arbeitet.",
     "messageAgent": "Dem Agenten schreiben",
-    "messageAgentHint": "Haben Sie Ihre Meinung zu dieser Aufgabe geändert, während sie läuft? Sagen Sie es dem Agenten.",
-    "ownerOnly": "Nur für mich",
-    "ownerOnlyHint": "Diese Aufgabe gehört dir: Agenten reihen sie nie ein und arbeiten nie daran."
+    "messageAgentHint": "Haben Sie Ihre Meinung zu dieser Aufgabe geändert, während sie läuft? Sagen Sie es dem Agenten."
   },
   "transcriptEntry": {
     "toolCall": "Werkzeugaufruf",

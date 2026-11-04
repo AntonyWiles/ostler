@@ -44,15 +44,6 @@ task's `key` at once.
   planning changes are one transaction: a refused item changes nothing, and the answer (400) names
   the item (`items[3] (SHOP-12): …`). `moveDependents` isn't taken here.
 
-### Owner only
-
-`ownerOnly: true` marks a task as the person's alone. Agents never queue, claim or work on it: the
-dispatcher skips it, and queuing it for an agent (the app, `POST /tasks`, a playbook or a repeat) is
-refused. Turning it on for a queued task that no agent has started takes it out of the queue; for a
-task an agent is running it is refused. Automation may set `ownerOnly: true` on create or `PATCH`,
-but only the person can set it back to `false`, in Ostler (the API answers 400). Write it once as the
-flag, not as a note pasted into each description.
-
 ### Blocked tasks
 
 `blockedReason` says why a blocked task is blocked, in up to 200 characters ("Waiting on you",

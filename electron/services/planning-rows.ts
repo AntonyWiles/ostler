@@ -80,7 +80,6 @@ export interface WorkItemRow {
   auto_queue: number
   plan_first?: PlanFirstChoice
   blocked_reason?: string
-  owner_only?: number
   scheduled_queue?: PlanningScheduledQueueOutcome | null
   scheduled_queue_at?: number | null
   scheduled_queue_note?: string | null

@@ -2832,8 +2832,5 @@
     "label": "¿Por qué está bloqueada?",
     "placeholder": "Esperando por ti, por una tarea, por una fecha…",
     "nothingLeft": "Todo lo que espera esta tarea está hecho, así que quizá pueda seguir."
-  },
-  "ownerOnly": {
-    "badge": "Solo para mí"
   }
 }

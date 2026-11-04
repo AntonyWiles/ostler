@@ -2707,8 +2707,5 @@
     "label": "Why is it blocked?",
     "placeholder": "Waiting on you, on a task, on a date…",
     "nothingLeft": "Everything this task waits on is done, so it may be ready to move on."
-  },
-  "ownerOnly": {
-    "badge": "Owner only"
   }
 }

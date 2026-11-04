@@ -448,9 +448,7 @@
     "lookOverChangesThen": "Veja as alterações e depois aceite ou descarte.",
     "previewRefreshesWhileAgent": "Esta prévia é atualizada enquanto o agente trabalha.",
     "messageAgent": "Enviar mensagem ao agente",
-    "messageAgentHint": "Mudou de ideia sobre esta tarefa enquanto ela roda? Diga ao agente.",
-    "ownerOnly": "Só para mim",
-    "ownerOnlyHint": "Esta tarefa é sua: os agentes nunca a colocam na fila nem trabalham nela."
+    "messageAgentHint": "Mudou de ideia sobre esta tarefa enquanto ela roda? Diga ao agente."
   },
   "transcriptEntry": {
     "toolCall": "Chamada de ferramenta",

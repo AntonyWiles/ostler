@@ -54,10 +54,6 @@ export function queueWorkItemForHarness(
   const sourceItem = planning.getWorkItem(workItemId)
   if (sourceItem.projectId !== project.id)
     throw new Error('Planning work item belongs to another project')
-  if (sourceItem.ownerOnly)
-    throw new Error(
-      'This task is Owner only: it is for the person, not an agent. Turn off Owner only in Ostler to queue it.'
-    )
   // Agents work in a copy of the project's folder; without one there is
   // nothing for queued work to run in.
   requireProjectFolder(project, 'Queuing a task for an agent')

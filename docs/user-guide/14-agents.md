@@ -27,14 +27,6 @@ switch, as the automation API's port is in Settings › Connections.
 - **Stop all AI** in the status bar stops every agent at once.
 - While agents are off, Ostler hides every agent control and doesn't listen for agent connections.
 
-## Owner only
-
-Some tasks are yours to do, not an agent's: signing something, a phone call, a decision. Tick
-**Owner only** in the task's **Agent run** section. The card shows **Owner only**, the dispatcher
-never queues it, and it can't be queued for an agent by hand, by a playbook or by its repeat. Ticking
-it for a queued task that no agent has started takes it out of the queue. An agent working through
-the automation API can mark a task Owner only, but only you can untick it.
-
 ## Run a task
 
 1. Open a project's **Agents** tab.

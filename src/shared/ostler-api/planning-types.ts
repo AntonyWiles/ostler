@@ -334,11 +334,6 @@ export interface PlanningWorkItem {
   /** Why the task is blocked, in a few words; empty when it says nothing or is not blocked. */
   blockedReason?: string
   /**
-   * For the person alone: agents never queue, claim or work on it. Automation
-   * may set it; only the person clears it, in Ostler.
-   */
-  ownerOnly?: boolean
-  /**
    * Scheduled agent tasks (N9.7): what this occurrence's repeat did, once,
    * when its start date (or due date) came: queued it for agents, or why not.
    * Absent until then, and for a task whose repeat does not go to agents.
@@ -661,8 +656,6 @@ export interface CreatePlanningWorkItemInput {
   planFirst?: PlanFirstChoice
   /** Why it is blocked, up to 200 characters; kept only while the status is blocked. */
   blockedReason?: string
-  /** For the person alone: agents never queue, claim or work on it. */
-  ownerOnly?: boolean
   parentWorkItemId?: string | null
   taskCode?: string
   phaseCode?: string
@@ -761,7 +754,6 @@ export type UpdatePlanningWorkItemInput = Partial<
     | 'autoQueue'
     | 'planFirst'
     | 'blockedReason'
-    | 'ownerOnly'
     | 'subtaskPhaseNumber'
     | 'subtaskPhaseName'
     | 'iterationId'

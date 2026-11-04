@@ -3,15 +3,13 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { AutomationHttpServer } from '../../../electron/services/automation-http-server'
 import { LibraryService } from '../../../electron/services/library-service'
 import { PlanningService } from '../../../electron/services/planning-service'
-import type { HarnessService } from '../../../electron/services/harness-service'
-import { queueWorkItemForHarness } from '../../../electron/services/task-intake'
 import type { PlanningWorkItem, WatchedProject } from '../../../src/shared/ostler-api'
 import { useAutomationServer } from '../../helpers/automation-fixture'
 import { createMigratedDatabase } from '../../helpers/database'
 import { makeWatchedProject } from '../../helpers/projects'
 import { useTempDir } from '../../helpers/temp-dir'
 
-describe('automation-http-server.ts short help, task IDs, batch changes, Owner only, Blocked reasons, attachments', () => {
+describe('automation-http-server.ts short help, task IDs, batch changes, Blocked reasons, attachments', () => {
   const temp = useTempDir('ostler-automation-shortcuts-')
   const http = useAutomationServer()
   let planning: PlanningService
@@ -161,22 +159,6 @@ describe('automation-http-server.ts short help, task IDs, batch changes, Owner o
       status: 'ready'
     })
     expect(moved.value.blockedReason).toBe('')
-  })
-
-  it('lets automation set Owner only but not clear it', async () => {
-    const item = await task('Sign the lease', { ownerOnly: true })
-    expect(item.ownerOnly).toBe(true)
-    const cleared = await call('PATCH', `/work-items/${item.key}`, { ownerOnly: false })
-    expect(cleared.status).toBe(400)
-    expect(planning.getWorkItem(item.id).ownerOnly).toBe(true)
-    // No path queues it for an agent: the app, the dispatcher and POST /tasks all go through here.
-    expect(() => queueWorkItemForHarness(planning, {} as HarnessService, project, item.id)).toThrow(
-      /Owner only/
-    )
-    // The person can, in the app.
-    expect(
-      planning.updateWorkItem(item.id, { ownerOnly: false }, { kind: 'human' }).ownerOnly
-    ).toBe(false)
   })
 
   it('keeps links to this computer as text in descriptions and comments', async () => {

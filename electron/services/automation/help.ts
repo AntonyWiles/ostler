@@ -28,7 +28,6 @@ function conventions(): string[] {
     "Task IDs: every route that takes :workItemId also takes the task's ID, such as BRI-26 (this project's prefix and the task's number), and so do dependencyIds and parentWorkItemId in bodies.",
     'Lists: GET /work-items?status=blocked,ready keeps those statuses; ?fields=key,title,status sends only those fields of each task (id is always sent).',
     'Many changes at once: PATCH /work-items/batch with { items: [{ id, ...fields }] }, one transaction.',
-    'Owner only: a task with ownerOnly: true is for the person, not an agent. Agents never queue, claim or work on it; automation may set ownerOnly: true but only the person can clear it, in Ostler.',
     'Blocked: a blocked task can say why in blockedReason (up to 200 characters, such as "Waiting on you" or "Waiting on 1 March"); it clears when the task leaves Blocked. GET /blocked lists blocked tasks and says which have nothing left to wait on.',
     "Links in texts: write a task's ID (BRI-26) and Ostler links it; link a file in the project's folder as ostler://file/<projectId>/<path>, for example ostler://file/<projectId>/docs/plan.md. Links to this computer (http://localhost:…, 127.0.0.1) are kept as text, not links, because the person reading the task cannot open your local servers.",
     'Attachments: POST /work-items/:workItemId/attachments with { fileName, mimeType, base64 } uploads a file to the Library and attaches it in one call; with { itemId } it attaches a Library item already there.'

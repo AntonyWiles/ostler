@@ -1896,6 +1896,27 @@ describe('migrateOstlerDatabase', () => {
     }
   })
 
+  it('drops owner_only from a version 92 database and keeps blocked_reason', async () => {
+    await migrate(MIGRATIONS.filter((migration) => migration.version <= 92))
+    const columns = (): string[] => {
+      const db = new Database(dbPath)
+      try {
+        return (
+          db.prepare('PRAGMA table_info(planning_work_items)').all() as { name: string }[]
+        ).map((column) => column.name)
+      } finally {
+        db.close()
+      }
+    }
+    expect(columns()).toContain('owner_only')
+
+    await migrate()
+
+    expect(userVersion(dbPath)).toBe(LATEST_SCHEMA_VERSION)
+    expect(columns()).not.toContain('owner_only')
+    expect(columns()).toContain('blocked_reason')
+  })
+
   it('does not migrate when the backup cannot be written', async () => {
     writePreRunnerDatabase(dbPath)
     // A file where the backup folder should be makes the backup fail.

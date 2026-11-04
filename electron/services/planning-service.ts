@@ -1423,7 +1423,6 @@ export class PlanningService {
       autoQueue: Boolean(input.autoQueue),
       planFirst: planFirstChoice(input.planFirst) ?? 'default',
       blockedReason: optionalText(input.blockedReason, 'Blocked reason', 200),
-      ownerOnly: flag(input.ownerOnly, 'Owner only') ?? false,
       parentWorkItemId,
       taskCode: optionalText(input.taskCode, 'Task code', 40),
       phaseCode: optionalText(input.phaseCode, 'Phase code', 40),
@@ -1478,8 +1477,8 @@ export class PlanningService {
              parent_work_item_id, task_code, phase_code, phase_name, subtask_phase_number, subtask_phase_name,
              verification_status, verified_by, verified_at, verification_notes, created_at, updated_at,
              import_batch_id, order_key, iteration_id, show_from, someday, type_id, plan_first, number,
-             impact, effort, in_triage, captured_by, column_id, subproject_id, blocked_reason, owner_only)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+             impact, effort, in_triage, captured_by, column_id, subproject_id, blocked_reason)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .run(
           item.id,
@@ -1526,8 +1525,7 @@ export class PlanningService {
           item.capturedBy ?? null,
           item.columnId ?? null,
           item.subprojectId ?? null,
-          item.blockedReason ?? '',
-          item.ownerOnly ? 1 : 0
+          item.blockedReason ?? ''
         )
       this.replaceDependencies(item.id, dependencyLinksOf(item))
       this.fields.write(projectId, item.id, fieldValues)
@@ -1824,7 +1822,6 @@ export class PlanningService {
         updates.blockedReason === undefined
           ? (current.blockedReason ?? '')
           : optionalText(updates.blockedReason, 'Blocked reason', 200),
-      ownerOnly: flag(updates.ownerOnly, 'Owner only') ?? Boolean(current.ownerOnly),
       updatedAt: Date.now()
     }
     // A reason says why a task is blocked, so it goes when the task leaves Blocked.
@@ -1876,8 +1873,7 @@ export class PlanningService {
                acceptance_criteria = ?, target_date = ?, start_date = ?, assignee_id = ?, estimate = ?,
                auto_queue = ?, subtask_phase_number = ?, subtask_phase_name = ?, updated_at = ?,
                iteration_id = ?, show_from = ?, someday = ?, type_id = ?, plan_first = ?,
-               impact = ?, effort = ?, column_id = ?, subproject_id = ?, blocked_reason = ?,
-               owner_only = ?
+               impact = ?, effort = ?, column_id = ?, subproject_id = ?, blocked_reason = ?
            WHERE id = ?`
         )
         .run(
@@ -1906,7 +1902,6 @@ export class PlanningService {
           item.columnId ?? null,
           item.subprojectId ?? null,
           item.blockedReason ?? '',
-          item.ownerOnly ? 1 : 0,
           item.id
         )
       if (Boolean(current.inTriage) !== Boolean(item.inTriage))
@@ -4132,7 +4127,6 @@ export class PlanningService {
       autoQueue: Boolean(row.auto_queue),
       planFirst: row.plan_first ?? 'default',
       blockedReason: row.blocked_reason ?? '',
-      ownerOnly: Boolean(row.owner_only),
       ...(row.scheduled_queue && row.scheduled_queue_at
         ? {
             scheduledQueue: {
