@@ -285,7 +285,8 @@ export function blockerSource(
                 item.project_id, item.title
          FROM planning_blockers blocker
          JOIN planning_work_items item ON item.id = blocker.work_item_id
-         WHERE blocker.status = 'open' AND item.archived_at IS NULL AND item.deleted_at IS NULL
+         WHERE blocker.status = 'open' AND item.status <> 'done'
+           AND item.archived_at IS NULL AND item.deleted_at IS NULL
            AND item.project_id IN (${placeholders(projects)})`
       )
       .all(...projects.map((project) => project.id)) as {

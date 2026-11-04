@@ -252,6 +252,35 @@ describe('Needs you on the phone', () => {
     )
   })
 
+  it("resolves a task's open blockers when it is marked Done, as the PC does", () => {
+    both(
+      (planning) => void planning.updateWorkItem(ids.decide, { status: 'done' }, human),
+      (db) => edits.setTaskStatus(db, ids.decide, 'done')
+    )
+    read((db) => {
+      const rows = db
+        .prepare('SELECT status, resolution_choice FROM planning_blockers WHERE work_item_id = ?')
+        .all(ids.decide)
+      expect(rows).toEqual([
+        { status: 'resolved', resolution_choice: 'Task done' },
+        { status: 'resolved', resolution_choice: 'Task done' }
+      ])
+      const keys = needs.needsYou(db, '2026-06-01').items.map((item) => item.key)
+      expect(keys.some((key) => key.startsWith('blocker:'))).toBe(false)
+    })
+  })
+
+  it('does not list a blocker left open on a task that is already Done', () => {
+    const raw = new Database(phonePath)
+    raw.prepare("UPDATE planning_work_items SET status = 'done' WHERE id = ?").run(ids.decide)
+    raw.close()
+    read((db) => {
+      const keys = needs.needsYou(db, '2026-06-01').items.map((item) => item.key)
+      expect(keys).not.toContain(`blocker:${ids.blocker}`)
+      expect(keys).not.toContain(`blocker:${ids.plainBlocker}`)
+    })
+  })
+
   it('approves a review: Done and the note as a comment', () => {
     both(
       (planning) => {

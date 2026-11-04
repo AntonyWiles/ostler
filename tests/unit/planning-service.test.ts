@@ -580,6 +580,26 @@ describe('PlanningService', () => {
     expect(service.listOpenBlockers('project-one')).toEqual([])
   })
 
+  it("resolves a task's open blockers when it is marked Done", () => {
+    const task = service.createWorkItem('project-one', { title: 'Go live' }, { kind: 'human' })
+    const blocker = service.reportBlocker(task.id, 'Ready to go live?', 'agent')
+    const changes: unknown[] = []
+    service.setBlockersChangedListener((_projectId, change) => changes.push(change))
+
+    service.updateWorkItem(task.id, { status: 'done' }, { kind: 'human' })
+
+    expect(service.listBlockersForWorkItem(task.id)).toEqual([
+      expect.objectContaining({
+        id: blocker.id,
+        status: 'resolved',
+        resolutionChoice: 'Task done',
+        resolvedBy: 'human'
+      })
+    ])
+    expect(service.listOpenBlockers('project-one')).toEqual([])
+    expect(changes).toEqual([{ kind: 'resolved', blockerId: blocker.id, workItemId: task.id }])
+  })
+
   it('defaults a subtask to phase 1 and keeps a phase name consistent across its siblings', () => {
     const parent = service.createWorkItem('project-one', { title: 'Parent' }, { kind: 'human' })
     const child1 = service.createWorkItem(

@@ -7,6 +7,12 @@ Help › What's new, and the Unreleased section until a version has its own.
 
 ## [Unreleased]
 
+### Fixed
+
+- **A task marked Done is no longer blocked.** Moving a task to Done, on the PC or the phone,
+  resolves its open blockers, so it leaves Needs you, the Inbox and the Blockers panel. Blockers
+  left open on tasks that were already done no longer show either.
+
 ## [0.2.0] - 2026-11-03
 
 ### Added

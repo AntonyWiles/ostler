@@ -217,7 +217,7 @@ export function needsYou(db: QueryDb, today: string): NeedsYou {
       `SELECT b.id, b.work_item_id, b.description, b.reported_by, b.reported_at,
               b.resolution_options
        FROM planning_blockers b JOIN planning_work_items item ON item.id = b.work_item_id
-       WHERE b.status = 'open' AND ${OPEN_TASK}`
+       WHERE b.status = 'open' AND item.status <> 'done' AND ${OPEN_TASK}`
     )
     .all() as {
     id: string

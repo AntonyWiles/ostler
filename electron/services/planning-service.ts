@@ -139,6 +139,7 @@ import { takeTaskNumber } from './sync/task-numbers'
 import { autoFollowTask } from './follow-service'
 import { statusUpdateHealthLabel } from '@shared/status-updates'
 import type { TeamEvent } from './webhook-service'
+import { resolveBlockersOfDoneTask } from './planning-done-blockers'
 import { startMilestoneIfPlanned, writeChecklistCheck } from '@shared/planning/task-writes'
 import {
   toRecurrence,
@@ -1866,6 +1867,7 @@ export class PlanningService {
     // A task waiting for someone's sign-off is not finished yet (D9); local edits only.
     if (item.status === 'done' && current.status !== 'done')
       this.requireNoWaitingSignOff('task', item.id)
+    let resolvedBlockers: string[] = []
     const update = this.db.transaction(() => {
       this.db
         .prepare(
@@ -1937,6 +1939,8 @@ export class PlanningService {
       // transaction but in its own savepoint: if that fails, the status
       // change still stands and nothing half-made is left.
       if (item.status === 'done' && current.status !== 'done') {
+        // A task that is done is no longer blocked.
+        resolvedBlockers = resolveBlockersOfDoneTask(this.db, item.id, who.kind, item.updatedAt)
         try {
           const next = this.db.transaction(() => this.repeatTask(item, who))()
           if (next) item.repeatedAs = next.id
@@ -1981,6 +1985,8 @@ export class PlanningService {
       if (item.assigneeId === this.people.getMe()?.id) this.autoFollow(item.projectId, item.id, who)
     }
     this.changed(item.projectId)
+    for (const blockerId of resolvedBlockers)
+      this.blockersChanged(item.projectId, { kind: 'resolved', blockerId, workItemId: item.id })
     if (this.workItemChangedListener) {
       try {
         this.workItemChangedListener(result)
@@ -2330,7 +2336,7 @@ export class PlanningService {
         `SELECT blocker.*, item.title as work_item_title, item.task_code as work_item_code
          FROM planning_blockers blocker
          JOIN planning_work_items item ON item.id = blocker.work_item_id
-         WHERE item.project_id = ? AND blocker.status = 'open'
+         WHERE item.project_id = ? AND blocker.status = 'open' AND item.status <> 'done'
          ORDER BY blocker.reported_at ASC`
       )
       .all(projectId) as (BlockerRow & { work_item_title: string; work_item_code: string })[]

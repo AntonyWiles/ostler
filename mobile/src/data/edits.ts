@@ -29,6 +29,7 @@ import type { PlanningPriority, PlanningWorkItemStatus } from '@shared/ostler-ap
 import { MAX_ESTIMATE } from '@shared/ostler-api/people-types'
 import { takeTaskNumber } from '../../../electron/services/sync/task-numbers'
 import { ItemLinkIndex } from '../../../electron/services/item-link-index'
+import { resolveBlockersOfDoneTask } from '../../../electron/services/planning-done-blockers'
 import {
   closeTaskReminders,
   insertComment,
@@ -600,7 +601,11 @@ function updateTask(
         )
         startMilestoneIfPlanned(db, milestoneId, status, at)
         // A task that is no longer open keeps no pending reminder (`PlanningReminders.syncTask`).
-        if (status === 'done') closeTaskReminders(db, taskId, at)
+        if (status === 'done') {
+          closeTaskReminders(db, taskId, at)
+          // A task that is done is no longer blocked (`PlanningService.updateWorkItem`).
+          resolveBlockersOfDoneTask(db, taskId, 'human', at)
+        }
       }
     })()
   })
