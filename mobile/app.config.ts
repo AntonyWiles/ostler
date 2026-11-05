@@ -132,6 +132,15 @@ const config: ExpoConfig = {
           'com.google.android.tts'
         ]
       }
+    ],
+    // Photos and files added to a project's Library: the camera, and pictures already taken.
+    [
+      'expo-image-picker',
+      {
+        cameraPermission: 'Take photos for your project Library.',
+        photosPermission: 'Add photos to your project Library.',
+        microphonePermission: false
+      }
     ]
   ]
 }

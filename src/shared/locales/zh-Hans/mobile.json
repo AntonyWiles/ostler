@@ -456,7 +456,15 @@
     "fileOnPc": "文件在你的电脑上",
     "newNote": "新建笔记",
     "noteTitle": "标题",
-    "noteBody": "写下笔记。**粗体**、列表和链接与电脑上一样可用。"
+    "noteBody": "写下笔记。**粗体**、列表和链接与电脑上一样可用。",
+    "newLink": "添加链接",
+    "addFile": "添加文件",
+    "addPhoto": "添加照片",
+    "takePhoto": "拍照",
+    "linkUrl": "地址 (https://…)",
+    "linkTitle": "标题 (可选)",
+    "noCamera": "{{brand}} 无法使用相机。请在 Android 设置中允许。",
+    "unreadable": "无法读取该文件。"
   },
   "schedule": {
     "view": "日程",

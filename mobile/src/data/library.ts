@@ -1,5 +1,5 @@
 /**
- * A project's Library on the phone, to read: briefs, guides, notes, links, whiteboards' outlines
+ * A project's Library on the phone, to read and add to: briefs, guides, notes, links, whiteboards' outlines
  * and the names of documents and pictures, through the desktop's own `LibraryRepository`. Files
  * themselves stay on the PC; the phone shows what they are.
  *
@@ -7,10 +7,20 @@
  */
 import type Database from 'better-sqlite3'
 import { v4 as uuidv4 } from 'uuid'
-import { DEFAULT_AI_ACCESS, type LibraryItem, type LibraryItemKind } from '@shared/ostler-api'
+import {
+  DEFAULT_AI_ACCESS,
+  LIBRARY_MAX_FILE_BYTES,
+  type LibraryItem,
+  type LibraryItemKind
+} from '@shared/ostler-api'
 import { Refusal } from '@shared/refusal'
 import { LibraryRepository } from '../../../electron/services/database/library-repository'
-import { cleanLibraryTags, cleanTitle } from '../../../electron/services/library-title'
+import {
+  cleanLibraryTags,
+  cleanTitle,
+  cleanUrl,
+  MAX_TITLE_CHARS
+} from '../../../electron/services/library-title'
 import { guarded } from './edits'
 import type { QueryDb } from './queries'
 
@@ -31,8 +41,8 @@ const KIND_ORDER: readonly LibraryItemKind[] = [
 
 /**
  * The project's Library items not archived: the primary brief first, then by kind, then the most
- * recently changed. `words` narrows them to items whose title, summary or text has every word,
- * and `tag` to items carrying that label.
+ * recently changed. `words` narrows them to items whose title, summary, text or
+ * address has every word, and `tag` to items carrying that label.
  */
 export function libraryItems(
   db: QueryDb,
@@ -46,7 +56,7 @@ export function libraryItems(
     .filter((item) => {
       if (wanted.length === 0) return true
       const text =
-        `${item.title}\n${item.summary}\n${item.body}\n${item.tags.join(' ')}`.toLowerCase()
+        `${item.title}\n${item.summary}\n${item.body}\n${item.url ?? ''}\n${item.tags.join(' ')}`.toLowerCase()
       return wanted.every((word) => text.includes(word))
     })
     .sort(
@@ -63,30 +73,96 @@ export function libraryItem(db: QueryDb, itemId: string): LibraryItem | null {
 
 const MAX_BODY_CHARS = 200_000
 
+/** A file picked or photographed on the phone, already stored under `itemId` and hashed. */
+export interface LibraryFileInput {
+  itemId: string
+  fileName: string
+  mimeType: string
+  sizeBytes: number
+  sha256: string
+}
+
+const SHA256 = /^[0-9a-f]{64}$/
+
+const RASTER_MIME: Record<string, string> = {
+  png: 'image/png',
+  jpg: 'image/jpeg',
+  gif: 'image/gif',
+  webp: 'image/webp'
+}
+
 /**
- * Writes a note into a project's Library, as the PC's `createItem` does for one: its first
- * revision is stored and the links in its text indexed. Returns the new item.
+ * What a file is, by its first bytes as the PC's `classifyFile` decides: PNG, JPEG, GIF and WebP
+ * are pictures, a PDF is a document, anything else a document of the type the picker reported.
+ * `extension` names the stored copy (`original.<extension>`).
  */
-export function addLibraryNote(
+export function classifyLibraryFile(
+  head: Uint8Array,
+  fileName: string,
+  pickedMime: string | null
+): { kind: 'image' | 'document'; extension: string; mimeType: string } {
+  const text = String.fromCharCode(...head.subarray(0, 12))
+  const raster =
+    head[0] === 0x89 && text.slice(1, 4) === 'PNG'
+      ? 'png'
+      : head[0] === 0xff && head[1] === 0xd8 && head[2] === 0xff
+        ? 'jpg'
+        : /^GIF8[79]a/.test(text)
+          ? 'gif'
+          : text.startsWith('RIFF') && text.slice(8, 12) === 'WEBP'
+            ? 'webp'
+            : null
+  if (raster) return { kind: 'image', extension: raster, mimeType: RASTER_MIME[raster] }
+  if (text.startsWith('%PDF-'))
+    return { kind: 'document', extension: 'pdf', mimeType: 'application/pdf' }
+  const match = /\.([a-z0-9]{1,10})$/i.exec(fileName)
+  return {
+    kind: 'document',
+    extension: match ? match[1].toLowerCase() : 'bin',
+    mimeType:
+      pickedMime && /^[\w.+-]+\/[\w.+-]+$/.test(pickedMime)
+        ? pickedMime
+        : 'application/octet-stream'
+  }
+}
+
+/** A picked file's name, safe to store and show, as the PC cleans one. */
+export function cleanFileName(raw: string): string {
+  const base = raw.split(/[\\/]/).pop() ?? ''
+  const clean = base
+    // eslint-disable-next-line no-control-regex
+    .replace(/[\u0000-\u001f<>:"|?*]/g, '_')
+    .replace(/^[.\s]+/, '')
+    .replace(/[.\s]+$/, '')
+    .slice(0, 180)
+  return clean || 'file'
+}
+
+/**
+ * Writes one new item into a project's Library, as the PC's `createItem` and file import do: its
+ * first revision is stored and its text indexed for search. Returns the new item.
+ */
+function insertLibraryItem(
   db: QueryDb,
   projectId: string,
-  input: { title: string; body: string }
+  fields: Pick<LibraryItem, 'kind' | 'title' | 'body' | 'url' | 'file'> & { id?: string },
+  tags: string[]
 ): LibraryItem {
-  if (input.body.length > MAX_BODY_CHARS)
+  if (fields.body.length > MAX_BODY_CHARS)
     throw new Refusal(`Body is longer than ${MAX_BODY_CHARS} characters`)
   const now = new Date().toISOString()
   const item: LibraryItem = {
-    id: uuidv4(),
+    id: fields.id ?? uuidv4(),
     projectId,
-    kind: 'note',
-    title: cleanTitle(input.title),
+    kind: fields.kind,
+    title: cleanTitle(fields.title),
     summary: '',
-    body: input.body,
-    url: null,
-    file: null,
-    aiAccess: DEFAULT_AI_ACCESS.note,
+    body: fields.body,
+    url: fields.url,
+    file: fields.file,
+    aiAccess: DEFAULT_AI_ACCESS[fields.kind],
     isPrimaryBrief: false,
-    tags: [],
+    tags: cleanLibraryTags(tags),
     revision: 1,
     createdAt: now,
     updatedAt: now,
@@ -102,13 +178,89 @@ export function addLibraryNote(
         projectId,
         title: item.title,
         summary: '',
-        body: item.body,
-        tags: [],
+        body: item.url ? `${item.url}\n${item.body}` : item.body,
+        tags: item.tags,
         extractedText: ''
       })
     })()
   )
   return item
+}
+
+/** Writes a note into a project's Library. Returns the new item. */
+export function addLibraryNote(
+  db: QueryDb,
+  projectId: string,
+  input: { title: string; body: string; tags?: string[] }
+): LibraryItem {
+  return insertLibraryItem(
+    db,
+    projectId,
+    { kind: 'note', title: input.title, body: input.body, url: null, file: null },
+    input.tags ?? []
+  )
+}
+
+/**
+ * Writes a link into a project's Library: http and https only, as on the PC. The title is the
+ * address's site when left empty. Returns the new item.
+ */
+export function addLibraryLink(
+  db: QueryDb,
+  projectId: string,
+  input: { title: string; url: string; body?: string; tags?: string[] }
+): LibraryItem {
+  let url: string
+  try {
+    url = cleanUrl(input.url)
+  } catch (failure) {
+    throw new Refusal(failure instanceof Error ? failure.message : String(failure))
+  }
+  const title = input.title.trim() || new URL(url).hostname || url
+  return insertLibraryItem(
+    db,
+    projectId,
+    { kind: 'link', title, body: input.body ?? '', url, file: null },
+    input.tags ?? []
+  )
+}
+
+/**
+ * Writes a file the phone stored (`library/<projectId>/<itemId>/original.<ext>`) into a project's
+ * Library as a picture or a document. Sync sends the file itself (`pushLibraryFiles`), as it does
+ * a voice memo's recording. Returns the new item.
+ */
+export function addLibraryFile(
+  db: QueryDb,
+  projectId: string,
+  input: LibraryFileInput & { kind: 'image' | 'document'; title?: string; tags?: string[] }
+): LibraryItem {
+  if (!SHA256.test(input.sha256) || input.sizeBytes <= 0)
+    throw new Refusal('This file is empty or could not be read')
+  if (input.sizeBytes > LIBRARY_MAX_FILE_BYTES)
+    throw new Refusal(`Files are limited to ${LIBRARY_MAX_FILE_BYTES / 1024 / 1024} MB`)
+  const fileName = cleanFileName(input.fileName)
+  const title = input.title?.trim() || fileName.replace(/\.[a-z0-9]{1,10}$/i, '').trim() || fileName
+  return insertLibraryItem(
+    db,
+    projectId,
+    {
+      id: input.itemId,
+      kind: input.kind,
+      title: title.slice(0, MAX_TITLE_CHARS),
+      body: '',
+      url: null,
+      file: {
+        fileName,
+        mimeType: input.mimeType,
+        sizeBytes: input.sizeBytes,
+        sha256: input.sha256,
+        hasThumbnail: false,
+        hasVisionCopy: false
+      }
+    },
+    input.tags ?? []
+  )
 }
 
 /** The tags the project's Library items not archived carry, by name: what the list filters by. */

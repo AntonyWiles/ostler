@@ -456,7 +456,15 @@
     "fileOnPc": "o arquivo está no seu PC",
     "newNote": "Nova nota",
     "noteTitle": "Título",
-    "noteBody": "Escreva sua nota. **Negrito**, listas e links funcionam como no PC."
+    "noteBody": "Escreva sua nota. **Negrito**, listas e links funcionam como no PC.",
+    "newLink": "Adicionar link",
+    "addFile": "Adicionar arquivo",
+    "addPhoto": "Adicionar foto",
+    "takePhoto": "Tirar foto",
+    "linkUrl": "Endereço (https://…)",
+    "linkTitle": "Título (opcional)",
+    "noCamera": "{{brand}} não pode usar a câmera. Permita nas configurações do Android.",
+    "unreadable": "Não foi possível ler o arquivo."
   },
   "schedule": {
     "view": "Cronograma",

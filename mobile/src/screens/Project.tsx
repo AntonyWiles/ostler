@@ -43,7 +43,6 @@ import { DecisionList, GoalList, MilestoneList, SignOffList } from './ProjectPla
 import { StatusList } from './ProjectStatus'
 import { ShoppingList } from './ProjectShopping'
 import { LibraryList } from './ProjectLibrary'
-import { addLibraryNote } from '../data/library'
 import { capabilitiesOf } from '@shared/share-roles'
 import { ScheduleList } from './ProjectSchedule'
 import { deleteStatusUpdate, postStatusUpdate, statusUpdates } from '../data/status-updates'
@@ -583,15 +582,11 @@ export function Project({
                 version={version}
                 theme={theme}
                 onOpen={onOpenLibraryItem}
-                onAddNote={
+                onAdded={
                   capabilitiesOf(shareRole(db, projectId)).editLibrary
-                    ? (title, body) => {
-                        let id: string | null = null
-                        const ok = saved(() => {
-                          id = addLibraryNote(db, projectId, { title, body }).id
-                        })
-                        if (id !== null) onOpenLibraryItem(id)
-                        return ok
+                    ? (itemId) => {
+                        onEdited()
+                        onOpenLibraryItem(itemId)
                       }
                     : undefined
                 }

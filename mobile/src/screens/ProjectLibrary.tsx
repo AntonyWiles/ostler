@@ -4,7 +4,20 @@ import { t } from '@shared/i18n/index'
 import { formatRelativeTime } from '@shared/format'
 import type { ItemLinkRef, LibraryItem, LibraryItemKind } from '@shared/ostler-api'
 import { capabilitiesOf } from '@shared/share-roles'
-import { libraryItem, libraryItems, libraryTags, setLibraryItemTags } from '../data/library'
+import * as DocumentPicker from 'expo-document-picker'
+import * as ImagePicker from 'expo-image-picker'
+import { BRAND } from '@shared/brand'
+import {
+  addLibraryFile,
+  addLibraryLink,
+  addLibraryNote,
+  libraryItem,
+  libraryItems,
+  libraryTags,
+  setLibraryItemTags
+} from '../data/library'
+import { newVoiceMemoId } from '../data/voice-memos'
+import { forgetRecording, keepPickedFile } from '../data/voice-memo-files'
 import { linkedItemTitle } from '../data/plan'
 import { projectLabels, shareRole, type QueryDb } from '../data/queries'
 import { RADIUS, SPACE, useTheme, type Theme } from '../theme'
@@ -24,32 +37,73 @@ export function libraryKindLabel(kind: LibraryItemKind): string {
   }
 }
 
-/** A project's Library as a list to read: filter by words, open an item. */
+/** What is being added: a note, a link, or a file already picked (a document or a photo). */
+type Adding =
+  | { kind: 'note' }
+  | { kind: 'link' }
+  | { kind: 'file'; uri: string; name: string; mimeType: string | null }
+
+/** Shows the file picker, the gallery or the camera; null when the person backed out. */
+async function pickFile(
+  source: 'file' | 'photo' | 'camera'
+): Promise<Extract<Adding, { kind: 'file' }> | null> {
+  if (source === 'file') {
+    const result = await DocumentPicker.getDocumentAsync({ copyToCacheDirectory: true })
+    const asset = result.canceled ? null : result.assets[0]
+    return asset
+      ? { kind: 'file', uri: asset.uri, name: asset.name, mimeType: asset.mimeType ?? null }
+      : null
+  }
+  if (source === 'camera') {
+    const permission = await ImagePicker.requestCameraPermissionsAsync()
+    if (!permission.granted) throw new Error(t('mobile:library.noCamera', { brand: BRAND.name }))
+  }
+  const options: ImagePicker.ImagePickerOptions = { mediaTypes: ['images'], quality: 1 }
+  const result =
+    source === 'camera'
+      ? await ImagePicker.launchCameraAsync(options)
+      : await ImagePicker.launchImageLibraryAsync(options)
+  const asset = result.canceled ? null : result.assets[0]
+  if (!asset) return null
+  const name = asset.fileName || asset.uri.split('/').pop() || 'photo.jpg'
+  return { kind: 'file', uri: asset.uri, name, mimeType: asset.mimeType ?? null }
+}
+
+/**
+ * A project's Library as a list to read: filter by words, open an item. Someone who may edit the
+ * Library adds a note, a link, a file or a photo, with tags, from here.
+ */
 export function LibraryList({
   db,
   projectId,
   version,
   theme,
   onOpen,
-  onAddNote
+  onAdded
 }: {
   db: QueryDb
   projectId: string
   version: number
   theme: Theme
   onOpen: (itemId: string) => void
-  /** Writes a note; false when it was refused. Left out when the person may not write here. */
-  onAddNote?: (title: string, body: string) => boolean
+  /** Called with a new item's id. Left out when the person may not write here. */
+  onAdded?: (itemId: string) => void
 }) {
   const [words, setWords] = useState('')
   const [tag, setTag] = useState<string | null>(null)
-  const [writing, setWriting] = useState(false)
+  const [adding, setAdding] = useState<Adding | null>(null)
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
-  const stopWriting = () => {
-    setWriting(false)
+  const [url, setUrl] = useState('')
+  const [newTags, setNewTags] = useState<string[]>([])
+  const [error, setError] = useState<string | null>(null)
+  const stopAdding = () => {
+    setAdding(null)
     setTitle('')
     setBody('')
+    setUrl('')
+    setNewTags([])
+    setError(null)
   }
   const tags = useMemo(
     () => (version >= 0 ? libraryTags(db, projectId) : []),
@@ -61,18 +115,73 @@ export function LibraryList({
     () => (version >= 0 ? libraryItems(db, projectId, words, shownTag) : []),
     [db, projectId, words, shownTag, version]
   )
+  const labels = useMemo(
+    () => (adding !== null && version >= 0 ? projectLabels(db, projectId) : []),
+    [db, projectId, adding, version]
+  )
+  const pick = (source: 'file' | 'photo' | 'camera') => {
+    setError(null)
+    pickFile(source).then(
+      (file) => {
+        if (!file) return
+        setAdding(file)
+        setTitle(file.name.replace(/\.[a-z0-9]{1,10}$/i, ''))
+      },
+      (failure: unknown) => setError(editErrorText(failure))
+    )
+  }
+  const save = () => {
+    if (adding === null) return
+    let itemId: string
+    try {
+      if (adding.kind === 'note') {
+        if (!title.trim()) return
+        itemId = addLibraryNote(db, projectId, { title, body, tags: newTags }).id
+      } else if (adding.kind === 'link') {
+        itemId = addLibraryLink(db, projectId, { title, url, tags: newTags }).id
+      } else {
+        const id = newVoiceMemoId()
+        try {
+          const kept = keepPickedFile(adding.uri, adding.name, adding.mimeType, projectId, id)
+          if (!kept) throw new Error(t('mobile:library.unreadable'))
+          itemId = addLibraryFile(db, projectId, { ...kept, title, tags: newTags }).id
+        } catch (failure) {
+          forgetRecording(projectId, id)
+          throw failure
+        }
+      }
+    } catch (failure) {
+      setError(editErrorText(failure))
+      return
+    }
+    stopAdding()
+    onAdded?.(itemId)
+  }
+  const field = [styles.input, { color: theme.text, borderColor: theme.borderStrong }]
   return (
     <View style={styles.list}>
-      {onAddNote !== undefined && !writing && (
+      {onAdded !== undefined && adding === null && (
         <View style={styles.actions}>
           <Chip
             label={t('mobile:library.newNote')}
             theme={theme}
-            onPress={() => setWriting(true)}
+            onPress={() => setAdding({ kind: 'note' })}
+          />
+          <Chip
+            label={t('mobile:library.newLink')}
+            theme={theme}
+            onPress={() => setAdding({ kind: 'link' })}
+          />
+          <Chip label={t('mobile:library.addFile')} theme={theme} onPress={() => pick('file')} />
+          <Chip label={t('mobile:library.addPhoto')} theme={theme} onPress={() => pick('photo')} />
+          <Chip
+            label={t('mobile:library.takePhoto')}
+            theme={theme}
+            onPress={() => pick('camera')}
           />
         </View>
       )}
-      {onAddNote !== undefined && writing && (
+      {onAdded !== undefined && adding !== null && (
         <View
           style={[
             styles.card,
@@ -80,41 +189,65 @@ export function LibraryList({
             { backgroundColor: theme.surface, borderColor: theme.accent }
           ]}
         >
+          {adding.kind === 'file' && (
+            <Text style={[styles.kind, { color: theme.textMuted }]}>{adding.name}</Text>
+          )}
+          {adding.kind === 'link' && (
+            <TextInput
+              accessibilityLabel={t('mobile:library.linkUrl')}
+              placeholder={t('mobile:library.linkUrl')}
+              placeholderTextColor={theme.textMuted}
+              value={url}
+              onChangeText={setUrl}
+              autoFocus
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="url"
+              style={field}
+            />
+          )}
           <TextInput
             accessibilityLabel={t('mobile:library.noteTitle')}
-            placeholder={t('mobile:library.noteTitle')}
+            placeholder={
+              adding.kind === 'link' ? t('mobile:library.linkTitle') : t('mobile:library.noteTitle')
+            }
             placeholderTextColor={theme.textMuted}
             value={title}
             onChangeText={setTitle}
-            autoFocus
-            style={[styles.input, { color: theme.text, borderColor: theme.borderStrong }]}
+            autoFocus={adding.kind === 'note'}
+            style={field}
           />
-          <TextInput
-            accessibilityLabel={t('mobile:library.noteBody')}
-            placeholder={t('mobile:library.noteBody')}
-            placeholderTextColor={theme.textMuted}
-            value={body}
-            onChangeText={setBody}
-            multiline
-            style={[
-              styles.input,
-              styles.noteBody,
-              { color: theme.text, borderColor: theme.borderStrong }
-            ]}
-          />
-          <View style={styles.actions}>
-            <Chip
-              label={t('mobile:edit.save')}
-              theme={theme}
-              selected
-              onPress={() => {
-                if (title.trim() && onAddNote(title, body)) stopWriting()
-              }}
+          {adding.kind === 'note' && (
+            <TextInput
+              accessibilityLabel={t('mobile:library.noteBody')}
+              placeholder={t('mobile:library.noteBody')}
+              placeholderTextColor={theme.textMuted}
+              value={body}
+              onChangeText={setBody}
+              multiline
+              style={[...field, styles.noteBody]}
             />
-            <Chip label={t('mobile:taskMenu.cancel')} theme={theme} onPress={stopWriting} />
+          )}
+          <Text style={[styles.kind, { color: theme.textMuted }]}>
+            {t('library:libraryDetail.tags')}
+          </Text>
+          <TagChoices
+            theme={theme}
+            choices={labels}
+            selected={newTags}
+            onChange={(next) => {
+              setNewTags(next)
+              return true
+            }}
+          />
+          {error !== null && <Text style={{ color: theme.danger }}>{error}</Text>}
+          <View style={styles.actions}>
+            <Chip label={t('mobile:edit.save')} theme={theme} selected onPress={save} />
+            <Chip label={t('mobile:taskMenu.cancel')} theme={theme} onPress={stopAdding} />
           </View>
         </View>
       )}
+      {adding === null && error !== null && <Text style={{ color: theme.danger }}>{error}</Text>}
       <TextInput
         accessibilityLabel={t('mobile:library.filter')}
         placeholder={t('mobile:library.filter')}
@@ -303,23 +436,23 @@ function TagsPanel({
     return true
   }
   if (!canEdit && item.tags.length === 0) return null
-  const toggle = (name: string) =>
-    save(item.tags.includes(name) ? item.tags.filter((tag) => tag !== name) : [...item.tags, name])
   return (
     <View style={styles.form}>
       <Text style={[styles.kind, { color: theme.textMuted }]}>
         {t('library:libraryDetail.tags')}
       </Text>
+      {editing && (
+        <TagChoices theme={theme} choices={choices} selected={item.tags} onChange={save} />
+      )}
       <View style={styles.actions} accessibilityLabel={t('library:libraryDetail.tagsItem')}>
-        {(editing ? choices : item.tags).map((name) => (
+        {(editing ? [] : item.tags).map((name) => (
           <Chip
             key={name}
             label={`#${name}`}
             theme={theme}
             selected={item.tags.includes(name)}
             onPress={() => {
-              if (editing) toggle(name)
-              else if (canEdit) setEditing(true)
+              if (canEdit) setEditing(true)
             }}
           />
         ))}
@@ -331,17 +464,54 @@ function TagsPanel({
           />
         )}
       </View>
-      {editing && (
-        <TextSender
-          theme={theme}
-          placeholder={t('mobile:edit.newLabel')}
-          button={t('mobile:edit.add')}
-          onSend={(text) => {
-            if (!save([...item.tags, text])) throw new Error('refused')
-          }}
-        />
-      )}
       {error !== null && <Text style={{ color: theme.danger }}>{error}</Text>}
+    </View>
+  )
+}
+
+/**
+ * The project's labels as chips to turn on or off for an item, and a box for a new one. `onChange`
+ * says whether the new tags were kept, so a refused new label stays typed.
+ */
+function TagChoices({
+  theme,
+  choices,
+  selected,
+  onChange
+}: {
+  theme: Theme
+  choices: string[]
+  selected: string[]
+  onChange: (tags: string[]) => boolean
+}) {
+  const names = [...new Set([...choices, ...selected])].sort((a, b) => a.localeCompare(b))
+  return (
+    <View style={styles.form}>
+      <View style={styles.actions} accessibilityLabel={t('library:libraryDetail.tagsItem')}>
+        {names.map((name) => (
+          <Chip
+            key={name}
+            label={`#${name}`}
+            theme={theme}
+            selected={selected.includes(name)}
+            onPress={() =>
+              onChange(
+                selected.includes(name)
+                  ? selected.filter((tag) => tag !== name)
+                  : [...selected, name]
+              )
+            }
+          />
+        ))}
+      </View>
+      <TextSender
+        theme={theme}
+        placeholder={t('mobile:edit.newLabel')}
+        button={t('mobile:edit.add')}
+        onSend={(text) => {
+          if (!onChange([...selected, text.trim()])) throw new Error('refused')
+        }}
+      />
     </View>
   )
 }

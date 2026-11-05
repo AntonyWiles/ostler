@@ -1,5 +1,6 @@
 /**
- * Where the phone keeps the recordings of its voice memos: one folder per Library item in the
+ * Where the phone keeps the files it adds to the Library (voice memo recordings, picked files and
+ * photos): one folder per Library item in the
  * app's documents, `library/<projectId>/<itemId>/original.<ext>`, the same layout the PC uses.
  * `phoneLibraryFiles` hands them to sync (`LibraryFileStore`), which sends each one to the
  * project's share once, sealed with the project key.
@@ -8,6 +9,7 @@ import { Buffer } from 'buffer'
 import { Directory, File, Paths } from 'expo-file-system'
 import { createHash } from '../../../electron/services/sync/platform'
 import type { LibraryFileStore } from '../../../electron/services/sync/library-files'
+import { classifyLibraryFile, cleanFileName } from './library'
 
 const SAFE_ID = /^[A-Za-z0-9-]{1,80}$/
 
@@ -105,5 +107,46 @@ export const phoneLibraryFiles: LibraryFileStore = {
   },
   receiveSyncedOriginal() {
     return Promise.reject(new Error('The phone does not fetch Library files'))
+  }
+}
+
+/** A file picked or photographed, stored in its item's folder and ready for `addLibraryFile`. */
+export interface KeptLibraryFile {
+  itemId: string
+  kind: 'image' | 'document'
+  fileName: string
+  mimeType: string
+  sizeBytes: number
+  sha256: string
+}
+
+/**
+ * Copies a picked file (a document, a photo from the gallery or the camera) into a new Library
+ * item's folder, named by what its bytes are, and hashes it. Sync then sends it like a recording.
+ * Null when the file is empty or gone.
+ */
+export function keepPickedFile(
+  uri: string,
+  pickedName: string,
+  pickedMime: string | null,
+  projectId: string,
+  itemId: string
+): KeptLibraryFile | null {
+  const source = new File(uri)
+  if (!source.exists) return null
+  const bytes = source.bytesSync()
+  if (bytes.byteLength === 0) return null
+  const fileName = cleanFileName(pickedName)
+  const what = classifyLibraryFile(bytes.subarray(0, 16), fileName, pickedMime)
+  const directory = itemDirectory(projectId, itemId)
+  if (!directory.exists) directory.create({ intermediates: true })
+  source.copy(new File(directory, `original.${what.extension}`))
+  return {
+    itemId,
+    kind: what.kind,
+    fileName,
+    mimeType: what.mimeType,
+    sizeBytes: bytes.byteLength,
+    sha256: createHash('sha256').update(Buffer.from(bytes)).digest('hex')
   }
 }

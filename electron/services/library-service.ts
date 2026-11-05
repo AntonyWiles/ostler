@@ -50,7 +50,9 @@ import { isMarkableImage, isPng, markedUpFileName } from '@shared/markup'
 import { readFileText, renderPdfPage, textSourceFor, type TextSource } from './library-file-text'
 import { OFFICE_MIME, officeKind } from './office-text'
 import { attachChangeRecorder } from './change-history/recorder'
-import { cleanLibraryTags, cleanTitle, MAX_TITLE_CHARS } from './library-title'
+import { cleanLibraryTags, cleanTitle, cleanUrl, MAX_TITLE_CHARS } from './library-title'
+
+export { cleanUrl }
 import { WhiteboardService } from './whiteboard-service'
 import { Refusal } from '@shared/refusal'
 
@@ -1443,22 +1445,6 @@ function cleanText(value: unknown, max: number, label: string): string {
 function cleanAccess(value: unknown): LibraryAiAccess {
   if (!ACCESS_LEVELS.includes(value as LibraryAiAccess)) throw new Error('Invalid AI access level')
   return value as LibraryAiAccess
-}
-
-/** http and https only; Ostler stores links and opens them in the browser, never fetches them. */
-export function cleanUrl(value: unknown): string {
-  if (typeof value !== 'string' || !value.trim())
-    throw new Error(t('errors:libraryService.linkNeedsUrl'))
-  let url: URL
-  try {
-    url = new URL(value.trim())
-  } catch {
-    throw new Error(t('errors:libraryService.notValidUrl'))
-  }
-  if (url.protocol !== 'http:' && url.protocol !== 'https:') {
-    throw new Error(t('errors:libraryService.onlyHttpHttpsLinks'))
-  }
-  return url.toString()
 }
 
 function tooLargeMessage(fileName: string): string {

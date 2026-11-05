@@ -456,7 +456,15 @@
     "fileOnPc": "the file is on your PC",
     "newNote": "New note",
     "noteTitle": "Title",
-    "noteBody": "Write your note. **Bold**, lists and links work as on your PC."
+    "noteBody": "Write your note. **Bold**, lists and links work as on your PC.",
+    "newLink": "Add link",
+    "addFile": "Add file",
+    "addPhoto": "Add photo",
+    "takePhoto": "Take photo",
+    "linkUrl": "Address (https://…)",
+    "linkTitle": "Title (optional)",
+    "noCamera": "{{brand}} can’t use the camera. Allow it in Android settings.",
+    "unreadable": "That file could not be read."
   },
   "schedule": {
     "view": "Schedule",
