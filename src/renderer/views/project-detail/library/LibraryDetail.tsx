@@ -19,7 +19,17 @@ import {
   TextArea,
   useConfirm
 } from '../../../ui'
-import { Archive, ExternalLink, ListPlus, Pencil, Presentation, Trash2 } from '../../../ui/icons'
+import {
+  Archive,
+  Copy,
+  ExternalLink,
+  FolderOpen,
+  ListPlus,
+  Pencil,
+  Presentation,
+  Trash2
+} from '../../../ui/icons'
+import type { MenuEntry } from '../../../ui/Menu'
 import { IconButton } from '../../../ui/IconButton'
 import { isTaskableLine, noteLineParts, noteLines } from '@shared/note-line-tasks'
 import {
@@ -60,6 +70,8 @@ interface LibraryDetailProps {
   onDelete(): Promise<void>
   /** Opens a work item this item is a source of, in the Planning drawer. */
   onOpenWorkItem(workItemId: string): void
+  /** Shows a short message in the Library's notice line. */
+  onNotice(text: string, error?: boolean): void
 }
 
 export function LibraryDetail({
@@ -71,7 +83,8 @@ export function LibraryDetail({
   onOpen,
   onArchive,
   onDelete,
-  onOpenWorkItem
+  onOpenWorkItem,
+  onNotice
 }: LibraryDetailProps) {
   const ai = useFeatures().ai
   const [summary, setSummary] = useState(item.summary)
@@ -167,6 +180,48 @@ export function LibraryDetail({
 
   const isWhiteboard = item.kind === 'whiteboard'
   const canOpen = item.kind === 'link' ? Boolean(item.url) : Boolean(item.file)
+  const hasFile = Boolean(item.file)
+  const showInFolder = async () => {
+    const result = await window.ostlerAPI.showLibraryItemInFolder(item.projectId, item.id)
+    if (!result.ok) onNotice(result.error, true)
+  }
+  const copy = async (text: string, done: string) => {
+    const result = await window.ostlerAPI.copyText(text)
+    onNotice(result.ok ? done : result.error, !result.ok)
+  }
+  const copyPath = async () => {
+    const path = await window.ostlerAPI.getLibraryItemFilePath(item.projectId, item.id)
+    if (path.ok) await copy(path.value, t('library:libraryDetail.pathCopied'))
+    else onNotice(path.error, true)
+  }
+  // Open, Show in folder and Copy path/link: the item's ⋯ menu, ahead of pinning.
+  const fileMenu: MenuEntry[] = []
+  if (canOpen)
+    fileMenu.push({
+      label:
+        item.kind === 'link'
+          ? t('library:libraryDetail.openLink')
+          : t('library:libraryDetail.open'),
+      icon: ExternalLink,
+      onSelect: onOpen
+    })
+  if (hasFile)
+    fileMenu.push(
+      {
+        label: t('library:libraryDetail.showInFolder'),
+        icon: FolderOpen,
+        onSelect: () => void showInFolder()
+      },
+      { label: t('library:libraryDetail.copyPath'), icon: Copy, onSelect: () => void copyPath() }
+    )
+  if (item.kind === 'link' && item.url) {
+    const url = item.url
+    fileMenu.push({
+      label: t('library:libraryDetail.copyLink'),
+      icon: Copy,
+      onSelect: () => void copy(url, t('library:libraryDetail.linkCopied'))
+    })
+  }
   // A whiteboard is edited only in the Plan: Open whiteboard, never Edit.
   const canEdit = item.kind !== 'image' && item.kind !== 'document' && !isWhiteboard
   const isPdf = item.file?.mimeType === 'application/pdf'
@@ -242,25 +297,6 @@ export function LibraryDetail({
 
       <LinkedFrom kind="library" id={item.id} refreshKey={item.updatedAt} />
 
-      {ai && (
-        <div className="ostler-library-field">
-          <span className="ostler-library-field-label" aria-hidden="true">
-            {t('library:libraryDetail.ostlerAiAccess')}
-          </span>
-          <SegmentedControl
-            label={t('library:libraryDetail.ostlerAiAccess')}
-            size="sm"
-            value={item.aiAccess}
-            onChange={setAccess}
-            options={ACCESS_OPTIONS.map((option) => ({
-              value: option.id,
-              label: option.label,
-              disabled: busy
-            }))}
-          />
-        </div>
-      )}
-
       {item.kind === 'brief' && (
         <Checkbox
           label={t('library:libraryDetail.primaryBriefProject')}
@@ -272,9 +308,7 @@ export function LibraryDetail({
 
       <TextArea
         label={t('library:libraryDetail.summary')}
-        hint={
-          ai ? t('library:libraryDetail.summaryHintAi') : t('library:libraryDetail.summaryHint')
-        }
+        hint={t('library:libraryDetail.summaryHint')}
         ref={summaryRef}
         rows={2}
         value={summary}
@@ -434,6 +468,16 @@ export function LibraryDetail({
               : t('library:libraryDetail.open')}
           </Button>
         )}
+        {hasFile && (
+          <Button
+            variant="secondary"
+            size="sm"
+            icon={FolderOpen}
+            onClick={() => void showInFolder()}
+          >
+            {t('library:libraryDetail.showInFolder')}
+          </Button>
+        )}
         {!item.archivedAt && <MarkUpCopyButton item={item} />}
         <Button
           variant="ghost"
@@ -464,21 +508,48 @@ export function LibraryDetail({
         >
           {t('library:libraryDetail.delete')}
         </Button>
-        {pins.available && (
+        {(pins.available || fileMenu.length > 0) && (
           <Menu
             label={t('library:libraryDetail.moreActions', { itemTitle: item.title })}
             placement="bottom-end"
-            items={() =>
-              pins.menuItems({
-                kind: 'library',
-                targetId: item.id,
-                projectId: item.projectId,
-                title: item.title
-              })
-            }
+            items={() => {
+              const pinItems = pins.available
+                ? pins.menuItems({
+                    kind: 'library',
+                    targetId: item.id,
+                    projectId: item.projectId,
+                    title: item.title
+                  })
+                : []
+              return fileMenu.length > 0 && pinItems.length > 0
+                ? [...fileMenu, { type: 'separator' as const }, ...pinItems]
+                : [...fileMenu, ...pinItems]
+            }}
           />
         )}
       </div>
+
+      {ai && (
+        <details className="ostler-library-ai-section">
+          <summary>{t('library:libraryDetail.aiSection')}</summary>
+          <div className="ostler-library-field">
+            <span className="ostler-library-field-label" aria-hidden="true">
+              {t('library:libraryDetail.ostlerAiAccess')}
+            </span>
+            <SegmentedControl
+              label={t('library:libraryDetail.ostlerAiAccess')}
+              size="sm"
+              value={item.aiAccess}
+              onChange={setAccess}
+              options={ACCESS_OPTIONS.map((option) => ({
+                value: option.id,
+                label: option.label,
+                disabled: busy
+              }))}
+            />
+          </div>
+        </details>
+      )}
     </aside>
   )
 }

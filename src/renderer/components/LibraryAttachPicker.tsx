@@ -100,6 +100,13 @@ export function LibraryAttachPicker({
                 {ai && item.aiAccess === 'human-only' && (
                   <Badge tone="warning">{t('library:libraryAttachPicker.notReadAi')}</Badge>
                 )}
+                {item.tags.length > 0 && (
+                  <span className="ostler-library-attach-tags">
+                    {item.tags.map((tag) => (
+                      <Badge key={tag}>{tag}</Badge>
+                    ))}
+                  </span>
+                )}
                 {item.summary && (
                   <span className="ostler-library-attach-summary">{item.summary}</span>
                 )}

@@ -172,6 +172,7 @@ describe('Make a task (N4.4b)', () => {
           onArchive={noop}
           onDelete={noop}
           onOpenWorkItem={() => {}}
+          onNotice={() => {}}
         />
       )
     )
@@ -201,6 +202,7 @@ describe('Make a task (N4.4b)', () => {
           onArchive={noop}
           onDelete={noop}
           onOpenWorkItem={() => {}}
+          onNotice={() => {}}
         />
       )
     )
