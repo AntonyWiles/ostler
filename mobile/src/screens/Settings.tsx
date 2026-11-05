@@ -27,6 +27,8 @@ interface Props {
   onJoin: () => void
   /** Opens Set up from my other device. */
   onPairing: () => void
+  /** Opens Notifications. */
+  onNotifications: () => void
   /** Advanced sync through an R2 bucket. */
   r2: AdvancedSyncProps
 }
@@ -36,7 +38,7 @@ interface Props {
  * Drive access is proved by listing Ostler's folders), getting projects onto the phone, the theme
  * and about.
  */
-export function Settings({ check, onBack, onJoin, onPairing, r2 }: Props) {
+export function Settings({ check, onBack, onJoin, onPairing, onNotifications, r2 }: Props) {
   const theme = useTheme()
   const themeSetting = useThemeSetting()
   const s = formStyles(theme)
@@ -189,6 +191,18 @@ export function Settings({ check, onBack, onJoin, onPairing, r2 }: Props) {
         <AdvancedSync theme={theme} {...r2} />
 
         <Text accessibilityRole="header" style={s.heading}>
+          {t('mobile:notifications.title')}
+        </Text>
+        <View style={[rows.group, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+          <NavRow
+            theme={theme}
+            label={t('mobile:settings.notifications')}
+            hint={t('mobile:settings.notificationsHint')}
+            onPress={onNotifications}
+          />
+        </View>
+
+        <Text accessibilityRole="header" style={s.heading}>
           {t('mobile:settings.theme')}
         </Text>
         <View accessibilityRole="radiogroup" style={editStyles.row}>
@@ -225,7 +239,7 @@ const THEMES: [ThemeSetting, string][] = [
 ]
 
 /** A row that opens another screen. */
-function NavRow({
+export function NavRow({
   theme,
   label,
   hint,
@@ -256,7 +270,7 @@ function NavRow({
   )
 }
 
-const rows = StyleSheet.create({
+export const rows = StyleSheet.create({
   group: {
     borderWidth: StyleSheet.hairlineWidth,
     borderRadius: RADIUS,

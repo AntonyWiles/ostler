@@ -23,7 +23,9 @@
     "theme": "主题",
     "themeSystem": "跟随系统",
     "themeLight": "浅色",
-    "themeDark": "深色"
+    "themeDark": "深色",
+    "notifications": "通知",
+    "notificationsHint": "提醒、计时器、今天和收件箱"
   },
   "join": {
     "open": "加入项目",
@@ -546,5 +548,40 @@
     "asksToJoin": "{{name}} 请求加入。仅当它显示此代码时才允许：",
     "allow": "允许",
     "allowed": "已允许 {{name}}。它马上就会完成加入。"
+  },
+  "notifications": {
+    "title": "通知",
+    "intro": "选择这台手机要通知你的内容。",
+    "due": "提醒和截止日期",
+    "dueHint": "任务的提醒时间到了时",
+    "timer": "正在运行的计时器",
+    "timerHint": "计时器运行时显示，带停止按钮",
+    "inbox": "收件箱",
+    "inboxHint": "有新内容到达时",
+    "today": "今日摘要",
+    "todayHint": "每天早上列出当天的任务",
+    "todayTime": "时间",
+    "sync": "同步问题",
+    "syncHint": "仅当同步已失败一段时间时",
+    "blocked": "手机设置中已关闭 {{brand}} 的通知。",
+    "openPhoneSettings": "打开手机设置",
+    "allow": "开启通知",
+    "dueToday": "今天到期",
+    "dueOn": "{{date}} 到期",
+    "reminder": "提醒",
+    "todayTitle_other": "今天：{{count}} 个任务",
+    "todayTitleOverdue_other": "今天：{{count}} 个任务，{{overdue}} 个已逾期",
+    "todayMore": "{{names}} 等另外 {{count}} 个",
+    "timerTitle": "计时器：{{task}}",
+    "timerTitleNoTask": "计时器运行中",
+    "timerBody": "自 {{time}} 起 · 已用 {{elapsed}}",
+    "stop": "停止",
+    "syncTitle": "同步需要处理",
+    "syncBody": "{{brand}} 已有一段时间无法同步。请打开查看。",
+    "channelDue": "提醒",
+    "channelTimer": "计时器",
+    "channelToday": "今日摘要",
+    "channelInbox": "收件箱",
+    "channelSync": "同步"
   }
 }

@@ -23,7 +23,9 @@
     "theme": "Design",
     "themeSystem": "System",
     "themeLight": "Hell",
-    "themeDark": "Dunkel"
+    "themeDark": "Dunkel",
+    "notifications": "Benachrichtigungen",
+    "notificationsHint": "Erinnerungen, Timer, Heute und Eingang"
   },
   "join": {
     "open": "Einem Projekt beitreten",
@@ -546,5 +548,42 @@
     "asksToJoin": "{{name}} möchte beitreten. Erlaube es nur, wenn es diesen Code zeigt:",
     "allow": "Erlauben",
     "allowed": "{{name}} ist erlaubt. Der Beitritt ist gleich abgeschlossen."
+  },
+  "notifications": {
+    "title": "Benachrichtigungen",
+    "intro": "Wähle, worüber dieses Telefon dich informiert.",
+    "due": "Erinnerungen und Fälligkeiten",
+    "dueHint": "Wenn die Erinnerung einer Aufgabe fällig ist",
+    "timer": "Laufender Timer",
+    "timerHint": "Wird angezeigt, solange ein Timer läuft, mit Stopp",
+    "inbox": "Eingang",
+    "inboxHint": "Wenn etwas Neues ankommt",
+    "today": "Tagesübersicht",
+    "todayHint": "Deine Aufgaben für den Tag, jeden Morgen",
+    "todayTime": "Uhrzeit",
+    "sync": "Sync-Probleme",
+    "syncHint": "Nur wenn die Synchronisierung eine Weile fehlschlägt",
+    "blocked": "Benachrichtigungen für {{brand}} sind in den Telefoneinstellungen aus.",
+    "openPhoneSettings": "Telefoneinstellungen öffnen",
+    "allow": "Benachrichtigungen einschalten",
+    "dueToday": "Heute fällig",
+    "dueOn": "Fällig am {{date}}",
+    "reminder": "Erinnerung",
+    "todayTitle_one": "Heute: {{count}} Aufgabe",
+    "todayTitle_other": "Heute: {{count}} Aufgaben",
+    "todayTitleOverdue_one": "Heute: {{count}} Aufgabe, {{overdue}} überfällig",
+    "todayTitleOverdue_other": "Heute: {{count}} Aufgaben, {{overdue}} überfällig",
+    "todayMore": "{{names}} und {{count}} weitere",
+    "timerTitle": "Timer: {{task}}",
+    "timerTitleNoTask": "Timer läuft",
+    "timerBody": "Seit {{time}} · bisher {{elapsed}}",
+    "stop": "Stopp",
+    "syncTitle": "Synchronisierung braucht Aufmerksamkeit",
+    "syncBody": "{{brand}} konnte eine Weile nicht synchronisieren. Öffne die App, um nachzusehen.",
+    "channelDue": "Erinnerungen",
+    "channelTimer": "Timer",
+    "channelToday": "Tagesübersicht",
+    "channelInbox": "Eingang",
+    "channelSync": "Synchronisierung"
   }
 }

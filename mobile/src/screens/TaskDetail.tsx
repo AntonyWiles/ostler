@@ -72,6 +72,7 @@ import { TaskVoiceMemos } from './TaskVoiceMemos'
 import { openBlockers, resolveTaskBlocker } from '../data/needs-you'
 import { TaskRow } from './TaskRow'
 import { TopBar, type MenuItem } from './TopBar'
+import { askForNotificationsOnce } from '../notifications'
 
 interface Props {
   db: QueryDb & EditDb
@@ -349,7 +350,10 @@ export function TaskDetail({
   const remindOn = (day: string) => {
     const [year, month, date] = day.split('-').map(Number)
     const at = new Date(year, month - 1, date, 9, 0).getTime()
-    if (attempt(() => void addTaskReminder(db, task.id, at))) setPanel(null)
+    if (attempt(() => void addTaskReminder(db, task.id, at))) {
+      setPanel(null)
+      void askForNotificationsOnce()
+    }
   }
   /** Quick dates and a calendar, for the due date and the start date. */
   const datePanel = (
@@ -1082,7 +1086,10 @@ export function TaskDetail({
                   theme={theme}
                   onPress={() => {
                     const at = Math.ceil((Date.now() + 60 * 60 * 1000) / 60000) * 60000
-                    if (attempt(() => void addTaskReminder(db, task.id, at))) setPanel(null)
+                    if (attempt(() => void addTaskReminder(db, task.id, at))) {
+                      setPanel(null)
+                      void askForNotificationsOnce()
+                    }
                   }}
                 />
                 <Chip
