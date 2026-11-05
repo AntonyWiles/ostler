@@ -1024,6 +1024,7 @@
     "old-invite": "Quelqu’un a été retiré de ce projet après la création de cette invitation, elle ne fonctionne donc plus. Demandez une nouvelle invitation à un membre.",
     "no-sync-server": "Ce projet est partagé via un serveur de synchronisation qui n’est pas configuré sur ce PC. Configurez-le dans Paramètres › Connexions › Serveur de synchronisation, puis réessayez.",
     "no-drive-account": "Ce projet est partagé via Google Drive, et aucun compte Google de ce PC ne peut synchroniser via Drive. Connectez-en un dans Paramètres › Connexions, activez la synchronisation via Drive, puis réessayez.",
+    "no-r2-bucket": "Ce projet se synchronise via un bucket R2, et aucun bucket n’est configuré sur ce PC. Configurez-en un dans Paramètres › Appareils › Synchronisation avancée, puis réessayez.",
     "personLink": {
       "not-shared": "Ce projet n’est pas partagé.",
       "not-a-candidate": "Cette personne ne peut plus être associée. Actualisez la liste et réessayez."

@@ -1024,6 +1024,7 @@
     "old-invite": "Qualcuno è stato rimosso da questo progetto dopo la creazione di questo invito, quindi non funziona più. Chiedi un nuovo invito a un membro.",
     "no-sync-server": "Questo progetto è condiviso tramite un server di sincronizzazione non configurato su questo PC. Configuralo in Impostazioni › Connessioni › Server di sincronizzazione, poi riprova.",
     "no-drive-account": "Questo progetto è condiviso tramite Google Drive e nessun account Google su questo PC può sincronizzare tramite Drive. Collegane uno in Impostazioni › Connessioni, attiva la sincronizzazione tramite Drive, poi riprova.",
+    "no-r2-bucket": "Questo progetto si sincronizza tramite un bucket R2 e su questo PC non è configurato alcun bucket. Configurane uno in Impostazioni › Dispositivi › Sincronizzazione avanzata, poi riprova.",
     "personLink": {
       "not-shared": "Questo progetto non è condiviso.",
       "not-a-candidate": "Quella persona non è più collegabile. Aggiorna l’elenco e riprova."
