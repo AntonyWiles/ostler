@@ -91,6 +91,11 @@ function PeekedTask({ projectId, taskId, onClose }: Peek & { onClose: () => void
   )
 }
 
+/** Opens a task in place, or null outside `TaskPeekProvider`. */
+export function useTaskPeek(): ((peek: Peek) => void) | null {
+  return useContext(PeekContext)
+}
+
 function plainClick(event: MouseEvent): boolean {
   return event.button === 0 && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey
 }

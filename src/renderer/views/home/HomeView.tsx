@@ -34,7 +34,7 @@ import {
 } from '../../navigation/paths'
 import { relativeTimeText } from '../../ui/date-text'
 import { HomeProjects, ProjectsLayoutSwitch, useProjectsLayout } from './HomeProjects'
-import { TaskLink, TaskPeekProvider } from '../planning/TaskPeek'
+import { TaskLink, TaskPeekProvider, useTaskPeek } from '../planning/TaskPeek'
 import {
   Avatar,
   Badge,
@@ -399,7 +399,8 @@ function dayName(date: string): string {
 function needsYouItem(
   entry: NeedsYouEntry,
   projects: ReturnType<typeof useOstler>['projects'],
-  openPlan: (plan: { projectId: string; sessionId: string }) => void
+  openPlan: (plan: { projectId: string; sessionId: string }) => void,
+  peekTask: ((peek: { projectId: string; taskId: string }) => void) | null = null
 ): NeedsYouItem {
   const project = projects.find((candidate) => candidate.id === entry.projectId)
   const sessionId = entry.sessionId
@@ -415,6 +416,18 @@ function needsYouItem(
   }
   // A reviewed session says where its reviewer got to (N9.5b).
   const reviewer = entry.reviewer ? REVIEWER_TEXT[entry.reviewer] : null
+  const taskId = entry.kind === 'blocked' ? entry.taskId : undefined
+  // A blocked task opens in its drawer over Home (MOP-30).
+  if (taskId && peekTask) {
+    return {
+      id: entry.key,
+      kind: entry.kind,
+      title: entry.title,
+      context: reviewer ? [project?.name, reviewer].filter(Boolean).join(' · ') : project?.name,
+      color: project?.color,
+      onOpen: () => peekTask({ projectId: entry.projectId, taskId })
+    }
+  }
   return {
     id: entry.key,
     kind: entry.kind,
@@ -510,11 +523,14 @@ function NeedsYouRows({
   onOpenPlan: (plan: { projectId: string; sessionId: string }) => void
 }) {
   const [all, setAll] = useState(false)
+  const peekTask = useTaskPeek()
   const [count] = shareLimit([entries.length], HOME_LIST_LIMIT, all)
   return (
     <>
       <NeedsYouList
-        items={entries.slice(0, count).map((entry) => needsYouItem(entry, projects, onOpenPlan))}
+        items={entries
+          .slice(0, count)
+          .map((entry) => needsYouItem(entry, projects, onOpenPlan, peekTask))}
       />
       <HomeListMore total={entries.length} expanded={all} onToggle={() => setAll(!all)} />
     </>

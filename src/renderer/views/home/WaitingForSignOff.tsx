@@ -4,6 +4,7 @@ import type { InboxEntry } from '@shared/ostler-api'
 import { t } from '@shared/i18n'
 import { itemPath, taskPath } from '../../navigation/paths'
 import { Section } from '../../ui'
+import { TaskLink } from '../planning/TaskPeek'
 import './WaitingForSignOff.css'
 
 /** Where a sign-off asked of Me opens: its task, decision or milestone. */
@@ -45,7 +46,15 @@ export function WaitingForSignOff() {
           const to = pathOf(entry)
           return (
             <li key={entry.key} className="ostler-home-sign-offs__row">
-              {to ? <Link to={to}>{entry.title}</Link> : <span>{entry.title}</span>}
+              {entry.projectId && entry.taskId ? (
+                <TaskLink projectId={entry.projectId} taskId={entry.taskId}>
+                  {entry.title}
+                </TaskLink>
+              ) : to ? (
+                <Link to={to}>{entry.title}</Link>
+              ) : (
+                <span>{entry.title}</span>
+              )}
               <span className="ostler-home-sign-offs__body">{entry.body}</span>
             </li>
           )

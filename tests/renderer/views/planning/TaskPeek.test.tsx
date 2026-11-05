@@ -2,7 +2,9 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom'
+import type { ReactNode } from 'react'
 import { TaskLink, TaskPeekProvider } from '@renderer/views/planning/TaskPeek'
+import { WaitingForSignOff } from '@renderer/views/home/WaitingForSignOff'
 import { StaticFeaturesProvider } from '@renderer/navigation/features'
 import { ConfirmProvider, ToastProvider } from '@renderer/ui'
 import { makeWorkItem } from '../../fixtures/planning-records'
@@ -13,14 +15,15 @@ function Where() {
   return <p data-testid="where">{useLocation().pathname}</p>
 }
 
-function renderLinks(withPeek: boolean) {
+function renderLinks(withPeek: boolean, content?: ReactNode, extra: object = {}) {
   const task = makeWorkItem('a', { title: 'Write brief', projectId: 'p1' })
   installOstlerApi({
     ...emptyPlanningReads(),
     getPlanningWorkItems: async () => ({ ok: true, value: [task] }),
-    getPlanningActivity: async () => ({ ok: true, value: { entries: [], nextBefore: null } })
+    getPlanningActivity: async () => ({ ok: true, value: { entries: [], nextBefore: null } }),
+    ...extra
   })
-  const link = (
+  const link = content ?? (
     <TaskLink projectId="p1" taskId="a">
       Write brief
     </TaskLink>
@@ -64,5 +67,28 @@ describe('Tasks open where they were clicked (MOP-30)', () => {
     renderLinks(false)
     fireEvent.click(screen.getByRole('link', { name: 'Write brief' }))
     expect(screen.getByTestId('where').textContent).toBe('/projects/p1/tasks/a')
+  })
+
+  it('opens a sign-off task on Home in its drawer', async () => {
+    renderLinks(true, <WaitingForSignOff />, {
+      getInbox: async () => ({
+        ok: true,
+        value: {
+          items: [
+            {
+              key: 's1',
+              kind: 'signOff',
+              title: 'Write brief',
+              body: '',
+              projectId: 'p1',
+              taskId: 'a'
+            }
+          ]
+        }
+      })
+    })
+    fireEvent.click(await screen.findByRole('link', { name: 'Write brief' }))
+    expect(await screen.findByRole('textbox', { name: 'Title' })).toBeTruthy()
+    expect(screen.getByTestId('where').textContent).toBe('/')
   })
 })

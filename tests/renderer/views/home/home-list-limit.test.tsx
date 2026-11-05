@@ -111,7 +111,7 @@ describe("Home's long lists", () => {
     await screen.findByRole('link', { name: 'Task 0' })
     expect(screen.getAllByRole('link', { name: /^Task \d+$/ })).toHaveLength(HOME_LIST_LIMIT)
     expect(screen.queryByText(/^Item 0/)).toBeNull()
-    expect(screen.getAllByRole('link', { name: /^Blocked \d+/ })).toHaveLength(HOME_LIST_LIMIT)
+    expect(screen.getAllByRole('button', { name: /^Blocked \d+/ })).toHaveLength(HOME_LIST_LIMIT)
 
     fireEvent.click(screen.getByRole('button', { name: 'Show 15 more' }))
     expect(screen.getAllByRole('link', { name: /^Task \d+$/ })).toHaveLength(30)
@@ -120,7 +120,7 @@ describe("Home's long lists", () => {
     expect(screen.getAllByRole('link', { name: /^Task \d+$/ })).toHaveLength(HOME_LIST_LIMIT)
 
     fireEvent.click(screen.getByRole('button', { name: 'Show 30 more' }))
-    expect(screen.getAllByRole('link', { name: /^Blocked \d+/ })).toHaveLength(50)
+    expect(screen.getAllByRole('button', { name: /^Blocked \d+/ })).toHaveLength(50)
   })
 
   it('show Upcoming by day up to the first rows, leaving out days with none shown', async () => {
