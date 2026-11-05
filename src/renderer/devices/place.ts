@@ -10,6 +10,10 @@ export { SYNC_PROVIDER_NAMES } from '@shared/sync-place'
 export function placeOf(folder: string): string {
   // A personal space in Drive: Ostler's own folder in My Drive.
   if (folder.startsWith('gdrive:')) return ['Google Drive', 'My Drive', BRAND.name].join(' › ')
+  // A personal space in the person's own R2 bucket: `r2:Ostler`.
+  if (folder.startsWith('r2:')) {
+    return ['Cloudflare R2', ...folder.slice(3).split('/').filter(Boolean)].join(' › ')
+  }
   const parts = folder.split(/[\\/]+/).filter(Boolean)
   const kind = sharePlaceKind(folder)
   if (kind === 'google-drive') {

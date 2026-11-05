@@ -154,6 +154,20 @@ describe('R2 as a sync place on the PC: the PC syncs straight against the bucket
     return { sync, pairing, db, changes }
   }
 
+  it('makes the space from the bucket choice at r2:Ostler/Personal, with projects in r2:Ostler/Projects', async () => {
+    const bucket = new FakeR2()
+    const a = await desktop(bucket, false)
+    a.projects.set(HOUSE, 'House')
+    // The place Settings › Devices passes for "My own R2 bucket" (R2_PLACE_CHOICE) is the bucket's root.
+    await a.service.createPersonalSpace(r2Location(''), 'Ann laptop')
+    await a.service.shareUnsharedProjects()
+    expect(a.service.personalSpaceFolder()).toBe('r2:Ostler')
+    expect(bucket.keys()).toContain('Ostler/Personal/share.json')
+    expect(
+      a.service.shareFolders().some((place) => place.startsWith('r2:Ostler/Projects/House'))
+    ).toBe(true)
+  })
+
   it('pairs a phone and syncs both ways with no folder on the PC', async () => {
     const bucket = new FakeR2()
     const a = await desktop(bucket, false)

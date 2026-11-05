@@ -868,6 +868,8 @@
     "anotherFolder": "Autre dossier…",
     "anotherFolderHint": "Tout dossier partagé par vos PC, par exemple sur un lecteur réseau.",
     "driveHint": "Conservé dans votre Google Drive, sans dossier sur ce PC.",
+    "r2Bucket": "Mon propre bucket R2",
+    "r2Hint": "Conservé dans votre propre bucket Cloudflare R2, sans dossier sur ce PC.",
     "keepHere": "Les conserver ici",
     "cancel": "Annuler",
     "foundIn": "Votre espace a été trouvé dans {{place}}.",

@@ -30,6 +30,7 @@ import { newDeviceId } from '@shared/sync/clock'
 import { newProjectKey } from './change-file'
 import { openFolderTransport } from './folder-transport'
 import { isDriveLocation } from './drive-transport'
+import { isR2Location } from './r2-transport'
 import { wrapForBoxKey, removeMember } from './rotation'
 import { joinPlace, SHARE_FORMAT_VERSION, writeMember, type Invite } from './sharing'
 import type { FinderFs } from './share-folder-finder'
@@ -130,10 +131,11 @@ export interface PersonalDevice {
 
 /**
  * The folder that holds `Personal/` and `devices/` for a space. In Google Drive the root already
- * is Ostler's own folder, so it is the space itself.
+ * is Ostler's own folder, so it is the space itself. In an R2 bucket (`r2:`) it is `r2:Ostler`.
  */
 export function spaceFolderUnder(root: string): string {
-  return isDriveLocation(root) ? root : path.join(root, SPACE_FOLDER)
+  if (isDriveLocation(root)) return root
+  return isR2Location(root) ? joinPlace(root, SPACE_FOLDER) : path.join(root, SPACE_FOLDER)
 }
 
 /**

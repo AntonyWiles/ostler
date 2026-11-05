@@ -3171,7 +3171,8 @@ export interface OstlerAPI {
   importR2Setup(code: string, passphrase: string): Promise<Result<R2SyncState>>
   /**
    * Makes this PC's personal space in `place`, one of the state's `places` or
-   * `DRIVE_PLACE_CHOICE` (Google Drive, when the state's `driveReady`), or, without one, in a
+   * `DRIVE_PLACE_CHOICE` (Google Drive, when the state's `driveReady`), `R2_PLACE_CHOICE` (the
+   * bucket saved under Advanced sync), or, without one, in a
    * folder the person picks in main's picker. Null when the person cancels.
    */
   createPersonalSpace(

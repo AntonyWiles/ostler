@@ -2,7 +2,7 @@ import { dialog, type BrowserWindow } from 'electron'
 import * as fs from 'node:fs'
 import * as os from 'node:os'
 import * as path from 'node:path'
-import { DRIVE_PLACE_CHOICE, type PersonalSpaceState } from '@shared/ostler-api'
+import { DRIVE_PLACE_CHOICE, R2_PLACE_CHOICE, type PersonalSpaceState } from '@shared/ostler-api'
 import { t } from '@shared/i18n'
 import { RemoveMemberError } from '../services/sync/rotation'
 import {
@@ -10,9 +10,11 @@ import {
   PERSONAL_FOLDER,
   personalSpaceIn,
   PersonalSpaceError,
-  setAsideFolderSpace
+  setAsideFolderSpace,
+  spaceFolderUnder
 } from '../services/sync/personal-space'
 import { isDriveLocation } from '../services/sync/drive-transport'
+import { isR2Location, r2Location } from '../services/sync/r2-transport'
 import type { DriveSyncSettings } from '../services/sync/drive-sync-settings'
 import { joinPlace, readShareFile } from '../services/sync/sharing'
 import { syncedRoots, syncPlaces } from '../services/sync/share-folder-finder'
@@ -32,6 +34,8 @@ export interface DevicesHandlerDependencies {
 
 /** The longest device name a person can give (the same limit the sync files check). */
 const DEVICE_NAME_MAX = 100
+/** How long a look for the personal space in the R2 bucket holds. */
+const R2_LOOK_MS = 60_000
 
 /**
  * The personal space (people and devices, D13, D16, D20): making it, joining it
@@ -107,6 +111,11 @@ export function registerDevicesHandlers({
       if (!root) throw new Error(t('errors:sharing.no-drive-account'))
       return root
     }
+    if (place === R2_PLACE_CHOICE) {
+      // `Ostler/` in the bucket saved under Advanced sync; no folder on this PC.
+      if (!r2Bridge?.()?.state().configured) throw new Error(t('errors:r2Sync.notSetUp'))
+      return r2Location('')
+    }
     if (typeof place === 'string') {
       const wanted = path.resolve(place).toLowerCase()
       const match = syncPlaces(process.env, fs).find(
@@ -134,12 +143,36 @@ export function registerDevicesHandlers({
     }
   }
 
-  /** The personal space's folder: this PC's own, the one the person chose, or one a synced root or Drive holds. */
+  // What the last look in the bucket found, so the open section (read every few seconds) asks R2 at most once a minute.
+  let r2Looked: { at: number; space: string | null } | null = null
+
+  /**
+   * The personal space in the bucket saved under Advanced sync (`r2:Ostler`), when there is one:
+   * another PC made it there, and this PC got the bucket from a setup code. Null without a bucket.
+   */
+  const r2Space = async (): Promise<string | null> => {
+    const found = r2Bridge?.()
+    if (!found?.state().configured) return null
+    if (r2Looked && Date.now() - r2Looked.at < R2_LOOK_MS) return r2Looked.space
+    const space = spaceFolderUnder(r2Location(''))
+    let result: string | null = null
+    try {
+      await readShareFile(found.openPlace(joinPlace(space, PERSONAL_FOLDER)))
+      result = space
+    } catch {
+      result = null
+    }
+    r2Looked = { at: Date.now(), space: result }
+    return result
+  }
+
+  /** The personal space's folder: this PC's own, the one the person chose, or one a synced root, Drive or R2 holds. */
   const spaceFolder = async (): Promise<string | null> =>
     syncService.personalSpaceFolder() ??
     chosenSpace ??
     findPersonalSpace(syncedRoots(process.env, fs), fs) ??
-    (await driveSpace())
+    (await driveSpace()) ??
+    (await r2Space())
 
   const refuse = (error: unknown): never => {
     if (error instanceof PersonalSpaceError) {
@@ -269,6 +302,9 @@ export function registerDevicesHandlers({
         if (isDriveLocation(folder)) {
           if (!driveSync?.ready()) throw new Error(t('errors:sharing.no-drive-account'))
           await driveSync.setAsideSpace(folder, new Date())
+        } else if (isR2Location(folder)) {
+          // A bucket has no folders to move; its old space stays where it is.
+          throw new Error('An R2 personal space cannot be set aside')
         } else {
           setAsideFolderSpace(folder, new Date(), fs)
         }

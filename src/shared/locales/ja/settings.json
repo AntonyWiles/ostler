@@ -824,6 +824,8 @@
     "anotherFolder": "別のフォルダー…",
     "anotherFolderHint": "ネットワーク ドライブ上のフォルダーなど、PC 間で共有している任意のフォルダー。",
     "driveHint": "Google ドライブに保存されます。この PC にフォルダーは作られません。",
+    "r2Bucket": "自分の R2 バケット",
+    "r2Hint": "自分の Cloudflare R2 バケットに保存します。この PC にフォルダーは作りません。",
     "keepHere": "ここに保存",
     "cancel": "キャンセル",
     "foundIn": "{{place}} にスペースが見つかりました。",

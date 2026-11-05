@@ -192,6 +192,8 @@
     "anotherFolder": "Another folder…",
     "anotherFolderHint": "Any folder your PCs share, such as one on a network drive.",
     "driveHint": "Kept in your Google Drive, with no folder on this PC.",
+    "r2Bucket": "My own R2 bucket",
+    "r2Hint": "Kept in your own Cloudflare R2 bucket, with no folder on this PC.",
     "keepHere": "Keep them here",
     "cancel": "Cancel",
     "foundIn": "Found your space in {{place}}.",

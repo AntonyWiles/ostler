@@ -868,6 +868,8 @@
     "anotherFolder": "Otra carpeta…",
     "anotherFolderHint": "Cualquier carpeta que compartan tus PC, como una en una unidad de red.",
     "driveHint": "Se guarda en tu Google Drive, sin ninguna carpeta en este PC.",
+    "r2Bucket": "Mi propio bucket de R2",
+    "r2Hint": "Se guarda en tu propio bucket de Cloudflare R2, sin carpeta en este PC.",
     "keepHere": "Guardarlos aquí",
     "cancel": "Cancelar",
     "foundIn": "Se encontró tu espacio en {{place}}.",
