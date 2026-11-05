@@ -835,7 +835,9 @@
     "chooseSpaceFolder": "Choose the folder that holds your {{brand}} space",
     "noSpaceInFolder": "There's no {{brand}} space in that folder. If your other PC set it up just now, wait for it to finish syncing here, then try again.",
     "newerSpace": "That space was made by a newer version of {{brand}}. Update {{brand}} on this PC, then try again.",
-    "placeGone": "That folder is no longer on this PC. Choose another place."
+    "placeGone": "That folder is no longer on this PC. Choose another place.",
+    "alreadyInR2": "Your space is already in your R2 bucket.",
+    "moveFailed": "The files could not be copied into your R2 bucket."
   },
   "sharing": {
     "chooseShareFolder": "Share this project through",

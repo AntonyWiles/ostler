@@ -2,7 +2,12 @@ import { dialog, type BrowserWindow } from 'electron'
 import * as fs from 'node:fs'
 import * as os from 'node:os'
 import * as path from 'node:path'
-import { DRIVE_PLACE_CHOICE, R2_PLACE_CHOICE, type PersonalSpaceState } from '@shared/ostler-api'
+import {
+  DRIVE_PLACE_CHOICE,
+  R2_PLACE_CHOICE,
+  type PersonalSpaceState,
+  type SpaceMoveView
+} from '@shared/ostler-api'
 import { t } from '@shared/i18n'
 import { RemoveMemberError } from '../services/sync/rotation'
 import {
@@ -14,7 +19,7 @@ import {
   spaceFolderUnder
 } from '../services/sync/personal-space'
 import { isDriveLocation } from '../services/sync/drive-transport'
-import { isR2Location, r2Location } from '../services/sync/r2-transport'
+import { isR2Location, R2Error, r2Location } from '../services/sync/r2-transport'
 import type { DriveSyncSettings } from '../services/sync/drive-sync-settings'
 import { joinPlace, readShareFile } from '../services/sync/sharing'
 import { syncedRoots, syncPlaces } from '../services/sync/share-folder-finder'
@@ -184,6 +189,22 @@ export function registerDevicesHandlers({
     throw error
   }
 
+  // The move into R2 on this run: its progress and how it ended (the section reads it every few seconds).
+  let move: Omit<SpaceMoveView, 'canMove' | 'movedElsewhere'> = {
+    running: false,
+    copied: 0,
+    total: 0,
+    result: null,
+    error: null,
+    kept: 0
+  }
+
+  const moveView = (own: string): SpaceMoveView => ({
+    ...move,
+    canMove: !isR2Location(own) && Boolean(r2Bridge?.()?.state().configured),
+    movedElsewhere: syncService.spaceMovedElsewhere() !== null
+  })
+
   /** The state the settings show. Looks for the space and tries to finish pairing when it is waiting. */
   const stateOf = async (): Promise<PersonalSpaceState> => {
     const own = syncService.personalSpaceFolder()
@@ -204,7 +225,8 @@ export function registerDevicesHandlers({
         devices,
         requests: await syncService.pendingPairingRequests(own).catch(() => []),
         places: [],
-        driveReady: false
+        driveReady: false,
+        move: moveView(own)
       }
     }
     const folder = await spaceFolder()
@@ -321,6 +343,35 @@ export function registerDevicesHandlers({
 
   handleApi('allowDevice', async (_event, deviceId: unknown): Promise<PersonalSpaceState> => {
     await syncService.allowDevice(requireSpace(), requireDeviceId(deviceId)).catch(refuse)
+    return stateOf()
+  })
+
+  handleApi('moveSpaceToR2', (): Promise<PersonalSpaceState> => {
+    const own = requireSpace()
+    if (!move.running) {
+      if (isR2Location(own)) throw new Error(t('errors:personalSpace.alreadyInR2'))
+      if (!r2Bridge?.()?.state().configured) throw new Error(t('errors:r2Sync.notSetUp'))
+      move = { running: true, copied: 0, total: 0, result: null, error: null, kept: 0 }
+      void syncService
+        .moveSpaceToR2((progress) => {
+          move = { ...move, copied: progress.copied, total: progress.total }
+        })
+        .then(({ kept }) => {
+          move = { ...move, running: false, result: 'done', kept }
+        })
+        .catch((error: unknown) => {
+          console.error('[devices] Moving the personal space into R2 failed:', error)
+          move = {
+            ...move,
+            running: false,
+            result: 'failed',
+            error:
+              error instanceof R2Error
+                ? t(`errors:r2Sync.call.${error.reason}`)
+                : t('errors:personalSpace.moveFailed')
+          }
+        })
+    }
     return stateOf()
   })
 

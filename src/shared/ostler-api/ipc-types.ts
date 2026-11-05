@@ -1130,6 +1130,7 @@ export const IPC_CHANNELS = {
   START_NEW_PERSONAL_SPACE: 'ostler:start-new-personal-space',
   ALLOW_DEVICE: 'ostler:allow-device',
   REMOVE_DEVICE: 'ostler:remove-device',
+  MOVE_SPACE_TO_R2: 'ostler:move-space-to-r2',
   LIST_ACCOUNTS: 'ostler:list-accounts',
   LIST_ACCOUNT_PROVIDERS: 'ostler:list-account-providers',
   CONNECT_ACCOUNT: 'ostler:connect-account',
@@ -3209,6 +3210,11 @@ export interface OstlerAPI {
   allowDevice(deviceId: string): Promise<Result<PersonalSpaceState>>
   /** Removes one of this person's devices from the personal space and from the shared projects. */
   removeDevice(deviceId: string): Promise<Result<PersonalSpaceState>>
+  /**
+   * Starts moving the personal space and its projects from Drive or a folder into the R2 bucket;
+   * returns at once, and the state's `move` shows the progress. The old copy is left in place.
+   */
+  moveSpaceToR2(): Promise<Result<PersonalSpaceState>>
 
   // --- Connected accounts ---
   listAccounts(): Promise<Result<ConnectedAccount[]>>

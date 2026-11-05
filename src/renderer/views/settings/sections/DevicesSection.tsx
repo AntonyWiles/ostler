@@ -3,7 +3,8 @@ import type {
   PairingRequestView,
   PersonalDeviceView,
   PersonalSpaceState,
-  Result
+  Result,
+  SpaceMoveView
 } from '@shared/ostler-api'
 import { BRAND } from '@shared/brand'
 import { t } from '@shared/i18n'
@@ -93,6 +94,18 @@ export function DevicesSection() {
     await run(`remove-${device.deviceId}`, () => window.ostlerAPI.removeDevice(device.deviceId))
   }
 
+  const moveToR2 = async (folder: string | null) => {
+    if (!state.move?.running && state.move?.result !== 'failed') {
+      const ok = await confirm({
+        title: t('settings:devicesSection.moveConfirmTitle'),
+        body: t('settings:devicesSection.moveHint', { place: folder ? placeOf(folder) : '' }),
+        confirmLabel: t('settings:devicesSection.moveConfirm')
+      })
+      if (!ok) return
+    }
+    await run('move', () => window.ostlerAPI.moveSpaceToR2())
+  }
+
   return (
     <>
       {alert}
@@ -116,6 +129,14 @@ export function DevicesSection() {
             />
           ))}
         </ul>
+        {state.move && (
+          <MoveToR2
+            move={state.move}
+            folder={state.folder}
+            busy={busy !== null}
+            onMove={() => void moveToR2(state.folder)}
+          />
+        )}
         {requests.map((request) => (
           <RequestRow
             key={request.deviceId}
@@ -188,5 +209,54 @@ function RequestRow({
         {t('settings:devicesSection.notNow')}
       </Button>
     </div>
+  )
+}
+
+/** Moving the space from Drive or a folder into the R2 bucket: the button, its progress and how it ended. */
+function MoveToR2({
+  move,
+  folder,
+  busy,
+  onMove
+}: {
+  move: SpaceMoveView
+  folder: string | null
+  busy: boolean
+  onMove: () => void
+}) {
+  if (move.running) {
+    return (
+      <p className="ostler-settings-hint" role="status">
+        {t('settings:devicesSection.moving', { copied: move.copied, total: move.total })}
+      </p>
+    )
+  }
+  return (
+    <>
+      {move.result === 'done' && (
+        <InlineAlert tone="success">
+          {t('settings:devicesSection.moved')}
+          {move.kept > 0 && ` ${t('settings:devicesSection.movedKept', { count: move.kept })}`}
+        </InlineAlert>
+      )}
+      {move.result === 'failed' && (
+        <InlineAlert tone="danger">
+          {t('settings:devicesSection.moveFailed', { error: move.error ?? '' })}
+        </InlineAlert>
+      )}
+      {move.movedElsewhere && move.result === null && (
+        <InlineAlert tone="warning">{t('settings:devicesSection.movedElsewhere')}</InlineAlert>
+      )}
+      {move.canMove && (
+        <div className="ostler-settings-inline-actions">
+          <p>{t('settings:devicesSection.moveHint', { place: folder ? placeOf(folder) : '' })}</p>
+          <Button variant="secondary" disabled={busy} onClick={onMove}>
+            {move.result === 'failed'
+              ? t('settings:devicesSection.moveAgain')
+              : t('settings:devicesSection.moveToR2')}
+          </Button>
+        </div>
+      )}
+    </>
   )
 }

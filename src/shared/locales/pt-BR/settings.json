@@ -879,7 +879,17 @@
     "stopWaiting": "Parar de esperar",
     "noDeviceCanAllow": "Não tem mais o seu outro dispositivo?",
     "startNewExplain": "Se o dispositivo que criou este espaço não existe mais, crie um novo espaço aqui. O antigo em {{place}} vai para uma pasta chamada “Old personal space” com a data de hoje; nada é apagado. Qualquer dispositivo que ainda use o espaço antigo terá de entrar no novo.",
-    "startNew": "Criar um novo espaço aqui"
+    "startNew": "Criar um novo espaço aqui",
+    "moveToR2": "Mover para o R2",
+    "moveHint": "Copia seu espaço e seus projetos para o seu bucket R2; depois todos os dispositivos sincronizam lá. A cópia em {{place}} fica como está; nada é excluído.",
+    "moveConfirmTitle": "Mover seu espaço para o R2?",
+    "moveConfirm": "Mover",
+    "moving": "Copiando para o R2… {{copied}} de {{total}} arquivos",
+    "moved": "Seu espaço agora está no seu bucket R2, e seus outros dispositivos mudam na próxima sincronização. A cópia antiga continua onde estava; exclua-a você mesmo quando tiver certeza.",
+    "movedKept": "Projetos que ficaram onde estavam: {{count}}",
+    "moveFailed": "A mudança parou: {{error}} Nada foi perdido. Tente de novo para continuar de onde parou.",
+    "moveAgain": "Tentar de novo",
+    "movedElsewhere": "Outro dispositivo moveu seu espaço para um bucket R2. Configure o mesmo bucket em Sincronização avançada para que este PC o acompanhe."
   },
   "email": {
     "title": "E-mail",

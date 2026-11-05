@@ -857,7 +857,17 @@
     "stopWaiting": "Nicht mehr warten",
     "noDeviceCanAllow": "Dein anderes Gerät gibt es nicht mehr?",
     "startNewExplain": "Wenn das Gerät, das diesen Bereich angelegt hat, nicht mehr da ist, lege hier einen neuen Bereich an. Der alte in {{place}} wird in einen Ordner „Old personal space“ mit dem heutigen Datum verschoben; nichts wird gelöscht. Geräte, die den alten Bereich noch nutzen, müssen dem neuen beitreten.",
-    "startNew": "Hier einen neuen Bereich anlegen"
+    "startNew": "Hier einen neuen Bereich anlegen",
+    "moveToR2": "Zu R2 verschieben",
+    "moveHint": "Kopiert Ihren Bereich und Ihre Projekte in Ihren R2-Bucket; danach synchronisieren alle Geräte dort. Die Kopie in {{place}} bleibt unverändert; nichts wird gelöscht.",
+    "moveConfirmTitle": "Bereich zu R2 verschieben?",
+    "moveConfirm": "Verschieben",
+    "moving": "Kopieren nach R2 … {{copied}} von {{total}} Dateien",
+    "moved": "Ihr Bereich liegt jetzt in Ihrem R2-Bucket; Ihre anderen Geräte wechseln bei der nächsten Synchronisierung. Die alte Kopie ist noch da; löschen Sie sie selbst, wenn Sie sicher sind.",
+    "movedKept": "Projekte, die an ihrem Ort geblieben sind: {{count}}",
+    "moveFailed": "Das Verschieben wurde angehalten: {{error}} Nichts ging verloren. Versuchen Sie es erneut, um dort weiterzumachen.",
+    "moveAgain": "Erneut versuchen",
+    "movedElsewhere": "Ein anderes Gerät hat Ihren Bereich in einen R2-Bucket verschoben. Richten Sie denselben Bucket unter Erweiterte Synchronisierung ein, damit dieser PC folgen kann."
   },
   "email": {
     "title": "E-Mail",

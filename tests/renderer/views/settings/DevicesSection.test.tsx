@@ -85,6 +85,57 @@ describe('Settings › Devices', () => {
     await waitFor(() => expect(removeDevice).toHaveBeenCalledWith('b'.repeat(32)))
   })
 
+  it('moves the space into R2 after a confirmation, shows the progress, then says the old copy stays', async () => {
+    const move = {
+      canMove: true,
+      running: false,
+      copied: 0,
+      total: 0,
+      result: null,
+      error: null,
+      kept: 0,
+      movedElsewhere: false
+    }
+    let current: PersonalSpaceState = { ...ON, move }
+    const moveSpaceToR2 = vi.fn(async (): Promise<Result<PersonalSpaceState>> => {
+      current = { ...ON, move: { ...move, running: true, copied: 3, total: 10 } }
+      return { ok: true, value: current }
+    })
+    installOstlerApi({
+      getPersonalSpace: async () => ({ ok: true, value: current }),
+      moveSpaceToR2
+    })
+    renderSection()
+    fireEvent.click(await screen.findByRole('button', { name: 'Move to R2' }))
+    const dialog = await screen.findByRole('alertdialog', { name: 'Move your space to R2?' })
+    expect(within(dialog).getByText(/nothing is deleted/)).toBeInTheDocument()
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Move' }))
+    expect(await screen.findByText('Copying to R2… 3 of 10 files')).toBeInTheDocument()
+    expect(moveSpaceToR2).toHaveBeenCalledTimes(1)
+  })
+
+  it('says how a move ended and offers to try again after a failure', async () => {
+    const failed: PersonalSpaceState = {
+      ...ON,
+      move: {
+        canMove: true,
+        running: false,
+        copied: 4,
+        total: 10,
+        result: 'failed',
+        error: 'The bucket could not be reached.',
+        kept: 0,
+        movedElsewhere: false
+      }
+    }
+    installOstlerApi({ getPersonalSpace: async () => ({ ok: true, value: failed }) })
+    renderSection()
+    expect(
+      await screen.findByText(/The move stopped: The bucket could not be reached\./)
+    ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument()
+  })
+
   it('shows a request with its code, allows it, and hides it on Not now', async () => {
     const requestId = 'c'.repeat(32)
     const request = { deviceId: requestId, deviceName: 'Tablet', code: '482915' }

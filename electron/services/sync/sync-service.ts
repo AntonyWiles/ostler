@@ -31,6 +31,15 @@ import { ROLE_CAPABILITIES } from '@shared/share-roles'
 import { canWriteIn, FolderTransport, type SyncTransport } from './folder-transport'
 import { isDriveLocation } from './drive-transport'
 import { isR2Location } from './r2-transport'
+import {
+  copyPlaces,
+  MOVED_ENTRY_ID,
+  movedTo,
+  planMove,
+  writeMovedEntry,
+  type MoveProgress,
+  type PlannedMove
+} from './move-to-r2'
 import { retryWaiting, type ArrivedBlocker } from './apply'
 import { pullLibraryFiles, pushLibraryFiles, type LibraryFileStore } from './library-files'
 import { pullRecords, pushRecords } from './records'
@@ -186,6 +195,8 @@ export interface SyncServiceOptions {
   openDrive?(place: string): SyncTransport
   /** A share kept in an R2 bucket (`r2:<path>`), through the bucket set up under Advanced sync. */
   openR2?(place: string): SyncTransport
+  /** The personal space moved into the R2 bucket (this PC moved it, or followed another device): the folder copying stops. */
+  onSpaceMoved?(place: string): void
   /** This PC wrote change files to the share at `folder` (Drive shares ask Drive what changed sooner). */
   onPushed?(folder: string): void
   /** Tests: the folder transport, and timer lengths. */
@@ -237,6 +248,10 @@ export class SyncService {
   /** Pairing requests already announced, by device id, so each is announced once. */
   private readonly announcedRequests = new Set<string>()
   private stopped = false
+  /** The move into R2 under way, so two never run at once. */
+  private moveRun: Promise<{ copied: number; kept: number }> | null = null
+  /** Another device moved the space into R2 and this PC could not follow (no bucket here). */
+  private unfollowedMove: string | null = null
 
   constructor(private readonly options: SyncServiceOptions) {
     this.db = new Database(options.databasePath)
@@ -720,8 +735,19 @@ export class SyncService {
     for (const problem of problems) {
       this.options.logError('A shared project entry could not be read:', problem.reason)
     }
+    const moved = movedTo(entries)
+    const space = this.personalSpaceFolder()
+    if (moved && space && !isR2Location(space) && !this.moveRun) {
+      // Not awaited: the move stops this share's queue, and this step runs inside it.
+      void this.moveSpace(false).catch((error) => {
+        this.unfollowedMove = moved
+        this.options.logError('Could not follow the personal space into R2:', error)
+        this.options.onStateChanged(PERSONAL_PROJECT_ID)
+      })
+    }
     const waiting: ShareProblem[] = []
     for (const entry of entries) {
+      if (entry.projectId === MOVED_ENTRY_ID) continue
       const share = this.shareRow(entry.projectId)
       if (entry.removed) {
         if (share?.kind === 'project') {
@@ -785,6 +811,95 @@ export class SyncService {
   personalSpaceFolder(): string | null {
     const row = this.shareRow(PERSONAL_PROJECT_ID)
     return row ? parentPlace(row.folder) : null
+  }
+
+  // ─── Moving the space into R2 ───────────────────────────────────────────
+
+  /** Where another device moved the space when this PC could not follow it; null otherwise. */
+  spaceMovedElsewhere(): string | null {
+    return this.unfollowedMove
+  }
+
+  /**
+   * Moves the personal space and its project shares from Drive or a folder into the R2 bucket
+   * (`r2:Ostler`): copies what the bucket lacks, tells the other devices through the old personal
+   * share, then switches this PC's places. Running it again after a failure carries on where it
+   * stopped. The old copy stays where it was.
+   */
+  moveSpaceToR2(
+    onProgress?: (progress: MoveProgress) => void
+  ): Promise<{ copied: number; kept: number }> {
+    return this.moveSpace(true, onProgress)
+  }
+
+  private moveSpace(
+    announce: boolean,
+    onProgress?: (progress: MoveProgress) => void
+  ): Promise<{ copied: number; kept: number }> {
+    if (this.moveRun) return this.moveRun
+    const run = this.runMove(announce, onProgress).finally(() => {
+      this.moveRun = null
+    })
+    this.moveRun = run
+    return run
+  }
+
+  private async runMove(
+    announce: boolean,
+    onProgress?: (progress: MoveProgress) => void
+  ): Promise<{ copied: number; kept: number }> {
+    const space = this.personalSpaceFolder()
+    if (!space) throw new Error('There is no personal space to move')
+    if (isR2Location(space)) return { copied: 0, kept: 0 }
+    const { moves, kept } = planMove(space, this.shares())
+    const personal = moves.find((move) => move.projectId === PERSONAL_PROJECT_ID)
+    if (!personal) throw new Error('The personal share cannot be moved into R2')
+    const pairs = moves.map((move) => ({
+      from: this.transportFor(move.from),
+      to: this.transportFor(move.to)
+    }))
+    const copied = await copyPlaces(pairs, onProgress)
+    if (announce) {
+      const pair = pairs[moves.indexOf(personal)]
+      await writeMovedEntry(this.db, pair.from, parentPlace(personal.to))
+      await copyPlaces([pair])
+    }
+    await this.switchPlaces(moves)
+    // What reached the old places while the copy ran (from this PC or another device) follows it.
+    await copyPlaces(pairs).catch((error) =>
+      this.options.logError('The last copy into R2 after moving failed:', error)
+    )
+    this.unfollowedMove = null
+    this.options.onSpaceMoved?.(parentPlace(personal.to))
+    return { copied: copied.copied, kept }
+  }
+
+  /** Points each moved share at its place in the bucket, in one transaction, and runs it from there. */
+  private async switchPlaces(moves: PlannedMove[]): Promise<void> {
+    const switched = moves.filter((move) => move.projectId !== null)
+    for (const move of switched) {
+      const running = this.running.get(move.projectId as string)
+      if (!running) continue
+      running.stopWatch()
+      this.running.delete(running.projectId)
+      await running.queue.catch(() => undefined)
+    }
+    const update = this.db.prepare(
+      'UPDATE sync_shares SET folder = @folder WHERE project_id = @projectId'
+    )
+    this.db.transaction(() => {
+      for (const move of switched) update.run({ folder: move.to, projectId: move.projectId })
+    })()
+    for (const move of switched) {
+      const row = this.shareRow(move.projectId as string)
+      if (row) this.open(row)
+      this.options.onStateChanged(move.projectId as string)
+    }
+    this.watchPairingRequests()
+    // The entries now name the bucket places, for the devices that join later.
+    void this.publishShares().catch((error) =>
+      this.options.logError('Share entries could not be written after moving:', error)
+    )
   }
 
   /** Makes this PC's personal share in `root` and starts running it. */
