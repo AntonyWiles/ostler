@@ -8,7 +8,7 @@
  *   node mobile/scripts/sideload-android.cjs --dir <short folder> [options]
  *
  *   --dir <folder>      Where the build happens (or OSTLER_SIDELOAD_DIR). Must be a short path such
- *                       as C:\o\dev: CMake fails on long Windows paths. It must be a `git worktree`
+ *                       as C:\b\dev: CMake fails on long Windows paths. It must be a `git worktree`
  *                       of this repository; the working tree is copied into it before each build.
  *   --device <serial>   The phone, as `adb devices` lists it (or ANDROID_SERIAL). Without it, the
  *                       only device connected is used, else a wireless-debugging phone found by

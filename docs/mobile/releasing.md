@@ -76,13 +76,13 @@ Before each upload that Play has not seen:
    second checkout at a short path as a Git worktree, made once:
 
    ```
-   git worktree add --detach C:\o\rel main
+   git worktree add --detach C:\b\rel main
    ```
 
    For each release, move it to the commit you just made and build:
 
    ```
-   cd C:\o\rel
+   cd C:\b\rel
    git checkout --detach main
    cd mobile
    npm ci

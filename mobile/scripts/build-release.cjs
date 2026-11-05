@@ -24,7 +24,7 @@ const mobile = path.resolve(__dirname, '..')
 const repo = path.dirname(mobile)
 const configPath = path.join(mobile, 'app.config.ts')
 const windows = process.platform === 'win32'
-// `C:\o\rel` is 8 characters; the native build's deepest paths add about 240.
+// `C:\b\rel` is 8 characters; the native build's deepest paths add about 240.
 const MAX_REPO_PATH = 16
 
 function fail(message) {
@@ -81,7 +81,7 @@ if (process.argv.includes('--bump')) {
 if (windows && repo.length > MAX_REPO_PATH) {
   fail(
     `${repo} is too long a path for the native build. Build from a short checkout instead, ` +
-      'for example: git worktree add --detach C:\\o\\rel main, then npm install and ' +
+      'for example: git worktree add --detach C:\\b\\rel main, then npm install and ' +
       'npm run release:android in its mobile folder.'
   )
 }
