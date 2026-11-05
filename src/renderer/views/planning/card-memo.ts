@@ -22,6 +22,7 @@ export const CARD_WORKSPACE_INPUTS = [
   'lastStatusChangeAt',
   'openBlockersByWorkItem',
   'changedSourceWorkItemIds',
+  'unseenTasks',
   'attachmentCounts',
   'commentCounts',
   'taskContacts',

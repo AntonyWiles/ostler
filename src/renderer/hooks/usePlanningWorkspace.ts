@@ -16,6 +16,7 @@ import { useDecisions } from './planning/useDecisions'
 import { useIterations } from './planning/useIterations'
 import { useSubprojects } from './planning/useSubprojects'
 import { useTaskLinkActions } from './planning/useTaskLinkActions'
+import { useUnseenTasks } from './planning/useUnseenTasks'
 
 export { COLUMNS } from './planning/columns'
 export type { CreateMode } from './planning/usePlanningCreateForm'
@@ -104,6 +105,7 @@ export function usePlanningWorkspace(
   const goalsMilestones = useGoalsMilestones(runner, records)
   const decisions = useDecisions(runner, records, createForm)
   const iterations = useIterations(projectId, runner, records)
+  const unseen = useUnseenTasks(projectId, records.workItems, drawer.selectedWorkItemId)
 
   return {
     projectId,
@@ -123,7 +125,8 @@ export function usePlanningWorkspace(
     ...goalsMilestones,
     ...decisions,
     ...iterations,
-    ...subprojects
+    ...subprojects,
+    ...unseen
   }
 }
 

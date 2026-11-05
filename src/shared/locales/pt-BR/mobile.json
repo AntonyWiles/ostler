@@ -129,7 +129,9 @@
     "doFirstNote": "Tarefas abertas para atacar primeiro: atrasadas, depois as que vencem em 3 dias, depois por prioridade.",
     "overdue": "Atrasada desde {{date}}",
     "dueToday": "Vence hoje",
-    "waiting": "Aguarda {{count}}"
+    "waiting": "Aguarda {{count}}",
+    "new": "Nova",
+    "changed": "Alterada"
   },
   "links": {
     "add": "Adicionar um link",

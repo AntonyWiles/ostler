@@ -2734,5 +2734,12 @@
     "label": "Why is it blocked?",
     "placeholder": "Waiting on you, on a task, on a date…",
     "nothingLeft": "Everything this task waits on is done, so it may be ready to move on."
+  },
+  "unseen": {
+    "new": "New",
+    "changed": "Changed",
+    "newTitle": "New since you last opened it",
+    "changedTitle": "Changed since you last opened it",
+    "markAll": "Mark all as seen"
   }
 }

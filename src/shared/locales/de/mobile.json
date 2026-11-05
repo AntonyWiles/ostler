@@ -129,7 +129,9 @@
     "doFirstNote": "Offene Aufgaben, die zuerst dran sind: überfällige, dann in den nächsten 3 Tagen fällige, dann nach Priorität.",
     "overdue": "Überfällig seit {{date}}",
     "dueToday": "Heute fällig",
-    "waiting": "Wartet auf {{count}}"
+    "waiting": "Wartet auf {{count}}",
+    "new": "Neu",
+    "changed": "Geändert"
   },
   "links": {
     "add": "Link einfügen",

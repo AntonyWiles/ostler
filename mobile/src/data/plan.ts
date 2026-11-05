@@ -531,6 +531,8 @@ export interface TaskRowDetails {
   /** Open tasks it waits on. */
   waitingOn: number
   comments: number
+  /** Made or changed on another device since this phone last opened it (MOP-82), or null. */
+  unseen: 'new' | 'changed' | null
 }
 
 function jsonList(text: string | null): string[] {
@@ -561,8 +563,10 @@ export function taskRowDetails(db: QueryDb, projectId: string): Map<string, Task
                  WHERE d.work_item_id = w.id AND o.status <> 'done' AND o.deleted_at IS NULL
                    AND o.resolution IS NULL) AS waiting,
               (SELECT COUNT(*) FROM planning_comments m
-                 WHERE m.work_item_id = w.id AND m.deleted_at IS NULL) AS comments
+                 WHERE m.work_item_id = w.id AND m.deleted_at IS NULL) AS comments,
+              u.kind AS unseen
        FROM planning_work_items w LEFT JOIN people p ON p.id = w.assignee_id
+         LEFT JOIN task_unseen u ON u.work_item_id = w.id
        WHERE w.project_id = ? AND w.deleted_at IS NULL`
     )
     .all(projectId) as {
@@ -573,6 +577,7 @@ export function taskRowDetails(db: QueryDb, projectId: string): Map<string, Task
     checked: number
     waiting: number
     comments: number
+    unseen: 'new' | 'changed' | null
   }[]
   const result = new Map<string, TaskRowDetails>()
   for (const row of rows) {
@@ -583,7 +588,8 @@ export function taskRowDetails(db: QueryDb, projectId: string): Map<string, Task
       checked: Math.min(Number(row.checked), checklist),
       initials: row.assignee ? initialsOf(row.assignee) : null,
       waitingOn: Number(row.waiting),
-      comments: Number(row.comments)
+      comments: Number(row.comments),
+      unseen: row.unseen ?? null
     })
   }
   return result
@@ -628,4 +634,15 @@ export function priorityOrder<T extends TaskSummary>(tasks: T[]): T[] {
 /** Tasks by due date, soonest first, undated last. */
 export function dueOrder<T extends TaskSummary>(tasks: T[]): T[] {
   return [...tasks].sort((a, b) => (a.targetDate ?? '9999').localeCompare(b.targetDate ?? '9999'))
+}
+
+/**
+ * Clears the task's new or changed mark: the person has opened it (MOP-82). Returns whether it
+ * had one, so the lists need reading again.
+ */
+export function markTaskSeen(db: EditDb, taskId: string): boolean {
+  const marked = db.prepare('SELECT 1 FROM task_unseen WHERE work_item_id = ?').get(taskId)
+  if (!marked) return false
+  db.prepare('DELETE FROM task_unseen WHERE work_item_id = ?').run(taskId)
+  return true
 }

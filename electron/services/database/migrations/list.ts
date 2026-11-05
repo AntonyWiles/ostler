@@ -92,6 +92,7 @@ import { taskFollows } from './0090-task-follows'
 import { signOffs } from './0091-sign-offs'
 import { blockedReasonOwnerOnly } from './0092-blocked-reason-owner-only'
 import { dropOwnerOnly } from './0093-drop-owner-only'
+import { taskUnseen } from './0094-task-unseen'
 
 /*
  * The list of migrations on its own, importing nothing from Node, so the phone app can load it
@@ -192,7 +193,8 @@ export const MIGRATIONS: readonly Migration[] = [
   taskFollows,
   signOffs,
   blockedReasonOwnerOnly,
-  dropOwnerOnly
+  dropOwnerOnly,
+  taskUnseen
 ]
 
 /** The schema version this build writes. */

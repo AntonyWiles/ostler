@@ -48,6 +48,9 @@ export function TaskRow({ task, theme, note, details, showStatus, onPress }: Pro
       ? t('mobile:project.taskLabel', { title: task.title, status })
       : t('mobile:project.taskLabelDue', { title: task.title, status, date })
   const done = task.status === 'done'
+  const unseen = details?.unseen ?? null
+  const unseenWord =
+    unseen === 'new' ? t('mobile:list.new') : unseen === 'changed' ? t('mobile:list.changed') : null
   const strip = done ? null : priorityColor(theme, task.priority)
   const tone = task.targetDate === null || done ? null : dueTone(task.targetDate, todayIso())
   const parts: { text: string; color: string; bold?: boolean }[] = []
@@ -94,7 +97,7 @@ export function TaskRow({ task, theme, note, details, showStatus, onPress }: Pro
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={label}
+      accessibilityLabel={unseenWord ? `${unseenWord}. ${label}` : label}
       onPress={onPress}
       style={({ pressed }) => [
         styles.row,
@@ -107,6 +110,11 @@ export function TaskRow({ task, theme, note, details, showStatus, onPress }: Pro
     >
       <View style={[styles.dot, { backgroundColor: statusColor(theme, task.status) }]} />
       <View style={styles.text}>
+        {unseenWord && (
+          <Text style={[styles.unseen, { color: theme.accent }]}>
+            {unseen === 'new' ? '●' : '○'} {unseenWord}
+          </Text>
+        )}
         <Text
           numberOfLines={2}
           style={[
@@ -158,6 +166,7 @@ const styles = StyleSheet.create({
   struck: { textDecorationLine: 'line-through' },
   meta: { fontSize: 12.5 },
   bold: { fontWeight: '600' },
+  unseen: { fontSize: 11.5, fontWeight: '700' },
   avatar: {
     width: 26,
     height: 26,

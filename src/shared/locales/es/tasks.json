@@ -2859,5 +2859,12 @@
     "label": "¿Por qué está bloqueada?",
     "placeholder": "Esperando por ti, por una tarea, por una fecha…",
     "nothingLeft": "Todo lo que espera esta tarea está hecho, así que quizá pueda seguir."
+  },
+  "unseen": {
+    "new": "Nueva",
+    "changed": "Cambiada",
+    "newTitle": "Nueva desde la última vez que la abriste",
+    "changedTitle": "Cambiada desde la última vez que la abriste",
+    "markAll": "Marcar todas como vistas"
   }
 }

@@ -129,7 +129,9 @@
     "doFirstNote": "Attività aperte da affrontare per prime: in ritardo, poi in scadenza entro 3 giorni, poi per priorità.",
     "overdue": "In ritardo dal {{date}}",
     "dueToday": "In scadenza oggi",
-    "waiting": "Attende {{count}}"
+    "waiting": "Attende {{count}}",
+    "new": "Nuova",
+    "changed": "Modificata"
   },
   "links": {
     "add": "Aggiungi un link",

@@ -45,6 +45,7 @@ import type { ListColumnId, ListColumnKey } from './list-settings'
 import { t } from '@shared/i18n'
 import { taskIdLabel, taskKey } from '@shared/task-key'
 import { TaskTypeIconFor } from '../../../task-types/TaskTypeIcon'
+import { UnseenMark } from '../UnseenMark'
 import { DateEditor, EstimateEditor, TitleEditor, priorityMenuEntries } from '../inline-editors'
 import { SubprojectChip, subprojectOptions } from '../subproject-ui'
 
@@ -415,6 +416,7 @@ export function listColumns(
               row.depth > 0 && <span className="list-cell__twig" aria-hidden="true" />
             )}
             <TaskTypeIconFor typeId={row.item.typeId} types={ws.taskTypeById} />
+            <UnseenMark kind={ws.unseenTasks[row.item.id]} />
             {isEditing(row, 'title') ? (
               <TitleEditor
                 initial={row.item.title}

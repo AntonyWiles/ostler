@@ -29,6 +29,7 @@ const CORE = [
   'sync-runner',
   'synced-tables',
   'task-numbers',
+  'task-unseen',
   'http-transport',
   'drive-client',
   'drive-transport',

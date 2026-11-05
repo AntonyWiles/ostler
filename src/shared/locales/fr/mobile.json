@@ -129,7 +129,9 @@
     "doFirstNote": "Tâches ouvertes à traiter d’abord : en retard, puis échéance sous 3 jours, puis par priorité.",
     "overdue": "En retard depuis le {{date}}",
     "dueToday": "Échéance aujourd’hui",
-    "waiting": "Attend {{count}}"
+    "waiting": "Attend {{count}}",
+    "new": "Nouvelle",
+    "changed": "Modifiée"
   },
   "links": {
     "add": "Ajouter un lien",

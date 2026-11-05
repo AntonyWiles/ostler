@@ -129,7 +129,9 @@
     "doFirstNote": "Open tasks to tackle first: overdue, then due within 3 days, then by priority.",
     "overdue": "Overdue {{date}}",
     "dueToday": "Due today",
-    "waiting": "Waiting on {{count}}"
+    "waiting": "Waiting on {{count}}",
+    "new": "New",
+    "changed": "Changed"
   },
   "links": {
     "add": "Add a link",

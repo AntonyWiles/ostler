@@ -5,6 +5,7 @@ import { Button, Checkbox, IconButton, Popover, Toolbar } from '../../ui'
 import { Columns3Cog, Eye, EyeOff, ListChecks, SlidersHorizontal } from '../../ui/icons'
 import { TaskFilterFields } from './TaskFilterFields'
 import { HiddenTasksNote } from './HiddenTasksNote'
+import { MarkAllSeenButton } from './UnseenMark'
 import { BoardViewOptionsFields } from './board-layout/BoardViewOptionsFields'
 import { BoardLayoutEditor } from './board-layout/BoardLayoutEditor'
 import { CUSTOMISE_BOARD_PARAM } from '../../navigation/paths'
@@ -48,6 +49,7 @@ export function BoardFilterBar({ ws, end }: { ws: PlanningWorkspace; end?: React
           <>
             <BoardTaskCount ws={ws} />
             <HiddenTasksNote hidden={ws.boardHidden} />
+            <MarkAllSeenButton ws={ws} />
             {hiddenColumns > 0 && (
               <IconButton
                 size="sm"

@@ -788,6 +788,9 @@ export const IPC_CHANNELS = {
   GET_SHARED_AWAY: 'ostler:get-shared-away',
   GET_TASK_FOLLOW: 'ostler:get-task-follow',
   SET_TASK_FOLLOW: 'ostler:set-task-follow',
+  GET_UNSEEN_TASKS: 'ostler:get-unseen-tasks',
+  MARK_TASKS_SEEN: 'ostler:mark-tasks-seen',
+  MARK_PROJECT_TASKS_SEEN: 'ostler:mark-project-tasks-seen',
   LIST_SIGN_OFFS_FOR_ITEM: 'ostler:list-sign-offs-for-item',
   REQUEST_SIGN_OFF: 'ostler:request-sign-off',
   APPROVE_SIGN_OFF: 'ostler:approve-sign-off',
@@ -2168,6 +2171,15 @@ export interface OstlerAPI {
   getTaskFollow(taskId: string): Promise<Result<boolean>>
   /** Follows or unfollows the task; returns the new state. */
   setTaskFollow(projectId: string, taskId: string, following: boolean): Promise<Result<boolean>>
+  /**
+   * The project's tasks made or changed by someone or something else since this device last
+   * opened them (MOP-82): task id to 'new' or 'changed'. Per device.
+   */
+  getUnseenTasks(projectId: string): Promise<Result<Record<string, 'new' | 'changed'>>>
+  /** Clears the new and changed marks on these tasks. */
+  markTasksSeen(taskIds: string[]): Promise<Result<void>>
+  /** Clears every new and changed mark in the project. */
+  markProjectTasksSeen(projectId: string): Promise<Result<void>>
   /** Sign-offs asked of a task, decision or milestone, newest first (prompt 16). */
   listSignOffsForItem(item: SignOffItem): Promise<Result<SignOff[]>>
   /** Asks a named person to sign the item off. */

@@ -1110,7 +1110,7 @@ function registerHandlers(): void {
     notifyPlanningChanged: (projectId) => signalChanged('planning', projectId)
   })
   registerTeamHandlers({ teamService, notifyTeamsChanged })
-  registerFollowHandlers({ followService })
+  registerFollowHandlers({ followService, database: planningService.database })
   registerSignOffHandlers({
     signOffService,
     notifyPlanningChanged: (projectId) => signalChanged('planning', projectId)
