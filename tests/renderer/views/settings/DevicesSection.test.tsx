@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import type { PersonalSpaceState, Result } from '@shared/ostler-api'
+import type { PersonalSpaceState, R2SyncState, Result, SetR2SyncInput } from '@shared/ostler-api'
 import { DevicesSection } from '@renderer/views/settings/sections/DevicesSection'
 import { ConfirmProvider, ToastProvider } from '@renderer/ui'
 import { installOstlerApi } from '../../fixtures/ostler-api'
@@ -56,7 +56,11 @@ describe('Settings › Devices', () => {
     })
     renderSection()
     fireEvent.click(await screen.findByRole('button', { name: 'Keep my devices in step…' }))
-    await waitFor(() => expect(createPersonalSpace).toHaveBeenCalledTimes(1))
+    // With no sync app found, a folder the person picks comes first; their own R2 bucket is offered too.
+    expect(screen.getByRole('radio', { name: 'Another folder…' })).toBeChecked()
+    expect(screen.getByRole('radio', { name: 'My own R2 bucket' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Keep them here' }))
+    await waitFor(() => expect(createPersonalSpace).toHaveBeenCalledWith(undefined, undefined))
     expect(await screen.findByText('In Google Drive › My Drive › Ostler')).toBeInTheDocument()
     expect(screen.getByText('This PC')).toBeInTheDocument()
   })
@@ -140,6 +144,61 @@ describe('Settings › Devices', () => {
     fireEvent.click(screen.getByRole('radio', { name: 'Dropbox' }))
     fireEvent.click(screen.getByRole('button', { name: 'Keep them here' }))
     await waitFor(() => expect(createPersonalSpace).toHaveBeenCalledWith(undefined, dropbox))
+  })
+
+  it('keeps the space in the person’s own R2 bucket: tests it, saves it, then makes the space there', async () => {
+    const createPersonalSpace = vi.fn(
+      async (_name?: string, _place?: string): Promise<Result<PersonalSpaceState | null>> => ({
+        ok: true,
+        value: { ...ON, folder: 'r2:Ostler' }
+      })
+    )
+    const testR2Sync = vi.fn(async (_input?: SetR2SyncInput): Promise<Result<true>> => ({
+      ok: true,
+      value: true
+    }))
+    let saveOk = false
+    const setR2Sync = vi.fn(async (_input: SetR2SyncInput): Promise<Result<R2SyncState>> =>
+      saveOk ? { ok: true, value: {} as R2SyncState } : { ok: false, error: 'Bucket refused' }
+    )
+    installOstlerApi({
+      getPersonalSpace: async () => ({ ok: true, value: OFF }),
+      createPersonalSpace,
+      testR2Sync,
+      setR2Sync
+    })
+    renderSection()
+    fireEvent.click(await screen.findByRole('button', { name: 'Keep my devices in step…' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'My own R2 bucket' }))
+    const fill = (label: string, value: string) =>
+      fireEvent.change(screen.getByLabelText(label), { target: { value } })
+    fill('Account ID', '0123456789abcdef0123456789abcdef')
+    fill('Access key ID', 'test-access-key') // hygiene-allow: made-up test key
+    fill('Secret access key', 'test-secret') // hygiene-allow: made-up test secret
+    fill('Bucket', 'ostler-example')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Test connection' }))
+    expect(await screen.findByText(/The bucket answered/)).toBeInTheDocument()
+    expect(testR2Sync).toHaveBeenCalledWith(
+      expect.objectContaining({
+        accountId: '0123456789abcdef0123456789abcdef',
+        bucket: 'ostler-example'
+      })
+    )
+
+    // A bucket that can't be saved stops before the space is made, and says why.
+    fireEvent.click(screen.getByRole('button', { name: 'Keep them here' }))
+    expect(await screen.findByText('Bucket refused')).toBeInTheDocument()
+    expect(createPersonalSpace).not.toHaveBeenCalled()
+
+    saveOk = true
+    fireEvent.click(screen.getByRole('button', { name: 'Keep them here' }))
+    await waitFor(() => expect(createPersonalSpace).toHaveBeenCalledWith(undefined, 'r2:'))
+    // The space itself is in the bucket, so there is no folder to copy.
+    expect(setR2Sync).toHaveBeenLastCalledWith(
+      expect.objectContaining({ secretAccessKey: 'test-secret', enabled: false }) // hygiene-allow: made-up test secret
+    )
+    expect(await screen.findByText('In Cloudflare R2 › Ostler')).toBeInTheDocument()
   })
 
   it('keeps the space in a folder the person picks when they choose Another folder', async () => {

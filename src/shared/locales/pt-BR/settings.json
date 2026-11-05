@@ -868,6 +868,8 @@
     "anotherFolder": "Outra pasta…",
     "anotherFolderHint": "Qualquer pasta que seus PCs compartilham, como uma em uma unidade de rede.",
     "driveHint": "Guardado no seu Google Drive, sem nenhuma pasta neste PC.",
+    "r2Bucket": "Meu próprio bucket R2",
+    "r2Hint": "Guardado no seu próprio bucket do Cloudflare R2, sem pasta neste PC.",
     "keepHere": "Guardar aqui",
     "cancel": "Cancelar",
     "foundIn": "Seu espaço foi encontrado em {{place}}.",

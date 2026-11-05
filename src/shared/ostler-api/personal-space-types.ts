@@ -38,6 +38,13 @@ export interface SyncPlaceView {
  */
 export const DRIVE_PLACE_CHOICE = 'gdrive:'
 
+/**
+ * The `place` that `createPersonalSpace` takes for "keep it in my own R2 bucket": the space goes
+ * in `Ostler/` in the bucket saved under Advanced sync (`r2:Ostler/Personal`, projects in
+ * `r2:Ostler/Projects/…`), not in a folder on this PC.
+ */
+export const R2_PLACE_CHOICE = 'r2:'
+
 export interface PersonalSpaceState {
   /** This PC has a personal space. */
   on: boolean

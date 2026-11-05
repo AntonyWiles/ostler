@@ -824,6 +824,8 @@
     "anotherFolder": "其他文件夹…",
     "anotherFolderHint": "你的电脑共享的任何文件夹，例如网络驱动器上的文件夹。",
     "driveHint": "保存在你的 Google 云端硬盘中，此电脑上不会创建文件夹。",
+    "r2Bucket": "我自己的 R2 存储桶",
+    "r2Hint": "保存在你自己的 Cloudflare R2 存储桶中，此电脑上没有文件夹。",
     "keepHere": "保存在这里",
     "cancel": "取消",
     "foundIn": "已在 {{place}} 中找到你的空间。",

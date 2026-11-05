@@ -846,6 +846,8 @@
     "anotherFolder": "Anderer Ordner…",
     "anotherFolderHint": "Jeder Ordner, den Ihre PCs teilen, etwa einer auf einem Netzlaufwerk.",
     "driveHint": "In Ihrem Google Drive gespeichert, ohne Ordner auf diesem PC.",
+    "r2Bucket": "Mein eigener R2-Bucket",
+    "r2Hint": "In Ihrem eigenen Cloudflare-R2-Bucket, ohne Ordner auf diesem PC.",
     "keepHere": "Hier aufbewahren",
     "cancel": "Abbrechen",
     "foundIn": "Ihr Bereich wurde in {{place}} gefunden.",
