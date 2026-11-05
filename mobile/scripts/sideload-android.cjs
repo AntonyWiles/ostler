@@ -19,12 +19,14 @@
  *   --setup-code <file> After installing, open the app's Advanced sync with the setup code in this
  *                       file filled in (the passphrase is still typed on the phone).
  *   --clear             Wipe Ostler Dev's data on the phone before installing (asks nothing).
+ *   --arch <abi>        The CPU the APK is built for (default arm64-v8a; x86_64 for the PC's
+ *                       Android emulator).
  *   --r2-config <file>  Build the bucket in this JSON file (an R2 setup: config, space, checkMinutes)
  *                       into the app (or OSTLER_SIDELOAD_R2_CONFIG), so it syncs from its first start
  *                       with nothing to type. Keep the file outside the repository: it holds the key.
  *
  * Gradle runs with the settings that kept a many-core Windows PC from running out of memory
- * (one worker, arm64 only, in-process Kotlin); OSTLER_SIDELOAD_GRADLE_ARGS adds more.
+ * (one worker, one CPU architecture, in-process Kotlin); OSTLER_SIDELOAD_GRADLE_ARGS adds more.
  */
 const { spawnSync, execFileSync } = require('node:child_process')
 const crypto = require('node:crypto')
@@ -51,7 +53,7 @@ function args() {
   const options = { flags: new Set() }
   for (let i = 0; i < given.length; i++) {
     const arg = given[i]
-    if (['--dir', '--device', '--setup-code', '--r2-config'].includes(arg)) {
+    if (['--dir', '--device', '--setup-code', '--r2-config', '--arch'].includes(arg)) {
       options[arg.slice(2)] = given[++i]
       if (!options[arg.slice(2)]) fail(`${arg} needs a value`)
     } else if (['--clean', '--build-only', '--install-only', '--clear'].includes(arg)) {
@@ -185,6 +187,8 @@ function main() {
   if (!fs.existsSync(path.join(dir, '.git'))) {
     fail(`${dir} is not a worktree; make it with: git worktree add --detach ${dir}`)
   }
+  const arch = options.arch ?? 'arm64-v8a'
+  if (!['arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'].includes(arch)) fail(`unknown --arch ${arch}`)
   const apkFolder = path.join(dir, 'mobile', 'android', 'app', 'build', 'outputs', 'apk', 'release')
   const apk = path.join(apkFolder, 'app-release.apk')
   const env = { ...process.env, OSTLER_ANDROID_VARIANT: 'dev' }
@@ -241,7 +245,7 @@ function main() {
       '-q',
       '--no-daemon',
       '--max-workers=1',
-      '-PreactNativeArchitectures=arm64-v8a',
+      `-PreactNativeArchitectures=${arch}`,
       '-Pkotlin.compiler.execution.strategy=in-process',
       '-Dorg.gradle.jvmargs=-Xmx1536m',
       ...(process.env.OSTLER_SIDELOAD_GRADLE_ARGS ?? '').split(' ').filter(Boolean)
