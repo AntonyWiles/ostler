@@ -61,6 +61,7 @@ const TEXT_KEYS = new Set([
   'message',
   'checklist',
   'resolutionReason',
+  'blockedReason',
   'role',
   'templateName'
 ])

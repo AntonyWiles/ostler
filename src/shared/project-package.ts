@@ -609,6 +609,7 @@ function parseTask(value: unknown, path: string): PackageTask {
       'resolutionReason',
       'showFrom',
       'someday',
+      'blockedReason',
       'impact',
       'effort',
       'roundSourceRef',
@@ -670,6 +671,7 @@ function parseTask(value: unknown, path: string): PackageTask {
     recurrence: parseRecurrence(input.recurrence, `${path}.recurrence`),
     ...parseResolution(input, path),
     ...parseShowFrom(input, path),
+    ...parseBlockedReason(input, path),
     ...parseScores(input, path),
     ...(input.iterationRef === undefined || input.iterationRef === null
       ? {}
@@ -755,6 +757,15 @@ function parseShowFrom(
     ...(showFrom !== null ? { showFrom } : {}),
     ...(input.someday === true ? { someday: true } : {})
   }
+}
+
+/** Why a blocked task is blocked, kept only on a blocked task and left out when empty. */
+function parseBlockedReason(
+  input: Record<string, unknown>,
+  path: string
+): Pick<PackageTask, 'blockedReason'> {
+  const reason = text(input.blockedReason, `${path}.blockedReason`, 200).trim()
+  return reason && input.status === 'blocked' ? { blockedReason: reason } : {}
 }
 
 /** A task's won't-do mark and reason (N1.2), or nothing for an open task. */
