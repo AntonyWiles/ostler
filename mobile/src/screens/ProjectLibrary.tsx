@@ -16,14 +16,16 @@ import {
   libraryTags,
   setLibraryItemTags
 } from '../data/library'
-import { newVoiceMemoId } from '../data/voice-memos'
-import { forgetRecording, keepPickedFile } from '../data/voice-memo-files'
+import { isAudioMime } from '@shared/audio-files'
+import { addLibraryVoiceMemo, newVoiceMemoId } from '../data/voice-memos'
+import { forgetRecording, keepPickedFile, storedRecording } from '../data/voice-memo-files'
 import { linkedItemTitle } from '../data/plan'
 import { projectLabels, shareRole, type QueryDb } from '../data/queries'
 import { RADIUS, SPACE, useTheme, type Theme } from '../theme'
 import { Chip, editErrorText, TextSender } from './EditBits'
 import { Markdown } from './Markdown'
 import { TopBar } from './TopBar'
+import { RecordingPlayer, VoiceMemoRecorder } from './VoiceMemoRecorder'
 
 /** A kind's name, in the PC's words. */
 export function libraryKindLabel(kind: LibraryItemKind): string {
@@ -37,10 +39,14 @@ export function libraryKindLabel(kind: LibraryItemKind): string {
   }
 }
 
-/** What is being added: a note, a link, or a file already picked (a document or a photo). */
+/**
+ * What is being added: a note, a link, a voice memo, or a file already picked (a document or a
+ * photo).
+ */
 type Adding =
   | { kind: 'note' }
   | { kind: 'link' }
+  | { kind: 'voice' }
   | { kind: 'file'; uri: string; name: string; mimeType: string | null }
 
 /** Shows the file picker, the gallery or the camera; null when the person backed out. */
@@ -71,7 +77,7 @@ async function pickFile(
 
 /**
  * A project's Library as a list to read: filter by words, open an item. Someone who may edit the
- * Library adds a note, a link, a file or a photo, with tags, from here.
+ * Library adds a note, a link, a file, a photo or a voice memo, with tags, from here.
  */
 export function LibraryList({
   db,
@@ -131,7 +137,7 @@ export function LibraryList({
     )
   }
   const save = () => {
-    if (adding === null) return
+    if (adding === null || adding.kind === 'voice') return
     let itemId: string
     try {
       if (adding.kind === 'note') {
@@ -158,6 +164,22 @@ export function LibraryList({
     onAdded?.(itemId)
   }
   const field = [styles.input, { color: theme.text, borderColor: theme.borderStrong }]
+  const tagPicker = (
+    <>
+      <Text style={[styles.kind, { color: theme.textMuted }]}>
+        {t('library:libraryDetail.tags')}
+      </Text>
+      <TagChoices
+        theme={theme}
+        choices={labels}
+        selected={newTags}
+        onChange={(next) => {
+          setNewTags(next)
+          return true
+        }}
+      />
+    </>
+  )
   return (
     <View style={styles.list}>
       {onAdded !== undefined && adding === null && (
@@ -179,9 +201,52 @@ export function LibraryList({
             theme={theme}
             onPress={() => pick('camera')}
           />
+          <Chip
+            label={t('mobile:voiceMemo.record')}
+            theme={theme}
+            onPress={() => {
+              setError(null)
+              setAdding({ kind: 'voice' })
+            }}
+          />
         </View>
       )}
-      {onAdded !== undefined && adding !== null && (
+      {onAdded !== undefined && adding?.kind === 'voice' && (
+        <View
+          style={[
+            styles.card,
+            styles.form,
+            { backgroundColor: theme.surface, borderColor: theme.accent }
+          ]}
+        >
+          <VoiceMemoRecorder
+            projectId={projectId}
+            theme={theme}
+            saveLabel={t('mobile:voiceMemo.saveToLibrary')}
+            saveWithTranscriptLabel={t('mobile:voiceMemo.saveWithTranscript')}
+            onSave={(memo) => {
+              const item = addLibraryVoiceMemo(db, projectId, {
+                ...memo,
+                title: title.trim() || memo.title,
+                tags: newTags
+              })
+              onAdded(item.id)
+            }}
+            onClose={stopAdding}
+          >
+            <TextInput
+              accessibilityLabel={t('mobile:library.noteTitle')}
+              placeholder={t('mobile:library.linkTitle')}
+              placeholderTextColor={theme.textMuted}
+              value={title}
+              onChangeText={setTitle}
+              style={field}
+            />
+            {tagPicker}
+          </VoiceMemoRecorder>
+        </View>
+      )}
+      {onAdded !== undefined && adding !== null && adding.kind !== 'voice' && (
         <View
           style={[
             styles.card,
@@ -228,18 +293,7 @@ export function LibraryList({
               style={[...field, styles.noteBody]}
             />
           )}
-          <Text style={[styles.kind, { color: theme.textMuted }]}>
-            {t('library:libraryDetail.tags')}
-          </Text>
-          <TagChoices
-            theme={theme}
-            choices={labels}
-            selected={newTags}
-            onChange={(next) => {
-              setNewTags(next)
-              return true
-            }}
-          />
+          {tagPicker}
           {error !== null && <Text style={{ color: theme.danger }}>{error}</Text>}
           <View style={styles.actions}>
             <Chip label={t('mobile:edit.save')} theme={theme} selected onPress={save} />
@@ -323,7 +377,7 @@ export function LibraryList({
 
 /**
  * One Library item to read: its text as Markdown (a brief, guide, note, a whiteboard's outline),
- * a link's address to open, or what a document or picture is. Files stay on the PC.
+ * a link's address to open, or what a document or picture is. A recording this phone has plays here.
  */
 export function LibraryReader({
   db,
@@ -516,8 +570,10 @@ function TagChoices({
   )
 }
 
+/** A file's name and size, and where it is: on this phone (a recording plays) or on the PC. */
 function FileNote({ item, theme }: { item: LibraryItem; theme: Theme }) {
   const file = item.file!
+  const stored = useMemo(() => storedRecording(item.projectId, item.id), [item.projectId, item.id])
   const size =
     file.sizeBytes >= 1_048_576
       ? `${(file.sizeBytes / 1_048_576).toFixed(1)} MB`
@@ -528,8 +584,9 @@ function FileNote({ item, theme }: { item: LibraryItem; theme: Theme }) {
     >
       <Text style={[styles.fileName, { color: theme.text }]}>{file.fileName}</Text>
       <Text style={[styles.kind, { color: theme.textMuted }]}>
-        {size} · {t('mobile:library.fileOnPc')}
+        {size} · {stored ? t('mobile:library.fileOnPhone') : t('mobile:library.fileOnPc')}
       </Text>
+      {stored && isAudioMime(file.mimeType) && <RecordingPlayer uri={stored.uri} theme={theme} />}
     </View>
   )
 }
