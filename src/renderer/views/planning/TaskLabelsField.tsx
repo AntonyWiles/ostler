@@ -20,7 +20,8 @@ export function TaskLabelsField({
   known,
   frequent = [],
   onChange,
-  colorOf = paletteColorFor
+  colorOf = paletteColorFor,
+  openPicker = false
 }: {
   labels: string[]
   /** Every label used in the project, for the picker. */
@@ -30,6 +31,8 @@ export function TaskLabelsField({
   onChange: (labels: string[]) => void
   /** A label's colour: the project's chosen one, or its stable default. */
   colorOf?: (label: string) => string
+  /** Open the picker's list of every label straight away, without typing. */
+  openPicker?: boolean
 }) {
   const headingId = useId()
   const add = (label: string) => {
@@ -112,6 +115,7 @@ export function TaskLabelsField({
           if (label) add(label)
         }}
         onCreate={add}
+        openOnMount={openPicker}
         emptyText={t('tasks:taskLabelsField.typeCreateLabel')}
       />
     </div>

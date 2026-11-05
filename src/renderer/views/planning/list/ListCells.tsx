@@ -704,12 +704,14 @@ export function listColumns(
               anchorRef={anchor}
               label={t('views:listCells.labels', { itemTitle: row.item.title })}
               className="list-editor"
+              autoFocus={false}
             >
               <TaskLabelsField
                 labels={row.item.labels}
                 known={context.knownLabels}
                 frequent={context.usualLabels}
                 colorOf={ws.labelColor}
+                openPicker
                 onChange={(labels) => void ws.updateWorkItemInline(row.item, { labels })}
               />
             </Popover>
