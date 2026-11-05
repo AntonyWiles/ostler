@@ -493,7 +493,7 @@ export function BoardView({ ws, toolbarEnd }: { ws: PlanningWorkspace; toolbarEn
       )
     // Right-click on the column's own space (MOP-36); a card keeps its own menu.
     const columnMenu = (): MenuEntry[] => [
-      { label: t('tasks:boardView.newTask', { column }), icon: Plus, onSelect: createHere },
+      { label: t('tasks:boardView.newTask', { column }), icon: Plus, disabled: !canCreate, onSelect: createHere },
       ...(items.length > 0
         ? [
             {
