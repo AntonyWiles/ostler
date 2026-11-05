@@ -66,6 +66,27 @@ export interface PersonalSpaceState {
   places: SyncPlaceView[]
   /** Google Drive sync is ready (a connected account can use Drive), so the space can be kept there. */
   driveReady: boolean
+  /** Moving the space from Drive or a folder into the R2 bucket; absent when there is nothing to show. */
+  move?: SpaceMoveView
+}
+
+/** Moving the personal space into the R2 bucket set up under Advanced sync. */
+export interface SpaceMoveView {
+  /** The space is in Drive or a folder and a bucket is set up, so it can be moved. */
+  canMove: boolean
+  /** A move is under way. */
+  running: boolean
+  /** Files copied into the bucket so far, of `total` the bucket lacked. */
+  copied: number
+  total: number
+  /** How the last move on this run ended; null before one. */
+  result: 'done' | 'failed' | null
+  /** Why the last move failed, in the person's words. */
+  error: string | null
+  /** Shares that stayed where they are (a sync server, another Drive folder). */
+  kept: number
+  /** Another device moved the space into R2 and this PC has no bucket set up to follow it. */
+  movedElsewhere: boolean
 }
 
 /**

@@ -835,7 +835,17 @@
     "stopWaiting": "停止等待",
     "noDeviceCanAllow": "另一台设备已经不在了?",
     "startNewExplain": "如果创建这个空间的设备已经不在了,请在这里新建一个空间。{{place}} 中的旧空间会移到一个名为“Old personal space”并带有今天日期的文件夹里,不会删除任何内容。仍在使用旧空间的设备需要加入新空间。",
-    "startNew": "在这里新建空间"
+    "startNew": "在这里新建空间",
+    "moveToR2": "移到 R2",
+    "moveHint": "将你的空间和项目复制到你的 R2 存储桶，之后所有设备都在那里同步。{{place}} 中的副本保持原样，不会删除任何内容。",
+    "moveConfirmTitle": "将你的空间移到 R2？",
+    "moveConfirm": "移动",
+    "moving": "正在复制到 R2… {{copied}}/{{total}} 个文件",
+    "moved": "你的空间现在位于你的 R2 存储桶中，其他设备会在下次同步时切换。旧副本仍在原处；确认无误后可自行删除。",
+    "movedKept": "留在原处的项目：{{count}}",
+    "moveFailed": "移动已停止：{{error}} 没有丢失任何内容。重试即可从停止处继续。",
+    "moveAgain": "重试",
+    "movedElsewhere": "另一台设备已将你的空间移到 R2 存储桶。请在高级同步中设置同一个存储桶，以便此电脑跟随。"
   },
   "email": {
     "title": "电子邮件",

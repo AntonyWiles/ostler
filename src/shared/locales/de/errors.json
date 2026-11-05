@@ -988,7 +988,9 @@
     "chooseSpaceFolder": "Ordner mit Ihrem {{brand}}-Bereich wählen",
     "noSpaceInFolder": "In diesem Ordner gibt es keinen {{brand}}-Bereich. Wenn Ihr anderer PC ihn gerade erst eingerichtet hat, warten Sie, bis er hierher synchronisiert ist, und versuchen Sie es dann erneut.",
     "newerSpace": "Dieser Bereich wurde mit einer neueren Version von {{brand}} erstellt. Aktualisieren Sie {{brand}} auf diesem PC und versuchen Sie es dann erneut.",
-    "placeGone": "Dieser Ordner ist nicht mehr auf diesem PC. Wählen Sie einen anderen Ort."
+    "placeGone": "Dieser Ordner ist nicht mehr auf diesem PC. Wählen Sie einen anderen Ort.",
+    "alreadyInR2": "Ihr Bereich ist bereits in Ihrem R2-Bucket.",
+    "moveFailed": "Die Dateien konnten nicht in Ihren R2-Bucket kopiert werden."
   },
   "sharing": {
     "chooseShareFolder": "Dieses Projekt teilen über",

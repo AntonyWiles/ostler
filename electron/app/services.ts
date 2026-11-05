@@ -2161,6 +2161,8 @@ export async function createAppServices(dir: string): Promise<AppServices> {
     onPushed: (folder) => {
       if (isDriveLocation(folder)) driveSync.kick()
     },
+    // The space lives in the bucket now: the folder copying stops (this PC's or a followed move).
+    onSpaceMoved: () => r2Bridge?.stopCopying(),
     databasePath,
     library: libraryService,
     projectSettings: (projectId) => {

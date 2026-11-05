@@ -203,7 +203,17 @@
     "stopWaiting": "Stop waiting",
     "noDeviceCanAllow": "Don’t have your other device any more?",
     "startNewExplain": "If the device that made this space is gone, start a new space here instead. The old one in {{place}} moves into a folder named “Old personal space” with today's date; nothing is deleted. Any device still using the old space has to join the new one.",
-    "startNew": "Start a new space here"
+    "startNew": "Start a new space here",
+    "moveToR2": "Move to R2",
+    "moveHint": "Copy your space and projects into your R2 bucket, then every device syncs there. The copy in {{place}} stays as it is; nothing is deleted.",
+    "moveConfirmTitle": "Move your space to R2?",
+    "moveConfirm": "Move",
+    "moving": "Copying to R2… {{copied}} of {{total}} files",
+    "moved": "Your space is now in your R2 bucket, and your other devices switch the next time they sync. The old copy is still where it was; delete it yourself once you are sure.",
+    "movedKept": "Projects that stayed where they were: {{count}}",
+    "moveFailed": "The move stopped: {{error}} Nothing was lost. Try again to carry on where it stopped.",
+    "moveAgain": "Try again",
+    "movedElsewhere": "Another device moved your space into an R2 bucket. Set up the same bucket under Advanced sync so this PC can follow."
   },
   "connectionsSection": {
     "automationApi": "Automation API",

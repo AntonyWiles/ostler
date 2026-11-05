@@ -980,7 +980,9 @@
     "chooseSpaceFolder": "选择包含你的 {{brand}} 空间的文件夹",
     "noSpaceInFolder": "该文件夹中没有 {{brand}} 空间。如果你的另一台电脑刚刚设置好，请等它同步到这里后再试。",
     "newerSpace": "该空间由更新版本的 {{brand}} 创建。请在这台电脑上更新 {{brand}}，然后再试。",
-    "placeGone": "该文件夹已不在这台电脑上。请选择其他位置。"
+    "placeGone": "该文件夹已不在这台电脑上。请选择其他位置。",
+    "alreadyInR2": "你的空间已在你的 R2 存储桶中。",
+    "moveFailed": "无法将文件复制到你的 R2 存储桶。"
   },
   "sharing": {
     "chooseShareFolder": "通过以下位置共享此项目",

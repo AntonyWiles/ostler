@@ -996,7 +996,9 @@
     "chooseSpaceFolder": "Elige la carpeta que contiene tu espacio de {{brand}}",
     "noSpaceInFolder": "No hay ningún espacio de {{brand}} en esa carpeta. Si tu otro PC acaba de configurarlo, espera a que termine de sincronizarse aquí y vuelve a intentarlo.",
     "newerSpace": "Ese espacio se creó con una versión más reciente de {{brand}}. Actualiza {{brand}} en este PC y vuelve a intentarlo.",
-    "placeGone": "Esa carpeta ya no está en este PC. Elige otro lugar."
+    "placeGone": "Esa carpeta ya no está en este PC. Elige otro lugar.",
+    "alreadyInR2": "Tu espacio ya está en tu bucket de R2.",
+    "moveFailed": "No se pudieron copiar los archivos a tu bucket de R2."
   },
   "sharing": {
     "chooseShareFolder": "Compartir este proyecto mediante",

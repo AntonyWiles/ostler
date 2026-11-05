@@ -172,6 +172,20 @@ export class R2Bridge {
     return this.state()
   }
 
+  /**
+   * The space now lives in the bucket itself: the folder copying stops for good, and the bucket's
+   * settings stay for the `r2:` places.
+   */
+  stopCopying(): R2SyncState {
+    if (!this.saved?.enabled) return this.state()
+    // The bucket is the same, so the `r2:` places already open keep their client and change marker.
+    this.saved = { ...this.saved, enabled: false }
+    this.write(this.saved)
+    this.halt()
+    this.deps.onStateChanged?.()
+    return this.state()
+  }
+
   /** Tries a listing with these settings, or the saved ones. */
   async test(input?: SetR2SyncInput): Promise<void> {
     const config = input ? this.configFrom(input) : this.savedConfig()
@@ -429,11 +443,15 @@ export class R2Bridge {
     // `r2:` places opened before keep the old bucket until the sync service opens them again.
     this.direct?.changes.stop()
     this.direct = null
+    this.write(saved)
+    this.lastError = null
+    this.restart()
+  }
+
+  private write(saved: Saved): void {
     const file = path.join(this.deps.dataDir, FILE_NAME)
     fs.writeFileSync(`${file}.tmp`, JSON.stringify(saved, null, 2), { mode: 0o600 })
     fs.renameSync(`${file}.tmp`, file)
-    this.lastError = null
-    this.restart()
   }
 
   private load(): Saved | null {
