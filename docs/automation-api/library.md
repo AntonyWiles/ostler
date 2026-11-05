@@ -10,16 +10,16 @@ attached to their work item, so a task must say in words what it needs from a re
 **human-only** items (by default, notes) are listed here, marked `humanOnly: true`.
 Ostler AI never reads those.
 
-| Method | Path                       | Body                                                                                                          | Response                                                                                                                        |
-| ------ | -------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| GET    | `/library`                 | — (query: `kind`, `access`, `tag`, `search`, `includeArchived=true`)                                          | Array of items, each with `humanOnly`.                                                                                          |
-| GET    | `/library/:itemId`         | — (query: `include=linkedFrom`)                                                                               | The item plus `text` (body, a whiteboard's outline, or extracted document text) and `sourceOf` (work items written from it).    |
-| GET    | `/library/:itemId/file`    | —                                                                                                             | Raw bytes of a stored image or document, with its content type. 404 for items without a file, whiteboards included.             |
-| POST   | `/library`                 | `{ kind: "brief"\|"guide"\|"note"\|"link", title, summary?, body?, url?, aiAccess?, tags?, isPrimaryBrief? }` | Created item. A whiteboard cannot be created here.                                                                              |
-| POST   | `/library/upload`          | `{ fileName, mimeType, base64 }`                                                                              | `{ item, duplicateOf? }`. Images and documents only, at most 25 MB. A file the project already holds returns the existing item. |
-| PATCH  | `/library/:itemId`         | any of `{ title, summary, body, url, aiAccess, tags, isPrimaryBrief }`                                        | Updated item. Text edits create a new revision. A whiteboard's `body` is refused.                                               |
-| POST   | `/library/:itemId/archive` | —                                                                                                             | Archived item (hidden from Ostler AI).                                                                                          |
-| DELETE | `/library/:itemId`         | —                                                                                                             | `{ id, deleted: true }`. Permanent, including stored files and links.                                                           |
+| Method | Path                       | Body                                                                                                            | Response                                                                                                                        |
+| ------ | -------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| GET    | `/library`                 | — (query: `kind`, `access`, `label` (or `tag`), `search`, `includeArchived=true`)                               | Array of items, each with `humanOnly` and `labels`.                                                                             |
+| GET    | `/library/:itemId`         | — (query: `include=linkedFrom`)                                                                                 | The item plus `text` (body, a whiteboard's outline, or extracted document text) and `sourceOf` (work items written from it).    |
+| GET    | `/library/:itemId/file`    | —                                                                                                               | Raw bytes of a stored image or document, with its content type. 404 for items without a file, whiteboards included.             |
+| POST   | `/library`                 | `{ kind: "brief"\|"guide"\|"note"\|"link", title, summary?, body?, url?, aiAccess?, labels?, isPrimaryBrief? }` | Created item. A whiteboard cannot be created here.                                                                              |
+| POST   | `/library/upload`          | `{ fileName, mimeType, base64 }`                                                                                | `{ item, duplicateOf? }`. Images and documents only, at most 25 MB. A file the project already holds returns the existing item. |
+| PATCH  | `/library/:itemId`         | any of `{ title, summary, body, url, aiAccess, labels, isPrimaryBrief }`                                        | Updated item. Text edits create a new revision. A whiteboard's `body` is refused.                                               |
+| POST   | `/library/:itemId/archive` | —                                                                                                               | Archived item (hidden from Ostler AI).                                                                                          |
+| DELETE | `/library/:itemId`         | —                                                                                                               | `{ id, deleted: true }`. Permanent, including stored files and links.                                                           |
 
 With `?include=linkedFrom`, `GET /library` and `GET /library/:itemId` add `linkedFrom` to each item:
 the texts that link to it ([Links in text](work-items.md#links-in-text)).
@@ -46,7 +46,7 @@ Whiteboards are drawn and edited in the app; there are no whiteboard routes. A w
 Library item of kind `whiteboard` (`GET /library?kind=whiteboard` lists them), and its `body` is an
 outline in Markdown that Ostler writes from the board's notes, shapes, arrows and mind maps, without
 positions or pictures. `GET /library/:itemId` gives that outline as `text`. `PATCH /library/:itemId`
-refuses a `body` for a whiteboard but edits its `title`, `summary`, `aiAccess` and `tags`, and
+refuses a `body` for a whiteboard but edits its `title`, `summary`, `aiAccess` and `labels`, and
 `POST /library` cannot create one. New whiteboards are `"when-selected"`: Ostler AI reads a board's
 outline only when the human selects it, and a coding agent gets it as Markdown only when the board
 is attached to its work item.
@@ -95,3 +95,12 @@ attach it with `POST /work-items/:workItemId/attachments` ([Work items](work-ite
 A snip taken in the app is stored as a PNG with `aiAccess: "human-only"`, attached by `human`; it
 shows in `GET /library` and `GET /work-items/:workItemId/attachments` like any item, marked
 `humanOnly`.
+
+## Labels
+
+An item's tags are the project's labels, the same names its tasks use: there is no separate tag
+list. Send them as `labels` (`tags` is the older name and still works); every item comes back with
+both. A name nothing in the project has yet becomes a new label, listed by `GET /labels` and
+offered on tasks. Renaming or deleting a label with `PATCH` or `DELETE /labels/:name` changes it
+on Library items as well as tasks, and `POST /labels/restore` puts it back on both. `GET /labels`
+counts each label's Library items in `libraryItemCount`, beside `taskCount`.

@@ -751,8 +751,9 @@ export function milestoneChoices(db: QueryDb, projectId: string): MilestoneChoic
 }
 
 /**
- * The labels the project's kept tasks use, by name (`PlanningService.listProjectLabels`, without
- * colours), so a label is picked rather than typed again.
+ * The labels the project's kept tasks and its Library items use, by name
+ * (`PlanningService.listProjectLabels`, without colours), so a label is picked rather than typed
+ * again.
  */
 export function projectLabels(db: QueryDb, projectId: string): string[] {
   const rows = db
@@ -761,7 +762,12 @@ export function projectLabels(db: QueryDb, projectId: string): string[] {
        WHERE project_id = ? AND deleted_at IS NULL AND labels <> '[]'`
     )
     .all(projectId) as { labels: string }[]
+  // A Library item's tags are the project's labels too (PlanningService.listProjectLabels).
+  const tagRows = db
+    .prepare(`SELECT tags_json FROM library_items WHERE project_id = ? AND tags_json <> '[]'`)
+    .all(projectId) as { tags_json: string }[]
   const names = new Set<string>()
   for (const row of rows) for (const label of stringList(row.labels)) names.add(label)
+  for (const row of tagRows) for (const tag of stringList(row.tags_json)) names.add(tag)
   return [...names].sort((a, b) => a.localeCompare(b))
 }

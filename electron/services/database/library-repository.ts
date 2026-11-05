@@ -225,6 +225,48 @@ export class LibraryRepository {
       )
   }
 
+  // ─── Tags (the project's labels) ──────────────────────────────────────────
+
+  /**
+   * How many of the project's items, archived ones included, carry each tag. Tags are the
+   * project's labels: the same names its tasks use (PlanningService.listProjectLabels).
+   */
+  tagCounts(projectId: string): Map<string, number> {
+    const rows = this.db
+      .prepare(`SELECT tags_json FROM library_items WHERE project_id = ? AND tags_json <> '[]'`)
+      .all(projectId) as { tags_json: string }[]
+    const counts = new Map<string, number>()
+    for (const row of rows)
+      for (const tag of parseTags(row.tags_json)) counts.set(tag, (counts.get(tag) ?? 0) + 1)
+    return counts
+  }
+
+  /** The project's items, archived ones included, that carry `tag`. */
+  itemsWithTag(projectId: string, tag: string): LibraryItem[] {
+    return (
+      this.db
+        .prepare(`SELECT * FROM library_items WHERE project_id = ? AND tags_json <> '[]'`)
+        .all(projectId) as LibraryItemRow[]
+    )
+      .map(toItem)
+      .filter((item) => item.tags.includes(tag))
+  }
+
+  /**
+   * Replaces one item's tags, and its search entry's, for a label renamed or removed across the
+   * project. The revision and `updated_at` stay: a label change is not an edit of the text, as a
+   * rename leaves a task's place on the Board.
+   */
+  setTags(itemId: string, tags: string[]): void {
+    this.db
+      .prepare('UPDATE library_items SET tags_json = ? WHERE id = ?')
+      .run(JSON.stringify(tags), itemId)
+    if (this.ftsAvailable)
+      this.db
+        .prepare('UPDATE library_search SET tags = ? WHERE item_id = ?')
+        .run(tags.join(' '), itemId)
+  }
+
   clearPrimaryBrief(projectId: string): void {
     this.db
       .prepare(
@@ -587,6 +629,16 @@ export class LibraryRepository {
   }
 }
 
+/** A row's tags; anything that is not a list of strings (a damaged row, a bad sync) is none. */
+function parseTags(json: string): string[] {
+  try {
+    const value: unknown = JSON.parse(json)
+    return Array.isArray(value) ? value.filter((tag): tag is string => typeof tag === 'string') : []
+  } catch {
+    return []
+  }
+}
+
 function toItem(row: LibraryItemRow): LibraryItem {
   return {
     id: row.id,
@@ -599,7 +651,7 @@ function toItem(row: LibraryItemRow): LibraryItem {
     file: row.file_json ? (JSON.parse(row.file_json) as LibraryFileInfo) : null,
     aiAccess: row.ai_access,
     isPrimaryBrief: row.is_primary_brief === 1,
-    tags: JSON.parse(row.tags_json) as string[],
+    tags: parseTags(row.tags_json),
     revision: row.revision,
     createdAt: row.created_at,
     updatedAt: row.updated_at,

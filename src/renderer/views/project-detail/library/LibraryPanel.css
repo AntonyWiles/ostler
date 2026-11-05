@@ -869,3 +869,18 @@
   align-items: center;
   justify-content: center;
 }
+
+/* An item's tags: the project's labels, each in its colour. */
+.ostler-library-tags {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.ostler-library-tag-dot {
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--space-300);
+  height: var(--space-300);
+  border-radius: var(--radius-full);
+}

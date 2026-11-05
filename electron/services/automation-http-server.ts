@@ -1083,8 +1083,8 @@ const ROUTES: AutomationRouteDef[] = [
     method: 'GET',
     path: '/library',
     description:
-      'List the project library: briefs, guides, images, documents, links, notes and whiteboards (a whiteboard\u2019s body is its outline, written from the board\u2019s objects). This token acts for the human, so human-only items are included and marked humanOnly: true (Ostler AI never reads those). Filter with ?kind=, ?access=always|when-selected|human-only, ?tag=, ?search=, ?includeArchived=true. ?include=linkedFrom adds linkedFrom to each: the texts of this project that link to it, as in GET /links.',
-    response: '{ ok: true, value: Array<LibraryItem & { humanOnly, linkedFrom? }> }'
+      'List the project library: briefs, guides, images, documents, links, notes and whiteboards (a whiteboard\u2019s body is its outline, written from the board\u2019s objects). This token acts for the human, so human-only items are included and marked humanOnly: true (Ostler AI never reads those). Each item’s tags are project labels (the same names tasks use, GET /labels), sent as tags and again as labels. Filter with ?kind=, ?access=always|when-selected|human-only, ?label= (or ?tag=) for items with that label, ?search=, ?includeArchived=true. ?include=linkedFrom adds linkedFrom to each: the texts of this project that link to it, as in GET /links.',
+    response: '{ ok: true, value: Array<LibraryItem & { humanOnly, labels, linkedFrom? }> }'
   },
   {
     method: 'GET',
@@ -1104,10 +1104,10 @@ const ROUTES: AutomationRouteDef[] = [
     method: 'POST',
     path: '/library',
     description:
-      'Create a brief, guide, note or link. Whiteboards are made in the app and cannot be created here. Briefs and guides default to aiAccess "always", links to "when-selected", notes to "human-only". isPrimaryBrief: true makes a brief the primary brief.',
+      'Create a brief, guide, note or link. Whiteboards are made in the app and cannot be created here. Briefs and guides default to aiAccess "always", links to "when-selected", notes to "human-only". isPrimaryBrief: true makes a brief the primary brief. labels (or tags, its older name) are project labels: a name no task or item has yet becomes a new label, offered on tasks too (GET /labels); up to 20, each up to 80 characters.',
     request:
-      'JSON body: { kind: "brief" | "guide" | "note" | "link", title, summary?, body?, url? (links), aiAccess?, tags?, isPrimaryBrief? }.',
-    response: '{ ok: true, value: LibraryItem & { humanOnly } }',
+      'JSON body: { kind: "brief" | "guide" | "note" | "link", title, summary?, body?, url? (links), aiAccess?, labels?, isPrimaryBrief? }.',
+    response: '{ ok: true, value: LibraryItem & { humanOnly, labels } }',
     exampleBody: {
       kind: 'brief',
       title: 'Design brief',
@@ -1129,9 +1129,10 @@ const ROUTES: AutomationRouteDef[] = [
     method: 'PATCH',
     path: '/library/:itemId',
     description:
-      'Edit an item. Changing title, summary or body creates a new revision, which flags work items written from the older one. isPrimaryBrief: true/false sets or clears the primary brief. A whiteboard\u2019s body is written from its objects and is refused; its title, summary, aiAccess and tags can be edited.',
-    request: 'JSON body with any of { title, summary, body, url, aiAccess, tags, isPrimaryBrief }.',
-    response: '{ ok: true, value: LibraryItem & { humanOnly } }',
+      'Edit an item. Changing title, summary or body creates a new revision, which flags work items written from the older one. isPrimaryBrief: true/false sets or clears the primary brief. A whiteboard\u2019s body is written from its objects and is refused; its title, summary, aiAccess and labels can be edited. labels (or tags) replaces the item’s project labels; it does not make a new revision. Renaming or deleting a label (PATCH or DELETE /labels/:name) changes it on Library items too.',
+    request:
+      'JSON body with any of { title, summary, body, url, aiAccess, labels, isPrimaryBrief }.',
+    response: '{ ok: true, value: LibraryItem & { humanOnly, labels } }',
     exampleBody: { summary: 'Match this layout and spacing', aiAccess: 'when-selected' }
   },
   {
@@ -3302,7 +3303,7 @@ export class AutomationHttpServer {
       if (kind) query.kind = kind as LibraryItemKind
       const access = params.get('access')
       if (access) query.access = access as LibraryAiAccess
-      const tag = params.get('tag')
+      const tag = params.get('label') ?? params.get('tag')
       if (tag) query.tag = tag
       const search = params.get('search')
       if (search) query.search = search
@@ -3357,7 +3358,10 @@ export class AutomationHttpServer {
       return mutated({ ...result, item: markLibraryItem(result.item) })
     }
     if (req.method === 'POST' && !id) {
-      const item = library.createItem(project.id, body as unknown as CreateLibraryItemInput)
+      const input = { ...body } as Record<string, unknown>
+      if (input.labels !== undefined) input.tags = input.labels
+      delete input.labels
+      const item = library.createItem(project.id, input as unknown as CreateLibraryItemInput)
       return mutated(markLibraryItem(item))
     }
     if (req.method === 'PATCH' && id && !action) {
@@ -3365,6 +3369,7 @@ export class AutomationHttpServer {
       for (const key of ['title', 'summary', 'body', 'url', 'aiAccess', 'tags'] as const) {
         if (body[key] !== undefined) (updates as Record<string, unknown>)[key] = body[key]
       }
+      if (body.labels !== undefined) updates.tags = body.labels as string[]
       let item = library.getItem(project.id, id)
       if (Object.keys(updates).length > 0) item = library.updateItem(project.id, id, updates)
       if (typeof body.isPrimaryBrief === 'boolean' && body.isPrimaryBrief !== item.isPrimaryBrief) {
@@ -3670,8 +3675,11 @@ export class AutomationHttpServer {
 }
 
 /** A library item as the automation API returns it: human-only items are marked. */
-function markLibraryItem(item: LibraryItem): LibraryItem & { humanOnly: boolean } {
-  return { ...item, humanOnly: item.aiAccess === 'human-only' }
+/** An item as the API sends it: tags are project labels, so they are sent as `labels` too. */
+function markLibraryItem(
+  item: LibraryItem
+): LibraryItem & { humanOnly: boolean; labels: string[] } {
+  return { ...item, humanOnly: item.aiAccess === 'human-only', labels: item.tags }
 }
 
 function markSource<T extends WorkItemSource | WorkItemAttachment>(

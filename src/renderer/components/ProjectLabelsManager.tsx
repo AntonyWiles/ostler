@@ -104,7 +104,16 @@ export function ProjectLabelsManager({
             />
             <span className="project-labels__name">{label.name}</span>
             <span className="project-labels__count">
-              {t('common:count.task', { count: label.taskCount })}
+              {[
+                label.taskCount > 0 || label.libraryItemCount === 0
+                  ? t('common:count.task', { count: label.taskCount })
+                  : null,
+                label.libraryItemCount > 0
+                  ? t('common:count.libraryItem', { count: label.libraryItemCount })
+                  : null
+              ]
+                .filter(Boolean)
+                .join(' · ')}
             </span>
             <IconButton
               size="sm"

@@ -683,15 +683,16 @@ this API is scoped to one project and its token.
 
 ### Labels
 
-Labels live on work items (`labels: string[]`). Each label in a project also has a
-colour: one chosen in the app or here, or a stable default (`hasColor: false`).
+Labels live on work items (`labels: string[]`) and on Library items, whose tags are the same
+labels (see [Library](library.md)). Each label in a project also has a colour: one chosen in the
+app or here, or a stable default (`hasColor: false`).
 
-| Method | Path              | Body                | Response                                                                     |
-| ------ | ----------------- | ------------------- | ---------------------------------------------------------------------------- |
-| GET    | `/labels`         | —                   | Array of `{ name, color, hasColor, taskCount }`, for live and archived work. |
-| PATCH  | `/labels/:name`   | `{ name?, color? }` | The label. `name` renames it on every task in the project at once.           |
-| DELETE | `/labels/:name`   | —                   | `{ name, color, workItemIds }`: what was removed from every task.            |
-| POST   | `/labels/restore` | the DELETE response | Every label. Puts a deleted label back, with its colour (undo).              |
+| Method | Path              | Body                | Response                                                                                   |
+| ------ | ----------------- | ------------------- | ------------------------------------------------------------------------------------------ |
+| GET    | `/labels`         | —                   | Array of `{ name, color, hasColor, taskCount, libraryItemCount }`, live and archived.      |
+| PATCH  | `/labels/:name`   | `{ name?, color? }` | The label. `name` renames it on every task and Library item in the project at once.        |
+| DELETE | `/labels/:name`   | —                   | `{ name, color, workItemIds, libraryItemIds }`: what was removed from every task and item. |
+| POST   | `/labels/restore` | the DELETE response | Every label. Puts a deleted label back on those tasks and items, with its colour (undo).   |
 
 URL-encode a label name in the path (`/labels/ux%20design`). Colours are `#rrggbb`.
 

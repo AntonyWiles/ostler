@@ -21,6 +21,7 @@
     "agentEvent_other": "{{count}} 次智能体事件",
     "day_other": "{{count}} 天",
     "libraryFile_other": "{{count}} 个资料库文件",
+    "libraryItem_other": "{{count}} 个资料库项目",
     "list_other": "{{count}} 个列表",
     "label_other": "{{count}} 个标签",
     "member_other": "{{count}} 个成员",

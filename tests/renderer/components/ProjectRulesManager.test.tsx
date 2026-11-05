@@ -57,7 +57,7 @@ function setup(initial: PlanningRule[]) {
     getPlanningMilestones: async () => ({ ok: true, value: [] }),
     getPlanningLabels: async () => ({
       ok: true,
-      value: [{ name: 'urgent', color: '#f00', taskCount: 1, hasColor: true }]
+      value: [{ name: 'urgent', color: '#f00', taskCount: 1, libraryItemCount: 0, hasColor: true }]
     }),
     getPlanningFields: async () => ({ ok: true, value: [] }),
     getPlanningColumnSettings: async () => ({ ok: true, value: {} }),

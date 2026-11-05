@@ -112,4 +112,27 @@ describe('the Library on the phone', () => {
   it('refuses a note with no title', () => {
     expect(() => library.addLibraryNote(phone(), PROJECT, { title: ' ', body: 'x' })).toThrow()
   })
+
+  it('tags an item with project labels, filters by them and offers them on tasks', async () => {
+    const { projectLabels } = await import('../../mobile/src/data/queries')
+    const tagged = library.setLibraryItemTags(phone(), 'n1', [' boiler ', 'site', 'site'])
+    expect(tagged.tags).toEqual(['boiler', 'site'])
+    expect(tagged.revision).toBe(1)
+    expect(library.libraryTags(phone(), PROJECT)).toEqual(['boiler', 'site'])
+    expect(library.libraryItems(phone(), PROJECT, '', 'boiler').map((entry) => entry.id)).toEqual([
+      'n1'
+    ])
+    expect(library.libraryItems(phone(), PROJECT, 'boiler').map((entry) => entry.id)).toEqual([
+      'n1'
+    ])
+    // A label made in the Library is offered on the project's tasks.
+    expect(projectLabels(phone(), PROJECT)).toEqual(['boiler', 'site'])
+    expect(() =>
+      library.setLibraryItemTags(
+        phone(),
+        'n1',
+        Array.from({ length: 21 }, (_, n) => `t${n}`)
+      )
+    ).toThrow()
+  })
 })

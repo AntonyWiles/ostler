@@ -87,6 +87,8 @@ export interface PlanningLabel {
   color: string
   /** Live and archived tasks that carry it. */
   taskCount: number
+  /** Library items, archived ones too, that carry it as a tag. */
+  libraryItemCount: number
   /** False while the colour is the default one rather than chosen. */
   hasColor: boolean
 }
@@ -99,6 +101,8 @@ export interface PlanningLabelDeletion {
   name: string
   color: string | null
   workItemIds: string[]
+  /** Library items it was taken off; absent in a deletion from before Library tags were labels. */
+  libraryItemIds?: string[]
 }
 
 // ─── Teams (team-leaders plan, D1) ──────────────────────────────────────────

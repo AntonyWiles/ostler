@@ -308,8 +308,8 @@ export const SETUP_ROUTES: AutomationRouteDef[] = [
     method: 'GET',
     path: '/labels',
     description:
-      'List every label used on the live and archived work items in this project, with its colour (a chosen one, or a stable default when hasColor is false) and how many tasks carry it.',
-    response: '{ ok: true, value: Array<{ name, color, hasColor, taskCount }> }',
+      'List every label used on the live and archived work items and Library items in this project (a Library item’s tags are these labels), with its colour (a chosen one, or a stable default when hasColor is false), how many tasks carry it and how many Library items.',
+    response: '{ ok: true, value: Array<{ name, color, hasColor, taskCount, libraryItemCount }> }',
     handler: ({ server, res, project }) =>
       respondJson(res, 200, { ok: true, value: planningOf(server).listProjectLabels(project.id) })
   },
@@ -317,9 +317,9 @@ export const SETUP_ROUTES: AutomationRouteDef[] = [
     method: 'PATCH',
     path: '/labels/:name',
     description:
-      'Rename a label on every task in the project at once (name), set its colour (color, #rrggbb), or both. URL-encode the name.',
+      'Rename a label on every task and Library item in the project at once (name), set its colour (color, #rrggbb), or both. URL-encode the name.',
     request: 'JSON body: { name?: string, color?: string }.',
-    response: '{ ok: true, value: { name, color, hasColor, taskCount } }',
+    response: '{ ok: true, value: { name, color, hasColor, taskCount, libraryItemCount } }',
     exampleBody: { name: 'design', color: '#ec4899' },
     handler: (call) => {
       const planning = planningOf(call.server)
@@ -340,8 +340,8 @@ export const SETUP_ROUTES: AutomationRouteDef[] = [
     method: 'DELETE',
     path: '/labels/:name',
     description:
-      'Remove a label from every task in the project. The response says what was removed; POST it to /labels/restore to undo.',
-    response: '{ ok: true, value: { name, color, workItemIds } }',
+      'Remove a label from every task and Library item in the project. The response says what was removed; POST it to /labels/restore to undo.',
+    response: '{ ok: true, value: { name, color, workItemIds, libraryItemIds } }',
     handler: (call) =>
       setupChanged(
         call,
@@ -356,9 +356,10 @@ export const SETUP_ROUTES: AutomationRouteDef[] = [
   {
     method: 'POST',
     path: '/labels/restore',
-    description: 'Undo a label delete: put the label back on those tasks, with its colour.',
+    description:
+      'Undo a label delete: put the label back on those tasks and Library items, with its colour.',
     request: 'JSON body: the value DELETE /labels/:name returned.',
-    response: '{ ok: true, value: Array<{ name, color, hasColor, taskCount }> }',
+    response: '{ ok: true, value: Array<{ name, color, hasColor, taskCount, libraryItemCount }> }',
     handler: (call) =>
       setupChanged(
         call,

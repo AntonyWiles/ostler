@@ -479,6 +479,7 @@ export default function App() {
         version={version}
         onBack={goBack}
         onOpenItem={openItem}
+        onEdited={edited}
       />
     )
   }
