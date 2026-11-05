@@ -3,8 +3,7 @@ import type { LibraryItem } from '@shared/ostler-api'
 import { Badge, Card, Checkbox, Chip } from '../../../ui'
 import { Icon, Image } from '../../../ui/icons'
 import type { LibrarySelection } from './useLibrarySelection'
-import { ACCESS_BADGE, ACCESS_TONE, KIND_LABEL, libraryFileUrl, relativeTime } from './libraryUi'
-import { useFeatures } from '../../../navigation/features'
+import { KIND_LABEL, libraryFileUrl, relativeTime } from './libraryUi'
 import { t } from '@shared/i18n'
 
 interface LibraryItemListProps {
@@ -16,11 +15,6 @@ interface LibraryItemListProps {
   selection: LibrarySelection
   onActivate(item: LibraryItem, event: React.MouseEvent): void
   onOpen(item: LibraryItem): void
-}
-
-/** Only when Ostler AI is set up: otherwise who may read an item means nothing here. */
-function AccessBadge({ item }: { item: LibraryItem }) {
-  return <Badge tone={ACCESS_TONE[item.aiAccess]}>{ACCESS_BADGE[item.aiAccess]}</Badge>
 }
 
 /**
@@ -71,7 +65,6 @@ export function LibraryItemList({
   onActivate,
   onOpen
 }: LibraryItemListProps) {
-  const ai = useFeatures().ai
   const classFor = (item: LibraryItem, base: string) =>
     [
       base,
@@ -133,7 +126,6 @@ export function LibraryItemList({
                 <span className="ostler-library-tile-title" title={item.title}>
                   {item.title}
                 </span>
-                {ai && <AccessBadge item={item} />}
               </div>
             </Card>
           ))}
@@ -169,7 +161,6 @@ export function LibraryItemList({
                   {item.summary || (item.kind === 'link' ? item.url : firstLine(item.body))}
                 </span>
               </span>
-              {ai && <AccessBadge item={item} />}
               <span className="ostler-library-row-tags">
                 {item.tags.map((tag) => (
                   <Chip key={tag}>#{tag}</Chip>

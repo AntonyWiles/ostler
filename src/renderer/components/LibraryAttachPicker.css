@@ -59,6 +59,13 @@
   white-space: nowrap;
 }
 
+.ostler-library-attach-tags {
+  display: flex;
+  grid-column: 2 / -1;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
 .ostler-library-attach-summary {
   grid-column: 2 / -1;
   overflow: hidden;

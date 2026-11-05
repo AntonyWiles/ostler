@@ -135,6 +135,7 @@ function renderDetail(item: LibraryItem, ai = true) {
               onArchive={noop}
               onDelete={noop}
               onOpenWorkItem={() => {}}
+              onNotice={() => {}}
             />
           </ToastProvider>
         </StaticPeopleProvider>

@@ -1184,6 +1184,8 @@ export const IPC_CHANNELS = {
   LIBRARY_PICK_FILES: 'ostler:library-pick-files',
   LIBRARY_IMPORT_CLIPBOARD: 'ostler:library-import-clipboard',
   LIBRARY_OPEN_EXTERNALLY: 'ostler:library-open-externally',
+  LIBRARY_SHOW_IN_FOLDER: 'ostler:library-show-in-folder',
+  LIBRARY_FILE_PATH: 'ostler:library-file-path',
   LIBRARY_ADD_WORK_ITEM_SOURCE: 'ostler:library-add-work-item-source',
   LIBRARY_REMOVE_WORK_ITEM_SOURCE: 'ostler:library-remove-work-item-source',
   LIBRARY_LIST_WORK_ITEM_SOURCES: 'ostler:library-list-work-item-sources',
@@ -3336,6 +3338,10 @@ export interface OstlerAPI {
   ): Promise<Result<ImportLibraryResult | null>>
   /** Documents and images open their stored copy; links open in the browser (http/https). */
   openLibraryItemExternally(projectId: string, itemId: string): Promise<Result<void>>
+  /** Shows a file item's stored copy in Explorer (Windows) or Finder (macOS). */
+  showLibraryItemInFolder(projectId: string, itemId: string): Promise<Result<void>>
+  /** The full path of a file item's stored copy, for Copy path. */
+  getLibraryItemFilePath(projectId: string, itemId: string): Promise<Result<string>>
   addWorkItemSource(
     projectId: string,
     workItemId: string,

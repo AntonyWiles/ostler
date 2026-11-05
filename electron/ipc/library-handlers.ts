@@ -128,6 +128,19 @@ export function registerLibraryHandlers({
     return undefined
   })
 
+  const storedFilePath = (projectId: string, itemId: string): string => {
+    const item = libraryService.getItem(projectId, itemId)
+    if (!item.file) throw new Error(t('errors:libraryHandlers.libraryItemHasNothing'))
+    return libraryService.originalFilePath(projectId, itemId)
+  }
+  projectApi('showLibraryItemInFolder', (project, itemId: string) => {
+    shell.showItemInFolder(storedFilePath(project.id, itemId))
+    return undefined
+  })
+  projectApi('getLibraryItemFilePath', (project, itemId: string) =>
+    storedFilePath(project.id, itemId)
+  )
+
   mutatingApi('addWorkItemSource', (project, workItemId: string, itemId: string) =>
     libraryService.addWorkItemSource(project.id, workItemId, itemId)
   )

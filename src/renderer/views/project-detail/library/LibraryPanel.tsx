@@ -749,6 +749,7 @@ export function LibraryPanel({ projectId, initialItemId, initialNewKind }: Libra
                 onArchive={archiveActive}
                 onDelete={deleteActive}
                 onOpenWorkItem={(workItemId) => navigate(taskPath(projectId, workItemId))}
+                onNotice={(text, error) => setNotice({ text, error })}
               />
             ) : (
               <aside className="ostler-library-detail ostler-library-detail--empty">
