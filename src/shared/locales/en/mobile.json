@@ -607,5 +607,20 @@
     "channelToday": "Today summary",
     "channelInbox": "Inbox",
     "channelSync": "Sync"
+  },
+  "attachments": {
+    "title": "Attachments",
+    "remove": "Remove"
+  },
+  "share": {
+    "title": "Share to {{brand}}",
+    "project": "Project",
+    "newTask": "New task",
+    "toLibrary": "Add to Library",
+    "files": "Files: {{number}}",
+    "cancel": "Cancel",
+    "taskDone": "Task added to {{project}}.",
+    "libraryDone": "Added to the Library of {{project}}.",
+    "nothing": "Nothing to add from this share."
   }
 }

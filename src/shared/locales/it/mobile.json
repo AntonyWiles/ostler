@@ -587,5 +587,20 @@
     "channelToday": "Riepilogo di oggi",
     "channelInbox": "Posta in arrivo",
     "channelSync": "Sincronizzazione"
+  },
+  "attachments": {
+    "title": "Allegati",
+    "remove": "Rimuovi"
+  },
+  "share": {
+    "title": "Condividi su {{brand}}",
+    "project": "Progetto",
+    "newTask": "Nuova attività",
+    "toLibrary": "Aggiungi alla libreria",
+    "files": "File allegati: {{number}}",
+    "cancel": "Annulla",
+    "taskDone": "Attività aggiunta a {{project}}.",
+    "libraryDone": "Aggiunto alla libreria di {{project}}.",
+    "nothing": "Niente da aggiungere da questa condivisione."
   }
 }

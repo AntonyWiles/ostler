@@ -144,6 +144,15 @@ const config: ExpoConfig = {
         photosPermission: 'Add photos to your project Library.',
         microphonePermission: false
       }
+    ],
+    // Ostler in Android's share sheet: text and links, pictures and files, one or several.
+    [
+      'expo-share-intent',
+      {
+        androidIntentFilters: ['text/*', '*/*'],
+        androidMultiIntentFilters: ['*/*'],
+        disableIOS: true
+      }
     ]
   ]
 }

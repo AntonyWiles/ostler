@@ -68,6 +68,7 @@ import { Markdown } from './Markdown'
 import { BlockerAnswer } from './NeedsYou'
 import { TaskTime } from './TaskTime'
 import { TaskContacts } from './TaskContacts'
+import { TaskAttachments } from './TaskAttachments'
 import { TaskVoiceMemos } from './TaskVoiceMemos'
 import { openBlockers, resolveTaskBlocker } from '../data/needs-you'
 import { TaskRow } from './TaskRow'
@@ -1121,6 +1122,16 @@ export function TaskDetail({
             theme={theme}
             open={open}
             onEdited={onEdited}
+          />
+          <TaskAttachments
+            db={db}
+            taskId={task.id}
+            projectId={task.projectId}
+            version={version}
+            theme={theme}
+            open={open}
+            onEdited={onEdited}
+            onOpenItem={onOpenItem}
           />
           <TaskVoiceMemos
             db={db}

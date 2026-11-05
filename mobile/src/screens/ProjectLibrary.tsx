@@ -1,5 +1,14 @@
 import { useMemo, useState } from 'react'
-import { Linking, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import {
+  Image,
+  Linking,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
+} from 'react-native'
 import { t } from '@shared/i18n/index'
 import { formatRelativeTime } from '@shared/format'
 import type { ItemLinkRef, LibraryItem, LibraryItemKind } from '@shared/ostler-api'
@@ -43,14 +52,14 @@ export function libraryKindLabel(kind: LibraryItemKind): string {
  * What is being added: a note, a link, a voice memo, or a file already picked (a document or a
  * photo).
  */
-type Adding =
+export type Adding =
   | { kind: 'note' }
   | { kind: 'link' }
   | { kind: 'voice' }
   | { kind: 'file'; uri: string; name: string; mimeType: string | null }
 
 /** Shows the file picker, the gallery or the camera; null when the person backed out. */
-async function pickFile(
+export async function pickFile(
   source: 'file' | 'photo' | 'camera'
 ): Promise<Extract<Adding, { kind: 'file' }> | null> {
   if (source === 'file') {
@@ -527,7 +536,7 @@ function TagsPanel({
  * The project's labels as chips to turn on or off for an item, and a box for a new one. `onChange`
  * says whether the new tags were kept, so a refused new label stays typed.
  */
-function TagChoices({
+export function TagChoices({
   theme,
   choices,
   selected,
@@ -587,6 +596,14 @@ function FileNote({ item, theme }: { item: LibraryItem; theme: Theme }) {
         {size} · {stored ? t('mobile:library.fileOnPhone') : t('mobile:library.fileOnPc')}
       </Text>
       {stored && isAudioMime(file.mimeType) && <RecordingPlayer uri={stored.uri} theme={theme} />}
+      {stored && item.kind === 'image' && (
+        <Image
+          accessibilityLabel={item.title}
+          source={{ uri: stored.uri }}
+          style={styles.picture}
+          resizeMode="contain"
+        />
+      )}
     </View>
   )
 }
@@ -613,6 +630,7 @@ const styles = StyleSheet.create({
   url: { fontSize: 15, textDecorationLine: 'underline' },
   file: { borderWidth: 1, borderRadius: RADIUS, padding: SPACE.medium, gap: 2 },
   fileName: { fontSize: 15, fontWeight: '600' },
+  picture: { width: '100%', aspectRatio: 4 / 3, borderRadius: RADIUS, marginTop: SPACE.small },
   form: { gap: SPACE.small },
   actions: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACE.small },
   noteBody: { minHeight: 140, paddingVertical: SPACE.small, textAlignVertical: 'top' }

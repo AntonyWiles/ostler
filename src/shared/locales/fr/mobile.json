@@ -587,5 +587,20 @@
     "channelToday": "Résumé du jour",
     "channelInbox": "Boîte de réception",
     "channelSync": "Synchronisation"
+  },
+  "attachments": {
+    "title": "Pièces jointes",
+    "remove": "Retirer"
+  },
+  "share": {
+    "title": "Partager vers {{brand}}",
+    "project": "Projet",
+    "newTask": "Nouvelle tâche",
+    "toLibrary": "Ajouter à la bibliothèque",
+    "files": "Fichiers : {{number}}",
+    "cancel": "Annuler",
+    "taskDone": "Tâche ajoutée à {{project}}.",
+    "libraryDone": "Ajouté à la bibliothèque de {{project}}.",
+    "nothing": "Rien à ajouter depuis ce partage."
   }
 }

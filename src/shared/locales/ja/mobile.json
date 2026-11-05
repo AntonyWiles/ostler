@@ -583,5 +583,20 @@
     "channelToday": "今日のまとめ",
     "channelInbox": "受信箱",
     "channelSync": "同期"
+  },
+  "attachments": {
+    "title": "添付ファイル",
+    "remove": "外す"
+  },
+  "share": {
+    "title": "{{brand}} に共有",
+    "project": "プロジェクト",
+    "newTask": "新しいタスク",
+    "toLibrary": "ライブラリに追加",
+    "files": "ファイル: {{number}}",
+    "cancel": "キャンセル",
+    "taskDone": "{{project}} にタスクを追加しました。",
+    "libraryDone": "{{project}} のライブラリに追加しました。",
+    "nothing": "この共有から追加できるものはありません。"
   }
 }
