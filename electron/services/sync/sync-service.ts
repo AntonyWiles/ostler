@@ -30,6 +30,7 @@ import { Refusal } from '@shared/refusal'
 import { ROLE_CAPABILITIES } from '@shared/share-roles'
 import { canWriteIn, FolderTransport, type SyncTransport } from './folder-transport'
 import { isDriveLocation } from './drive-transport'
+import { isR2Location } from './r2-transport'
 import { retryWaiting, type ArrivedBlocker } from './apply'
 import { pullLibraryFiles, pushLibraryFiles, type LibraryFileStore } from './library-files'
 import { pullRecords, pushRecords } from './records'
@@ -183,6 +184,8 @@ export interface SyncServiceOptions {
   openServer?(location: string): SyncTransport
   /** A share kept in a Google Drive folder (`gdrive:<folderId>`), through this PC's Drive account. */
   openDrive?(place: string): SyncTransport
+  /** A share kept in an R2 bucket (`r2:<path>`), through the bucket set up under Advanced sync. */
+  openR2?(place: string): SyncTransport
   /** This PC wrote change files to the share at `folder` (Drive shares ask Drive what changed sooner). */
   onPushed?(folder: string): void
   /** Tests: the folder transport, and timer lengths. */
@@ -229,6 +232,7 @@ export class SyncService {
   private pushTimer: ReturnType<typeof setInterval> | null = null
   private pullTimer: ReturnType<typeof setInterval> | null = null
   private stopPairingWatch: () => void = () => undefined
+  private checkPairing: () => void = () => undefined
   private settingsTimer: ReturnType<typeof setTimeout> | null = null
   /** Pairing requests already announced, by device id, so each is announced once. */
   private readonly announcedRequests = new Set<string>()
@@ -657,8 +661,8 @@ export class SyncService {
       if (!project) continue
       const projectsFolder = joinPlace(space, PROJECTS_FOLDER)
       try {
-        if (isDriveLocation(space)) {
-          // In Drive the folder is made when the first file is written; the id keeps the name unique.
+        if (isDriveLocation(space) || isR2Location(space)) {
+          // In Drive and R2 the folder is made when the first file is written; the id keeps the name unique.
           await this.share(
             projectId,
             joinPlace(projectsFolder, projectFolderName(project.name, projectId))
@@ -763,7 +767,7 @@ export class SyncService {
   private spaceRoot(): string | null {
     const space = this.personalSpaceFolder()
     // A personal space in Drive has no folder on this PC.
-    return space && !isDriveLocation(space) ? path.dirname(space) : null
+    return space && !isDriveLocation(space) && !isR2Location(space) ? path.dirname(space) : null
   }
 
   // ─── Personal space (prompt 09) ─────────────────────────────────────────
@@ -877,10 +881,19 @@ export class SyncService {
     void this.shareUnsharedProjects()
   }
 
+  /**
+   * Reads the pairing requests again now: for files that reached the devices folder without a
+   * watch event, such as ones the R2 bridge copied down from the bucket.
+   */
+  checkPairingRequests(): void {
+    if (!this.stopped) this.checkPairing()
+  }
+
   /** Announces each new pairing request in the personal space, now and as the folder changes. */
   private watchPairingRequests(): void {
     this.stopPairingWatch()
     this.stopPairingWatch = () => undefined
+    this.checkPairing = () => undefined
     const space = this.personalSpaceFolder()
     if (!space || this.stopped) return
     const devices = this.transportFor(joinPlace(space, DEVICES_FOLDER))
@@ -902,7 +915,9 @@ export class SyncService {
         })
         .catch((error) => this.options.logError('Pairing requests could not be read:', error))
     }
+    this.checkPairing = check
     try {
+      // An `r2:` devices place calls back when the bucket's change marker moves, not on a folder event.
       this.stopPairingWatch = devices.watch(check)
     } catch (error) {
       this.options.logError('Could not watch the pairing folder:', error)
@@ -1196,6 +1211,10 @@ export class SyncService {
     if (isDriveLocation(folder)) {
       if (!this.options.openDrive) throw new SharingError('no-drive-account')
       return this.options.openDrive(folder)
+    }
+    if (isR2Location(folder)) {
+      if (!this.options.openR2) throw new SharingError('no-r2-bucket')
+      return this.options.openR2(folder)
     }
     if (isServerLocation(folder)) {
       if (!this.options.openServer) throw new SharingError('no-sync-server')

@@ -2817,6 +2817,7 @@
   "errors:sharing.invite-does-not-fit": "04dc0acd94",
   "errors:sharing.joinLinkExpired": "192e224cd1",
   "errors:sharing.no-drive-account": "f4a7022d28",
+  "errors:sharing.no-r2-bucket": "301e89db25",
   "errors:sharing.no-snapshot": "92928d79fd",
   "errors:sharing.no-sync-server": "73632ed6f8",
   "errors:sharing.not-a-share-folder": "a705e229cf",

@@ -95,6 +95,7 @@ import { SyncServerSettings } from '../services/sync/sync-server-settings'
 import { R2Bridge } from '../services/sync/r2-bridge'
 import { isDriveLocation as isDrivePlace } from '../services/sync/drive-transport'
 import { isR2Location } from '../services/sync/r2-transport'
+import { SharingError } from '../services/sync/sharing'
 import { DriveSyncSettings } from '../services/sync/drive-sync-settings'
 import { isDriveLocation } from '../services/sync/drive-transport'
 import { readPolicy, systemPolicySources } from '../services/policy'
@@ -2153,6 +2154,10 @@ export async function createAppServices(dir: string): Promise<AppServices> {
   syncService = new SyncService({
     openServer: (location) => serverSettings.open(location),
     openDrive: (place) => driveSync.open(place),
+    openR2: (place) => {
+      if (!r2Bridge) throw new SharingError('no-r2-bucket')
+      return r2Bridge.openPlace(place)
+    },
     onPushed: (folder) => {
       if (isDriveLocation(folder)) driveSync.kick()
     },
@@ -2310,7 +2315,6 @@ export async function createAppServices(dir: string): Promise<AppServices> {
     },
     logError: (message, error) => console.error(message, error)
   })
-  syncService.start()
   // Advanced sync: the personal space folder copied to and from an R2 bucket, for the phone.
   const syncForR2 = syncService
   r2Bridge = new R2Bridge({
@@ -2325,9 +2329,13 @@ export async function createAppServices(dir: string): Promise<AppServices> {
         : null
     },
     shareFolders: () => syncForR2.shareFolders(),
+    // A join request copied down into the folder raises no folder event, so look for one now.
+    onDownloaded: () => syncForR2.checkPairingRequests(),
     log: (message, error) =>
       console.error(message, error instanceof Error ? error.message : (error ?? ''))
   })
+  // After the bridge exists: `r2:` places open through it.
+  syncService.start()
   r2Bridge.start()
   libraryTextPass = new LibraryTextPass({
     library: libraryService,

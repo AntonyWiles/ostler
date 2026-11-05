@@ -129,7 +129,7 @@ export function parentPlace(place: string): string {
 
 /** A share kept somewhere other than a folder on this PC: a sync server space or a Drive folder. */
 export function isSharedPlace(folder: string): boolean {
-  return isServerLocation(folder) || isDriveLocation(folder)
+  return isServerLocation(folder) || isDriveLocation(folder) || isR2Location(folder)
 }
 
 export interface MemberProblem {
@@ -164,6 +164,7 @@ export class SharingError extends Error {
       | 'invite-does-not-fit'
       | 'no-sync-server'
       | 'no-drive-account'
+      | 'no-r2-bucket'
       | 'cannot-write-folder'
   ) {
     super(`Sharing refused: ${reason}`)
@@ -668,7 +669,7 @@ export function parseInvite(text: string): Invite {
  */
 function locationFits(location: unknown): location is string {
   if (typeof location !== 'string' || location.length > 2048) return false
-  if (isDriveLocation(location)) return true
+  if (isDriveLocation(location) || isR2Location(location)) return true
   try {
     const url = new URL(location)
     if (url.username || url.password || url.search || url.hash) return false

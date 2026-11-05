@@ -863,6 +863,7 @@
     "old-invite": "Someone was removed from this project after this invite was made, so it no longer works. Ask a member for a new invite.",
     "no-sync-server": "This project is shared through a sync server that isn't set up on this PC. Set it up in Settings › Connections › Sync server, then try again.",
     "no-drive-account": "This project is shared through Google Drive, and no Google account on this PC can sync through Drive. Connect one in Settings › Connections and turn on syncing through Drive, then try again.",
+    "no-r2-bucket": "This project syncs through an R2 bucket, and this PC has no bucket set up. Set one up under Advanced sync in Settings › Devices, then try again.",
     "personLink": {
       "not-shared": "This project isn't shared.",
       "not-a-candidate": "That person is no longer one to link. Refresh the list and try again."

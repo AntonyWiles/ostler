@@ -20,6 +20,7 @@ import * as path from 'node:path'
 import type { R2SyncState, SetR2SyncInput } from '@shared/ostler-api'
 import { t } from '@shared/i18n'
 import { FolderTransport, SyncTransportError } from './folder-transport'
+import { SharingError } from './sharing'
 import {
   checkedR2Config,
   R2Changes,
@@ -94,6 +95,8 @@ export class R2Bridge {
   private lastUploaded = 0
   private lastDownloaded = 0
   private started = false
+  /** The bucket as a sync place (`r2:` shares and personal spaces): one client and one change marker. */
+  private direct: { client: R2Client; changes: R2Changes } | null = null
 
   constructor(private readonly deps: R2BridgeDependencies) {
     this.saved = this.load()
@@ -132,6 +135,8 @@ export class R2Bridge {
   stop(): void {
     this.started = false
     this.halt()
+    this.direct?.changes.stop()
+    this.direct = null
   }
 
   set(input: SetR2SyncInput): R2SyncState {
@@ -159,6 +164,8 @@ export class R2Bridge {
   clear(): R2SyncState {
     this.halt()
     this.saved = null
+    this.direct?.changes.stop()
+    this.direct = null
     fs.rmSync(path.join(this.deps.dataDir, FILE_NAME), { force: true })
     this.lastError = null
     this.lastRunAt = null
@@ -179,8 +186,10 @@ export class R2Bridge {
   /** Copies both ways now, listing the bucket whatever the marker says. */
   async syncNow(): Promise<R2SyncState> {
     if (!this.saved) throw new Error(t('errors:r2Sync.notSetUp'))
-    if (!this.client) this.restart(true)
-    await this.enqueue(true)
+    // With the space itself in the bucket there is no folder to copy, only places to look at.
+    const copy = !this.direct || this.deps.spaceFolder() !== null
+    if (copy && !this.client) this.restart(true)
+    await Promise.all([copy ? this.enqueue(true) : null, this.direct?.changes.check(true)])
     return this.state()
   }
 
@@ -219,6 +228,26 @@ export class R2Bridge {
       uploadSoon: this.saved?.uploadSoon ?? true,
       enabled: true
     })
+  }
+
+  /**
+   * Opens an `r2:` place straight in the saved bucket, the way the phone does, whether or not the
+   * folder copying is on. Every place shares one `R2Changes`, so watching any of them (shares, the
+   * pairing folder) costs one HEAD of the change marker per check, at the chosen interval.
+   */
+  openPlace(place: string): R2Transport {
+    if (!this.direct) {
+      const config = this.savedConfig()
+      if (!config) throw new SharingError('no-r2-bucket')
+      const client = new R2Client(config, { fetch: this.deps.fetch, now: this.deps.now })
+      const minutes = this.saved?.checkMinutes ?? DEFAULT_R2_CHECK_MINUTES
+      const changes = new R2Changes(client, {
+        intervalMs: minutes > 0 ? minutes * 60_000 : null,
+        log: (message, error) => this.deps.log(message, error)
+      })
+      this.direct = { client, changes }
+    }
+    return new R2Transport(this.direct.client, place, this.direct.changes)
   }
 
   // ─── Running ────────────────────────────────────────────────────────
@@ -397,6 +426,9 @@ export class R2Bridge {
 
   private save(saved: Saved): void {
     this.saved = saved
+    // `r2:` places opened before keep the old bucket until the sync service opens them again.
+    this.direct?.changes.stop()
+    this.direct = null
     const file = path.join(this.deps.dataDir, FILE_NAME)
     fs.writeFileSync(`${file}.tmp`, JSON.stringify(saved, null, 2), { mode: 0o600 })
     fs.renameSync(`${file}.tmp`, file)
