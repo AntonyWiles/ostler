@@ -50,7 +50,7 @@ import { isMarkableImage, isPng, markedUpFileName } from '@shared/markup'
 import { readFileText, renderPdfPage, textSourceFor, type TextSource } from './library-file-text'
 import { OFFICE_MIME, officeKind } from './office-text'
 import { attachChangeRecorder } from './change-history/recorder'
-import { cleanTitle, MAX_TITLE_CHARS } from './library-title'
+import { cleanLibraryTags, cleanTitle, MAX_TITLE_CHARS } from './library-title'
 import { WhiteboardService } from './whiteboard-service'
 import { Refusal } from '@shared/refusal'
 
@@ -60,8 +60,6 @@ const THUMBNAIL_MAX_EDGE = 480
 const PDF_PREVIEW_WIDTH = 1200
 const MAX_SUMMARY_CHARS = 500
 const MAX_BODY_CHARS = 200_000
-const MAX_TAGS = 20
-const MAX_TAG_CHARS = 40
 const ID_PATTERN = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i
 
 const KINDS: LibraryItemKind[] = [
@@ -137,7 +135,7 @@ export function insertLibraryTextItem(
     aiAccess:
       input.aiAccess === undefined ? DEFAULT_AI_ACCESS[input.kind] : cleanAccess(input.aiAccess),
     isPrimaryBrief: false,
-    tags: cleanTags(input.tags),
+    tags: cleanLibraryTags(input.tags),
     revision: 1,
     createdAt: now,
     updatedAt: now,
@@ -323,7 +321,7 @@ export class LibraryService {
       next.url = cleanUrl(updates.url)
     }
     if (updates.aiAccess !== undefined) next.aiAccess = cleanAccess(updates.aiAccess)
-    if (updates.tags !== undefined) next.tags = cleanTags(updates.tags)
+    if (updates.tags !== undefined) next.tags = cleanLibraryTags(updates.tags)
 
     const contentChanged =
       next.title !== current.title ||
@@ -1445,24 +1443,6 @@ function cleanText(value: unknown, max: number, label: string): string {
 function cleanAccess(value: unknown): LibraryAiAccess {
   if (!ACCESS_LEVELS.includes(value as LibraryAiAccess)) throw new Error('Invalid AI access level')
   return value as LibraryAiAccess
-}
-
-function cleanTags(tags: unknown): string[] {
-  if (tags === undefined || tags === null) return []
-  if (!Array.isArray(tags)) throw new Error('Tags must be a list')
-  const clean = [
-    ...new Set(
-      tags
-        .filter((tag): tag is string => typeof tag === 'string')
-        .map((tag) => tag.trim().replace(/\s+/g, ' '))
-        .filter(Boolean)
-    )
-  ]
-  if (clean.length > MAX_TAGS) throw new Error(t('errors:libraryService.mostTags', { MAX_TAGS }))
-  if (clean.some((tag) => tag.length > MAX_TAG_CHARS)) {
-    throw new Error(t('errors:libraryService.tagLongerThanCharacters', { MAX_TAG_CHARS }))
-  }
-  return clean
 }
 
 /** http and https only; Ostler stores links and opens them in the browser, never fetches them. */

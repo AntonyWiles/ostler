@@ -4,6 +4,7 @@ import { PeopleService } from '../../electron/services/people-service'
 import { formatPlanningTaskDetails } from '../../electron/services/task-intake'
 import { PROJECT_COLORS } from '../../src/shared/project-colors'
 import { createMigratedDatabase } from '../helpers/database'
+import { LibraryRepository } from '../../electron/services/database/library-repository'
 import { useTempDir } from '../helpers/temp-dir'
 
 describe('P5.1 task essentials', () => {
@@ -272,6 +273,54 @@ describe('P5.1 task essentials', () => {
   })
 
   describe('labels', () => {
+    it('counts Library tags as labels, and renames, deletes and restores them there too', () => {
+      const db = planning.database
+      const library = new LibraryRepository(db)
+      const now = '2026-10-01T09:00:00.000Z'
+      library.insertItem({
+        id: 'lib-1',
+        projectId: 'project-one',
+        kind: 'note',
+        title: 'Notes',
+        summary: '',
+        body: '',
+        url: null,
+        file: null,
+        aiAccess: 'human-only',
+        isPrimaryBrief: false,
+        tags: ['design', 'docs'],
+        revision: 1,
+        createdAt: now,
+        updatedAt: now,
+        archivedAt: null
+      })
+      planning.createWorkItem('project-one', { title: 'A', labels: ['design'] }, { kind: 'human' })
+
+      expect(
+        planning
+          .listProjectLabels('project-one')
+          .map((label) => [label.name, label.taskCount, label.libraryItemCount])
+      ).toEqual([
+        ['design', 1, 1],
+        ['docs', 0, 1]
+      ])
+
+      // A label only the Library uses can be renamed.
+      planning.renameLabel('project-one', 'docs', 'reference', { kind: 'human' })
+      planning.renameLabel('project-one', 'design', 'ux', { kind: 'human' })
+      expect(library.getItem('lib-1')).toMatchObject({
+        tags: ['ux', 'reference'],
+        revision: 1,
+        updatedAt: now
+      })
+
+      const deletion = planning.deleteLabel('project-one', 'ux', { kind: 'human' })
+      expect(deletion.libraryItemIds).toEqual(['lib-1'])
+      expect(library.getItem('lib-1')?.tags).toEqual(['reference'])
+      planning.restoreLabel('project-one', deletion, { kind: 'human' })
+      expect(library.getItem('lib-1')?.tags).toEqual(['reference', 'ux'])
+    })
+
     it('lists every label in the project with a stored or default colour', () => {
       planning.createWorkItem(
         'project-one',
@@ -348,7 +397,8 @@ describe('P5.1 task essentials', () => {
       expect(deletion).toEqual({
         name: 'design',
         color: '#ec4899',
-        workItemIds: expect.arrayContaining([a.id, b.id])
+        workItemIds: expect.arrayContaining([a.id, b.id]),
+        libraryItemIds: []
       })
       expect(planning.getWorkItem(a.id).labels).toEqual(['ux'])
       expect(planning.getWorkItem(b.id).labels).toEqual([])

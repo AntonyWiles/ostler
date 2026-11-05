@@ -21,6 +21,7 @@
     "agentEvent_other": "{{count}}件のエージェントイベント",
     "day_other": "{{count}}日",
     "libraryFile_other": "{{count}}個のライブラリファイル",
+    "libraryItem_other": "{{count}}件のライブラリ項目",
     "list_other": "{{count}}件のリスト",
     "label_other": "{{count}}件のラベル",
     "member_other": "{{count}}人のメンバー",

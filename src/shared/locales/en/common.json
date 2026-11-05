@@ -40,6 +40,8 @@
     "day_other": "{{count}} days",
     "libraryFile_one": "{{count}} Library file",
     "libraryFile_other": "{{count}} Library files",
+    "libraryItem_one": "{{count}} Library item",
+    "libraryItem_other": "{{count}} Library items",
     "list_one": "{{count}} list",
     "list_other": "{{count}} lists",
     "label_one": "{{count}} label",

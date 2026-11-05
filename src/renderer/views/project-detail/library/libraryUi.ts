@@ -167,15 +167,6 @@ export function relativeTime(iso: string): string {
   return formatRelativeTime(then)
 }
 
-export function parseTags(text: string): string[] {
-  const seen = new Set<string>()
-  for (const raw of text.split(',')) {
-    const tag = raw.trim()
-    if (tag) seen.add(tag)
-  }
-  return [...seen]
-}
-
 /** A bare http(s) URL, as pasted from a browser's address bar. */
 export function bareHttpUrl(text: string): string | null {
   const trimmed = text.trim()

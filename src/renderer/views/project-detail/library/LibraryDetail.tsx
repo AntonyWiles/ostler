@@ -13,12 +13,10 @@ import {
   Badge,
   Button,
   Checkbox,
-  Chip,
   Menu,
   SegmentedControl,
   Skeleton,
   TextArea,
-  TextField,
   useConfirm
 } from '../../../ui'
 import { Archive, ExternalLink, ListPlus, Pencil, Presentation, Trash2 } from '../../../ui/icons'
@@ -34,7 +32,8 @@ import { MarkUpCopyButton } from '../../../components/markup/MarkUpCopyButton'
 import { CloudFileLine } from './CloudFileLine'
 import { LibraryWhiteboardPreview } from './LibraryWhiteboardPreview'
 import { LibraryPdfPreview } from './LibraryPdfPreview'
-import { ACCESS_OPTIONS, KIND_LABEL, libraryFileUrl, parseTags, relativeTime } from './libraryUi'
+import { ACCESS_OPTIONS, KIND_LABEL, libraryFileUrl, relativeTime } from './libraryUi'
+import { LibraryTagsField } from './LibraryTagsField'
 import { t } from '@shared/i18n'
 import { useFeatures } from '../../../navigation/features'
 import { formatFileSize, formatNumber } from '@shared/format'
@@ -76,7 +75,6 @@ export function LibraryDetail({
 }: LibraryDetailProps) {
   const ai = useFeatures().ai
   const [summary, setSummary] = useState(item.summary)
-  const [tags, setTags] = useState(item.tags.join(', '))
   const [documentText, setDocumentText] = useState<string | null>(null)
   const [sourceOf, setSourceOf] = useState<LibraryItemSourceLink[]>([])
   const [attachedTo, setAttachedTo] = useState<LibraryItemAttachmentLink[]>([])
@@ -106,8 +104,7 @@ export function LibraryDetail({
 
   useEffect(() => {
     setSummary(item.summary)
-    setTags(item.tags.join(', '))
-  }, [item.id, item.summary, item.tags])
+  }, [item.id, item.summary])
 
   // "Source of" and "Attached to" follow the links, not just this item: a work
   // item linked, attached, renamed or deleted elsewhere pushes 'library' or
@@ -161,8 +158,7 @@ export function LibraryDetail({
   const saveSummary = () => {
     if (summary.trim() !== item.summary) void run(() => onUpdate({ summary: summary.trim() }))
   }
-  const saveTags = () => {
-    const next = parseTags(tags)
+  const saveTags = (next: string[]) => {
     if (next.join('\u0000') !== item.tags.join('\u0000')) void run(() => onUpdate({ tags: next }))
   }
   const setAccess = (aiAccess: LibraryAiAccess) => {
@@ -294,23 +290,12 @@ export function LibraryDetail({
         }}
       />
 
-      <TextField
-        label={t('library:libraryDetail.tags')}
-        value={tags}
-        placeholder={t('library:libraryDetail.commaSeparated')}
-        onChange={(event) => setTags(event.target.value)}
-        onBlur={saveTags}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter') event.currentTarget.blur()
-        }}
+      <LibraryTagsField
+        projectId={item.projectId}
+        tags={item.tags}
+        disabled={busy}
+        onChange={saveTags}
       />
-      {item.tags.length > 0 && (
-        <div className="ostler-library-chips" aria-label={t('library:libraryDetail.tagsItem')}>
-          {item.tags.map((name) => (
-            <Chip key={name}>#{name}</Chip>
-          ))}
-        </div>
-      )}
 
       <NoteActionsButton projectId={item.projectId} item={item} />
 

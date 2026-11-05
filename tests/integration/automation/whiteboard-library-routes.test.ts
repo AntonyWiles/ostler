@@ -104,4 +104,31 @@ describe('automation-http-server.ts Library routes with whiteboards (whiteboards
     expect(created.status).toBeGreaterThanOrEqual(400)
     expect(library.listItems(project.id, {})).toEqual([])
   })
+
+  it('takes project labels on Library items, filters by them and renames them with /labels', async () => {
+    const created = await call<{ id: string; tags: string[]; labels: string[] }>(
+      'POST',
+      '/library',
+      { kind: 'note', title: 'Site notes', labels: ['site visit'] }
+    )
+    expect(created.value).toMatchObject({ tags: ['site visit'], labels: ['site visit'] })
+    const patched = await call<{ labels: string[] }>('PATCH', `/library/${created.value.id}`, {
+      labels: ['site visit', 'boiler']
+    })
+    expect(patched.value.labels).toEqual(['site visit', 'boiler'])
+
+    const filtered = await call<Array<{ id: string }>>('GET', '/library?label=boiler')
+    expect(filtered.value.map((entry) => entry.id)).toEqual([created.value.id])
+
+    const labels = await call<Array<{ name: string; libraryItemCount: number }>>('GET', '/labels')
+    expect(labels.value.map((label) => [label.name, label.libraryItemCount])).toEqual([
+      ['boiler', 1],
+      ['site visit', 1]
+    ])
+
+    await call('PATCH', '/labels/boiler', { name: 'heating' })
+    expect(library.getItem(project.id, created.value.id).tags).toEqual(['site visit', 'heating'])
+    await call('DELETE', `/labels/${encodeURIComponent('site visit')}`)
+    expect(library.getItem(project.id, created.value.id).tags).toEqual(['heating'])
+  })
 })

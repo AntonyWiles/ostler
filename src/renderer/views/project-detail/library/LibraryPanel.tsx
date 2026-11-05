@@ -114,7 +114,12 @@ export function LibraryPanel({ projectId, initialItemId, initialNewKind }: Libra
   useEffect(
     () =>
       window.ostlerAPI.onProjectStateChange((update) => {
-        if (update.projectId === projectId && update.field === 'library') void reload()
+        // Tags are the project's labels: a label renamed or removed (field 'planning') changes items too.
+        if (
+          update.projectId === projectId &&
+          (update.field === 'library' || update.field === 'planning')
+        )
+          void reload()
       }),
     [projectId, reload]
   )

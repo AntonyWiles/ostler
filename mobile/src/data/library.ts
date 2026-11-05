@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { DEFAULT_AI_ACCESS, type LibraryItem, type LibraryItemKind } from '@shared/ostler-api'
 import { Refusal } from '@shared/refusal'
 import { LibraryRepository } from '../../../electron/services/database/library-repository'
-import { cleanTitle } from '../../../electron/services/library-title'
+import { cleanLibraryTags, cleanTitle } from '../../../electron/services/library-title'
 import { guarded } from './edits'
 import type { QueryDb } from './queries'
 
@@ -31,12 +31,18 @@ const KIND_ORDER: readonly LibraryItemKind[] = [
 
 /**
  * The project's Library items not archived: the primary brief first, then by kind, then the most
- * recently changed. `words` narrows them to items whose title, summary or text has every word.
+ * recently changed. `words` narrows them to items whose title, summary or text has every word,
+ * and `tag` to items carrying that label.
  */
-export function libraryItems(db: QueryDb, projectId: string, words = ''): LibraryItem[] {
+export function libraryItems(
+  db: QueryDb,
+  projectId: string,
+  words = '',
+  tag: string | null = null
+): LibraryItem[] {
   const wanted = words.toLowerCase().split(/\s+/).filter(Boolean)
   return repository(db)
-    .listItems(projectId, {}, null)
+    .listItems(projectId, tag === null ? {} : { tag }, null)
     .filter((item) => {
       if (wanted.length === 0) return true
       const text =
@@ -103,4 +109,37 @@ export function addLibraryNote(
     })()
   )
   return item
+}
+
+/** The tags the project's Library items not archived carry, by name: what the list filters by. */
+export function libraryTags(db: QueryDb, projectId: string): string[] {
+  const names = new Set(
+    repository(db)
+      .listItems(projectId, {}, null)
+      .flatMap((item) => item.tags)
+  )
+  return [...names].sort((a, b) => a.localeCompare(b))
+}
+
+/**
+ * Replaces an item's tags, which are the project's labels, as the PC's `updateItem` does for
+ * `tags`: cleaned by the same rule, no new revision, `updatedAt` moved on and search reindexed.
+ * Syncs like any other change to the item's row.
+ */
+export function setLibraryItemTags(db: QueryDb, itemId: string, tags: string[]): LibraryItem {
+  const library = repository(db)
+  const item = library.getItem(itemId)
+  if (item === null) throw new Refusal('This Library item is not on this phone')
+  const next: LibraryItem = {
+    ...item,
+    tags: cleanLibraryTags(tags),
+    updatedAt: new Date().toISOString()
+  }
+  guarded(() =>
+    (db as unknown as Database.Database).transaction(() => {
+      library.saveItem(next)
+      library.setTags(next.id, next.tags)
+    })()
+  )
+  return next
 }

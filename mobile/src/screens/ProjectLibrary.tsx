@@ -3,11 +3,12 @@ import { Linking, Pressable, ScrollView, StyleSheet, Text, TextInput, View } fro
 import { t } from '@shared/i18n/index'
 import { formatRelativeTime } from '@shared/format'
 import type { ItemLinkRef, LibraryItem, LibraryItemKind } from '@shared/ostler-api'
-import { libraryItem, libraryItems } from '../data/library'
+import { capabilitiesOf } from '@shared/share-roles'
+import { libraryItem, libraryItems, libraryTags, setLibraryItemTags } from '../data/library'
 import { linkedItemTitle } from '../data/plan'
-import type { QueryDb } from '../data/queries'
+import { projectLabels, shareRole, type QueryDb } from '../data/queries'
 import { RADIUS, SPACE, useTheme, type Theme } from '../theme'
-import { Chip } from './EditBits'
+import { Chip, editErrorText, TextSender } from './EditBits'
 import { Markdown } from './Markdown'
 import { TopBar } from './TopBar'
 
@@ -41,6 +42,7 @@ export function LibraryList({
   onAddNote?: (title: string, body: string) => boolean
 }) {
   const [words, setWords] = useState('')
+  const [tag, setTag] = useState<string | null>(null)
   const [writing, setWriting] = useState(false)
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
@@ -49,9 +51,15 @@ export function LibraryList({
     setTitle('')
     setBody('')
   }
+  const tags = useMemo(
+    () => (version >= 0 ? libraryTags(db, projectId) : []),
+    [db, projectId, version]
+  )
+  // A tag no item carries any more (renamed or removed) stops filtering.
+  const shownTag = tag !== null && tags.includes(tag) ? tag : null
   const items = useMemo(
-    () => (version >= 0 ? libraryItems(db, projectId, words) : []),
-    [db, projectId, words, version]
+    () => (version >= 0 ? libraryItems(db, projectId, words, shownTag) : []),
+    [db, projectId, words, shownTag, version]
   )
   return (
     <View style={styles.list}>
@@ -115,9 +123,30 @@ export function LibraryList({
         onChangeText={setWords}
         style={[styles.input, { color: theme.text, borderColor: theme.borderStrong }]}
       />
+      {tags.length > 0 && (
+        <View style={styles.actions} accessibilityLabel={t('library:libraryRail.tags')}>
+          <Chip
+            label={t('library:libraryRail.allTags')}
+            theme={theme}
+            selected={shownTag === null}
+            onPress={() => setTag(null)}
+          />
+          {tags.map((name) => (
+            <Chip
+              key={name}
+              label={`#${name}`}
+              theme={theme}
+              selected={shownTag === name}
+              onPress={() => setTag(shownTag === name ? null : name)}
+            />
+          ))}
+        </View>
+      )}
       {items.length === 0 && (
         <Text style={[styles.empty, { color: theme.textMuted }]}>
-          {words.trim() ? t('mobile:project.noMatches') : t('mobile:library.empty')}
+          {words.trim() || shownTag !== null
+            ? t('mobile:project.noMatches')
+            : t('mobile:library.empty')}
         </Text>
       )}
       {items.map((item) => (
@@ -148,6 +177,11 @@ export function LibraryList({
               {item.summary}
             </Text>
           )}
+          {item.tags.length > 0 && (
+            <Text style={[styles.kind, { color: theme.textMuted }]} numberOfLines={1}>
+              {item.tags.map((name) => `#${name}`).join(' ')}
+            </Text>
+          )}
         </Pressable>
       ))}
     </View>
@@ -163,16 +197,23 @@ export function LibraryReader({
   itemId,
   version,
   onBack,
-  onOpenItem
+  onOpenItem,
+  onEdited
 }: {
   db: QueryDb
   itemId: string
   version: number
   onBack: () => void
   onOpenItem: (ref: ItemLinkRef) => void
+  /** Called after an edit is saved, so every screen reads it again. */
+  onEdited: () => void
 }) {
   const theme = useTheme()
   const item = useMemo(() => (version >= 0 ? libraryItem(db, itemId) : null), [db, itemId, version])
+  const canEdit = useMemo(
+    () => item !== null && capabilitiesOf(shareRole(db, item.projectId)).editLibrary,
+    [db, item]
+  )
   return (
     <View style={styles.page}>
       <TopBar theme={theme} title={item?.title ?? t('mobile:library.missing')} onBack={onBack} />
@@ -183,7 +224,7 @@ export function LibraryReader({
       ) : (
         <ScrollView contentContainerStyle={styles.reader}>
           <Text style={[styles.kind, { color: theme.textMuted }]}>
-            {[libraryKindLabel(item.kind), ...item.tags].join(' · ')}
+            {libraryKindLabel(item.kind)}
           </Text>
           <Text accessibilityRole="header" style={[styles.heading, { color: theme.text }]}>
             {item.title}
@@ -199,6 +240,14 @@ export function LibraryReader({
               <Text style={[styles.url, { color: theme.accent }]}>{item.url}</Text>
             </Pressable>
           )}
+          <TagsPanel
+            db={db}
+            item={item}
+            theme={theme}
+            canEdit={canEdit}
+            version={version}
+            onEdited={onEdited}
+          />
           {item.file && <FileNote item={item} theme={theme} />}
           {item.body.trim() !== '' && (
             <Markdown
@@ -211,6 +260,88 @@ export function LibraryReader({
           )}
         </ScrollView>
       )}
+    </View>
+  )
+}
+
+/**
+ * An item's tags, which are the project's labels, as chips. Someone who may edit the Library taps
+ * Add a tag to see each of the project's labels to turn on or off, and a box for a new one.
+ */
+function TagsPanel({
+  db,
+  item,
+  theme,
+  canEdit,
+  version,
+  onEdited
+}: {
+  db: QueryDb
+  item: LibraryItem
+  theme: Theme
+  canEdit: boolean
+  version: number
+  onEdited: () => void
+}) {
+  const [editing, setEditing] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const choices = useMemo(() => {
+    if (!editing || version < 0) return []
+    const names = new Set([...projectLabels(db, item.projectId), ...item.tags])
+    return [...names].sort((a, b) => a.localeCompare(b))
+  }, [db, item, editing, version])
+  /** Saves the tags; false when refused (a Viewer, too many), with the reason shown. */
+  const save = (tags: string[]): boolean => {
+    try {
+      setLibraryItemTags(db, item.id, tags)
+    } catch (failure) {
+      setError(editErrorText(failure))
+      return false
+    }
+    setError(null)
+    onEdited()
+    return true
+  }
+  if (!canEdit && item.tags.length === 0) return null
+  const toggle = (name: string) =>
+    save(item.tags.includes(name) ? item.tags.filter((tag) => tag !== name) : [...item.tags, name])
+  return (
+    <View style={styles.form}>
+      <Text style={[styles.kind, { color: theme.textMuted }]}>
+        {t('library:libraryDetail.tags')}
+      </Text>
+      <View style={styles.actions} accessibilityLabel={t('library:libraryDetail.tagsItem')}>
+        {(editing ? choices : item.tags).map((name) => (
+          <Chip
+            key={name}
+            label={`#${name}`}
+            theme={theme}
+            selected={item.tags.includes(name)}
+            onPress={() => {
+              if (editing) toggle(name)
+              else if (canEdit) setEditing(true)
+            }}
+          />
+        ))}
+        {canEdit && (
+          <Chip
+            label={editing ? t('mobile:edit.done') : t('library:libraryDetail.addTag')}
+            theme={theme}
+            onPress={() => setEditing(!editing)}
+          />
+        )}
+      </View>
+      {editing && (
+        <TextSender
+          theme={theme}
+          placeholder={t('mobile:edit.newLabel')}
+          button={t('mobile:edit.add')}
+          onSend={(text) => {
+            if (!save([...item.tags, text])) throw new Error('refused')
+          }}
+        />
+      )}
+      {error !== null && <Text style={{ color: theme.danger }}>{error}</Text>}
     </View>
   )
 }

@@ -122,6 +122,7 @@ import { TimeTracking } from './time-tracking'
 import { PlanningGithubLinks } from './planning-github-links'
 import { PlanningChecklistDetails, detailsInOrder } from './planning-checklist-details'
 import { PlanningTaskLinks, type TaskLinkRow } from './planning-task-links'
+import { LibraryRepository } from './database/library-repository'
 import { PlanningDescriptionVersions } from './planning-description-versions'
 import { isLinkKind, linkRole } from '@shared/planning/links'
 import { PlanningColumns } from './planning-columns'
@@ -244,6 +245,8 @@ export class PlanningService {
   private readonly checklistDetails: PlanningChecklistDetails
   /** Links between tasks besides waits-on (N2.4): never read by scheduling. */
   private readonly taskLinks: PlanningTaskLinks
+  /** Library items' tags are the project's labels: a rename or delete reaches them too. */
+  private readonly libraryTags: LibraryRepository
   /** Description history (N2.6): the text before each sitting of changes. */
   private readonly descriptionVersions: PlanningDescriptionVersions
   /** A project's column names and hidden columns (R2.4), for every surface. */
@@ -328,6 +331,7 @@ export class PlanningService {
     })
     this.checklistDetails = new PlanningChecklistDetails(this.db)
     this.taskLinks = new PlanningTaskLinks(this.db)
+    this.libraryTags = new LibraryRepository(this.db)
     this.descriptionVersions = new PlanningDescriptionVersions(this.db, (kind, personId, rule) =>
       this.activity.nameActor(kind, personId, rule)
     )
@@ -3207,9 +3211,9 @@ export class PlanningService {
   }
 
   /**
-   * Every label used on the project's live and archived tasks, with its
-   * colour: the stored one, or a stable default from the palette. Sorted by
-   * name.
+   * Every label used on the project's live and archived tasks and Library
+   * items, with its colour: the stored one, or a stable default from the
+   * palette. Sorted by name.
    */
   listProjectLabels(projectId: string): PlanningLabel[] {
     this.requireProject(projectId)
@@ -3217,13 +3221,15 @@ export class PlanningService {
     for (const item of this.listKeptWorkItems(projectId)) {
       for (const label of item.labels) counts.set(label, (counts.get(label) ?? 0) + 1)
     }
+    const libraryCounts = this.libraryTags.tagCounts(projectId)
     const colors = this.labelColors(projectId)
-    return [...counts.entries()]
-      .map(([name, taskCount]) => ({
+    return [...new Set([...counts.keys(), ...libraryCounts.keys()])]
+      .map((name) => ({
         name,
         color: colors.get(name) ?? paletteColorFor(name),
         hasColor: colors.has(name),
-        taskCount
+        taskCount: counts.get(name) ?? 0,
+        libraryItemCount: libraryCounts.get(name) ?? 0
       }))
       .sort((a, b) => a.name.localeCompare(b.name))
   }
@@ -3242,8 +3248,8 @@ export class PlanningService {
   }
 
   /**
-   * Renames a label on every task in the project, in one transaction. A task
-   * that already had the new name keeps one copy; the colour moves with the
+   * Renames a label on every task and Library item in the project, in one
+   * transaction. One that already had the new name keeps one copy; the colour moves with the
    * name unless the new name has one of its own.
    */
   renameLabel(projectId: string, from: string, to: string, actor: PlanningActor): PlanningLabel {
@@ -3252,16 +3258,16 @@ export class PlanningService {
     const oldName = this.labelName(from)
     const newName = this.labelName(to)
     const items = this.itemsWithLabel(projectId, oldName)
-    if (items.length === 0)
+    const libraryItems = this.libraryTags.itemsWithTag(projectId, oldName)
+    if (items.length === 0 && libraryItems.length === 0)
       throw new Refusal(t('errors:planningService.noTaskHasLabel', { oldName }))
     if (oldName === newName) return this.requireLabel(projectId, newName)
+    const renamed = (labels: string[]) => [
+      ...new Set(labels.map((label) => (label === oldName ? newName : label)))
+    ]
     this.db.transaction(() => {
-      for (const item of items) {
-        const labels = [
-          ...new Set(item.labels.map((label) => (label === oldName ? newName : label)))
-        ]
-        this.writeLabels(item, labels, who)
-      }
+      for (const item of items) this.writeLabels(item, renamed(item.labels), who)
+      for (const item of libraryItems) this.libraryTags.setTags(item.id, renamed(item.tags))
       const colors = this.labelColors(projectId)
       const color = colors.get(oldName)
       if (color && !colors.has(newName)) {
@@ -3277,7 +3283,7 @@ export class PlanningService {
   }
 
   /**
-   * Removes a label from every task in the project, in one transaction, and
+   * Removes a label from every task and Library item in the project, in one transaction, and
    * returns what it took so `restoreLabel` can undo it.
    */
   deleteLabel(projectId: string, name: string, actor: PlanningActor): PlanningLabelDeletion {
@@ -3285,6 +3291,7 @@ export class PlanningService {
     const who = this.activity.requireActor(actor)
     const label = this.labelName(name)
     const items = this.itemsWithLabel(projectId, label)
+    const libraryItems = this.libraryTags.itemsWithTag(projectId, label)
     const color = this.labelColors(projectId).get(label) ?? null
     this.db.transaction(() => {
       for (const item of items) {
@@ -3294,14 +3301,27 @@ export class PlanningService {
           who
         )
       }
+      for (const item of libraryItems)
+        this.libraryTags.setTags(
+          item.id,
+          item.tags.filter((existing) => existing !== label)
+        )
       this.db
         .prepare('DELETE FROM planning_labels WHERE project_id = ? AND name = ?')
         .run(projectId, label)
     })()
-    return { name: label, color, workItemIds: items.map((item) => item.id) }
+    return {
+      name: label,
+      color,
+      workItemIds: items.map((item) => item.id),
+      libraryItemIds: libraryItems.map((item) => item.id)
+    }
   }
 
-  /** Undoes `deleteLabel`: the label goes back on those tasks that still exist, with its colour. */
+  /**
+   * Undoes `deleteLabel`: the label goes back on those tasks and Library items
+   * that still exist, with its colour.
+   */
   restoreLabel(
     projectId: string,
     deletion: PlanningLabelDeletion,
@@ -3320,6 +3340,13 @@ export class PlanningService {
         const labels = jsonStringList(row.labels)
         if (!labels.includes(label) && labels.length < 20)
           this.writeLabels({ id, projectId, labels }, [...labels, label], who)
+      }
+      const libraryIds = Array.isArray(deletion.libraryItemIds) ? deletion.libraryItemIds : []
+      for (const id of libraryIds) {
+        if (typeof id !== 'string') continue
+        const item = this.libraryTags.getItem(id)
+        if (item?.projectId === projectId && !item.tags.includes(label))
+          this.libraryTags.setTags(id, [...item.tags, label])
       }
       if (deletion.color && isHexColor(deletion.color)) {
         this.db
@@ -3366,7 +3393,13 @@ export class PlanningService {
     if (found) return found
     // A colour may be set before any task uses the label.
     const color = this.labelColors(projectId).get(name)
-    return { name, color: color ?? paletteColorFor(name), hasColor: Boolean(color), taskCount: 0 }
+    return {
+      name,
+      color: color ?? paletteColorFor(name),
+      hasColor: Boolean(color),
+      taskCount: 0,
+      libraryItemCount: 0
+    }
   }
 
   private labelName(value: unknown): string {

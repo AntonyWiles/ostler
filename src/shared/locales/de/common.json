@@ -34,6 +34,8 @@
     "day_other": "{{count}} Tage",
     "libraryFile_one": "{{count}} Bibliotheksdatei",
     "libraryFile_other": "{{count}} Bibliotheksdateien",
+    "libraryItem_one": "{{count}} Bibliothekseintrag",
+    "libraryItem_other": "{{count}} Bibliothekseinträge",
     "list_one": "{{count}} Liste",
     "list_other": "{{count}} Listen",
     "label_one": "{{count}} Label",
