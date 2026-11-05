@@ -30,6 +30,10 @@ Only these, and only once you set them up or use them:
   settings and projects are written, encrypted, into a folder in your own synced storage, and
   your other PCs read it. Your sync app carries it, and nothing goes through an Ostler server. See
   [Your devices](29-your-devices.md).
+- **Your own R2 bucket.** With **Advanced sync**, the same encrypted files go to a Cloudflare R2
+  bucket in your own Cloudflare account instead. Cloudflare sees file sizes and when they change,
+  never what is in them. The bucket's secret key stays in your PC's protected storage and the
+  phone's secure store. See [Sync through your own R2 bucket](34-sync-through-r2.md#privacy).
 - **Ostler for Android.** The phone app signs in with Google and reads and writes only Ostler's own
   folder in your Google Drive, encrypted, to bring your projects to the phone and send changes back.
   It sends nothing to the developer and has no analytics, ads or crash reports. See

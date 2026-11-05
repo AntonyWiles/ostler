@@ -24,6 +24,27 @@ Help › What's new, and the Unreleased section until a version has its own.
   minute to only on Sync now); looking costs one small request, and the bucket is only listed when
   another device changed something, so a person's use stays well inside R2's free tier. A sealed
   setup code with a one-time passphrase carries the settings to the phone or another PC.
+- **Start your personal space in your own R2 bucket.** Settings › Devices › Keep my devices in
+  step offers **My own R2 bucket**, and the phone can start a space in a bucket or join one, from a
+  setup code or by typing the bucket's details.
+- **Move to R2.** A space kept in Google Drive or a folder moves into your R2 bucket in one step;
+  your other devices follow, and the old copy is left as it was.
+- **R2 call counts.** Advanced sync shows this month's calls from each device and warns at half of
+  a free allowance, and wrong keys, a missing bucket and no network each get their own message.
+- **A guide to syncing through R2.** The user guide walks through making a bucket and a token for
+  it, setting up each device, moving from Drive and what the messages mean.
+- **Add to the Library from the phone.** Notes, links, files, photos and voice memos.
+- **Library tags are project labels.** Library items use the same labels as the project's tasks.
+- **Library file actions.** Show in folder, Copy path and Copy link sit up front; AI access moves
+  to the bottom of an item.
+- **Board column options.** Each column can have its own sort, number of cards shown, height and
+  custom fields.
+- **Attachments on the phone.** Attach photos and documents to a task, and share text, links and
+  files into Ostler from other Android apps.
+- **Phone notifications.** Reminders, a Today summary, a running timer, new Inbox items and sync
+  problems.
+- **New and changed tasks are marked.** A dot shows tasks changed by someone or something else
+  since you last opened them; **Mark all as seen** clears them.
 - **A sideload build for trying phone changes.** `npm run sideload:android` in `mobile/` builds
   "Ostler Dev" as a standalone APK from the working tree and installs it over adb (USB or wireless
   debugging), keeping its data and sync settings.

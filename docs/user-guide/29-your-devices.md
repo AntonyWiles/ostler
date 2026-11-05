@@ -25,6 +25,9 @@ both screens. A space you already keep in a folder stays where it is; it is not 
 **Your phone.** An Android phone can join the same space when it is kept in Google Drive; see
 [Ostler on your phone](32-ostler-on-your-phone.md).
 
+**Your own R2 bucket.** Instead of a folder or Google Drive, your PCs and phone can keep in step
+through a Cloudflare R2 bucket of your own; see [Sync through your own R2 bucket](34-sync-through-r2.md).
+
 The section lists **Your PCs**, with **This PC** marked. The first PC is the one that made the
 folder. The others join it as described below.
 
@@ -108,6 +111,9 @@ Ostler's data from it yourself.
 
 ## Advanced sync: what Cloudflare R2 costs
 
+How to make the bucket and set up each device is in
+[Sync through your own R2 bucket](34-sync-through-r2.md).
+
 With **Advanced sync**, your devices sync through your own Cloudflare R2 bucket. R2 charges by
 call, and its free tier covers a month of up to a million **class A** calls (writing a file, listing
 a folder) and ten million **class B** calls (reading a file, asking whether one changed), for all your
@@ -125,13 +131,13 @@ What a typical setup uses in a month (30 days): two PCs open all day and a phone
 hours a day, a personal space with five shared projects, and light editing (about 50 bursts of edits
 a day across all devices).
 
-| | Look every minute | Look every 5 minutes |
-| --- | --- | --- |
-| Asking for changes (class B) | 2 × 43,200 + 3,600 ≈ 90,000 | 2 × 8,640 + 720 ≈ 18,000 |
-| Reading new change files (class B) | about 10,000 | about 10,000 |
-| Writing edits (class A) | 1,500 × 3 ≈ 4,500 | about 4,500 |
-| Listing after another device's edit (class A) | 1,500 × 2 × about 60 ≈ 180,000 | at most the same, often less |
-| **Total** | **about 185,000 A and 100,000 B** | **about 185,000 A and 28,000 B** |
+|                                               | Look every minute                 | Look every 5 minutes             |
+| --------------------------------------------- | --------------------------------- | -------------------------------- |
+| Asking for changes (class B)                  | 2 × 43,200 + 3,600 ≈ 90,000       | 2 × 8,640 + 720 ≈ 18,000         |
+| Reading new change files (class B)            | about 10,000                      | about 10,000                     |
+| Writing edits (class A)                       | 1,500 × 3 ≈ 4,500                 | about 4,500                      |
+| Listing after another device's edit (class A) | 1,500 × 2 × about 60 ≈ 180,000    | at most the same, often less     |
+| **Total**                                     | **about 185,000 A and 100,000 B** | **about 185,000 A and 28,000 B** |
 
 That is under a fifth of the class A allowance and about 1% of class B. Writing an edit is one
 listing of the device's own changes, the change file and the change marker. Each time another
