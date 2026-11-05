@@ -292,6 +292,28 @@ export function TaskDetail({
   const valueText = (text: string, muted = false) => (
     <Text style={[styles.factValue, { color: muted ? theme.textMuted : theme.text }]}>{text}</Text>
   )
+  /** One-of-many choices as a short list under their field; picking one closes it. */
+  const choiceList = (
+    items: { key: string; label: string; selected: boolean; pick: () => void }[]
+  ) =>
+    items.map((item) => (
+      <Pressable
+        key={item.key}
+        accessibilityRole="radio"
+        accessibilityState={{ selected: item.selected }}
+        onPress={() => {
+          if (item.selected) setPanel(null)
+          else if (attempt(item.pick)) setPanel(null)
+        }}
+        style={({ pressed }) => [
+          styles.option,
+          item.selected && { backgroundColor: theme.accentSubtle },
+          pressed && { backgroundColor: theme.surfaceSunken }
+        ]}
+      >
+        {valueText(item.label)}
+      </Pressable>
+    ))
   /** A field that opens its choices in place, under it, when tapped. */
   const field = (
     name: Exclude<
@@ -524,28 +546,21 @@ export function TaskDetail({
             valueText(task.assigneeName ?? t('mobile:edit.nobody'), task.assigneeName === null)
           )}
           {panel === 'assignee' && (
-            <View style={[styles.panel, styles.chips, divider]}>
-              <Chip
-                label={t('mobile:edit.nobody')}
-                theme={theme}
-                selected={task.assigneeId === null}
-                onPress={() => {
-                  if (task.assigneeId === null) setPanel(null)
-                  else if (attempt(() => setTaskAssignee(db, task.id, null))) setPanel(null)
-                }}
-              />
-              {people.map((person) => (
-                <Chip
-                  key={person.id}
-                  label={person.name}
-                  theme={theme}
-                  selected={person.id === task.assigneeId}
-                  onPress={() => {
-                    if (person.id === task.assigneeId) setPanel(null)
-                    else if (attempt(() => setTaskAssignee(db, task.id, person.id))) setPanel(null)
-                  }}
-                />
-              ))}
+            <View style={[styles.panel, divider]}>
+              {choiceList([
+                {
+                  key: 'nobody',
+                  label: t('mobile:edit.nobody'),
+                  selected: task.assigneeId === null,
+                  pick: () => setTaskAssignee(db, task.id, null)
+                },
+                ...people.map((person) => ({
+                  key: person.id,
+                  label: person.name,
+                  selected: person.id === task.assigneeId,
+                  pick: () => setTaskAssignee(db, task.id, person.id)
+                }))
+              ])}
             </View>
           )}
           {field(
@@ -562,19 +577,15 @@ export function TaskDetail({
             valueText(taskPriorityLabel(task.priority))
           )}
           {panel === 'priority' && (
-            <View style={[styles.panel, styles.chips, divider]}>
-              {TASK_PRIORITIES.map((priority) => (
-                <Chip
-                  key={priority}
-                  label={taskPriorityLabel(priority)}
-                  theme={theme}
-                  selected={priority === task.priority}
-                  onPress={() => {
-                    if (priority === task.priority) setPanel(null)
-                    else if (attempt(() => setTaskPriority(db, task.id, priority))) setPanel(null)
-                  }}
-                />
-              ))}
+            <View style={[styles.panel, divider]}>
+              {choiceList(
+                TASK_PRIORITIES.map((priority) => ({
+                  key: priority,
+                  label: taskPriorityLabel(priority),
+                  selected: priority === task.priority,
+                  pick: () => setTaskPriority(db, task.id, priority)
+                }))
+              )}
             </View>
           )}
           {field(
@@ -619,29 +630,21 @@ export function TaskDetail({
             valueText(task.milestoneName ?? t('mobile:edit.noMilestone'), task.milestoneId === null)
           )}
           {panel === 'milestone' && (
-            <View style={[styles.panel, styles.chips, divider]}>
-              <Chip
-                label={t('mobile:edit.noMilestone')}
-                theme={theme}
-                selected={task.milestoneId === null}
-                onPress={() => {
-                  if (task.milestoneId === null) setPanel(null)
-                  else if (attempt(() => setTaskMilestone(db, task.id, null))) setPanel(null)
-                }}
-              />
-              {milestones.map((milestone) => (
-                <Chip
-                  key={milestone.id}
-                  label={milestone.name}
-                  theme={theme}
-                  selected={milestone.id === task.milestoneId}
-                  onPress={() => {
-                    if (milestone.id === task.milestoneId) setPanel(null)
-                    else if (attempt(() => setTaskMilestone(db, task.id, milestone.id)))
-                      setPanel(null)
-                  }}
-                />
-              ))}
+            <View style={[styles.panel, divider]}>
+              {choiceList([
+                {
+                  key: 'none',
+                  label: t('mobile:edit.noMilestone'),
+                  selected: task.milestoneId === null,
+                  pick: () => setTaskMilestone(db, task.id, null)
+                },
+                ...milestones.map((milestone) => ({
+                  key: milestone.id,
+                  label: milestone.name,
+                  selected: milestone.id === task.milestoneId,
+                  pick: () => setTaskMilestone(db, task.id, milestone.id)
+                }))
+              ])}
             </View>
           )}
           {field(

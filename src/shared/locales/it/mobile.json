@@ -627,5 +627,19 @@
     "taskDone": "Attività aggiunta a {{project}}.",
     "libraryDone": "Aggiunto alla libreria di {{project}}.",
     "nothing": "Niente da aggiungere da questa condivisione."
+  },
+  "menus": {
+    "sections": "Sezioni",
+    "opensChoices": "Apre un elenco di scelte",
+    "show": "Mostra",
+    "sort": "Ordina",
+    "label": "Etichetta",
+    "anyLabel": "Qualsiasi etichetta",
+    "project": "Progetto",
+    "groupReview": "Revisione",
+    "groupPeople": "Persone",
+    "groupWork": "Lavoro",
+    "groupPlan": "Piano",
+    "groupFiles": "File"
   }
 }

@@ -67,6 +67,15 @@ const ICONS = {
       <Path d="m6 6 12 12" />
     </>
   ),
+  menu: (
+    <>
+      <Path d="M4 6h16" />
+      <Path d="M4 12h16" />
+      <Path d="M4 18h16" />
+    </>
+  ),
+  check: <Path d="M20 6 9 17l-5-5" />,
+  'chevron-down': <Path d="m6 9 6 6 6-6" />,
   'chevron-left': <Path d="m15 18-6-6 6-6" />,
   'chevron-right': <Path d="m9 18 6-6-6-6" />
 } as const

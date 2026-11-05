@@ -1,14 +1,5 @@
 import { useMemo, useState } from 'react'
-import {
-  Alert,
-  Pressable,
-  ScrollView,
-  SectionList,
-  StyleSheet,
-  Text,
-  TextInput,
-  View
-} from 'react-native'
+import { Alert, Pressable, SectionList, StyleSheet, Text, TextInput, View } from 'react-native'
 import { t } from '@shared/i18n/index'
 import { formatIsoDateShort } from '@shared/dates'
 import { TASK_STATUSES, taskStatusLabel } from '@shared/task-labels'
@@ -61,6 +52,8 @@ import {
 import { RADIUS, SPACE, statusColor, useTheme, type Theme } from '../theme'
 import { Chip, editErrorText, editStyles, TextSender } from './EditBits'
 import { TopBar } from './TopBar'
+import { Dropdown, type NavItem } from './Menus'
+import { Icon } from './Icon'
 import { TaskRow } from './TaskRow'
 
 interface Props {
@@ -129,6 +122,38 @@ interface Section {
   data: TaskSummary[]
   /** How many tasks the section holds, shown when it is folded away. */
   count: number
+}
+
+/** A view's name, as the side menu and the task-list dropdown show it. */
+function viewLabel(view: ProjectView): string {
+  switch (view) {
+    case 'tasks':
+      return t('mobile:project.tasksView')
+    case 'triage':
+      return t('mobile:plan.triageView')
+    case 'someday':
+      return t('mobile:plan.somedayView')
+    case 'milestones':
+      return t('mobile:plan.milestonesView')
+    case 'decisions':
+      return t('mobile:plan.decisionsView')
+    case 'goals':
+      return t('mobile:plan.goalsView')
+    case 'signOffs':
+      return t('mobile:plan.signOffsView')
+    case 'status':
+      return t('mobile:status.view')
+    case 'shopping':
+      return t('mobile:shopping.view')
+    case 'library':
+      return t('mobile:library.view')
+    case 'schedule':
+      return t('mobile:schedule.view')
+    case 'archive':
+      return t('mobile:project.archiveView')
+    case 'bin':
+      return t('mobile:project.binView')
+  }
 }
 
 /** How the Tasks view orders its tasks. Do first is one list, not grouped by status. */
@@ -278,12 +303,48 @@ export function Project({
   const overview = data?.overview
   const milestone = overview?.nextMilestone ?? null
   const addTitle = t('mobile:edit.addTask')
+  const navItem = (name: ProjectView): NavItem => ({
+    key: name,
+    label: viewLabel(name),
+    selected: view === name,
+    onPress: () => setView(name)
+  })
   return (
     <>
       <TopBar
         theme={theme}
         title={projectName(reference)}
         onBack={onBack}
+        nav={{
+          title: projectName(reference),
+          groups: [
+            {
+              title: t('mobile:menus.groupWork'),
+              items: [
+                {
+                  key: 'tasks',
+                  label: t('mobile:project.tasksView'),
+                  count: triageCount,
+                  selected: TASK_VIEWS.includes(view),
+                  onPress: () => setView('tasks')
+                },
+                navItem('schedule'),
+                navItem('shopping')
+              ]
+            },
+            {
+              title: t('mobile:menus.groupPlan'),
+              items: [
+                navItem('status'),
+                navItem('milestones'),
+                navItem('goals'),
+                navItem('decisions'),
+                { ...navItem('signOffs'), count: waitingSignOffs }
+              ]
+            },
+            { title: t('mobile:menus.groupFiles'), items: [navItem('library')] }
+          ]
+        }}
         actions={[
           {
             icon: 'plus',
@@ -364,126 +425,71 @@ export function Project({
                         })}
                   </Text>
                 </View>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.viewsLine}
-                >
-                  <Chip
-                    label={t('mobile:project.tasksView')}
-                    theme={theme}
-                    selected={view === 'tasks'}
-                    onPress={() => setView('tasks')}
-                  />
-                  <Chip
-                    label={t('mobile:status.view')}
-                    theme={theme}
-                    selected={view === 'status'}
-                    onPress={() => setView('status')}
-                  />
-                  <Chip
-                    label={
-                      triageCount > 0
-                        ? t('mobile:plan.triageCount', { count: triageCount })
-                        : t('mobile:plan.triageView')
-                    }
-                    theme={theme}
-                    selected={view === 'triage'}
-                    onPress={() => setView('triage')}
-                  />
-                  <Chip
-                    label={t('mobile:plan.somedayView')}
-                    theme={theme}
-                    selected={view === 'someday'}
-                    onPress={() => setView('someday')}
-                  />
-                  <Chip
-                    label={t('mobile:schedule.view')}
-                    theme={theme}
-                    selected={view === 'schedule'}
-                    onPress={() => setView('schedule')}
-                  />
-                  <Chip
-                    label={t('mobile:plan.milestonesView')}
-                    theme={theme}
-                    selected={view === 'milestones'}
-                    onPress={() => setView('milestones')}
-                  />
-                  <Chip
-                    label={t('mobile:plan.goalsView')}
-                    theme={theme}
-                    selected={view === 'goals'}
-                    onPress={() => setView('goals')}
-                  />
-                  <Chip
-                    label={t('mobile:plan.decisionsView')}
-                    theme={theme}
-                    selected={view === 'decisions'}
-                    onPress={() => setView('decisions')}
-                  />
-                  <Chip
-                    label={
-                      waitingSignOffs > 0
-                        ? t('mobile:plan.signOffsCount', { count: waitingSignOffs })
-                        : t('mobile:plan.signOffsView')
-                    }
-                    theme={theme}
-                    selected={view === 'signOffs'}
-                    onPress={() => setView('signOffs')}
-                  />
-                  <Chip
-                    label={t('mobile:library.view')}
-                    theme={theme}
-                    selected={view === 'library'}
-                    onPress={() => setView('library')}
-                  />
-                  <Chip
-                    label={t('mobile:shopping.view')}
-                    theme={theme}
-                    selected={view === 'shopping'}
-                    onPress={() => setView('shopping')}
-                  />
-                  <Chip
-                    label={t('mobile:project.archiveView')}
-                    theme={theme}
-                    selected={view === 'archive'}
-                    onPress={() => setView('archive')}
-                  />
-                  <Chip
-                    label={t('mobile:project.binView')}
-                    theme={theme}
-                    selected={view === 'bin'}
-                    onPress={() => setView('bin')}
-                  />
-                </ScrollView>
-                {TASK_VIEWS.includes(view) && (
-                  <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.viewsLine}
-                  >
-                    {view === 'tasks' &&
-                      SORTS.map((name) => (
-                        <Chip
-                          key={name}
-                          label={t(`mobile:list.sort.${name}`)}
-                          theme={theme}
-                          selected={sort === name}
-                          onPress={() => setSort(name)}
-                        />
-                      ))}
-                    <Chip
-                      label={
+                <View style={styles.toolbar}>
+                  {TASK_VIEWS.includes(view) ? (
+                    <Dropdown
+                      theme={theme}
+                      label={t('mobile:menus.show')}
+                      value={view}
+                      options={TASK_VIEWS.map((name) => ({
+                        value: name,
+                        label: viewLabel(name),
+                        count: name === 'triage' ? triageCount : undefined
+                      }))}
+                      onChange={setView}
+                    />
+                  ) : (
+                    <Text
+                      accessibilityRole="header"
+                      numberOfLines={1}
+                      style={[styles.sectionName, { color: theme.text }]}
+                    >
+                      {viewLabel(view)}
+                    </Text>
+                  )}
+                  <View style={styles.toolbarGap} />
+                  {view === 'tasks' && (
+                    <Dropdown
+                      theme={theme}
+                      label={t('mobile:menus.sort')}
+                      value={sort}
+                      options={SORTS.map((name) => ({
+                        value: name,
+                        label: t(`mobile:list.sort.${name}`)
+                      }))}
+                      onChange={setSort}
+                    />
+                  )}
+                  {TASK_VIEWS.includes(view) && (
+                    <Pressable
+                      accessibilityRole="button"
+                      accessibilityLabel={
                         words.trim() || label !== null
                           ? t('mobile:list.filterOn')
                           : t('mobile:list.filter')
                       }
-                      theme={theme}
-                      selected={filtering || Boolean(words.trim()) || label !== null}
+                      accessibilityState={{ expanded: filtering }}
                       onPress={() => setFiltering(!filtering)}
-                    />
-                  </ScrollView>
-                )}
+                      hitSlop={4}
+                      style={[
+                        styles.toolButton,
+                        (filtering || Boolean(words.trim()) || label !== null) && {
+                          backgroundColor: theme.accentSubtle
+                        }
+                      ]}
+                    >
+                      <Icon
+                        name="search"
+                        size={20}
+                        color={
+                          filtering || Boolean(words.trim()) || label !== null
+                            ? theme.accent
+                            : theme.textSecondary
+                        }
+                      />
+                    </Pressable>
+                  )}
+                </View>
                 {filtering && TASK_VIEWS.includes(view) && (
                   <TextInput
                     accessibilityLabel={t('mobile:project.filter')}
@@ -503,16 +509,18 @@ export function Project({
                   />
                 )}
                 {filtering && TASK_VIEWS.includes(view) && labels.length > 0 && (
-                  <View style={styles.views}>
-                    {labels.map((name) => (
-                      <Chip
-                        key={name}
-                        label={name}
-                        theme={theme}
-                        selected={label === name}
-                        onPress={() => setLabel(label === name ? null : name)}
-                      />
-                    ))}
+                  <View style={styles.toolbar}>
+                    <Dropdown
+                      theme={theme}
+                      label={t('mobile:menus.label')}
+                      value={label ?? ''}
+                      text={label === null ? t('mobile:menus.anyLabel') : `#${label}`}
+                      options={[
+                        { value: '', label: t('mobile:menus.anyLabel') },
+                        ...labels.map((name) => ({ value: name, label: `#${name}` }))
+                      ]}
+                      onChange={(name) => setLabel(name === '' ? null : name)}
+                    />
                   </View>
                 )}
                 <View style={styles.figures}>
@@ -764,8 +772,17 @@ const styles = StyleSheet.create({
   swatch: { width: 10, height: 10, borderRadius: 3 },
   milestone: { fontSize: 13, flex: 1 },
   figures: { flexDirection: 'row', gap: SPACE.small },
-  views: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACE.small },
-  viewsLine: { flexDirection: 'row', gap: SPACE.small },
+  toolbar: { flexDirection: 'row', alignItems: 'center', minHeight: 40 },
+  toolbarGap: { flex: 1 },
+  toolButton: {
+    width: 40,
+    height: 36,
+    marginLeft: SPACE.small,
+    borderRadius: RADIUS,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  sectionName: { fontSize: 15, fontWeight: '600', paddingHorizontal: SPACE.small / 2 },
   chevron: { fontSize: 13, width: 12 },
   note: { fontSize: 13 },
   rowActions: {

@@ -3,6 +3,7 @@ import { Modal, Pressable, StyleSheet, Text, View } from 'react-native'
 import { t } from '@shared/i18n/index'
 import { RADIUS, SPACE, type Theme } from '../theme'
 import { Icon, type IconName } from './Icon'
+import { SideMenu, type NavGroup } from './Menus'
 
 /** A button at the right of the bar: an icon, with its name for screen readers. */
 export interface BarAction {
@@ -26,13 +27,28 @@ interface Props {
   onBack?: () => void
   actions?: BarAction[]
   menu?: MenuItem[]
+  /**
+   * The screen's sections, in a side menu a ☰ opens: at the left on a top-level screen, at the
+   * right (before ⋮) when there is a back arrow.
+   */
+  nav?: { title: string; groups: readonly NavGroup[] }
 }
 
 /** The bar fixed at the top of every screen: back, the screen's title, its actions and a ⋮ menu. */
-export function TopBar({ theme, title, onBack, actions = [], menu = [] }: Props) {
+export function TopBar({ theme, title, onBack, actions = [], menu = [], nav }: Props) {
   const [open, setOpen] = useState(false)
+  const [navOpen, setNavOpen] = useState(false)
+  const navButton = nav !== undefined && (
+    <IconButton
+      icon="menu"
+      label={t('mobile:menus.sections')}
+      theme={theme}
+      onPress={() => setNavOpen(true)}
+    />
+  )
   return (
     <View style={[styles.bar, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+      {onBack === undefined && navButton}
       {onBack !== undefined && (
         <IconButton
           icon="arrow-left"
@@ -44,13 +60,18 @@ export function TopBar({ theme, title, onBack, actions = [], menu = [] }: Props)
       <Text
         accessibilityRole="header"
         numberOfLines={1}
-        style={[styles.title, { color: theme.text }, onBack === undefined && styles.titleAlone]}
+        style={[
+          styles.title,
+          { color: theme.text },
+          onBack === undefined && nav === undefined && styles.titleAlone
+        ]}
       >
         {title}
       </Text>
       {actions.map((action) => (
         <IconButton key={action.label} {...action} theme={theme} />
       ))}
+      {onBack !== undefined && navButton}
       {menu.length > 0 && (
         <IconButton
           icon="ellipsis-vertical"
@@ -90,6 +111,15 @@ export function TopBar({ theme, title, onBack, actions = [], menu = [] }: Props)
           </View>
         </Pressable>
       </Modal>
+      {nav !== undefined && (
+        <SideMenu
+          theme={theme}
+          title={nav.title}
+          groups={nav.groups}
+          visible={navOpen}
+          onClose={() => setNavOpen(false)}
+        />
+      )}
     </View>
   )
 }

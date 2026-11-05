@@ -32,6 +32,7 @@ import { finishWeeklyReview, weeklyReview } from '../data/weekly-review'
 import { RADIUS, SPACE, useTheme, type Theme } from '../theme'
 import { Chip, editErrorText } from './EditBits'
 import { TopBar } from './TopBar'
+import { Dropdown } from './Menus'
 
 interface Props {
   db: EditDb & QueryDb & InboxDb
@@ -234,52 +235,23 @@ export function WeeklyReview({
         </View>
       ) : (
         <>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.steps}
-            accessibilityLabel={t('views:weeklyReview.steps')}
-          >
-            {WEEKLY_REVIEW_STEPS.map((id, index) => {
-              const current = index === progress.step
-              const skipped = progress.skipped.includes(id)
-              return (
-                <Pressable
-                  key={id}
-                  accessibilityRole="button"
-                  accessibilityState={{ selected: current }}
-                  onPress={() => go(index)}
-                  style={[
-                    styles.stepDot,
-                    {
-                      backgroundColor: current
-                        ? theme.accent
-                        : index < progress.step
-                          ? theme.accentSubtle
-                          : theme.surfaceSunken
-                    }
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.stepNumber,
-                      { color: current ? theme.accentContrast : theme.textSecondary },
-                      skipped && styles.skipped
-                    ]}
-                  >
-                    {index + 1}
-                  </Text>
-                </Pressable>
-              )
-            })}
-          </ScrollView>
-          <ScrollView contentContainerStyle={styles.body}>
-            <Text style={[styles.meta, { color: theme.textMuted }]}>
-              {t('views:weeklyReview.stepOf', {
+          <View style={styles.steps}>
+            <Dropdown
+              theme={theme}
+              label={t('views:weeklyReview.steps')}
+              value={String(progress.step)}
+              text={t('views:weeklyReview.stepOf', {
                 step: progress.step + 1,
                 total: WEEKLY_REVIEW_STEPS.length
               })}
-            </Text>
+              options={WEEKLY_REVIEW_STEPS.map((id, index) => ({
+                value: String(index),
+                label: `${index + 1}. ${t(STEP_TITLE[id])}`
+              }))}
+              onChange={(index) => go(Number(index))}
+            />
+          </View>
+          <ScrollView contentContainerStyle={styles.body}>
             <Text accessibilityRole="header" style={[styles.heading, { color: theme.text }]}>
               {count === null
                 ? t(STEP_TITLE[step])
@@ -638,16 +610,7 @@ function MilestoneCard({
 
 const styles = StyleSheet.create({
   page: { flex: 1 },
-  steps: { gap: SPACE.small, paddingHorizontal: SPACE.large, paddingVertical: SPACE.small },
-  stepDot: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  stepNumber: { fontSize: 15, fontWeight: '700' },
-  skipped: { textDecorationLine: 'line-through' },
+  steps: { paddingHorizontal: SPACE.medium, paddingTop: SPACE.small, alignItems: 'flex-start' },
   body: { padding: SPACE.large, gap: SPACE.small, paddingBottom: 120 },
   heading: { fontSize: 20, fontWeight: '700' },
   describe: { fontSize: 15, lineHeight: 21 },

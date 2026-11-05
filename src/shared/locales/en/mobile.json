@@ -624,5 +624,19 @@
     "taskDone": "Task added to {{project}}.",
     "libraryDone": "Added to the Library of {{project}}.",
     "nothing": "Nothing to add from this share."
+  },
+  "menus": {
+    "sections": "Sections",
+    "opensChoices": "Opens a list of choices",
+    "show": "Show",
+    "sort": "Sort",
+    "label": "Label",
+    "anyLabel": "Any label",
+    "project": "Project",
+    "groupReview": "Review",
+    "groupPeople": "People",
+    "groupWork": "Work",
+    "groupPlan": "Plan",
+    "groupFiles": "Files"
   }
 }

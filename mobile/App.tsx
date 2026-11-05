@@ -595,13 +595,51 @@ export default function App() {
             onPress: () => setScreen('settings')
           }
         ]}
-        menu={[
-          { label: t('mobile:nav.syncNow'), onPress: () => void syncNow() },
-          { label: t('views:weeklyReview.start'), onPress: () => setScreen('weeklyReview') },
-          { label: t('mobile:time.timesheet'), onPress: () => setScreen('timesheet') },
-          { label: t('views:team.title'), onPress: () => setScreen('team') },
-          { label: t('views:contacts.title'), onPress: () => setScreen('contacts') }
-        ]}
+        nav={{
+          title: BRAND.name,
+          groups: [
+            {
+              items: [
+                { key: 'sync', label: t('mobile:nav.syncNow'), onPress: () => void syncNow() }
+              ]
+            },
+            {
+              title: t('mobile:menus.groupReview'),
+              items: [
+                {
+                  key: 'weeklyReview',
+                  label: t('views:weeklyReview.start'),
+                  onPress: () => setScreen('weeklyReview')
+                },
+                {
+                  key: 'timesheet',
+                  label: t('mobile:time.timesheet'),
+                  onPress: () => setScreen('timesheet')
+                }
+              ]
+            },
+            {
+              title: t('mobile:menus.groupPeople'),
+              items: [
+                { key: 'team', label: t('views:team.title'), onPress: () => setScreen('team') },
+                {
+                  key: 'contacts',
+                  label: t('views:contacts.title'),
+                  onPress: () => setScreen('contacts')
+                }
+              ]
+            },
+            {
+              items: [
+                {
+                  key: 'settings',
+                  label: t('mobile:settings.open'),
+                  onPress: () => setScreen('settings')
+                }
+              ]
+            }
+          ]
+        }}
       />
       <View
         style={[styles.tabs, { backgroundColor: theme.surface, borderColor: theme.border }]}

@@ -627,5 +627,19 @@
     "taskDone": "Tarea añadida a {{project}}.",
     "libraryDone": "Añadido a la biblioteca de {{project}}.",
     "nothing": "No hay nada que añadir de lo compartido."
+  },
+  "menus": {
+    "sections": "Secciones",
+    "opensChoices": "Abre una lista de opciones",
+    "show": "Mostrar",
+    "sort": "Ordenar",
+    "label": "Etiqueta",
+    "anyLabel": "Cualquier etiqueta",
+    "project": "Proyecto",
+    "groupReview": "Revisión",
+    "groupPeople": "Personas",
+    "groupWork": "Trabajo",
+    "groupPlan": "Plan",
+    "groupFiles": "Archivos"
   }
 }

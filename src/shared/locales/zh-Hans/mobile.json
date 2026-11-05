@@ -621,5 +621,19 @@
     "taskDone": "已将任务添加到 {{project}}。",
     "libraryDone": "已添加到 {{project}} 的资料库。",
     "nothing": "此分享中没有可添加的内容。"
+  },
+  "menus": {
+    "sections": "分区",
+    "opensChoices": "打开选项列表",
+    "show": "显示",
+    "sort": "排序",
+    "label": "标签",
+    "anyLabel": "任意标签",
+    "project": "项目",
+    "groupReview": "回顾",
+    "groupPeople": "成员",
+    "groupWork": "工作",
+    "groupPlan": "计划",
+    "groupFiles": "文件"
   }
 }

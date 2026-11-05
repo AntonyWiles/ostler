@@ -621,5 +621,19 @@
     "taskDone": "{{project}} にタスクを追加しました。",
     "libraryDone": "{{project}} のライブラリに追加しました。",
     "nothing": "この共有から追加できるものはありません。"
+  },
+  "menus": {
+    "sections": "セクション",
+    "opensChoices": "選択肢の一覧を開きます",
+    "show": "表示",
+    "sort": "並べ替え",
+    "label": "ラベル",
+    "anyLabel": "すべてのラベル",
+    "project": "プロジェクト",
+    "groupReview": "振り返り",
+    "groupPeople": "メンバー",
+    "groupWork": "作業",
+    "groupPlan": "計画",
+    "groupFiles": "ファイル"
   }
 }

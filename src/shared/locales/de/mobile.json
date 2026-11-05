@@ -624,5 +624,19 @@
     "taskDone": "Aufgabe zu {{project}} hinzugefügt.",
     "libraryDone": "Zur Bibliothek von {{project}} hinzugefügt.",
     "nothing": "Aus dieser Freigabe gibt es nichts hinzuzufügen."
+  },
+  "menus": {
+    "sections": "Bereiche",
+    "opensChoices": "Öffnet eine Auswahlliste",
+    "show": "Anzeigen",
+    "sort": "Sortieren",
+    "label": "Label",
+    "anyLabel": "Alle Labels",
+    "project": "Projekt",
+    "groupReview": "Rückblick",
+    "groupPeople": "Personen",
+    "groupWork": "Arbeit",
+    "groupPlan": "Planung",
+    "groupFiles": "Dateien"
   }
 }

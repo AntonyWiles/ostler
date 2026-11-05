@@ -33,6 +33,7 @@ import { projectLabels, shareRole, type QueryDb } from '../data/queries'
 import { RADIUS, SPACE, useTheme, type Theme } from '../theme'
 import { Chip, editErrorText, TextSender } from './EditBits'
 import { Markdown } from './Markdown'
+import { Dropdown } from './Menus'
 import { TopBar } from './TopBar'
 import { RecordingPlayer, VoiceMemoRecorder } from './VoiceMemoRecorder'
 
@@ -320,22 +321,17 @@ export function LibraryList({
         style={[styles.input, { color: theme.text, borderColor: theme.borderStrong }]}
       />
       {tags.length > 0 && (
-        <View style={styles.actions} accessibilityLabel={t('library:libraryRail.tags')}>
-          <Chip
-            label={t('library:libraryRail.allTags')}
+        <View style={styles.tagPicker}>
+          <Dropdown
             theme={theme}
-            selected={shownTag === null}
-            onPress={() => setTag(null)}
+            label={t('library:libraryRail.tags')}
+            value={shownTag ?? ''}
+            options={[
+              { value: '', label: t('library:libraryRail.allTags') },
+              ...tags.map((name) => ({ value: name, label: `#${name}` }))
+            ]}
+            onChange={(name) => setTag(name === '' ? null : name)}
           />
-          {tags.map((name) => (
-            <Chip
-              key={name}
-              label={`#${name}`}
-              theme={theme}
-              selected={shownTag === name}
-              onPress={() => setTag(shownTag === name ? null : name)}
-            />
-          ))}
         </View>
       )}
       {items.length === 0 && (
@@ -609,6 +605,7 @@ function FileNote({ item, theme }: { item: LibraryItem; theme: Theme }) {
 }
 
 const styles = StyleSheet.create({
+  tagPicker: { alignItems: 'flex-start' },
   page: { flex: 1 },
   list: { gap: SPACE.small, paddingHorizontal: SPACE.large, paddingTop: SPACE.medium },
   input: {

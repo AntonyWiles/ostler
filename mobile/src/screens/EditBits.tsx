@@ -20,7 +20,10 @@ export function editErrorText(error: unknown): string {
   return t('mobile:edit.failed')
 }
 
-/** A small button; `selected` marks the current choice in a row of choices. */
+/**
+ * A small action button; `selected` fills it, for the one main action or an open panel. To pick
+ * one of many, use `Dropdown` (./Menus) instead of a row of these.
+ */
 export function Chip({
   label,
   theme,
@@ -38,6 +41,7 @@ export function Chip({
       accessibilityLabel={label}
       accessibilityState={{ selected: selected === true }}
       onPress={onPress}
+      hitSlop={4}
       style={[
         styles.chip,
         {
@@ -46,7 +50,7 @@ export function Chip({
         }
       ]}
     >
-      <Text style={{ color: selected ? theme.accentContrast : theme.text, fontSize: 15 }}>
+      <Text style={{ color: selected ? theme.accentContrast : theme.text, fontSize: 14 }}>
         {label}
       </Text>
     </Pressable>
@@ -124,9 +128,9 @@ export const editStyles = StyleSheet.create({
 
 const styles = StyleSheet.create({
   chip: {
-    minHeight: 44,
+    minHeight: 34,
     justifyContent: 'center',
-    paddingHorizontal: SPACE.medium,
+    paddingHorizontal: SPACE.medium - 2,
     borderWidth: 1,
     borderRadius: RADIUS
   },

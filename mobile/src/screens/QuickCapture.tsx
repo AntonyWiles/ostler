@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { t } from '@shared/i18n/index'
 import { addTask, type EditDb } from '../data/edits'
 import { projectName } from '../data/project-display'
 import { projects, type QueryDb } from '../data/queries'
 import { RADIUS, SPACE, type Theme } from '../theme'
 import { Chip, editErrorText, TextSender } from './EditBits'
+import { Dropdown } from './Menus'
 
 /** The project the last capture went to, offered first next time while the app runs. */
 let lastProject: string | null = null
@@ -46,21 +47,14 @@ export function QuickCapture({
         <Text style={[styles.meta, { color: theme.textMuted }]}>{t('mobile:projects.empty')}</Text>
       ) : (
         <>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.chips}
-          >
-            {list.map((project) => (
-              <Chip
-                key={project.id}
-                label={project.name}
-                theme={theme}
-                selected={projectId === project.id}
-                onPress={() => setProjectId(project.id)}
-              />
-            ))}
-          </ScrollView>
+          <Dropdown
+            theme={theme}
+            variant="field"
+            label={t('mobile:menus.project')}
+            value={projectId ?? ''}
+            options={list.map((project) => ({ value: project.id, label: project.name }))}
+            onChange={setProjectId}
+          />
           <TextSender
             theme={theme}
             placeholder={t('mobile:capture.placeholder')}
@@ -99,7 +93,6 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS
   },
   title: { fontSize: 16, fontWeight: '700' },
-  chips: { gap: SPACE.small },
   meta: { fontSize: 13 },
   row: { flexDirection: 'row', justifyContent: 'flex-end' }
 })
