@@ -117,6 +117,16 @@ export interface R2SyncState {
   lastRunAt: number | null
   /** The last run's error, already in the person's language; null after a good run. */
   lastError: string | null
+  /** This PC's calls to the bucket this calendar month, by R2's billing class. */
+  usage: {
+    month: string
+    /** Class A: writes and listings (a million a month are free, for every device together). */
+    writes: number
+    /** Class B: reads and change checks (ten million a month are free). */
+    reads: number
+    /** This PC alone has used half of either free allowance. */
+    nearFreeTier: boolean
+  }
   lastUploaded: number
   lastDownloaded: number
 }

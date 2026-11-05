@@ -349,5 +349,7 @@
   "Workstream": ["de"],
   "Workstream: {{name}}": ["de"],
   "Zoom": ["de", "es", "fr", "it", "pt-BR"],
-  "Zoom {{percent}}%": ["it", "pt-BR"]
+  "Zoom {{percent}}%": ["it", "pt-BR"],
+  "Bucket: {{bucket}}": ["de", "es", "it", "pt-BR"],
+  "Passphrase": ["de"]
 }

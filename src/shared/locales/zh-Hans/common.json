@@ -342,5 +342,9 @@
   "markdown": {
     "openFileTitle": "从项目文件夹打开 {{path}}",
     "fileNotOpened": "文件未能打开"
+  },
+  "list": {
+    "and": "和",
+    "or": "或"
   }
 }

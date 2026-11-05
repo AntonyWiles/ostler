@@ -8,12 +8,14 @@ import {
 } from '../../../electron/services/sync/r2-setup-code'
 import { PersonalSpaceError } from '../../../electron/services/sync/pairing'
 import { R2Error } from '../../../electron/services/sync/r2-transport'
+import { nearFreeTier } from '../../../electron/services/sync/r2-usage'
 import type { PendingRequest } from '../../../electron/services/sync/pairing'
 import type { PhonePairing } from '../sync/phone-pairing'
 import {
   exportR2Setup,
   forgetR2Setup,
   importR2Setup,
+  phoneR2Usage,
   saveR2Details,
   setR2CheckMinutes,
   testR2Details,
@@ -40,8 +42,13 @@ const NO_DETAILS: R2Details = { accountId: '', bucket: '', accessKeyId: '', secr
 export function detailsErrorKey(error: unknown): string {
   if (error instanceof R2Error && error.reason === 'bad-config')
     return 'mobile:advancedSync.badDetails'
-  if (error instanceof R2Error && error.reason === 'signIn') return 'mobile:advancedSync.wrongKeys'
+  if (error instanceof R2Error && error.reason !== 'missing') return r2ErrorKey(error.reason)
   return 'mobile:advancedSync.testFailed'
+}
+
+/** The text for why a call to the bucket failed (`R2Error.reason`): wrong keys, no bucket, no network… */
+export function r2ErrorKey(reason: string): string {
+  return reason === 'signIn' ? 'mobile:advancedSync.wrongKeys' : `errors:r2Sync.call.${reason}`
 }
 
 /** The `mobile:advancedSync.*` text for a personal space that couldn't be started. */
@@ -71,6 +78,10 @@ export function AdvancedSync({ theme, ...props }: AdvancedSyncProps & { theme: T
   const [canStart, setCanStart] = useState(false)
   const [paired, setPaired] = useState(false)
   const [requests, setRequests] = useState<PendingRequest[] | null>(null)
+  const usage = phoneR2Usage()
+  const [lastError, setLastError] = useState(usage.lastError)
+  useEffect(() => usage.subscribe(() => setLastError(usage.lastError)), [usage])
+  const month = usage.totals()
 
   useEffect(() => {
     if (pairing === null) {
@@ -152,9 +163,20 @@ export function AdvancedSync({ theme, ...props }: AdvancedSyncProps & { theme: T
     setNotice(null)
     try {
       await props.onSyncNow()
-      setNotice({ good: true, text: t('mobile:advancedSync.synced') })
-    } catch {
-      setNotice({ good: false, text: t('mobile:advancedSync.syncFailed') })
+      // The sync loop keeps going past a failed call; the bucket's last answer says how it went.
+      const failed = usage.lastError
+      setNotice(
+        failed
+          ? { good: false, text: t(r2ErrorKey(failed)) }
+          : { good: true, text: t('mobile:advancedSync.synced') }
+      )
+    } catch (error) {
+      setNotice({
+        good: false,
+        text: t(
+          error instanceof R2Error ? r2ErrorKey(error.reason) : 'mobile:advancedSync.syncFailed'
+        )
+      })
     } finally {
       setBusy(false)
     }
@@ -354,6 +376,9 @@ export function AdvancedSync({ theme, ...props }: AdvancedSyncProps & { theme: T
             })
           : t('mobile:advancedSync.notSyncedYet')}
       </Text>
+      {lastError !== null && notice === null && (
+        <Text style={s.bad}>{t(r2ErrorKey(lastError))}</Text>
+      )}
       <Pressable
         accessibilityRole="button"
         disabled={busy}
@@ -384,6 +409,13 @@ export function AdvancedSync({ theme, ...props }: AdvancedSyncProps & { theme: T
         ))}
       </View>
       <Text style={s.muted}>{t('mobile:advancedSync.costNote')}</Text>
+      <Text style={s.muted}>
+        {t('mobile:advancedSync.usage', {
+          writes: month.writes.toLocaleString(),
+          reads: month.reads.toLocaleString()
+        })}
+      </Text>
+      {nearFreeTier(month) && <Text style={s.bad}>{t('mobile:advancedSync.usageNear')}</Text>}
       {paired && (
         <Pressable
           accessibilityRole="button"

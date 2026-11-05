@@ -105,3 +105,36 @@ Ostler's data from it yourself.
   folder to arrive on this PC** in **Sharing**, and checks again on its own.
 - **Don't keep Ostler's own data folder in OneDrive, Dropbox or Google Drive.** Use the personal
   folder for the synced copy instead. Settings › Data warns you if the data folder is in one.
+
+## Advanced sync: what Cloudflare R2 costs
+
+With **Advanced sync**, your devices sync through your own Cloudflare R2 bucket. R2 charges by
+call, and its free tier covers a month of up to a million **class A** calls (writing a file, listing
+a folder) and ten million **class B** calls (reading a file, asking whether one changed), for all your
+devices together. Settings › Devices › Advanced sync on the PC, and Settings › Advanced sync on the
+phone, show this month's calls from that device, and warn when one device alone has used half of
+either allowance.
+
+Ostler keeps the calls down:
+
+- Each device asks one small file whether anything changed (one class B call) at the interval you
+  choose. It only lists your projects again when another device moved that file.
+- A burst of edits goes up as one change file, and then that file is moved once.
+
+What a typical setup uses in a month (30 days): two PCs open all day and a phone open for about two
+hours a day, a personal space with five shared projects, and light editing (about 50 bursts of edits
+a day across all devices).
+
+| | Look every minute | Look every 5 minutes |
+| --- | --- | --- |
+| Asking for changes (class B) | 2 × 43,200 + 3,600 ≈ 90,000 | 2 × 8,640 + 720 ≈ 18,000 |
+| Reading new change files (class B) | about 10,000 | about 10,000 |
+| Writing edits (class A) | 1,500 × 3 ≈ 4,500 | about 4,500 |
+| Listing after another device's edit (class A) | 1,500 × 2 × about 60 ≈ 180,000 | at most the same, often less |
+| **Total** | **about 185,000 A and 100,000 B** | **about 185,000 A and 28,000 B** |
+
+That is under a fifth of the class A allowance and about 1% of class B. Writing an edit is one
+listing of the device's own changes, the change file and the change marker. Each time another
+device's edit is seen, every shared space is listed again, about ten small listings each for the
+six spaces; edits that land between two looks are seen together, so looking less often lists less.
+Adding Library files costs one class A call each, plus one read on every other device.

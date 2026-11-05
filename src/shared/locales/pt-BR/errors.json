@@ -1089,5 +1089,22 @@
     "notFound": "Essa aprovação não está mais aqui.",
     "noteTooLong": "Essa nota é longa demais.",
     "notYoursToCancel": "Somente quem pediu, ou um proprietário, pode retirar um pedido de aprovação."
+  },
+  "r2Sync": {
+    "notSetUp": "A sincronização avançada ainda não está configurada. Preencha primeiro os dados do seu bucket.",
+    "badConfig": "Esses dados do bucket não parecem certos. Confira o ID da conta (32 letras e dígitos), o nome do bucket e as duas chaves.",
+    "cannotSeal": "O Windows não conseguiu proteger a chave secreta neste PC, então ela não foi salva.",
+    "noSpaceFolder": "Não há pasta de espaço pessoal neste PC para copiar. Configure primeiro seus dispositivos (Configurações › Dispositivos), em uma pasta.",
+    "notACode": "Isso não é um código de configuração do {{brand}}. Copie o código inteiro, começando por ostler-r2:.",
+    "wrongPassphrase": "Essa frase secreta não abre este código de configuração. Confira e tente de novo.",
+    "call": {
+      "bad-config": "Esses dados do bucket não parecem certos. Confira o ID da conta, o nome do bucket e o endpoint.",
+      "signIn": "O bucket recusou as chaves. Confira o ID da chave de acesso e o segredo, e se o token pode ler e gravar neste bucket.",
+      "noBucket": "Não há bucket com esse nome nesta conta. Confira o nome do bucket e o ID da conta.",
+      "missing": "Um arquivo do bucket sumiu.",
+      "unreachable": "Não foi possível acessar o bucket: sem rede, ou a resposta demorou demais. Confira sua conexão; a sincronização continua quando ela voltar.",
+      "server": "O serviço do bucket teve um problema. A sincronização tenta de novo na próxima verificação.",
+      "bad-answer": "O bucket deu uma resposta que o {{brand}} não entendeu."
+    }
   }
 }

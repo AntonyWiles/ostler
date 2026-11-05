@@ -17,6 +17,7 @@ import {
   sealR2Setup
 } from '../../electron/services/sync/r2-setup-code'
 import { R2Bridge } from '../../electron/services/sync/r2-bridge'
+import { nearFreeTier, R2Usage } from '../../electron/services/sync/r2-usage'
 import { SyncTransportError } from '../../electron/services/sync/transport-paths'
 import { FAKE_R2, FakeR2 } from '../helpers/fake-r2'
 import { useTempDir } from '../helpers/temp-dir'
@@ -123,6 +124,94 @@ describe('the R2 transport', () => {
     await expect(new R2Client(config, { fetch: bucket.fetch }).test()).rejects.toMatchObject({
       reason: 'unreachable'
     })
+  })
+})
+
+describe('telling apart what went wrong', () => {
+  const answering = (status: number, body: string) => async () =>
+    new Response(body, { status, headers: { 'content-type': 'application/xml' } })
+  const s3Error = (code: string) => `<?xml version="1.0"?><Error><Code>${code}</Code></Error>`
+
+  it('names wrong keys, a missing bucket, no network and a failing service', async () => {
+    const reasonOf = async (fetch: (url: string, init: RequestInit) => Promise<Response>) => {
+      const usage = new R2Usage()
+      const error = await new R2Client(config, { fetch, usage, timeoutMs: 50 })
+        .test()
+        .catch((caught: unknown) => caught)
+      expect(error).toBeInstanceOf(R2Error)
+      expect(usage.lastError).toBe((error as R2Error).reason)
+      return (error as R2Error).reason
+    }
+    expect(await reasonOf(answering(403, s3Error('SignatureDoesNotMatch')))).toBe('signIn')
+    expect(await reasonOf(answering(403, s3Error('InvalidAccessKeyId')))).toBe('signIn')
+    expect(await reasonOf(answering(400, s3Error('InvalidAccessKeyId')))).toBe('signIn')
+    expect(await reasonOf(answering(404, s3Error('NoSuchBucket')))).toBe('noBucket')
+    expect(await reasonOf(answering(404, ''))).toBe('noBucket')
+    expect(await reasonOf(answering(503, 'busy'))).toBe('server')
+    expect(
+      await reasonOf(async () => {
+        throw new TypeError('fetch failed')
+      })
+    ).toBe('unreachable')
+    // A call that never answers times out the same way.
+    expect(
+      await reasonOf(
+        (_url, init) =>
+          new Promise((_resolve, reject) =>
+            init.signal?.addEventListener('abort', () => reject(new Error('aborted')))
+          )
+      )
+    ).toBe('unreachable')
+  })
+
+  it('says a file is missing, not the bucket, when one object is gone', async () => {
+    const bucket = new FakeR2()
+    const usage = new R2Usage()
+    const client = new R2Client(config, { fetch: bucket.fetch, usage })
+    await expect(client.get('nope')).rejects.toMatchObject({ reason: 'missing' })
+    expect(usage.lastError).toBeNull()
+    await expect(
+      new R2Client({ ...config, bucket: 'not-there' }, { fetch: bucket.fetch }).get('x')
+    ).rejects.toMatchObject({ reason: 'missing' })
+  })
+})
+
+describe('counting calls against the free tier', () => {
+  it('counts writes and listings as class A, reads and HEADs as class B, like the bucket', async () => {
+    const bucket = new FakeR2()
+    const saved: unknown[] = []
+    const usage = new R2Usage({ save: (totals) => saved.push(totals), saveDelayMs: 0 })
+    const client = new R2Client(config, { fetch: bucket.fetch, usage })
+    const transport = new R2Transport(client, 'r2:Ostler')
+    await transport.writeOnce('a.txt', Buffer.from('a'))
+    await transport.list('')
+    await transport.read('a.txt')
+    await client.head('a.txt')
+    await client.head(R2_CHANGED_MARKER)
+    expect(usage.totals()).toMatchObject({ writes: bucket.classA, reads: bucket.classB })
+    expect(usage.totals()).toMatchObject({ writes: 2, reads: 3 })
+    usage.flush()
+    expect(saved.at(-1)).toMatchObject({ writes: 2, reads: 3 })
+  })
+
+  it('starts again each month and keeps what was saved this month', () => {
+    let now = new Date(2026, 10, 30, 23, 0).getTime()
+    const usage = new R2Usage({
+      now: () => now,
+      initial: { month: '2026-11', writes: 10, reads: 20 }
+    })
+    usage.count('A')
+    expect(usage.totals()).toEqual({ month: '2026-11', writes: 11, reads: 20 })
+    usage.restore({ month: '2026-10', writes: 99, reads: 99 })
+    expect(usage.totals().writes).toBe(11)
+    now = new Date(2026, 11, 1, 0, 30).getTime()
+    expect(usage.totals()).toEqual({ month: '2026-12', writes: 0, reads: 0 })
+  })
+
+  it('warns when one device has used half of either free allowance', () => {
+    expect(nearFreeTier({ month: '2026-11', writes: 499_999, reads: 0 })).toBe(false)
+    expect(nearFreeTier({ month: '2026-11', writes: 500_000, reads: 0 })).toBe(true)
+    expect(nearFreeTier({ month: '2026-11', writes: 0, reads: 5_000_000 })).toBe(true)
   })
 })
 

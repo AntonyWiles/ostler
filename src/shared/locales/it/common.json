@@ -394,5 +394,9 @@
   "markdown": {
     "openFileTitle": "Apri {{path}} dalla cartella del progetto",
     "fileNotOpened": "Il file non si è aperto"
+  },
+  "list": {
+    "and": "e",
+    "or": "o"
   }
 }

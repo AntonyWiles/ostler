@@ -55,7 +55,7 @@ describe('R2 as a sync place on the PC: the PC syncs straight against the bucket
   })
 
   /** The PC with no folder at all: its personal space is `r2:Ostler`, opened through the bridge. */
-  const desktop = async (bucket: FakeR2, autoAllow: boolean) => {
+  const desktop = async (bucket: FakeR2, autoAllow: boolean, pullCheckMs?: number) => {
     const databasePath = await createMigratedDatabase(fs.mkdtempSync(path.join(tempDir(), 'pc-')))
     const projects = new Map<string, string>()
     const errors: string[] = []
@@ -80,6 +80,7 @@ describe('R2 as a sync place on the PC: the PC syncs straight against the bucket
         return bridge.openPlace(place)
       },
       pushCheckMs: 60_000,
+      pullCheckMs,
       scanIntervalMs: 60_000
     })
     bridge = new R2Bridge({
@@ -215,6 +216,28 @@ describe('R2 as a sync place on the PC: the PC syncs straight against the bucket
       title: string
     }
     expect(row.title).toBe('Paint hall blue')
+    expect(a.errors).toEqual([])
+  })
+
+  it('lists nothing on the once-a-minute look while the change marker stands still', async () => {
+    const bucket = new FakeR2()
+    // The minute's look comes every 20 ms here, so a few hundred ms are many looks.
+    const a = await desktop(bucket, false, 20)
+    a.projects.set(HOUSE, 'House')
+    await a.service.createPersonalSpaceAt(r2Location('Ostler'), 'Ann laptop')
+    await a.service.shareUnsharedProjects()
+    // Let the first pulls (which do list) finish.
+    let seen = -1
+    await until(async () => {
+      const now = bucket.classA
+      await new Promise((resolve) => setTimeout(resolve, 100))
+      const quiet = now === seen && bucket.classA === now
+      seen = bucket.classA
+      return quiet
+    })
+    const before = bucket.classA
+    await new Promise((resolve) => setTimeout(resolve, 400))
+    expect(bucket.classA).toBe(before)
     expect(a.errors).toEqual([])
   })
 

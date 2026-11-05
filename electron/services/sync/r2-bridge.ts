@@ -30,6 +30,7 @@ import {
   R2Transport,
   type R2Config
 } from './r2-transport'
+import { nearFreeTier, R2Usage } from './r2-usage'
 import {
   checkedMinutes,
   newSetupPassphrase,
@@ -74,6 +75,7 @@ interface Mapped {
 }
 
 const FILE_NAME = 'r2-sync.json'
+const USAGE_FILE_NAME = 'r2-usage.json'
 const UPLOAD_SOON_MS = 30_000
 /** File events drive the upload pass; the folder scan behind them only needs to catch what they miss. */
 const LOCAL_SCAN_MS = 5 * 60_000
@@ -97,14 +99,36 @@ export class R2Bridge {
   private started = false
   /** The bucket as a sync place (`r2:` shares and personal spaces): one client and one change marker. */
   private direct: { client: R2Client; changes: R2Changes } | null = null
+  /** This PC's calls to the bucket this month, and how the last one went. */
+  private readonly usage: R2Usage
 
   constructor(private readonly deps: R2BridgeDependencies) {
     this.saved = this.load()
+    const usageFile = path.join(deps.dataDir, USAGE_FILE_NAME)
+    let initial: unknown = null
+    try {
+      initial = JSON.parse(fs.readFileSync(usageFile, 'utf8'))
+    } catch {
+      // None yet: this month starts at zero.
+    }
+    this.usage = new R2Usage({
+      initial,
+      now: deps.now,
+      save: (totals) => {
+        try {
+          fs.writeFileSync(usageFile, JSON.stringify(totals))
+        } catch (error) {
+          deps.log('Could not save the R2 call counts:', error)
+        }
+      }
+    })
+    this.usage.subscribe(() => this.deps.onStateChanged?.())
   }
 
   state(): R2SyncState {
     const saved = this.saved
     const mapped = this.mapped()
+    const usage = this.usage.totals()
     return {
       configured: saved !== null,
       enabled: saved?.enabled ?? false,
@@ -120,7 +144,10 @@ export class R2Bridge {
       skippedFolders: mapped.skipped,
       running: this.running,
       lastRunAt: this.lastRunAt,
-      lastError: this.lastError,
+      lastError:
+        this.lastError ??
+        (this.usage.lastError ? t(`errors:r2Sync.call.${this.usage.lastError}`) : null),
+      usage: { ...usage, nearFreeTier: nearFreeTier(usage) },
       lastUploaded: this.lastUploaded,
       lastDownloaded: this.lastDownloaded
     }
@@ -133,6 +160,7 @@ export class R2Bridge {
   }
 
   stop(): void {
+    this.usage.flush()
     this.started = false
     this.halt()
     this.direct?.changes.stop()
@@ -191,7 +219,7 @@ export class R2Bridge {
     const config = input ? this.configFrom(input) : this.savedConfig()
     if (!config) throw new Error(t('errors:r2Sync.notSetUp'))
     try {
-      await new R2Client(config, { fetch: this.deps.fetch }).test()
+      await new R2Client(config, { fetch: this.deps.fetch, usage: this.usage }).test()
     } catch (error) {
       throw new Error(errorText(error))
     }
@@ -253,7 +281,11 @@ export class R2Bridge {
     if (!this.direct) {
       const config = this.savedConfig()
       if (!config) throw new SharingError('no-r2-bucket')
-      const client = new R2Client(config, { fetch: this.deps.fetch, now: this.deps.now })
+      const client = new R2Client(config, {
+        fetch: this.deps.fetch,
+        now: this.deps.now,
+        usage: this.usage
+      })
       const minutes = this.saved?.checkMinutes ?? DEFAULT_R2_CHECK_MINUTES
       const changes = new R2Changes(client, {
         intervalMs: minutes > 0 ? minutes * 60_000 : null,
@@ -270,7 +302,11 @@ export class R2Bridge {
     this.halt()
     const config = this.savedConfig()
     if (!this.started || !config || (!this.saved?.enabled && !force)) return
-    const client = new R2Client(config, { fetch: this.deps.fetch, now: this.deps.now })
+    const client = new R2Client(config, {
+      fetch: this.deps.fetch,
+      now: this.deps.now,
+      usage: this.usage
+    })
     this.client = client
     this.remote.clear()
     // The bridge drives the checks itself, so they share one timer with the upload pass.
