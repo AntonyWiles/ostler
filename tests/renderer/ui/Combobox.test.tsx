@@ -133,3 +133,13 @@ describe('SuggestField', () => {
     expect(box).toHaveValue('Travel')
   })
 })
+
+describe('Combobox openOnMount', () => {
+  it('focuses the input and lists every option without typing', () => {
+    render(
+      <Combobox label="Label" options={OPTIONS} value={null} onChange={() => {}} openOnMount />
+    )
+    expect(document.activeElement).toBe(screen.getByRole('combobox'))
+    expect(screen.getAllByRole('option')).toHaveLength(OPTIONS.length)
+  })
+})

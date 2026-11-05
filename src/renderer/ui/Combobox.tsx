@@ -45,6 +45,8 @@ export interface ComboboxProps extends FieldChromeProps {
    */
   onType?: (text: string) => void
   maxLength?: number
+  /** Focus the input and show the whole list as soon as it appears. */
+  openOnMount?: boolean
 }
 
 /** Options whose label contains the query, case-insensitive. */
@@ -75,7 +77,8 @@ export function Combobox({
   emptyText = t('common:combobox.noMatches'),
   id,
   onType,
-  maxLength
+  maxLength,
+  openOnMount
 }: ComboboxProps) {
   const ids = useFieldIds(id, { hint, error })
   const listId = useId()
@@ -105,6 +108,13 @@ export function Combobox({
     anchorRef: boxRef,
     matchWidth: true
   })
+
+  useEffect(() => {
+    if (!openOnMount) return
+    inputRef.current?.focus()
+    setOpen(true)
+    // Only on mount: the list shows at once, without typing first.
+  }, [])
 
   useEffect(() => {
     if (active >= count) setActive(Math.max(0, count - 1))
