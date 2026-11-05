@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import {
   Alert,
   Pressable,
@@ -12,7 +12,7 @@ import {
 import { BRAND } from '@shared/brand'
 import { itemLinkUrl } from '@shared/item-links'
 import type { ItemLinkRef } from '@shared/ostler-api'
-import { linkedItemTitle } from '../data/plan'
+import { linkedItemTitle, markTaskSeen } from '../data/plan'
 import { itemLinkMarkdown, LinkPicker } from './LinkPicker'
 import { t } from '@shared/i18n/index'
 import { formatIsoDateShort, shiftIsoDate } from '@shared/dates'
@@ -131,6 +131,10 @@ export function TaskDetail({
   const [editingComment, setEditingComment] = useState<string | null>(null)
   const [deletedComment, setDeletedComment] = useState<string | null>(null)
   const task = useMemo(() => (version >= 0 ? readTask(db, taskId) : null), [db, taskId, version])
+  // Opening the task clears its new or changed mark, and again if it changes while open.
+  useEffect(() => {
+    if (markTaskSeen(db, taskId)) onEdited()
+  }, [db, taskId, version, onEdited])
   /** The task's open blockers, answered here as in Needs you; the note box open on one. */
   const blockers = useMemo(
     () => (version >= 0 ? openBlockers(db, taskId) : []),

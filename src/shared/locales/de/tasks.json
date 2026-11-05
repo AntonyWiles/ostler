@@ -2715,5 +2715,12 @@
     "label": "Warum ist sie blockiert?",
     "placeholder": "Wartet auf dich, auf eine Aufgabe, auf ein Datum…",
     "nothingLeft": "Alles, worauf diese Aufgabe wartet, ist erledigt. Vielleicht kann sie weitergehen."
+  },
+  "unseen": {
+    "new": "Neu",
+    "changed": "Geändert",
+    "newTitle": "Neu, seit du sie zuletzt geöffnet hast",
+    "changedTitle": "Geändert, seit du sie zuletzt geöffnet hast",
+    "markAll": "Alle als gesehen markieren"
   }
 }

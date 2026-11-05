@@ -109,6 +109,7 @@ const EXPECTED_TABLES = [
   'task_list_items',
   'task_list_target',
   'task_plans',
+  'task_unseen',
   'team_members',
   'teams',
   'time_block_events',

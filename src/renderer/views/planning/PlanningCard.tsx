@@ -58,6 +58,7 @@ import { cardPropsEqual } from './card-memo'
 import { SubprojectChip } from './subproject-ui'
 import { CardGithubLinks } from '../../github/CardGithubLinks'
 import { TaskTypeIcon } from '../../task-types/TaskTypeIcon'
+import { UnseenMark } from './UnseenMark'
 import { fieldValueText, hasFieldValue } from '@shared/planning/custom-fields'
 import './PlanningCard.css'
 import { t } from '@shared/i18n'
@@ -402,6 +403,7 @@ export function PlanningCard({
               onChange={(event) => onToggle(event.target.checked)}
             />
           )}
+          <UnseenMark kind={ws.unseenTasks[item.id]} />
           {renaming ? (
             <TitleEditor
               initial={item.title}

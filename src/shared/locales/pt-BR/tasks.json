@@ -2859,5 +2859,12 @@
     "label": "Por que está bloqueada?",
     "placeholder": "Esperando por você, por uma tarefa, por uma data…",
     "nothingLeft": "Tudo o que esta tarefa espera está concluído, então talvez ela possa seguir."
+  },
+  "unseen": {
+    "new": "Nova",
+    "changed": "Alterada",
+    "newTitle": "Nova desde a última vez que você a abriu",
+    "changedTitle": "Alterada desde a última vez que você a abriu",
+    "markAll": "Marcar todas como vistas"
   }
 }

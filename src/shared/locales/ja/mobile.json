@@ -129,7 +129,9 @@
     "doFirstNote": "先に取りかかる未完了のタスク: 期限切れ、次に3日以内が期限、次に優先度の順。",
     "overdue": "{{date}}から期限切れ",
     "dueToday": "今日が期限",
-    "waiting": "{{count}}件待ち"
+    "waiting": "{{count}}件待ち",
+    "new": "新規",
+    "changed": "変更あり"
   },
   "links": {
     "add": "リンクを追加",

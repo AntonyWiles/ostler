@@ -129,7 +129,9 @@
     "doFirstNote": "Tareas abiertas que conviene atacar primero: vencidas, luego las que vencen en 3 días, luego por prioridad.",
     "overdue": "Vencida el {{date}}",
     "dueToday": "Vence hoy",
-    "waiting": "Espera a {{count}}"
+    "waiting": "Espera a {{count}}",
+    "new": "Nueva",
+    "changed": "Cambiada"
   },
   "links": {
     "add": "Añadir un enlace",

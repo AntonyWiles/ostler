@@ -58,6 +58,7 @@ import { SCORE_COLUMN_IDS, ideaActionsColumn, scoreColumn } from '../ideas/idea-
 import { TaskBulkBar, TaskToolbarRow } from '../TaskBulkBar'
 import { frequentLabels } from '@shared/planning/frequent-labels'
 import { TaskFilterFields } from '../TaskFilterFields'
+import { MarkAllSeenButton } from '../UnseenMark'
 import { HiddenTasksNote } from '../HiddenTasksNote'
 import {
   EDITABLE_COLUMNS,
@@ -805,6 +806,7 @@ export function ListView({
             hasTypes={ws.taskTypes.length > 0}
             hasSubprojects={showSubprojects}
           />
+          <MarkAllSeenButton ws={ws} />
           <IconButton
             icon={Replace}
             variant="secondary"

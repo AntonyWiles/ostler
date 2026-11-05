@@ -19,6 +19,7 @@ import type Database from 'better-sqlite3'
 import { formatStamp, HybridClock, parseStamp, type ClockStamp } from '@shared/sync/clock'
 import { openChangeContext } from './platform'
 import { NOW_MS, quote, rowKey, tableShape, type TableShape } from '../change-history/table-shape'
+import { taskUnseenTriggers } from './task-unseen'
 import {
   PERSONAL_PROJECT_ID,
   PERSONAL_TABLES,
@@ -183,6 +184,7 @@ export function attachSyncCapture(
     if (!shape) continue
     db.exec(triggersFor(shape, personalCapture(shape, PERSONAL_TABLES[table]), sql))
   }
+  db.exec(taskUnseenTriggers(db, sql.applying, sql.actor))
 }
 
 /** The latest stamp already stored for `device`, from the outbox and the field stamps; null when none. */

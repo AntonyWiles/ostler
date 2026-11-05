@@ -129,7 +129,9 @@
     "doFirstNote": "优先处理的未完成任务: 先是逾期的, 再是 3 天内到期的, 然后按优先级。",
     "overdue": "自 {{date}} 起逾期",
     "dueToday": "今天到期",
-    "waiting": "等待 {{count}} 项"
+    "waiting": "等待 {{count}} 项",
+    "new": "新",
+    "changed": "已更改"
   },
   "links": {
     "add": "添加链接",
