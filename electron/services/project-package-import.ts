@@ -276,6 +276,7 @@ export function writePackageRecords(
         startDate: day(task.startDate),
         showFrom: task.showFrom === undefined ? null : day(task.showFrom),
         someday: task.someday === true,
+        blockedReason: task.blockedReason ?? '',
         impact: task.impact ?? null,
         effort: task.effort ?? null,
         assigneeId: task.assigneeRef ? personIds.get(task.assigneeRef)! : null,

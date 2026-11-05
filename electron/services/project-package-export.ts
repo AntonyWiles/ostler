@@ -959,6 +959,9 @@ function exportTask(
       : null,
     ...(item.showFrom ? { showFrom: context.day(item.showFrom)! } : {}),
     ...(item.someday ? { someday: true } : {}),
+    ...(item.status === 'blocked' && item.blockedReason
+      ? { blockedReason: item.blockedReason }
+      : {}),
     ...(item.impact ? { impact: item.impact } : {}),
     ...(item.effort ? { effort: item.effort } : {}),
     // Its number (N9.8a) travels in a project file, never in a template.

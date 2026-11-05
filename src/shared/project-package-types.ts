@@ -268,6 +268,8 @@ export interface PackageTask {
   showFrom?: PackageDate
   /** In Someday (N1.1a); left out when not. */
   someday?: boolean
+  /** Why a blocked task is blocked (up to 200 characters); left out when empty or not blocked. */
+  blockedReason?: string
   /**
    * The project's own column it is in (MOP-26), by ref into `columns.custom`;
    * left out for its status's own column. One that names no column, or one

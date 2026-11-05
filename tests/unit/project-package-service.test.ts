@@ -462,6 +462,22 @@ describe('createProjectFromPackage', () => {
 })
 
 describe('the advanced demo', () => {
+  it('says why its blocked task waits, and keeps a supplier link in the Library', async () => {
+    const { project } = await service.createProjectFromTemplate('demo-advanced', {}, TODAY)
+    const blocked = planning.listWorkItems(project.id).find((item) => item.status === 'blocked')
+    expect(blocked?.blockedReason).toBe('Waiting on Marta to choose')
+    const made = service.exportProjectAsPackage(project.id, {
+      kind: 'export',
+      relativeDates: false
+    })
+    expect(made.tasks.find((task) => task.status === 'blocked')?.blockedReason).toBe(
+      'Waiting on Marta to choose'
+    )
+    expect(made.library.find((item) => item.kind === 'link')?.url).toBe(
+      'https://worktops.example.com/oak-and-tile'
+    )
+  })
+
   it('comes with its history, dated as if its anchor were today', async () => {
     const { project } = await service.createProjectFromTemplate('demo-advanced', {}, TODAY)
     const made = service.exportProjectAsPackage(project.id, {

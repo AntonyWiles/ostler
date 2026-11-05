@@ -482,6 +482,7 @@
       "title": "Order the new counter top",
       "description": "Three metres of oak, or the green tile Marta liked: her call.\n\n**This task shows:** the Waiting on someone column (Blocked, renamed). When a task moves here, a rule raises its priority and asks who you're waiting on; see Project settings › Rules.",
       "status": "blocked",
+      "blockedReason": "Waiting on Marta to choose",
       "priority": "high",
       "labels": ["Client asked"],
       "milestoneRef": "m2",
@@ -1414,6 +1415,14 @@
         ],
         "pictures": []
       }
+    },
+    {
+      "kind": "link",
+      "title": "Worktop supplier",
+      "summary": "Prices and lead times for the oak and the green tile",
+      "body": "",
+      "url": "https://worktops.example.com/oak-and-tile",
+      "tags": ["suppliers"]
     }
   ],
   "pins": [
