@@ -116,7 +116,8 @@ export function createPhoneSync(
             } catch {
               return null
             }
-          }
+          },
+          newSpace: r2Location(r2.space)
         }
       : {}),
     openTransport,

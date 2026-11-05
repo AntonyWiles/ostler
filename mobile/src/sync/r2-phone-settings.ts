@@ -4,14 +4,20 @@
  * gone with the app. Listeners hear when they change, so the sync loop restarts on the new bucket.
  */
 import * as SecureStore from 'expo-secure-store'
+import { SPACE_FOLDER } from '../../../electron/services/sync/pairing'
 import {
   checkedMinutes,
+  DEFAULT_R2_CHECK_MINUTES,
   openR2Setup,
   sealR2Setup,
   newSetupPassphrase,
   type R2Setup
 } from '../../../electron/services/sync/r2-setup-code'
-import { checkedR2Config } from '../../../electron/services/sync/r2-transport'
+import {
+  checkedR2Config,
+  R2Client,
+  type R2Config
+} from '../../../electron/services/sync/r2-transport'
 
 const KEY = 'ostler.r2Setup'
 const listeners = new Set<(setup: R2Setup | null) => void>()
@@ -61,6 +67,42 @@ async function store(setup: R2Setup | null): Promise<void> {
 /** Opens a setup code and keeps its bucket; throws `R2SetupCodeError`. */
 export async function importR2Setup(code: string, passphrase: string): Promise<R2Setup> {
   const setup = openR2Setup(code, passphrase)
+  await store(setup)
+  return setup
+}
+
+/** The bucket details a person types in, rather than a setup code. */
+export type R2Details = Pick<R2Config, 'accountId' | 'bucket' | 'accessKeyId' | 'secretAccessKey'>
+
+/** The details as a checked config: trimmed, the whole bucket (no folder); throws `R2Error`. */
+export function r2ConfigFrom(details: R2Details): R2Config {
+  return checkedR2Config({
+    accountId: details.accountId.trim().toLowerCase(),
+    bucket: details.bucket.trim(),
+    prefix: '',
+    accessKeyId: details.accessKeyId.trim(),
+    secretAccessKey: details.secretAccessKey.trim()
+  })
+}
+
+/** Tries a listing in the bucket with these details; throws `R2Error` when it can't. */
+export async function testR2Details(
+  details: R2Details,
+  fetchImpl: (url: string, init: RequestInit) => Promise<Response> = (url, init) => fetch(url, init)
+): Promise<void> {
+  await new R2Client(r2ConfigFrom(details), { fetch: fetchImpl }).test()
+}
+
+/**
+ * Keeps a bucket typed in by hand. Its personal space goes where a PC puts it (`Ostler` at the top
+ * of the bucket), so either side can start it and the other finds it.
+ */
+export async function saveR2Details(details: R2Details): Promise<R2Setup> {
+  const setup: R2Setup = {
+    config: r2ConfigFrom(details),
+    space: SPACE_FOLDER,
+    checkMinutes: DEFAULT_R2_CHECK_MINUTES
+  }
   await store(setup)
   return setup
 }

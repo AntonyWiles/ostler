@@ -57,9 +57,13 @@ import {
   signedJson,
   writeIfMissing,
   completePairing as completePairingIn,
+  allowDevice as allowDeviceIn,
+  createPersonalSpaceAt as createPersonalSpaceAtIn,
+  pendingRequests as pendingRequestsIn,
   pairingCodeInSpace as pairingCodeInSpaceIn,
   requestPairing as requestPairingIn,
   type KeysPayload,
+  type PendingRequest,
   type OpenTransport
 } from './pairing'
 import {
@@ -82,15 +86,37 @@ export {
   SPACE_FOLDER,
   pairingCode,
   pairingDeviceId,
-  type OpenTransport
+  type OpenTransport,
+  type PendingRequest
 } from './pairing'
 
-/** A device asking to join, as listed to the PC that is already paired. */
-export interface PendingRequest {
-  deviceId: string
-  deviceName: string
-  /** The six-digit code both PCs show. */
-  code: string
+/** Makes the personal share in the space folder itself; see pairing.ts. */
+export function createPersonalSpaceAt(
+  db: Database.Database,
+  space: string,
+  deviceName: string,
+  openTransport: OpenTransport = openFolderTransport
+): Promise<string> {
+  return createPersonalSpaceAtIn(db, space, deviceName, openTransport)
+}
+
+/** The requests this PC (already paired) has not answered yet; see pairing.ts. */
+export function pendingRequests(
+  db: Database.Database,
+  spaceFolder: string,
+  openTransport: OpenTransport = openFolderTransport
+): Promise<PendingRequest[]> {
+  return pendingRequestsIn(db, spaceFolder, openTransport)
+}
+
+/** Allows a requesting device (A's side); see pairing.ts. */
+export function allowDevice(
+  db: Database.Database,
+  spaceFolder: string,
+  deviceId: string,
+  openTransport: OpenTransport = openFolderTransport
+): Promise<void> {
+  return allowDeviceIn(db, spaceFolder, deviceId, openTransport)
 }
 
 /** Asks to join the personal share (B's side); see pairing.ts. */
@@ -230,156 +256,6 @@ export function createPersonalSpace(
   openTransport: OpenTransport = openFolderTransport
 ): Promise<string> {
   return createPersonalSpaceAt(db, spaceFolderUnder(root), deviceName, openTransport)
-}
-
-/** As `createPersonalSpace`, in the space folder itself (one whose old space was set aside). */
-export async function createPersonalSpaceAt(
-  db: Database.Database,
-  space: string,
-  deviceName: string,
-  openTransport: OpenTransport = openFolderTransport
-): Promise<string> {
-  if (personalShareOf(db)) throw new PersonalSpaceError('already-personal')
-  const name = checkedName(deviceName)
-  const personal = joinPlace(space, PERSONAL_FOLDER)
-  const transport = openTransport(personal)
-  if ((await transport.list('')).includes('share.json')) {
-    throw new PersonalSpaceError('wrong-folder')
-  }
-
-  const identity = identityKeys(db)
-  personKeys(db)
-  const shareId = randomUUID()
-  const memberId = randomUUID()
-  const projectKey = newProjectKey()
-  db.transaction(() => {
-    db.prepare(
-      `INSERT INTO sync_shares (project_id, share_id, folder, member_id, device_id, format_version, created_at, kind)
-       VALUES (@projectId, @shareId, @folder, @memberId, @deviceId, @formatVersion, @createdAt, 'personal')`
-    ).run({
-      projectId: PERSONAL_PROJECT_ID,
-      shareId,
-      folder: personal,
-      memberId,
-      deviceId: newDeviceId(),
-      formatVersion: SHARE_FORMAT_VERSION,
-      createdAt: Date.now()
-    })
-    storeProjectKey(db, PERSONAL_PROJECT_ID, projectKey, 0)
-  })()
-  await transport.writeOnce(
-    'share.json',
-    Buffer.from(
-      JSON.stringify({
-        formatVersion: SHARE_FORMAT_VERSION,
-        shareId,
-        projectId: PERSONAL_PROJECT_ID
-      }),
-      'utf8'
-    )
-  )
-  const invite: Invite = {
-    shareId,
-    projectId: PERSONAL_PROJECT_ID,
-    projectKey,
-    generation: 0,
-    previousKeys: []
-  }
-  await writeMember(db, transport, invite, memberId, name, null)
-  await writeSnapshot(db, transport, PERSONAL_PROJECT_ID, {
-    projectKey,
-    privateKey: identity.privateKey
-  })
-  // This device's own certificate: a PC that joins reads the person key from it (pairingCodeInSpace).
-  await writeIfMissing(
-    devicesFolder(space, openTransport),
-    `${pairingDeviceId(identity.publicKey)}.ostlerdevice`,
-    Buffer.from(JSON.stringify(thisDeviceCertificate(db, name)), 'utf8')
-  )
-  return space
-}
-
-/**
- * The requests this PC (already paired) has not answered yet, with their codes. A request
- * that already has a certificate is not listed, and one whose signature or file name does
- * not check is ignored.
- */
-export async function pendingRequests(
-  db: Database.Database,
-  spaceFolder: string,
-  openTransport: OpenTransport = openFolderTransport
-): Promise<PendingRequest[]> {
-  const devices = devicesFolder(spaceFolder, openTransport)
-  const person = personKeys(db).publicKey
-  const pending: PendingRequest[] = []
-  for (const relativePath of await devices.list('requests')) {
-    const match = REQUEST_PATTERN.exec(relativePath)
-    if (!match) continue
-    const request = await readRequest(devices, match[1])
-    if (!request) continue
-    if (await isCertified(devices, match[1])) continue
-    pending.push({
-      deviceId: match[1],
-      deviceName: request.deviceName,
-      code: pairingCode(request.devicePublicKey, person)
-    })
-  }
-  return pending
-}
-
-/**
- * Allows a requesting device (A's side): writes its certificate, then the keys file wrapped
- * to its box key. Writing either again is harmless, so a retry finishes a half-done allow.
- */
-export async function allowDevice(
-  db: Database.Database,
-  spaceFolder: string,
-  deviceId: string,
-  openTransport: OpenTransport = openFolderTransport
-): Promise<void> {
-  const personal = personalShareOf(db)
-  if (!personal) throw new PersonalSpaceError('no-personal-space')
-  const devices = devicesFolder(spaceFolder, openTransport)
-  const request = DEVICE_ID_PATTERN.test(deviceId) ? await readRequest(devices, deviceId) : null
-  if (!request) throw new PersonalSpaceError('no-such-request')
-
-  const person = personKeys(db)
-  const certificate = certifyDevice(person, {
-    publicKey: request.devicePublicKey,
-    boxPublicKey: request.deviceBoxPublicKey,
-    name: request.deviceName
-  })
-  await writeIfMissing(
-    devices,
-    `${deviceId}.ostlerdevice`,
-    Buffer.from(JSON.stringify(certificate), 'utf8')
-  )
-
-  const generation = keyGenerationOf(db, PERSONAL_PROJECT_ID)
-  const keyring = projectKeyring(db, PERSONAL_PROJECT_ID)
-  const projectKeys: string[] = []
-  for (let older = 0; older <= generation; older++) {
-    const key = keyring(older)
-    if (!key) throw new PersonalSpaceError('no-key')
-    projectKeys.push(key.toString('base64'))
-  }
-  const me = db
-    .prepare('SELECT id AS personId, name, initials, color FROM people WHERE is_me = 1')
-    .get() as MePerson | undefined
-  const payload: KeysPayload = {
-    personPrivateKey: person.privateKey,
-    personPublicKey: person.publicKey,
-    shareId: personal.share_id,
-    generation,
-    projectKeys,
-    me: me ?? null
-  }
-  const wrapped = wrapForBoxKey(
-    Buffer.from(JSON.stringify(payload), 'utf8'),
-    request.deviceBoxPublicKey,
-    pairingContext(deviceId)
-  )
-  await writeIfMissing(devices, `${deviceId}.ostlerkeys`, wrapped)
 }
 
 /**

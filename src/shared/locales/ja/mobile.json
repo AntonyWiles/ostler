@@ -508,5 +508,30 @@
     "recordFailed": "録音できませんでした: {{message}}",
     "transcribeFailed": "文字起こしできませんでした: {{message}}。音声の録音は続いています。",
     "nothingRecorded": "何も録音されませんでした。"
+  },
+  "advancedSync": {
+    "enterByHand": "バケットの情報を直接入力する",
+    "byHandIntro": "Cloudflare R2 バケットの情報を入力してください。Cloudflare で、このバケットに Object Read & Write 権限のある R2 API トークンを作成します。",
+    "accountId": "アカウント ID",
+    "bucketName": "バケット名",
+    "accessKeyId": "アクセスキー ID",
+    "secretAccessKey": "シークレットアクセスキー",
+    "test": "接続をテスト",
+    "testOk": "バケットに接続しました。",
+    "testFailed": "バケットに接続できません。入力内容と接続を確認してください。",
+    "wrongKeys": "バケットがこのキーを拒否しました。アクセスキー ID とシークレットを確認してください。",
+    "badDetails": "入力内容を確認してください。アカウント ID は 32 文字 (0–9、a–f)、バケット名は小文字です。",
+    "savedByHand": "バケットを設定しました。",
+    "useCode": "セットアップコードを使う",
+    "noSpaceYet": "このバケットにはまだ個人スペースがありません。このスマートフォンで作成すると、後で PC からセットアップコードで参加できます。",
+    "startSpace": "ここに個人スペースを作成",
+    "spaceStarted": "個人スペースを作成しました。PC を追加するには、セットアップコードを共有してください。",
+    "spaceExists": "このバケットにはすでに個人スペースがあります。「別のデバイスから設定」で参加してください。",
+    "startFailed": "個人スペースを作成できませんでした。接続を確認して、もう一度お試しください。",
+    "lookForDevices": "参加を求めているデバイスを探す",
+    "noRequests": "参加を求めているデバイスはありません。",
+    "asksToJoin": "{{name}} が参加を求めています。このコードが表示されている場合のみ許可してください:",
+    "allow": "許可",
+    "allowed": "{{name}} を許可しました。まもなく参加が完了します。"
   }
 }

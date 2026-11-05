@@ -508,5 +508,30 @@
     "recordFailed": "Não foi possível gravar: {{message}}",
     "transcribeFailed": "Não foi possível escrever o texto: {{message}}. O áudio continua sendo gravado.",
     "nothingRecorded": "Nada foi gravado."
+  },
+  "advancedSync": {
+    "enterByHand": "Digitar os dados do bucket",
+    "byHandIntro": "Digite os dados do seu bucket do Cloudflare R2. No Cloudflare, crie um token de API do R2 com Object Read & Write para este bucket.",
+    "accountId": "ID da conta",
+    "bucketName": "Nome do bucket",
+    "accessKeyId": "ID da chave de acesso",
+    "secretAccessKey": "Chave de acesso secreta",
+    "test": "Testar conexão",
+    "testOk": "Conectado ao bucket.",
+    "testFailed": "Não foi possível acessar o bucket. Verifique os dados e sua conexão.",
+    "wrongKeys": "O bucket recusou essas chaves. Verifique o ID da chave de acesso e a chave secreta.",
+    "badDetails": "Verifique os dados: o ID da conta tem 32 caracteres (0–9, a–f) e o nome do bucket é em minúsculas.",
+    "savedByHand": "Bucket configurado.",
+    "useCode": "Usar um código de configuração",
+    "noSpaceYet": "Este bucket ainda não tem espaço pessoal. Crie-o neste celular; seu PC pode entrar depois com um código de configuração.",
+    "startSpace": "Criar meu espaço pessoal aqui",
+    "spaceStarted": "Espaço pessoal criado. Para adicionar seu PC, compartilhe um código de configuração com ele.",
+    "spaceExists": "Este bucket já tem um espaço pessoal. Use Configurar a partir do meu outro dispositivo para entrar.",
+    "startFailed": "Não foi possível criar o espaço pessoal. Verifique sua conexão e tente de novo.",
+    "lookForDevices": "Procurar dispositivos pedindo para entrar",
+    "noRequests": "Nenhum dispositivo está pedindo para entrar.",
+    "asksToJoin": "{{name}} pede para entrar. Permita só se ele mostrar este código:",
+    "allow": "Permitir",
+    "allowed": "{{name}} foi permitido. Ele termina de entrar em instantes."
   }
 }
