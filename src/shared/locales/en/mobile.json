@@ -507,6 +507,8 @@
     "bucket": "Bucket: {{bucket}}",
     "lastSynced": "Last synced {{time}}",
     "notSyncedYet": "Not synced yet",
+    "usage": "This month on this phone: {{writes}} writes and listings, {{reads}} reads.",
+    "usageNear": "This phone alone has used half of a free allowance this month. Look for changes less often to stay inside R2's free tier.",
     "syncNow": "Sync now",
     "synced": "Up to date.",
     "syncFailed": "Couldn't reach the bucket. Check your connection and try again.",

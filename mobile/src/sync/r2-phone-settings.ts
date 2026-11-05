@@ -18,8 +18,28 @@ import {
   R2Client,
   type R2Config
 } from '../../../electron/services/sync/r2-transport'
+import { R2Usage } from '../../../electron/services/sync/r2-usage'
 
 const KEY = 'ostler.r2Setup'
+const USAGE_KEY = 'ostler.r2Usage'
+let usage: R2Usage | null = null
+
+/** This phone's calls to the bucket this month (kept in the secure store), and how the last went. */
+export function phoneR2Usage(): R2Usage {
+  if (usage) return usage
+  const made = new R2Usage({
+    save: (totals) => {
+      void SecureStore.setItemAsync(USAGE_KEY, JSON.stringify(totals)).catch(() => undefined)
+    }
+  })
+  usage = made
+  void SecureStore.getItemAsync(USAGE_KEY)
+    .then((text) => {
+      if (text) made.restore(JSON.parse(text))
+    })
+    .catch(() => undefined)
+  return made
+}
 const listeners = new Set<(setup: R2Setup | null) => void>()
 let cached: R2Setup | null | undefined
 
@@ -90,7 +110,7 @@ export async function testR2Details(
   details: R2Details,
   fetchImpl: (url: string, init: RequestInit) => Promise<Response> = (url, init) => fetch(url, init)
 ): Promise<void> {
-  await new R2Client(r2ConfigFrom(details), { fetch: fetchImpl }).test()
+  await new R2Client(r2ConfigFrom(details), { fetch: fetchImpl, usage: phoneR2Usage() }).test()
 }
 
 /**

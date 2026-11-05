@@ -19,6 +19,7 @@
 import { createHash, createHmac } from './platform'
 import { isHiddenOrTemp, segmentsOf, SyncTransportError } from './transport-paths'
 import type { SyncTransport } from './folder-transport'
+import type { R2Usage } from './r2-usage'
 
 export const R2_SCHEME = 'r2:'
 /** The marker every writer rewrites; hidden, so no transport ever lists it. */
@@ -38,7 +39,12 @@ export interface R2Config {
 
 export class R2Error extends Error {
   constructor(
-    readonly reason: 'bad-config' | 'signIn' | 'missing' | 'unreachable' | 'bad-answer',
+    /**
+     * `signIn`: the bucket refused the keys; `noBucket`: there is no such bucket; `unreachable`: no
+     * answer at all (no network, a timeout); `server`: the service answered with an error.
+     */
+    readonly reason:
+      'bad-config' | 'signIn' | 'noBucket' | 'missing' | 'unreachable' | 'server' | 'bad-answer',
     readonly status: number | null = null
   ) {
     super(`R2: ${reason}${status ? ` (${status})` : ''}`)
@@ -194,6 +200,8 @@ export interface R2ClientOptions {
   fetch(url: string, init: RequestInit): Promise<Response>
   now?(): number
   timeoutMs?: number
+  /** Counts the calls by billing class and keeps how the last one went. */
+  usage?: R2Usage
 }
 
 const DEFAULT_TIMEOUT_MS = 30_000
@@ -235,7 +243,7 @@ export class R2Client {
       const query: Record<string, string> = { 'list-type': '2', prefix: outer + keyPrefix }
       if (token) query['continuation-token'] = token
       const answer = await this.call('GET', '', query, {})
-      if (answer.status !== 200) throw this.failure(answer.status)
+      if (answer.status !== 200) throw this.failure(answer, true)
       const xml = answer.bytes.toString('utf8')
       for (const match of xml.matchAll(/<Key>([^<]*)<\/Key>/g)) {
         const key = xmlText(match[1])
@@ -252,16 +260,17 @@ export class R2Client {
 
   async get(key: string): Promise<Buffer> {
     const answer = await this.call('GET', key, {}, {})
-    if (answer.status === 404) throw new R2Error('missing', 404)
-    if (answer.status !== 200) throw this.failure(answer.status)
+    if (answer.status === 404 && !isNoBucket(answer)) throw new R2Error('missing', 404)
+    if (answer.status !== 200) throw this.failure(answer, false)
     return answer.bytes
   }
 
   /** The object's ETag, or null when it isn't there. */
   async head(key: string): Promise<string | null> {
     const answer = await this.call('HEAD', key, {}, {})
+    // A HEAD has no body to tell a missing bucket from a missing object; the next listing does.
     if (answer.status === 404) return null
-    if (answer.status !== 200) throw this.failure(answer.status)
+    if (answer.status !== 200) throw this.failure(answer, false)
     return answer.headers.get('etag')
   }
 
@@ -269,14 +278,14 @@ export class R2Client {
   async putIfAbsent(key: string, bytes: Uint8Array): Promise<'written' | 'exists'> {
     const answer = await this.call('PUT', key, {}, { 'if-none-match': '*' }, bytes)
     if (answer.status === 412 || answer.status === 409) return 'exists'
-    if (answer.status !== 200) throw this.failure(answer.status)
+    if (answer.status !== 200) throw this.failure(answer, false)
     return 'written'
   }
 
   /** Writes or replaces an object; returns its new ETag. */
   async put(key: string, bytes: Uint8Array): Promise<string | null> {
     const answer = await this.call('PUT', key, {}, {}, bytes)
-    if (answer.status !== 200) throw this.failure(answer.status)
+    if (answer.status !== 200) throw this.failure(answer, false)
     return answer.headers.get('etag')
   }
 
@@ -289,13 +298,25 @@ export class R2Client {
       { 'list-type': '2', prefix: outer, 'max-keys': '1' },
       {}
     )
-    if (answer.status !== 200) throw this.failure(answer.status)
+    if (answer.status !== 200) throw this.failure(answer, true)
   }
 
-  private failure(status: number): R2Error {
-    if (status === 401 || status === 403) return new R2Error('signIn', status)
-    if (status === 404) return new R2Error('bad-config', 404)
-    return new R2Error('unreachable', status)
+  /** What a refused call means; `bucketCall` when it named no object, so a 404 is the bucket. */
+  private failure(answer: Answer, bucketCall: boolean): R2Error {
+    const code = errorCode(answer)
+    const status = answer.status
+    let error: R2Error
+    if (SIGN_IN_CODES.has(code) || status === 401 || status === 403) {
+      error = new R2Error('signIn', status)
+    } else if (code === 'NoSuchBucket' || (status === 404 && bucketCall)) {
+      error = new R2Error('noBucket', status)
+    } else if (status === 404) {
+      error = new R2Error('missing', status)
+    } else {
+      error = new R2Error('server', status)
+    }
+    if (error.reason !== 'missing') this.options.usage?.noteResult(error.reason)
+    return error
   }
 
   private async call(
@@ -340,6 +361,8 @@ export class R2Client {
     void _host
     const controller = new AbortController()
     const timer = setTimeout(() => controller.abort(), this.options.timeoutMs ?? DEFAULT_TIMEOUT_MS)
+    // Listings and writes are class A; reads and HEADs class B.
+    this.options.usage?.count(method === 'PUT' || key === '' ? 'A' : 'B')
     try {
       const response = await this.options.fetch(url, {
         method,
@@ -356,14 +379,38 @@ export class R2Client {
       if (length > MAX_FILE_BYTES) throw new R2Error('bad-answer')
       const bytes = method === 'HEAD' ? Buffer.alloc(0) : Buffer.from(await response.arrayBuffer())
       if (bytes.length > MAX_FILE_BYTES) throw new R2Error('bad-answer')
+      if (response.status < 400 || (response.status === 404 && key !== '')) {
+        this.options.usage?.noteResult(null)
+      }
       return { status: response.status, headers: response.headers, bytes }
     } catch (error) {
       if (error instanceof R2Error) throw error
+      // fetch failed or timed out: no answer came back at all.
+      this.options.usage?.noteResult('unreachable')
       throw new R2Error('unreachable')
     } finally {
       clearTimeout(timer)
     }
   }
+}
+
+/** S3 error codes that mean the keys are wrong or may not use this bucket. */
+const SIGN_IN_CODES = new Set([
+  'InvalidAccessKeyId',
+  'SignatureDoesNotMatch',
+  'AccessDenied',
+  'Unauthorized',
+  'InvalidToken',
+  'ExpiredToken'
+])
+
+/** The `<Code>` of an S3 error answer, or ''. */
+function errorCode(answer: Answer): string {
+  return /<Code>([^<]*)<\/Code>/.exec(answer.bytes.toString('utf8'))?.[1] ?? ''
+}
+
+function isNoBucket(answer: Answer): boolean {
+  return errorCode(answer) === 'NoSuchBucket'
 }
 
 function xmlText(value: string): string {
@@ -512,6 +559,8 @@ export class R2Changes {
 
 export class R2Transport implements SyncTransport {
   private readonly base: string
+  /** With a change marker, `watch` hears of every other device's write, so nothing lists on a timer. */
+  readonly watchSeesAll: boolean
 
   constructor(
     private readonly client: R2Client,
@@ -519,6 +568,7 @@ export class R2Transport implements SyncTransport {
     private readonly changes: R2Changes | null = null
   ) {
     this.base = parseR2Location(place)
+    this.watchSeesAll = changes !== null
   }
 
   async list(prefix: string): Promise<string[]> {

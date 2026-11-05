@@ -29,6 +29,12 @@ export interface SyncTransport {
   writeOnce(path: string, bytes: Buffer): Promise<void>
   /** Calls `onChange` (at most once per 500 ms) when the folder may have changed; returns a stop function. */
   watch(onChange: () => void): () => void
+  /**
+   * True when `watch` reports every change other devices make (R2's change marker), so the
+   * once-a-minute look that catches what a folder watch misses is not needed; each look there
+   * would list the place, which R2 bills.
+   */
+  readonly watchSeesAll?: boolean
 }
 
 export interface FolderTransportOptions {

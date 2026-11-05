@@ -1089,5 +1089,22 @@
     "notFound": "Quell'approvazione non c'è più.",
     "noteTooLong": "Quella nota è troppo lunga.",
     "notYoursToCancel": "Solo chi l'ha chiesta, o un proprietario, può ritirare una richiesta di approvazione."
+  },
+  "r2Sync": {
+    "notSetUp": "La sincronizzazione avanzata non è ancora configurata. Inserisci prima i dati del tuo bucket.",
+    "badConfig": "Questi dati del bucket non sembrano corretti. Controlla l’ID account (32 lettere e cifre), il nome del bucket ed entrambe le chiavi.",
+    "cannotSeal": "Windows non è riuscito a proteggere la chiave segreta su questo PC, quindi non è stata salvata.",
+    "noSpaceFolder": "Su questo PC non c’è una cartella dello spazio personale da copiare. Configura prima i tuoi dispositivi (Impostazioni › Dispositivi), in una cartella.",
+    "notACode": "Questo non è un codice di configurazione di {{brand}}. Copia tutto il codice, a partire da ostler-r2:.",
+    "wrongPassphrase": "Questa passphrase non apre il codice di configurazione. Controllala e riprova.",
+    "call": {
+      "bad-config": "Questi dati del bucket non sembrano corretti. Controlla l’ID account, il nome del bucket e l’endpoint.",
+      "signIn": "Il bucket ha rifiutato le chiavi. Controlla l’ID della chiave di accesso e il segreto, e che il token possa leggere e scrivere in questo bucket.",
+      "noBucket": "In questo account non c’è un bucket con quel nome. Controlla il nome del bucket e l’ID account.",
+      "missing": "Un file nel bucket è sparito.",
+      "unreachable": "Impossibile raggiungere il bucket: niente rete, o la risposta ha richiesto troppo tempo. Controlla la connessione; la sincronizzazione riprende quando torna.",
+      "server": "Il servizio del bucket ha avuto un problema. La sincronizzazione riprova al prossimo controllo.",
+      "bad-answer": "Il bucket ha dato una risposta che {{brand}} non ha capito."
+    }
   }
 }

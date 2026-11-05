@@ -1081,5 +1081,22 @@
     "notFound": "Diese Abnahme ist nicht mehr vorhanden.",
     "noteTooLong": "Diese Notiz ist zu lang.",
     "notYoursToCancel": "Nur die anfragende Person oder ein Eigentümer kann eine Abnahmeanfrage zurückziehen."
+  },
+  "r2Sync": {
+    "notSetUp": "Erweiterte Synchronisierung ist noch nicht eingerichtet. Gib zuerst die Daten deines Buckets ein.",
+    "badConfig": "Diese Bucket-Daten sehen nicht richtig aus. Prüfe die Konto-ID (32 Buchstaben und Ziffern), den Bucket-Namen und beide Schlüssel.",
+    "cannotSeal": "Windows konnte den geheimen Schlüssel auf diesem PC nicht schützen, deshalb wurde er nicht gespeichert.",
+    "noSpaceFolder": "Auf diesem PC gibt es keinen Ordner für deinen persönlichen Bereich, der kopiert werden kann. Richte zuerst deine Geräte ein (Einstellungen › Geräte), in einem Ordner.",
+    "notACode": "Das ist kein {{brand}}-Einrichtungscode. Kopiere den ganzen Code, beginnend mit ostler-r2:.",
+    "wrongPassphrase": "Diese Passphrase öffnet den Einrichtungscode nicht. Prüfe sie und versuche es noch einmal.",
+    "call": {
+      "bad-config": "Diese Bucket-Daten sehen nicht richtig aus. Prüfe die Konto-ID, den Bucket-Namen und den Endpunkt.",
+      "signIn": "Der Bucket hat die Schlüssel abgelehnt. Prüfe die Zugriffsschlüssel-ID und das Geheimnis und ob das Token diesen Bucket lesen und schreiben darf.",
+      "noBucket": "In diesem Konto gibt es keinen Bucket mit diesem Namen. Prüfe den Bucket-Namen und die Konto-ID.",
+      "missing": "Eine Datei im Bucket fehlt.",
+      "unreachable": "Der Bucket war nicht erreichbar: kein Netz, oder die Antwort dauerte zu lange. Prüfe deine Verbindung; die Synchronisierung läuft weiter, sobald sie wieder da ist.",
+      "server": "Der Dienst des Buckets hatte ein Problem. Die Synchronisierung versucht es beim nächsten Nachsehen erneut.",
+      "bad-answer": "Der Bucket hat eine Antwort gegeben, die {{brand}} nicht verstanden hat."
+    }
   }
 }

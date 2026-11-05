@@ -202,6 +202,8 @@ export interface SyncServiceOptions {
   /** Tests: the folder transport, and timer lengths. */
   openTransport?(folder: string): SyncTransport
   pushCheckMs?: number
+  /** How often each share is looked at even without a change heard; default 60 000 ms. */
+  pullCheckMs?: number
   scanIntervalMs?: number
 }
 
@@ -235,6 +237,8 @@ interface Running {
   pulledOnce: boolean
   /** This PC's capabilities note for the current version is in the folder. */
   capabilitiesWritten?: boolean
+  /** Library files known to be in an R2 place, so the push doesn't list it every minute. */
+  libraryDone?: Set<string>
 }
 
 export class SyncService {
@@ -276,9 +280,11 @@ export class SyncService {
       for (const running of this.running.values()) {
         // People and settings change without rows changing: they go out with this.
         void this.enqueue(running, () => this.pushStep(running))
-        this.schedulePull(running)
+        // This look catches what a folder watch misses. An R2 place's watch hears of every change
+        // through the change marker, and each look would list the place (a billed call).
+        if (!running.transport.watchSeesAll) this.schedulePull(running)
       }
-    }, PULL_EVERY_MS)
+    }, this.options.pullCheckMs ?? PULL_EVERY_MS)
   }
 
   /** Stops watching and waits for the work in hand; then closes the database. */
@@ -1130,7 +1136,8 @@ export class SyncService {
           running.transport,
           running.projectId,
           keys,
-          this.options.library
+          this.options.library,
+          running.transport.watchSeesAll ? (running.libraryDone ??= new Set()) : undefined
         )
     running.pushedSinceSnapshot += pushed
     const now = Date.now()

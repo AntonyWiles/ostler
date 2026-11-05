@@ -20,6 +20,7 @@ import { phoneLibraryFiles } from '../data/voice-memo-files'
 import { PhoneSync, type SyncDatabase } from './phone-sync'
 import { PhonePairing } from './phone-pairing'
 import { rememberProjectColor, rememberProjectName } from './project-names'
+import { phoneR2Usage } from './r2-phone-settings'
 
 /** A name the other members will recognise: the phone's model, else the app's name. */
 function deviceName(): string {
@@ -54,7 +55,9 @@ export function createPhoneSync(
   const client = createPhoneDriveClient()
   const poller = new DriveChangesPoller(client)
   const r2 = places.r2
-  const bucket = r2 ? new R2Client(r2.config, { fetch: (url, init) => fetch(url, init) }) : null
+  const bucket = r2
+    ? new R2Client(r2.config, { fetch: (url, init) => fetch(url, init), usage: phoneR2Usage() })
+    : null
   const r2Changes = bucket
     ? new R2Changes(bucket, {
         intervalMs: r2 && r2.checkMinutes > 0 ? r2.checkMinutes * 60_000 : null,

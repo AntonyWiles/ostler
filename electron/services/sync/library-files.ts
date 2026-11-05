@@ -72,23 +72,33 @@ interface ItemRow {
   sha256: string
 }
 
-/** Writes the file of every Library item of the project that the folder doesn't have yet. */
+/**
+ * Writes the file of every Library item of the project that the folder doesn't have yet. `done`,
+ * kept by the caller between runs, holds the files already dealt with: when every item's file is
+ * in it, the folder isn't listed at all (a listing is a billed call on R2).
+ */
 export async function pushLibraryFiles(
   db: Database.Database,
   transport: SyncTransport,
   projectId: string,
   keys: SealKeys,
-  store: LibraryFileStore
+  store: LibraryFileStore,
+  done: Set<string> = new Set()
 ): Promise<LibraryFilesResult> {
   const share = shareOf(db, projectId)
-  const present = new Set(await transport.list('files'))
   const result: LibraryFilesResult = { files: 0, problems: [] }
-  for (const item of itemsWithFiles(db, projectId)) {
+  const items = itemsWithFiles(db, projectId)
+  if (items.every((item) => done.has(filePath(item.sha256)))) return result
+  const present = new Set(await transport.list('files'))
+  for (const path of present) done.add(path)
+  for (const item of items) {
     const path = filePath(item.sha256)
     if (present.has(path)) continue
     const bytes = store.syncedOriginal(projectId, item.id)
     if (!bytes) {
-      // Not on this PC either (it came from another PC that hasn't written it yet).
+      // Not on this PC either (it came from another PC that hasn't written it yet); the pull
+      // brings it when that PC does.
+      done.add(path)
       continue
     }
     if (bytes.length > MAX_LIBRARY_FILE_BYTES) {
@@ -113,6 +123,7 @@ export async function pushLibraryFiles(
       if (!(error instanceof SyncTransportError && error.reason === 'exists')) throw error
     }
     present.add(path)
+    done.add(path)
   }
   return result
 }

@@ -1089,5 +1089,22 @@
     "notFound": "Cette validation n'est plus là.",
     "noteTooLong": "Cette note est trop longue.",
     "notYoursToCancel": "Seule la personne qui l'a demandée, ou un propriétaire, peut retirer une demande de validation."
+  },
+  "r2Sync": {
+    "notSetUp": "La synchronisation avancée n’est pas encore configurée. Renseignez d’abord les informations de votre bucket.",
+    "badConfig": "Ces informations de bucket ne semblent pas correctes. Vérifiez l’ID de compte (32 lettres et chiffres), le nom du bucket et les deux clés.",
+    "cannotSeal": "Windows n’a pas pu protéger la clé secrète sur ce PC, elle n’a donc pas été enregistrée.",
+    "noSpaceFolder": "Il n’y a aucun dossier d’espace personnel à copier sur ce PC. Configurez d’abord vos appareils (Paramètres › Appareils), dans un dossier.",
+    "notACode": "Ce n’est pas un code de configuration {{brand}}. Copiez le code entier, en commençant par ostler-r2:.",
+    "wrongPassphrase": "Cette phrase secrète n’ouvre pas ce code de configuration. Vérifiez-la et réessayez.",
+    "call": {
+      "bad-config": "Ces informations de bucket ne semblent pas correctes. Vérifiez l’ID de compte, le nom du bucket et le point de terminaison.",
+      "signIn": "Le bucket a refusé les clés. Vérifiez l’ID de clé d’accès et le secret, et que le jeton peut lire et écrire dans ce bucket.",
+      "noBucket": "Aucun bucket de ce nom dans ce compte. Vérifiez le nom du bucket et l’ID de compte.",
+      "missing": "Un fichier du bucket a disparu.",
+      "unreachable": "Impossible de joindre le bucket : pas de réseau, ou la réponse a pris trop de temps. Vérifiez votre connexion ; la synchronisation reprend dès son retour.",
+      "server": "Le service du bucket a rencontré un problème. La synchronisation réessaie à la prochaine vérification.",
+      "bad-answer": "Le bucket a donné une réponse que {{brand}} n’a pas comprise."
+    }
   }
 }

@@ -342,5 +342,9 @@
   "markdown": {
     "openFileTitle": "プロジェクトフォルダーから {{path}} を開く",
     "fileNotOpened": "ファイルを開けませんでした"
+  },
+  "list": {
+    "and": "と",
+    "or": "または"
   }
 }

@@ -251,6 +251,17 @@ export function AdvancedSyncGroup() {
             ` ${t('settings:advancedSync.skipped', { count: state.skippedFolders })}`}
         </p>
       )}
+      {state.configured && state.usage && (
+        <p className="ostler-settings-hint">
+          {t('settings:advancedSync.usage', {
+            writes: state.usage.writes.toLocaleString(),
+            reads: state.usage.reads.toLocaleString()
+          })}
+        </p>
+      )}
+      {state.usage?.nearFreeTier && (
+        <InlineAlert tone="info">{t('settings:advancedSync.usageNear')}</InlineAlert>
+      )}
       {state.lastError && <InlineAlert tone="warning">{state.lastError}</InlineAlert>}
 
       {state.configured && (

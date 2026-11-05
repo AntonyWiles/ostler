@@ -152,6 +152,8 @@ interface Running {
   removed: boolean
   /** The personal share: read only, and it joins the projects its entries list. */
   personal: boolean
+  /** Library files known to be in an R2 place, so a push doesn't list it each time. */
+  libraryDone?: Set<string>
 }
 
 /** Tasks of a project in `db`. */
@@ -380,7 +382,8 @@ export class PhoneSync {
         running.transport,
         running.projectId,
         keys,
-        library
+        library,
+        running.transport.watchSeesAll ? (running.libraryDone ??= new Set()) : undefined
       )
       pushed += files.files
       for (const problem of files.problems) {
