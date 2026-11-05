@@ -426,13 +426,12 @@
     "agentCopy": "La copie de l’agent se trouve dans {{worktreePath}}"
   },
   "taskAgentRunSection": {
-    "agentRun": "Exécution d’agent",
+    "agentRun": "Agent IA",
     "autoContinue": "Continuer automatiquement",
     "onceQueueSameAgent": "Une fois mise en file, le même agent peut enchaîner sur la tâche suivante.",
     "agentReport": "Rapport de l’agent",
     "whatAgentSaidDid": "Ce que l’agent dit avoir fait pour cette tâche.",
     "viewReport": "Voir le rapport…",
-    "handConnectedAgent": "Confier à un agent connecté",
     "copiesTaskConnectionDetails": "Copie la tâche et les détails de connexion en une seule instruction à coller dans votre agent.",
     "agentChanges": "Modifications de l’agent",
     "loadingChanges": "Chargement des modifications…",
@@ -911,5 +910,14 @@
     "fromPlaybook": "Depuis le scénario {{name}}",
     "scheduled": "Planifiée",
     "loading": "Lecture des paramètres de l’agent…"
+  },
+  "agentPrompt": {
+    "title": "Prompt de l’agent",
+    "showFull": "Afficher le prompt complet",
+    "sessionHint": "Le prompt reçu par l’agent qui travaille sur cette tâche.",
+    "automationHint": "Pas en file : copie la tâche avec les informations de connexion de l’API d’automatisation, à coller dans votre agent. Rien n’est mis en file.",
+    "sessionMadeOnCopy": "(créée à la copie)",
+    "tokenMadeOnCopy": "(son propre jeton, créé à la copie)",
+    "automationTokenMissing": "(activez d’abord l’API d’automatisation et créez son jeton dans Réglages › Connexions)"
   }
 }

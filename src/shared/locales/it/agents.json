@@ -426,13 +426,12 @@
     "agentCopy": "La copia dell’agente è in {{worktreePath}}"
   },
   "taskAgentRunSection": {
-    "agentRun": "Esecuzione dell’agente",
+    "agentRun": "Agente IA",
     "autoContinue": "Continua automaticamente",
     "onceQueueSameAgent": "Una volta messa in coda, lo stesso agente può passare all’attività successiva.",
     "agentReport": "Report dell’agente",
     "whatAgentSaidDid": "Che cosa ha detto l’agente di aver fatto per questa attività.",
     "viewReport": "Vedi report…",
-    "handConnectedAgent": "Passa a un agente collegato",
     "copiesTaskConnectionDetails": "Copia l’attività e i dettagli di connessione come un’unica istruzione da incollare nel tuo agente.",
     "agentChanges": "Modifiche dell’agente",
     "loadingChanges": "Caricamento delle modifiche…",
@@ -911,5 +910,14 @@
     "fromPlaybook": "Dal playbook {{name}}",
     "scheduled": "Pianificata",
     "loading": "Lettura delle impostazioni dell’agente…"
+  },
+  "agentPrompt": {
+    "title": "Prompt dell’agente",
+    "showFull": "Mostra il prompt completo",
+    "sessionHint": "Il prompt ricevuto dall’agente che lavora a questa attività.",
+    "automationHint": "Non in coda: copia l’attività con i dati di connessione dell’API di automazione, da incollare nel tuo agente. Non viene messo in coda nulla.",
+    "sessionMadeOnCopy": "(creata alla copia)",
+    "tokenMadeOnCopy": "(il suo token, creato alla copia)",
+    "automationTokenMissing": "(attiva prima l’API di automazione e crea il suo token in Impostazioni › Connessioni)"
   }
 }

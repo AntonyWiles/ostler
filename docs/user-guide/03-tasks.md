@@ -745,7 +745,8 @@ no longer here".
 
 ### Following
 
-**Follow** in the task drawer's header turns to **Following**; press it again to stop. You follow a
+**Follow** in the task drawer's header turns to **Following**; press it again to stop (pointing at it
+reads **Unfollow**). Each press shows a notice saying what changed, with **Undo**. You follow a
 task on your own when you create it, are assigned it, or comment on it. When someone else changes a
 task you follow, or comments on it, Ostler tells you with a notice that opens the task. A burst of
 changes makes one notice, not many. Turn it off under **When someone else changes a task I follow**.

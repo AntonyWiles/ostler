@@ -7,6 +7,7 @@ import { subprojectPath } from '../../navigation/paths'
 import { SubprojectField } from './subproject-ui'
 import {
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -622,6 +623,35 @@ function DrawerFooter({
   )
 }
 
+/**
+ * Makes the description's box `height` tall again after switching between the text and its
+ * edit box. Editing: the edit box takes the difference (it scrolls when the raw text is longer,
+ * and grows with the text again once typing starts). Showing: the text keeps at least the edit
+ * box's height until the next switch.
+ */
+export function holdDescriptionHeight(
+  box: HTMLElement,
+  height: number,
+  editor: HTMLTextAreaElement | null
+): void {
+  const difference = height - box.offsetHeight
+  if (difference === 0) return
+  if (editor) {
+    const style = getComputedStyle(editor)
+    const oneLine =
+      (Number.parseFloat(style.lineHeight) || 20) +
+      (Number.parseFloat(style.paddingTop) || 0) +
+      (Number.parseFloat(style.paddingBottom) || 0)
+    editor.style.height = `${Math.max(oneLine, editor.offsetHeight + difference)}px`
+    editor.style.overflowY = editor.scrollHeight > editor.clientHeight ? 'auto' : 'hidden'
+    return
+  }
+  const shown = box.firstElementChild
+  if (shown instanceof HTMLElement && difference > 0) {
+    shown.style.minHeight = `${shown.offsetHeight + difference}px`
+  }
+}
+
 function DrawerBody({
   ws,
   item,
@@ -641,12 +671,24 @@ function DrawerBody({
   // The description reads as formatted text until Edit is turned on; each
   // task opens that way. Turning Edit off saves what was typed.
   const [editing, setEditingState] = useState(false)
+  // Switching between the text and its edit box keeps the description's height, so nothing
+  // below it moves: the height before the switch is held by the state switched to.
+  const descriptionBoxRef = useRef<HTMLDivElement>(null)
+  const heldDescriptionHeight = useRef<number | null>(null)
   const setEditing = (next: boolean) => {
     if (next === editing) return
     if (!next) ws.endEdit('description')
+    heldDescriptionHeight.current = descriptionBoxRef.current?.offsetHeight ?? null
     setEditingState(next)
-    if (next) requestAnimationFrame(() => descriptionRef.current?.focus())
+    if (next) requestAnimationFrame(() => descriptionRef.current?.focus({ preventScroll: true }))
   }
+  useLayoutEffect(() => {
+    const held = heldDescriptionHeight.current
+    heldDescriptionHeight.current = null
+    const box = descriptionBoxRef.current
+    if (!box || held === null) return
+    holdDescriptionHeight(box, held, editing ? descriptionRef.current : null)
+  }, [editing, descriptionRef])
   const writingHelp = useWritingHelp({
     projectId: item.projectId,
     target: { kind: 'task', workItemId: item.id },
@@ -903,43 +945,48 @@ function DrawerBody({
               </>
             }
           >
-            {editing ? (
-              <WritingHelpLayout suggestion={writingHelp.suggestion}>
-                <TextArea
-                  ref={descriptionRef}
-                  label={t('tasks:workItemDrawer.description')}
-                  hideLabel
-                  autoGrow
-                  maxRows={20}
-                  rows={4}
-                  placeholder={t('tasks:workItemDrawer.whatTaskWhatDone')}
-                  value={ws.editDescription}
-                  error={saveErrorOf(ws, 'description')}
-                  onFocus={() => ws.beginEdit('description')}
-                  onBlur={() => ws.endEdit('description')}
-                  onChange={(event) => ws.setEditDescription(event.target.value)}
-                  {...descriptionLinks.inputProps}
-                />
-                {descriptionLinks.picker}
-                <DescriptionPictures projectId={item.projectId} description={ws.editDescription} />
-              </WritingHelpLayout>
-            ) : (
-              <div className="task-drawer__markdown">
-                {ws.editDescription.trim() ? (
-                  <Markdown refreshKey={ws.workItems} projectId={item.projectId}>
-                    {ws.editDescription}
-                  </Markdown>
-                ) : (
-                  <button
-                    type="button"
-                    className="task-drawer__muted task-drawer__empty-description"
-                    onClick={() => setEditing(true)}
-                  >
-                    {t('tasks:workItemDrawer.noDescriptionYet')}
-                  </button>
-                )}
-              </div>
-            )}
+            <div ref={descriptionBoxRef} className="task-drawer__description">
+              {editing ? (
+                <WritingHelpLayout suggestion={writingHelp.suggestion}>
+                  <TextArea
+                    ref={descriptionRef}
+                    label={t('tasks:workItemDrawer.description')}
+                    hideLabel
+                    autoGrow
+                    maxRows={20}
+                    rows={1}
+                    placeholder={t('tasks:workItemDrawer.whatTaskWhatDone')}
+                    value={ws.editDescription}
+                    error={saveErrorOf(ws, 'description')}
+                    onFocus={() => ws.beginEdit('description')}
+                    onBlur={() => ws.endEdit('description')}
+                    onChange={(event) => ws.setEditDescription(event.target.value)}
+                    {...descriptionLinks.inputProps}
+                  />
+                  {descriptionLinks.picker}
+                  <DescriptionPictures
+                    projectId={item.projectId}
+                    description={ws.editDescription}
+                  />
+                </WritingHelpLayout>
+              ) : (
+                <div className="task-drawer__markdown">
+                  {ws.editDescription.trim() ? (
+                    <Markdown refreshKey={ws.workItems} projectId={item.projectId}>
+                      {ws.editDescription}
+                    </Markdown>
+                  ) : (
+                    <button
+                      type="button"
+                      className="task-drawer__muted task-drawer__empty-description"
+                      onClick={() => setEditing(true)}
+                    >
+                      {t('tasks:workItemDrawer.noDescriptionYet')}
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           </TaskDrawerSection>
 
           <TaskDrawerSection title={t('tasks:workItemDrawer.checklist')}>

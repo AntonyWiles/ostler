@@ -180,6 +180,23 @@ Priority values: "low" | "medium" | "high" | "critical". IDs are opaque strings 
 YOUR TASK
 {{task}}`
 
+/**
+ * YOUR TASK for a work item that is not queued for an agent: the same title and details a
+ * queued run gets, and how to report back through the automation API.
+ */
+export function buildWorkItemAutomationTask(
+  item: { id: string; title: string },
+  details: string
+): string {
+  return (
+    `Task: ${item.title}\n` +
+    (details.trim() ? `Details: ${details.trim()}\n` : '') +
+    `\nThis is Ostler work item ${item.id}. Work only on it. Before you start, set its status to "active" ` +
+    `(PATCH /work-items/${item.id} {"status":"active"}). When you are done, set it to "review" and ` +
+    `tell the human what you changed, how you checked it and anything left to do.`
+  )
+}
+
 /** The Agent Task Prompt card's prompt: the automation API's instructions plus the human's task. */
 export function buildAutomationTaskPrompt(
   port: number,

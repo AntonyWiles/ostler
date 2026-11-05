@@ -1,3 +1,4 @@
+import Database from 'better-sqlite3'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
@@ -98,5 +99,37 @@ describe('following tasks from planning', () => {
       () => planning.createWorkItem('p-2', { title: 'From the template' }, human).id
     )
     expect(follows.isFollowing(id)).toBe(false)
+  })
+})
+
+/** With the personal space syncing, each change also stamps its columns for the merge. */
+describe('following tasks while the personal space syncs', () => {
+  let tempDir: string
+  let follows: FollowService
+
+  beforeEach(async () => {
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ostler-follows-synced-'))
+    const dbPath = await createMigratedDatabase(tempDir)
+    const db = new Database(dbPath)
+    db.prepare(
+      `INSERT INTO sync_shares (project_id, share_id, folder, member_id, device_id, format_version, created_at, kind)
+       VALUES ('~personal', 'personal-share', ?, 'm-1', 'device-1', 1, 1, 'personal')`
+    ).run(path.join(tempDir, 'personal'))
+    db.close()
+    follows = new FollowService(dbPath)
+  })
+
+  afterEach(() => {
+    follows.close()
+    fs.rmSync(tempDir, { recursive: true, force: true })
+  })
+
+  it('follows, unfollows and follows again', () => {
+    follows.follow('p-1', 't-1')
+    expect(follows.isFollowing('t-1')).toBe(true)
+    follows.unfollow('p-1', 't-1')
+    expect(follows.isFollowing('t-1')).toBe(false)
+    follows.follow('p-1', 't-1')
+    expect(follows.isFollowing('t-1')).toBe(true)
   })
 })

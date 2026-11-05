@@ -407,13 +407,12 @@
     "agentCopy": "Die Kopie des Agenten liegt unter {{worktreePath}}"
   },
   "taskAgentRunSection": {
-    "agentRun": "Agent-Lauf",
+    "agentRun": "KI-Agent",
     "autoContinue": "Automatisch fortsetzen",
     "onceQueueSameAgent": "Sobald Sie ihn in die Warteschlange stellen, kann derselbe Agent mit der nächsten Aufgabe weitermachen.",
     "agentReport": "Bericht des Agenten",
     "whatAgentSaidDid": "Was der Agent für diese Aufgabe gesagt hat, getan zu haben.",
     "viewReport": "Bericht anzeigen…",
-    "handConnectedAgent": "An einen verbundenen Agenten übergeben",
     "copiesTaskConnectionDetails": "Kopiert die Aufgabe und die Verbindungsdetails als eine Anweisung, die Sie in Ihren Agenten einfügen.",
     "agentChanges": "Änderungen des Agenten",
     "loadingChanges": "Änderungen werden geladen…",
@@ -880,5 +879,14 @@
     "fromPlaybook": "Aus dem Playbook {{name}}",
     "scheduled": "Geplant",
     "loading": "Agent-Einstellungen werden gelesen…"
+  },
+  "agentPrompt": {
+    "title": "Agent-Prompt",
+    "showFull": "Ganzen Prompt zeigen",
+    "sessionHint": "Der Prompt, den der Agent für diese Aufgabe bekommen hat.",
+    "automationHint": "Nicht in der Warteschlange: kopiert die Aufgabe mit den Verbindungsdaten der Automatisierungs-API, zum Einfügen in deinen Agenten. Nichts wird eingereiht.",
+    "sessionMadeOnCopy": "(wird beim Kopieren erstellt)",
+    "tokenMadeOnCopy": "(eigener Token, wird beim Kopieren erstellt)",
+    "automationTokenMissing": "(zuerst die Automatisierungs-API einschalten und ihren Token unter Einstellungen › Verbindungen erstellen)"
   }
 }

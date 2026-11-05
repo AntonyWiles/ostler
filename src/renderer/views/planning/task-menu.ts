@@ -77,14 +77,17 @@ export function taskMenuItems(
         onSelect: () => void ws.startWorkItemAgent(item)
       })
     }
-    if (position >= 0) {
-      agentItems.push({
-        label: t('tasks:taskMenu.copyAgentPrompt'),
-        icon: Copy,
-        hint: t('tasks:taskMenu.copyWhatConnectedAgent'),
-        onSelect: () => void ws.copyAgentHandoff(item)
-      })
-    }
+    // Always offered: a queued task copies its handoff, a running one its session's prompt,
+    // and any other the automation-API prompt for working on it (nothing is queued).
+    agentItems.push({
+      label: t('tasks:taskMenu.copyAgentPrompt'),
+      icon: Copy,
+      hint:
+        position >= 0
+          ? t('tasks:taskMenu.copyWhatConnectedAgent')
+          : t('tasks:taskMenu.copyPromptNotQueued'),
+      onSelect: () => void ws.copyAgentHandoff(item)
+    })
     const session = ws.sessionForWorkItem(item)
     if (session) {
       agentItems.push({

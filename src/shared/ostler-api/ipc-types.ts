@@ -990,6 +990,7 @@ export const IPC_CHANNELS = {
   QUEUE_PLANNING_WORK_ITEM: 'ostler:queue-planning-work-item',
   QUEUE_PLANNING_WORK_ITEMS: 'ostler:queue-planning-work-items',
   COPY_PLANNING_AGENT_HANDOFF: 'ostler:copy-planning-agent-handoff',
+  GET_PLANNING_AGENT_PROMPT: 'ostler:get-planning-agent-prompt',
   BREAK_DOWN_PLANNING_GOAL: 'ostler:break-down-planning-goal',
   APPROVE_AI_PLANNING_DRAFT: 'ostler:approve-ai-planning-draft',
   GENERATE_AI_NEXT_TASKS: 'ostler:generate-ai-next-tasks',
@@ -1271,6 +1272,13 @@ export const IPC_CHANNELS = {
  * The complete API surface exposed to the renderer via contextBridge.
  * Every method returns Result<T> — never throws across the IPC bridge.
  */
+/** A work item's agent prompt as an agent gets it, with its tokens masked. */
+export interface PlanningAgentPrompt {
+  /** handoff: queued, Copy starts its session; session: an agent is on it; automation: not queued. */
+  kind: 'handoff' | 'session' | 'automation'
+  text: string
+}
+
 export interface OstlerAPI {
   // --- Projects ---
   getProjects(): Promise<Result<RendererProject[]>>
@@ -2686,8 +2694,17 @@ export interface OstlerAPI {
     projectId: string,
     workItemIds: string[]
   ): Promise<Result<PlanningBulkQueueResult>>
-  /** Builds a queued work item's agent handoff, copies it, and returns it with the token masked. */
+  /**
+   * Copies the prompt an agent gets for a work item and returns it with its token masked:
+   * a queued task's handoff (which starts its session), a running task's session prompt, or,
+   * for a task not queued, the automation-API prompt for working on it (nothing is queued).
+   */
   copyPlanningAgentHandoff(projectId: string, workItemId: string): Promise<Result<string>>
+  /** The same prompt as copyPlanningAgentHandoff, to read: nothing is copied or started, tokens masked. */
+  getPlanningAgentPrompt(
+    projectId: string,
+    workItemId: string
+  ): Promise<Result<PlanningAgentPrompt>>
   breakDownPlanningGoal(
     projectId: string,
     goalId: string,

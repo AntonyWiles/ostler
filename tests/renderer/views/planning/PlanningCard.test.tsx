@@ -374,6 +374,22 @@ describe('PlanningCard agents', () => {
     fireEvent.click(screen.getByRole('menuitem', { name: 'Queue for agent' }))
     expect(queueWorkItem).toHaveBeenCalled()
   })
+
+  it('offers Copy agent prompt for a task that is not queued, in any column', () => {
+    const copyAgentHandoff = vi.fn()
+    render(
+      withAgents(
+        <PlanningCard
+          item={workItem({ status: 'backlog' })}
+          ws={workspace({ copyAgentHandoff, queuePositionOf: () => -1 })}
+        />
+      )
+    )
+
+    moreMenu()
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Copy agent prompt' }))
+    expect(copyAgentHandoff).toHaveBeenCalled()
+  })
 })
 
 describe('PlanningCard custom fields (R2.2)', () => {

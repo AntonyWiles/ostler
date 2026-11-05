@@ -388,13 +388,12 @@
     "agentCopy": "エージェントのコピーは{{worktreePath}}にあります"
   },
   "taskAgentRunSection": {
-    "agentRun": "エージェントの実行",
+    "agentRun": "AIエージェント",
     "autoContinue": "自動で続行",
     "onceQueueSameAgent": "キューに入れると、同じエージェントが次のタスクを続けることがあります。",
     "agentReport": "エージェントのレポート",
     "whatAgentSaidDid": "このタスクについてエージェントが行ったと述べた内容です。",
     "viewReport": "レポートを表示…",
-    "handConnectedAgent": "接続済みのエージェントに引き継ぐ",
     "copiesTaskConnectionDetails": "タスクと接続情報を1つの指示としてコピーし、エージェントに貼り付けられるようにします。",
     "agentChanges": "エージェントの変更",
     "loadingChanges": "変更を読み込み中…",
@@ -849,5 +848,14 @@
     "fromPlaybook": "プレイブック{{name}}から",
     "scheduled": "予定",
     "loading": "エージェントの設定を読み込み中…"
+  },
+  "agentPrompt": {
+    "title": "エージェントのプロンプト",
+    "showFull": "プロンプト全体を表示",
+    "sessionHint": "このタスクに取り組むエージェントに渡されたプロンプトです。",
+    "automationHint": "キューに入っていません：タスクと自動化 API の接続情報をコピーし、エージェントに貼り付けられます。キューには入りません。",
+    "sessionMadeOnCopy": "（コピー時に作成）",
+    "tokenMadeOnCopy": "（専用トークン、コピー時に作成）",
+    "automationTokenMissing": "（先に設定 › 接続で自動化 API をオンにしてトークンを作成してください）"
   }
 }

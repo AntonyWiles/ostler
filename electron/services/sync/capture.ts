@@ -409,6 +409,14 @@ function guardTriggersFor(shape: TableShape, entry: SyncedTable, sql: CaptureSql
   ].join('\n')
 }
 
+/**
+ * A field stamp replaces the one already kept for that column. Not `INSERT OR REPLACE`: inside a
+ * trigger, the conflict policy of the statement that fired it wins, so a change made by an upsert
+ * (`INSERT ... ON CONFLICT DO UPDATE`) would turn the REPLACE into ABORT and fail on the old stamp.
+ */
+const STAMP_UPSERT = `ON CONFLICT (table_name, row_key, column_name)
+     DO UPDATE SET stamp = excluded.stamp, project_id = excluded.project_id`
+
 function triggersFor(shape: TableShape, capture: Capture, sql: CaptureSql): string {
   const { table } = shape
   const columns = capture.columns.length > 0 ? capture.columns : shape.columns
@@ -425,11 +433,12 @@ function triggersFor(shape: TableShape, capture: Capture, sql: CaptureSql): stri
        CASE ${sql.actor} WHEN 'human' THEN (SELECT id FROM people WHERE is_me = 1) END, ${NOW_MS});`
     const stamps =
       op === 'upsert'
-        ? `INSERT OR REPLACE INTO sync_field_stamps (table_name, row_key, column_name, stamp, project_id)
+        ? `INSERT INTO sync_field_stamps (table_name, row_key, column_name, stamp, project_id)
      SELECT o.table_name, o.row_key, je.key, o.stamp, o.project_id FROM sync_outbox AS o, json_each(o.columns) AS je
-     WHERE o.id = last_insert_rowid();`
-        : `INSERT OR REPLACE INTO sync_field_stamps (table_name, row_key, column_name, stamp, project_id)
-     SELECT o.table_name, o.row_key, '*', o.stamp, o.project_id FROM sync_outbox AS o WHERE o.id = last_insert_rowid();`
+     WHERE o.id = last_insert_rowid() ${STAMP_UPSERT};`
+        : `INSERT INTO sync_field_stamps (table_name, row_key, column_name, stamp, project_id)
+     SELECT o.table_name, o.row_key, '*', o.stamp, o.project_id FROM sync_outbox AS o WHERE o.id = last_insert_rowid()
+     ${STAMP_UPSERT};`
     return `${insert} ${stamps}`
   }
   // A row's image: every sent column with its value.

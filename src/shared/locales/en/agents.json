@@ -409,13 +409,12 @@
     "agentCopy": "The agent's copy is at {{worktreePath}}"
   },
   "taskAgentRunSection": {
-    "agentRun": "Agent run",
+    "agentRun": "AI Agent",
     "autoContinue": "Auto-continue",
     "onceQueueSameAgent": "Once you queue it, the same agent may carry on with the next task.",
     "agentReport": "Agent report",
     "whatAgentSaidDid": "What the agent said it did for this task.",
     "viewReport": "View report…",
-    "handConnectedAgent": "Hand to a connected agent",
     "copiesTaskConnectionDetails": "Copies the task and the connection details as one instruction to paste into your agent.",
     "agentChanges": "Agent changes",
     "loadingChanges": "Loading the changes…",
@@ -883,5 +882,14 @@
     "scheduled": "Scheduled",
     "scheduled_comment": "On a queued task or run that a repeating task queued for agents on its start date (N9.7).",
     "loading": "Reading the agent settings…"
+  },
+  "agentPrompt": {
+    "title": "Agent prompt",
+    "showFull": "Show the full prompt",
+    "sessionHint": "The prompt the agent working on this task was given.",
+    "automationHint": "Not queued: copies the task with the automation API's connection details, to paste into your agent. Nothing is queued.",
+    "sessionMadeOnCopy": "(made when you copy)",
+    "tokenMadeOnCopy": "(its own token, made when you copy)",
+    "automationTokenMissing": "(turn on the automation API and make its token in Settings › Connections first)"
   }
 }

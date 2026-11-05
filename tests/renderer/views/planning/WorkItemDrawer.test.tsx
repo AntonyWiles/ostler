@@ -165,14 +165,14 @@ describe('Task drawer', () => {
   it('shows no agent section or control while agents are off', () => {
     const item = makeWorkItem('a', { title: 'Task A' })
     const { unmount } = render(shell(<WorkItemDrawer ws={drawerWorkspace(item, [item])} />))
-    for (const name of ['Agent run', 'Verification', 'For the agent']) {
+    for (const name of ['AI Agent', 'Verification', 'For the agent']) {
       expect(screen.queryByRole('heading', { name })).toBeNull()
     }
     expect(screen.queryByLabelText('Auto-continue')).toBeNull()
     unmount()
 
     render(shell(<WorkItemDrawer ws={drawerWorkspace(item, [item])} />, true))
-    expect(screen.getByRole('heading', { name: 'Agent run' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'AI Agent' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Verification' })).toBeTruthy()
   })
 })

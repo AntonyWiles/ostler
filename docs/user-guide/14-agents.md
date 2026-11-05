@@ -35,6 +35,20 @@ switch, as the automation API's port is in Settings › Connections.
    it up, or **Start this task** connects an agent you run yourself.
 4. Watch it work, and answer its questions when it asks.
 
+### The agent prompt
+
+A task's **AI Agent** section always shows its **Agent prompt**: the whole text an agent gets for
+the task. **Show the full prompt** opens it; tokens show only their last four characters.
+**Copy prompt** there, or **Copy agent prompt** in the task's **⋯** menu, copies the same text in any
+column:
+
+- **Queued and waiting:** the handoff for an agent you run yourself. Copying it starts the task's
+  session, with its own token.
+- **An agent is on it:** the prompt that run was given.
+- **Not queued:** the task with the automation API's connection details, so an agent you run
+  yourself can work on it and move it to Review. Nothing is queued. This needs the automation API's
+  token, made under **Settings › Connections**.
+
 ## Playbooks
 
 Some agent jobs come round again and again: update the dependencies, add a translation, write the
@@ -82,7 +96,7 @@ queued: agents are off") and the note shows the reason as it stands.
 An agent can send you a plan before it changes anything: the steps it will take, the files it
 expects to change, and the risks it sees. The run then waits for you, with no time limit.
 
-- **Per task:** the task drawer's **Agent run** section has **Plan first**: **Project default**,
+- **Per task:** the task drawer's **AI Agent** section has **Plan first**: **Project default**,
   **Yes** or **No**. Choose it before the task is queued; once it is queued, the choice is fixed
   for that run.
 - **For the project:** Project settings › Agents › **Agents plan first** makes every task on
@@ -113,7 +127,7 @@ than a small one. The built-in agent can run each task on its own model and effo
 - **For one run.** On the Board, a task's menu has **Queue for agent with model…**; in the Agents
   tab, the queue's **Queue a one-off agent run** has **Model for this run**. While the task waits
   in the queue, change it with **Choose model for this run…** in its menu in the queue, or
-  **Change…** in the task's **Agent run** section. Once a run starts, its model is fixed.
+  **Change…** in the task's **AI Agent** section. Once a run starts, its model is fixed.
 - **For a project.** Project settings › Agents › **Built-in agent's model**: **Same as Settings**,
   or this project's own provider, model and effort.
 - **Everywhere else.** Settings › Agents chooses the model for every project on **Same as
@@ -140,7 +154,7 @@ offers the same choice.
 ## Send guidance to a running agent
 
 Changed your mind about a task while an agent works on it, or want to point it the right way? Use
-**Send guidance…** on the run: in the Agents tab's **Working now**, in the task's **Agent run**
+**Send guidance…** on the run: in the Agents tab's **Working now**, in the task's **AI Agent**
 section, or in the transcript you open with **Watch**. Write your message (Markdown works) and
 **Send**.
 
@@ -157,7 +171,7 @@ section, or in the transcript you open with **Watch**. Write your message (Markd
 
 ## What a run's state means
 
-Every place that shows an agent run (the Agents tab and its queue, a task's **Agent run** section,
+Every place that shows an agent run (the Agents tab and its queue, a task's **AI Agent** section,
 Board cards, **Needs you** on Home, the Inbox and notifications) uses the same words:
 
 - **Queued**: waiting for an agent. The queue says **Next to start** or **Queued #3**.

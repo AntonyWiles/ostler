@@ -4,12 +4,17 @@ import {
   type ApiProjectArgs,
   type ApiValue
 } from '@shared/ostler-api/api-channels'
-import type { QueueWorkItemForHarness } from '../services/task-intake'
+import { formatPlanningTaskDetails, type QueueWorkItemForHarness } from '../services/task-intake'
 import { handleIpc, projectIpcHandlers, handleApi } from './handle-ipc'
 import { copyPromptWithSecrets } from './agent-prompt-handlers'
 import { syncAgentWorkItemStatus } from '../services/agent-status-sync'
 import { updateWorkItemThroughQueue } from '../services/queue-exit'
-import { buildHarnessSessionPrompt } from '@shared/agent-prompts'
+import {
+  buildAutomationTaskPrompt,
+  buildHarnessSessionPrompt,
+  buildWorkItemAutomationTask,
+  maskSecrets
+} from '@shared/agent-prompts'
 import { projectFolder } from '@shared/project-folder'
 import { agentColumnsLocked } from '@shared/board-columns'
 import { Refusal } from '@shared/refusal'
@@ -58,6 +63,7 @@ import type {
   PlanningWorkItemPlacement,
   RunPlaybookInput,
   WorkItemAttachment,
+  PlanningAgentPrompt,
   SaveTaskTemplateFromWorkItemInput,
   TaskTemplateDeletion,
   TaskTemplateOverrides,
@@ -820,32 +826,88 @@ export function registerPlanningHandlers({
     }
     return { queued, skipped }
   })
-  // Copy for an external agent (§2.3): claims the task for a new session in
-  // the task's copy, and copies that session's own password. Built and copied
-  // here so the password never reaches the renderer.
-  handleApi('copyPlanningAgentHandoff', async (_event, projectId: string, workItemId: string) => {
+  /**
+   * The prompt an agent gets for a work item, from one builder for Copy agent prompt and the
+   * task's AI Agent section, so the two never differ:
+   * - queued and waiting: the external handoff (§2.3). Copying it claims the task for a new
+   *   session and carries that session's own password; the preview shows a placeholder.
+   * - an agent is on it: that session's prompt, as Copy prompt on the run gives it.
+   * - not queued (or its run ended): the automation-API prompt for working on the task.
+   *   Nothing is queued; the agent reaches the project with its automation token.
+   */
+  const agentPromptFor = async (
+    projectId: string,
+    workItemId: string,
+    copy: boolean
+  ): Promise<PlanningAgentPrompt> => {
     const project = getProject(projectId)
     const item = planningService.getWorkItem(workItemId)
     if (item.projectId !== projectId) throw new Error('That task belongs to a different project.')
-    if (!item.linkedHarnessTaskId)
-      throw new Error(t('errors:planningHandlers.queueTaskAgentBefore'))
-    const task = harnessService
-      .getState(project)
-      .taskQueue.find((candidate) => candidate.id === item.linkedHarnessTaskId)
-    if (!task || task.status === 'cancelled')
-      throw new Error(t('errors:planningHandlers.agentRunTaskNo'))
-    if (task.status !== 'pending' || task.claimedBy)
-      throw new Error(t('errors:planningHandlers.linkedTaskHasAlready'))
-    const session = await harnessService.startSessionForTask(project, task.id)
-    syncAgentWorkItemStatus(planningService, projectId, task.id, 'active')
-    notifyHarnessState(project)
-    notifyPlanningChanged(project)
-    const prompt = buildHarnessSessionPrompt(configStore.get().harness.port, project.id, session, {
-      title: task.title,
-      details: task.details ?? null
+    const config = configStore.get()
+    const state = harnessService.getState(project)
+    const task = item.linkedHarnessTaskId
+      ? state.taskQueue.find((candidate) => candidate.id === item.linkedHarnessTaskId)
+      : undefined
+    const session = task
+      ? state.activeSessions.find(
+          (candidate) => candidate.taskId === task.id || candidate.id === task.claimedBy
+        )
+      : undefined
+    const finish = (kind: PlanningAgentPrompt['kind'], text: string, secrets: string[]) => ({
+      kind,
+      text: copy ? copyPromptWithSecrets(text, secrets) : maskSecrets(text, secrets)
     })
-    return copyPromptWithSecrets(prompt, [session.token])
+    const taskText = { title: task?.title ?? item.title, details: task?.details ?? null }
+    if (task && session) {
+      const text = buildHarnessSessionPrompt(config.harness.port, project.id, session, taskText)
+      return finish('session', text, [session.token])
+    }
+    if (task && task.status === 'pending' && !task.claimedBy) {
+      if (!copy) {
+        // The session and its password are made only when the prompt is copied.
+        const placeholder = {
+          id: t('agents:agentPrompt.sessionMadeOnCopy'),
+          token: t('agents:agentPrompt.tokenMadeOnCopy'),
+          workspace: null
+        }
+        const text = buildHarnessSessionPrompt(
+          config.harness.port,
+          project.id,
+          placeholder,
+          taskText
+        )
+        return { kind: 'handoff', text }
+      }
+      const started = await harnessService.startSessionForTask(project, task.id)
+      syncAgentWorkItemStatus(planningService, projectId, task.id, 'active')
+      notifyHarnessState(project)
+      notifyPlanningChanged(project)
+      const text = buildHarnessSessionPrompt(config.harness.port, project.id, started, taskText)
+      return finish('handoff', text, [started.token])
+    }
+    const details = formatPlanningTaskDetails(
+      item,
+      agentAttachmentsFor?.(project.id, item.id) ?? [],
+      planningService.taskTypes.nameOf(item.typeId)
+    )
+    if (copy && !project.automationToken)
+      throw new Error(t('errors:agentPromptHandlers.generateAutomationTokenFirst'))
+    const token = project.automationToken ?? t('agents:agentPrompt.automationTokenMissing')
+    const text = buildAutomationTaskPrompt(
+      config.automationApi.port,
+      project.id,
+      token,
+      buildWorkItemAutomationTask(item, details)
+    )
+    return finish('automation', text, project.automationToken ? [token] : [])
+  }
+  // Built and copied here so a password never reaches the renderer.
+  handleApi('copyPlanningAgentHandoff', async (_event, projectId: string, workItemId: string) => {
+    return (await agentPromptFor(projectId, workItemId, true)).text
   })
+  handleApi('getPlanningAgentPrompt', (_event, projectId: string, workItemId: string) =>
+    agentPromptFor(projectId, workItemId, false)
+  )
   projectApi('breakDownPlanningGoal', (project, goalId: string, selectedItemIds?: string[]) => {
     const goal = planningService.getGoal(goalId)
     if (goal.projectId !== project.id) throw new Error('Planning goal belongs to another project')

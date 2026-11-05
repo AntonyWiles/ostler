@@ -283,6 +283,19 @@
   line-height: var(--leading-body-sm);
 }
 
+/* The description's edit box has the shown text's border, padding, font and line height, so
+   switching between the two moves nothing (holdDescriptionHeight matches the height). */
+.task-drawer__description .ui-textarea {
+  padding: 0 var(--space-300);
+  border-color: var(--color-border);
+}
+
+.task-drawer__description .ui-textarea > textarea {
+  padding: var(--space-200) 0;
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-body-lg);
+}
+
 /* "No description yet" starts editing when clicked. */
 .task-drawer__empty-description {
   margin: 0;
@@ -1019,4 +1032,31 @@ button.task-library-list__open:hover .task-library-list__title {
   margin: 0;
   padding: 0;
   border: 0;
+}
+
+/* The task's agent prompt (TaskAgentPrompt): copy button on top, the whole text folded below. */
+.task-agent-prompt > .task-drawer__panel--row {
+  display: flex;
+  gap: var(--space-200);
+}
+
+.task-agent-prompt__details > summary {
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-sm);
+}
+
+.task-agent-prompt__text {
+  max-height: calc(var(--row-height) * 14);
+  margin-top: var(--space-150);
+  overflow: auto;
+  padding: var(--space-200) var(--space-300);
+  background: var(--color-surface-sunken);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }

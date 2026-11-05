@@ -6,7 +6,7 @@ import { runCanRunAgain, sessionRunState } from '@shared/agent-run-state'
 import { useAgentModelSettings } from '../../hooks/planning/useAgentModelSettings'
 import { runModelLine } from './RunModelPicker'
 import { AgentRunBadge } from './AgentRunBadge'
-import { Copy } from '../../ui/icons'
+import { TaskAgentPrompt } from './TaskAgentPrompt'
 import { AgentReportModal } from './AgentReportModal'
 import { RejectWorkForm } from './RejectWorkForm'
 import { offerLessonAfterSendBack } from './RememberLesson'
@@ -127,26 +127,7 @@ export function TaskAgentRunSection({
         </div>
       )}
 
-      {waitingForAgent && (
-        <div className="task-drawer__panel task-drawer__panel--row">
-          <div>
-            <strong>{t('agents:taskAgentRunSection.handConnectedAgent')}</strong>
-            <p className="task-drawer__muted">
-              {t('agents:taskAgentRunSection.copiesTaskConnectionDetails')}
-            </p>
-          </div>
-          <Button
-            size="sm"
-            variant="secondary"
-            icon={Copy}
-            onClick={() => void ws.copyAgentHandoff(item)}
-          >
-            {ws.handoffCopiedId === item.id
-              ? t('agents:taskAgentRunSection.copied')
-              : t('agents:taskAgentRunSection.copyPrompt')}
-          </Button>
-        </div>
-      )}
+      <TaskAgentPrompt ws={ws} item={item} />
 
       {session?.workspace && (
         <div

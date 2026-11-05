@@ -388,13 +388,12 @@
     "agentCopy": "智能体的副本位于 {{worktreePath}}"
   },
   "taskAgentRunSection": {
-    "agentRun": "智能体运行",
+    "agentRun": "AI 智能体",
     "autoContinue": "自动续接",
     "onceQueueSameAgent": "加入队列后，同一智能体可能会继续处理下一个任务。",
     "agentReport": "智能体报告",
     "whatAgentSaidDid": "智能体说明它为此任务所做的工作。",
     "viewReport": "查看报告…",
-    "handConnectedAgent": "交给已连接的智能体",
     "copiesTaskConnectionDetails": "将任务和连接详情复制为一条指令，粘贴到你的智能体中。",
     "agentChanges": "智能体更改",
     "loadingChanges": "正在加载更改…",
@@ -849,5 +848,14 @@
     "fromPlaybook": "来自操作手册 {{name}}",
     "scheduled": "已安排",
     "loading": "正在读取智能体设置…"
+  },
+  "agentPrompt": {
+    "title": "智能体提示词",
+    "showFull": "显示完整提示词",
+    "sessionHint": "处理此任务的智能体收到的提示词。",
+    "automationHint": "未排队：复制任务和自动化 API 的连接信息，粘贴到你的智能体中。不会排队。",
+    "sessionMadeOnCopy": "（复制时创建）",
+    "tokenMadeOnCopy": "（专用令牌，复制时创建）",
+    "automationTokenMissing": "（请先在 设置 › 连接 中打开自动化 API 并生成令牌）"
   }
 }

@@ -426,13 +426,12 @@
     "agentCopy": "A cópia do agente está em {{worktreePath}}"
   },
   "taskAgentRunSection": {
-    "agentRun": "Execução do agente",
+    "agentRun": "Agente de IA",
     "autoContinue": "Continuação automática",
     "onceQueueSameAgent": "Depois que você colocá-la na fila, o mesmo agente pode seguir para a próxima tarefa.",
     "agentReport": "Relatório do agente",
     "whatAgentSaidDid": "O que o agente disse que fez nesta tarefa.",
     "viewReport": "Ver relatório…",
-    "handConnectedAgent": "Passar a um agente conectado",
     "copiesTaskConnectionDetails": "Copia a tarefa e os dados de conexão como uma única instrução para colar no seu agente.",
     "agentChanges": "Alterações do agente",
     "loadingChanges": "Carregando as alterações…",
@@ -911,5 +910,14 @@
     "fromPlaybook": "Do playbook {{name}}",
     "scheduled": "Agendada",
     "loading": "Lendo as configurações do agente…"
+  },
+  "agentPrompt": {
+    "title": "Prompt do agente",
+    "showFull": "Mostrar o prompt completo",
+    "sessionHint": "O prompt que o agente que trabalha nesta tarefa recebeu.",
+    "automationHint": "Fora da fila: copia a tarefa com os dados de conexão da API de automação, para colar no seu agente. Nada entra na fila.",
+    "sessionMadeOnCopy": "(criada ao copiar)",
+    "tokenMadeOnCopy": "(token próprio, criado ao copiar)",
+    "automationTokenMissing": "(primeiro ative a API de automação e crie o token em Configurações › Conexões)"
   }
 }
