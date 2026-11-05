@@ -16,7 +16,7 @@ import { parseAppPath } from '../navigation/paths'
 import { useToast, type MenuEntry } from '../ui'
 import { Hourglass, Pin, PinOff } from '../ui/icons'
 import { CountdownLimitDialog } from './CountdownLimitDialog'
-import { pinTitle } from './pin-display'
+import { livePins, pinTitle } from './pin-display'
 import { t } from '@shared/i18n'
 
 /** Something a pin can point at, as a menu knows it. */
@@ -125,8 +125,9 @@ export function PinsProvider({ children }: { children: ReactNode }) {
   const reload = useCallback(() => {
     void window.ostlerAPI.listPins({ place: 'sidebar' }).then((result) => {
       // The same pins keep the same state: every card's menu reads this context.
-      if (result.ok)
-        setSidebar((current) => (samePins(current, result.value) ? current : result.value))
+      if (!result.ok) return
+      const live = livePins(result.value)
+      setSidebar((current) => (samePins(current, live) ? current : live))
     })
     void window.ostlerAPI.listCountdowns().then((result) => {
       if (result.ok)
@@ -135,10 +136,11 @@ export function PinsProvider({ children }: { children: ReactNode }) {
     const current = projectRef.current
     if (current) {
       void window.ostlerAPI.listPins({ place: 'overview', projectId: current }).then((result) => {
-        if (result.ok)
-          setOverviews((all) =>
-            samePins(all[current] ?? [], result.value) ? all : { ...all, [current]: result.value }
-          )
+        if (!result.ok) return
+        const live = livePins(result.value)
+        setOverviews((all) =>
+          samePins(all[current] ?? [], live) ? all : { ...all, [current]: live }
+        )
       })
     }
   }, [])

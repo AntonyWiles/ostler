@@ -44,6 +44,15 @@ export function pinExists(pin: PinView): boolean {
   return pin.kind !== 'project-view' || projectView(pin.targetId) !== null
 }
 
+/**
+ * The pins whose targets are still there. Main already leaves out deleted
+ * items; a pinned project view the app no longer has is left out here, so no
+ * pin shows as "Gone".
+ */
+export function livePins<T extends PinView>(pins: T[]): T[] {
+  return pins.filter(pinExists)
+}
+
 /** The pin's title as it shows: the target's current title, a view's name, or "Gone". */
 export function pinTitle(pin: PinView): string {
   if (!pinExists(pin)) return t('common:pins.gone')
