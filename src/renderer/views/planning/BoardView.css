@@ -9,13 +9,25 @@
   min-width: 0;
 }
 
+/* The toolbar (filters, or the bulk bar while selecting) stays pinned at the
+   top while the board scrolls, so its actions are always in reach. */
+.board > .task-toolbar-row {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  padding-block: var(--space-100);
+  background: var(--color-bg);
+}
+
 /* Columns */
 
 .board__columns {
   display: grid;
   grid-template-columns: repeat(var(--board-column-count, 6), minmax(var(--board-column-min), 1fr));
   gap: var(--space-300);
-  align-items: start;
+  /* Every column runs as tall as the longest one, so a card can be dropped
+     anywhere down a short column. */
+  align-items: stretch;
   overflow-x: auto;
   padding-bottom: var(--space-300);
 }

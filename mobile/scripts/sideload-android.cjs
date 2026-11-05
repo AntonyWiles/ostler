@@ -24,9 +24,14 @@
  *   --r2-config <file>  Build the bucket in this JSON file (an R2 setup: config, space, checkMinutes)
  *                       into the app (or OSTLER_SIDELOAD_R2_CONFIG), so it syncs from its first start
  *                       with nothing to type. Keep the file outside the repository: it holds the key.
+ *   --dev-client        Build a debug "development client" instead: it has no JavaScript inside and
+ *                       loads it from Metro on the PC (mobile/scripts/metro-dev.cjs), so JavaScript
+ *                       changes reach the phone in seconds. Rebuild only when native code changes.
  *
  * Gradle runs with the settings that kept a many-core Windows PC from running out of memory
  * (one worker, one CPU architecture, in-process Kotlin); OSTLER_SIDELOAD_GRADLE_ARGS adds more.
+ * A sideload skips what only a store build needs (minifying, PNG crunching), keeps the Gradle
+ * daemon warm between runs and uses Gradle's build cache.
  */
 const { spawnSync, execFileSync } = require('node:child_process')
 const crypto = require('node:crypto')
@@ -56,7 +61,9 @@ function args() {
     if (['--dir', '--device', '--setup-code', '--r2-config', '--arch'].includes(arg)) {
       options[arg.slice(2)] = given[++i]
       if (!options[arg.slice(2)]) fail(`${arg} needs a value`)
-    } else if (['--clean', '--build-only', '--install-only', '--clear'].includes(arg)) {
+    } else if (
+      ['--clean', '--build-only', '--install-only', '--clear', '--dev-client'].includes(arg)
+    ) {
       options.flags.add(arg.slice(2))
     } else {
       fail(`unknown option ${arg}`)
@@ -179,21 +186,10 @@ function brandValue(name) {
   return value
 }
 
-function main() {
-  const options = args()
-  const dir = path.resolve(options.dir ?? process.env.OSTLER_SIDELOAD_DIR ?? '')
-  if (!options.dir && !process.env.OSTLER_SIDELOAD_DIR) fail('pass --dir <short folder>')
-  if (windows && dir.length > MAX_DIR_LENGTH) fail(`${dir} is too long for CMake; use a short path`)
-  if (!fs.existsSync(path.join(dir, '.git'))) {
-    fail(`${dir} is not a worktree; make it with: git worktree add --detach ${dir}`)
-  }
-  const arch = options.arch ?? 'arm64-v8a'
-  if (!['arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'].includes(arch)) fail(`unknown --arch ${arch}`)
-  const apkFolder = path.join(dir, 'mobile', 'android', 'app', 'build', 'outputs', 'apk', 'release')
-  const apk = path.join(apkFolder, 'app-release.apk')
+/** The environment of a dev-variant build or Metro: the variant, and the built-in R2 bucket. */
+function devEnv(r2File) {
   const env = { ...process.env, OSTLER_ANDROID_VARIANT: 'dev' }
   delete env.CI
-  const r2File = options['r2-config'] ?? process.env.OSTLER_SIDELOAD_R2_CONFIG
   if (r2File) {
     let text
     try {
@@ -204,6 +200,24 @@ function main() {
     env.EXPO_PUBLIC_OSTLER_BUILT_IN_R2 = Buffer.from(text, 'utf8').toString('base64')
     say('building the R2 bucket into the app')
   }
+  return env
+}
+
+function main() {
+  const options = args()
+  const dir = path.resolve(options.dir ?? process.env.OSTLER_SIDELOAD_DIR ?? '')
+  if (!options.dir && !process.env.OSTLER_SIDELOAD_DIR) fail('pass --dir <short folder>')
+  if (windows && dir.length > MAX_DIR_LENGTH) fail(`${dir} is too long for CMake; use a short path`)
+  if (!fs.existsSync(path.join(dir, '.git'))) {
+    fail(`${dir} is not a worktree; make it with: git worktree add --detach ${dir}`)
+  }
+  const arch = options.arch ?? 'arm64-v8a'
+  if (!['arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'].includes(arch)) fail(`unknown --arch ${arch}`)
+  const devClient = options.flags.has('dev-client')
+  const buildType = devClient ? 'debug' : 'release'
+  const apkFolder = path.join(dir, 'mobile', 'android', 'app', 'build', 'outputs', 'apk', buildType)
+  const apk = path.join(apkFolder, `app-${buildType}.apk`)
+  const env = devEnv(options['r2-config'] ?? process.env.OSTLER_SIDELOAD_R2_CONFIG)
 
   if (!options.flags.has('install-only')) {
     const changed = mirror(dir)
@@ -241,10 +255,12 @@ function main() {
     }
     const gradle = windows ? '.\\gradlew.bat' : './gradlew'
     const gradleArgs = [
-      'assembleRelease',
+      devClient ? 'assembleDebug' : 'assembleRelease',
       '-q',
-      '--no-daemon',
+      '--build-cache',
       '--max-workers=1',
+      '-Pandroid.enableMinifyInReleaseBuilds=false',
+      '-Pandroid.enablePngCrunchInReleaseBuilds=false',
       `-PreactNativeArchitectures=${arch}`,
       '-Pkotlin.compiler.execution.strategy=in-process',
       '-Dorg.gradle.jvmargs=-Xmx1536m',
@@ -270,6 +286,11 @@ function main() {
   }
   say(`installing on ${serial}`)
   adb(['install', '-r', apk], serial)
+  if (devClient) {
+    // The phone reaches Metro on the PC through adb, over USB or wireless debugging alike.
+    adb(['reverse', 'tcp:8081', 'tcp:8081'], serial)
+    say('installed the development client; start Metro with mobile/scripts/metro-dev.cjs')
+  }
   adb(['shell', 'monkey', '-p', pkg, '-c', 'android.intent.category.LAUNCHER', '1'], serial)
   if (options['setup-code']) {
     const code = fs.readFileSync(options['setup-code'], 'utf8').trim()
@@ -293,4 +314,6 @@ function main() {
   say('done')
 }
 
-main()
+if (require.main === module) main()
+
+module.exports = { adb, brandValue, devEnv, findDevice, PACKAGE_SUFFIX }
