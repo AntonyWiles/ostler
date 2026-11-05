@@ -95,6 +95,19 @@ Before each upload that Play has not seen:
    upload key's. The bundle is `mobile/android/app/build/outputs/bundle/release/app-release.aab`
    in the short checkout.
 
+   Test builds can carry bucket keys (`sideload-android.cjs --r2-config`), so the script also
+   refuses to start while `EXPO_PUBLIC_OSTLER_BUILT_IN_R2` or `OSTLER_SIDELOAD_R2_CONFIG` is set,
+   empties Metro's transform cache first (every checkout on the machine shares it), and scans the
+   finished bundle's JavaScript for bucket credentials, plain or base64-encoded. If it reports
+   credentials, don't upload: delete the bundle and rebuild. To have the scan also look for the
+   exact keys in your own secret files, list them in the clone's git config (kept out of the repo):
+
+   ```
+   git config --add ostler.secretFile <path to a secret file or folder>
+   ```
+
+   The pre-commit and pre-push hooks (`git config core.hooksPath .githooks`) use the same list.
+
 To try a release build on your own phone before uploading, `./gradlew assembleRelease` makes an APK
 you can install with `adb install`. Play takes the bundle, not the APK.
 

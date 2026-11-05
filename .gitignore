@@ -13,6 +13,8 @@ release/
 .env
 .env.*
 !.env.example
+# Local credential files (bucket keys for test builds and the like)
+secrets/
 
 # Test and tool caches
 coverage/
