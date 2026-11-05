@@ -198,7 +198,23 @@
     "countLimitEdit_other": "{{count}} of {{limit}} tasks; click to edit WIP limit",
     "countOverLimitEdit_one": "{{count}} of {{limit}} tasks, over WIP limit; click to edit WIP limit",
     "countOverLimitEdit_other": "{{count}} of {{limit}} tasks, over WIP limit; click to edit WIP limit",
-    "countEdit_comment": "WIP is “work in progress”: the most tasks a column should hold."
+    "countEdit_comment": "WIP is “work in progress”: the most tasks a column should hold.",
+    "columnOptions": {
+      "open": "Column options for {{column}}",
+      "title": "{{column}} options",
+      "sortBoard": "Same as board",
+      "maxCards": "Cards shown",
+      "maxCardsAll": "All",
+      "maxHeight": "Column height",
+      "heightAuto": "Fit cards",
+      "heightShort": "Short",
+      "heightMedium": "Medium",
+      "heightTall": "Tall",
+      "showFields": "Show custom fields on cards",
+      "showMore": "Show {{hidden}} more",
+      "showFewer": "Show fewer",
+      "reset": "Reset column"
+    }
   },
   "createRecordModal": {
     "in": "{{description}} In {{selectedProjectName}}.",

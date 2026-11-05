@@ -211,7 +211,23 @@
     "countLimitEdit_other": "{{count}} sur {{limit}} tâches ; cliquez pour modifier la limite WIP",
     "countOverLimitEdit_one": "{{count}} sur {{limit}} tâche, au-delà de la limite WIP ; cliquez pour modifier la limite WIP",
     "countOverLimitEdit_many": "{{count}} sur {{limit}} tâches, au-delà de la limite WIP ; cliquez pour modifier la limite WIP",
-    "countOverLimitEdit_other": "{{count}} sur {{limit}} tâches, au-delà de la limite WIP ; cliquez pour modifier la limite WIP"
+    "countOverLimitEdit_other": "{{count}} sur {{limit}} tâches, au-delà de la limite WIP ; cliquez pour modifier la limite WIP",
+    "columnOptions": {
+      "open": "Options de la colonne {{column}}",
+      "title": "Options de {{column}}",
+      "sortBoard": "Comme le tableau",
+      "maxCards": "Cartes affichées",
+      "maxCardsAll": "Toutes",
+      "maxHeight": "Hauteur de la colonne",
+      "heightAuto": "Ajuster aux cartes",
+      "heightShort": "Basse",
+      "heightMedium": "Moyenne",
+      "heightTall": "Haute",
+      "showFields": "Afficher les champs personnalisés sur les cartes",
+      "showMore": "Afficher {{hidden}} de plus",
+      "showFewer": "Afficher moins",
+      "reset": "Réinitialiser la colonne"
+    }
   },
   "createRecordModal": {
     "in": "{{description}} Dans {{selectedProjectName}}.",

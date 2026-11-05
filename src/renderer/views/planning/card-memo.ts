@@ -41,6 +41,8 @@ export interface CardMemoProps {
   selected?: boolean
   selecting?: boolean
   showBoxes?: boolean
+  /** Leave the custom fields off, from the column's options (MOP-79). */
+  hideFields?: boolean
   focused?: boolean
   dragging?: boolean
   subtaskCount?: number
@@ -57,6 +59,7 @@ export function cardPropsEqual(previous: CardMemoProps, next: CardMemoProps): bo
     previous.selected === next.selected &&
     previous.selecting === next.selecting &&
     previous.showBoxes === next.showBoxes &&
+    previous.hideFields === next.hideFields &&
     previous.focused === next.focused &&
     previous.dragging === next.dragging &&
     previous.subtaskCount === next.subtaskCount &&

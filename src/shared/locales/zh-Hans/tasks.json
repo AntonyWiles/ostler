@@ -181,7 +181,23 @@
     "countEdit_other": "{{count}} 个任务；点击可编辑 WIP 限制",
     "countOnly_other": "{{count}} 个任务",
     "countLimitEdit_other": "{{count}}/{{limit}} 个任务；点击可编辑 WIP 限制",
-    "countOverLimitEdit_other": "{{count}}/{{limit}} 个任务，超出 WIP 限制；点击可编辑 WIP 限制"
+    "countOverLimitEdit_other": "{{count}}/{{limit}} 个任务，超出 WIP 限制；点击可编辑 WIP 限制",
+    "columnOptions": {
+      "open": "{{column}} 的列选项",
+      "title": "{{column}} 选项",
+      "sortBoard": "与看板相同",
+      "maxCards": "显示的卡片",
+      "maxCardsAll": "全部",
+      "maxHeight": "列高度",
+      "heightAuto": "适应卡片",
+      "heightShort": "矮",
+      "heightMedium": "中",
+      "heightTall": "高",
+      "showFields": "在卡片上显示自定义字段",
+      "showMore": "再显示 {{hidden}} 项",
+      "showFewer": "收起",
+      "reset": "重置列"
+    }
   },
   "createRecordModal": {
     "in": "{{description}} 将创建在 {{selectedProjectName}} 中。",

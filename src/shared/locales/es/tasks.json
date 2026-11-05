@@ -211,7 +211,23 @@
     "countLimitEdit_other": "{{count}} de {{limit}} tareas; haz clic para editar el límite WIP",
     "countOverLimitEdit_one": "{{count}} de {{limit}} tareas, por encima del límite WIP; haz clic para editar el límite WIP",
     "countOverLimitEdit_many": "{{count}} de {{limit}} tareas, por encima del límite WIP; haz clic para editar el límite WIP",
-    "countOverLimitEdit_other": "{{count}} de {{limit}} tareas, por encima del límite WIP; haz clic para editar el límite WIP"
+    "countOverLimitEdit_other": "{{count}} de {{limit}} tareas, por encima del límite WIP; haz clic para editar el límite WIP",
+    "columnOptions": {
+      "open": "Opciones de columna para {{column}}",
+      "title": "Opciones de {{column}}",
+      "sortBoard": "Igual que el tablero",
+      "maxCards": "Tarjetas visibles",
+      "maxCardsAll": "Todas",
+      "maxHeight": "Altura de la columna",
+      "heightAuto": "Ajustar a las tarjetas",
+      "heightShort": "Baja",
+      "heightMedium": "Media",
+      "heightTall": "Alta",
+      "showFields": "Mostrar campos personalizados en las tarjetas",
+      "showMore": "Mostrar {{hidden}} más",
+      "showFewer": "Mostrar menos",
+      "reset": "Restablecer columna"
+    }
   },
   "createRecordModal": {
     "in": "{{description}} En {{selectedProjectName}}.",
