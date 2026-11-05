@@ -456,7 +456,15 @@
     "fileOnPc": "le fichier est sur votre PC",
     "newNote": "Nouvelle note",
     "noteTitle": "Titre",
-    "noteBody": "Écrivez votre note. Le **gras**, les listes et les liens fonctionnent comme sur votre PC."
+    "noteBody": "Écrivez votre note. Le **gras**, les listes et les liens fonctionnent comme sur votre PC.",
+    "newLink": "Ajouter un lien",
+    "addFile": "Ajouter un fichier",
+    "addPhoto": "Ajouter une photo",
+    "takePhoto": "Prendre une photo",
+    "linkUrl": "Adresse (https://…)",
+    "linkTitle": "Titre (facultatif)",
+    "noCamera": "{{brand}} ne peut pas utiliser l’appareil photo. Autorisez-le dans les réglages Android.",
+    "unreadable": "Impossible de lire ce fichier."
   },
   "schedule": {
     "view": "Calendrier",

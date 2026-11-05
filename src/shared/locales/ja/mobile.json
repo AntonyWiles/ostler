@@ -456,7 +456,15 @@
     "fileOnPc": "ファイルはPCにあります",
     "newNote": "新しいメモ",
     "noteTitle": "タイトル",
-    "noteBody": "メモを書きます。**太字**、リスト、リンクは PC と同じように使えます。"
+    "noteBody": "メモを書きます。**太字**、リスト、リンクは PC と同じように使えます。",
+    "newLink": "リンクを追加",
+    "addFile": "ファイルを追加",
+    "addPhoto": "写真を追加",
+    "takePhoto": "写真を撮る",
+    "linkUrl": "アドレス (https://…)",
+    "linkTitle": "タイトル (任意)",
+    "noCamera": "{{brand}} はカメラを使えません。Android の設定で許可してください。",
+    "unreadable": "ファイルを読み込めませんでした。"
   },
   "schedule": {
     "view": "予定",

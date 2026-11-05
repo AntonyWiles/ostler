@@ -113,6 +113,109 @@ describe('the Library on the phone', () => {
     expect(() => library.addLibraryNote(phone(), PROJECT, { title: ' ', body: 'x' })).toThrow()
   })
 
+  it('writes a note with tags, found by them', () => {
+    const note = library.addLibraryNote(phone(), PROJECT, {
+      title: 'Snagging',
+      body: 'Door sticks.',
+      tags: ['kitchen', ' kitchen ', 'urgent']
+    })
+    expect(note.tags).toEqual(['kitchen', 'urgent'])
+    expect(library.libraryItems(phone(), PROJECT, '', 'urgent').map((i) => i.id)).toEqual([note.id])
+    expect(library.libraryItems(phone(), PROJECT, 'urgent').map((i) => i.id)).toEqual([note.id])
+  })
+
+  it('writes a link as the PC does, titled by its site when left empty', () => {
+    const phoneLink = library.addLibraryLink(phone(), PROJECT, {
+      title: '',
+      url: ' https://example.com/taps ',
+      tags: ['bathroom']
+    })
+    db.close()
+    const service = new LibraryService(dbPath, tempDir())
+    const pcLink = service.createItem(PROJECT, {
+      kind: 'link',
+      title: 'example.com',
+      url: 'https://example.com/taps',
+      body: '',
+      tags: ['bathroom']
+    })
+    service.close()
+    db = new Database(dbPath)
+    const strip = ({ id: _id, createdAt: _c, updatedAt: _u, ...rest }: LibraryItem) => rest
+    expect(strip(phoneLink)).toEqual(strip(pcLink))
+    expect(library.libraryItems(phone(), PROJECT, 'taps').map((i) => i.id)).toContain(phoneLink.id)
+  })
+
+  it('refuses a link that is not http or https', () => {
+    for (const url of ['', 'not a link', 'javascript:alert(1)']) {
+      expect(() => library.addLibraryLink(phone(), PROJECT, { title: 'x', url })).toThrow()
+    }
+  })
+
+  it('writes a picked file or photo as a document or picture with its file details', () => {
+    const photo = library.addLibraryFile(phone(), PROJECT, {
+      itemId: '00000000-0000-4000-8000-0000000000f1',
+      kind: 'image',
+      fileName: 'IMG_0001.jpg',
+      mimeType: 'image/jpeg',
+      sizeBytes: 2048,
+      sha256: 'a'.repeat(64),
+      title: '',
+      tags: ['site']
+    })
+    expect(photo).toMatchObject({
+      id: '00000000-0000-4000-8000-0000000000f1',
+      kind: 'image',
+      title: 'IMG_0001',
+      tags: ['site'],
+      file: { fileName: 'IMG_0001.jpg', mimeType: 'image/jpeg', sizeBytes: 2048 }
+    })
+    const revisions = db
+      .prepare('SELECT COUNT(*) AS n FROM library_item_revisions WHERE item_id = ?')
+      .get(photo.id) as { n: number }
+    expect(revisions.n).toBe(1)
+    const bad = {
+      itemId: 'x',
+      kind: 'document' as const,
+      fileName: 'a.txt',
+      mimeType: 'text/plain'
+    }
+    expect(() =>
+      library.addLibraryFile(phone(), PROJECT, { ...bad, sizeBytes: 0, sha256: 'a'.repeat(64) })
+    ).toThrow()
+    expect(() =>
+      library.addLibraryFile(phone(), PROJECT, { ...bad, sizeBytes: 5, sha256: 'nope' })
+    ).toThrow()
+  })
+
+  it('tells pictures and PDFs by their bytes, as the PC does', () => {
+    const bytes = (...values: number[]) => new Uint8Array(values)
+    const ascii = (text: string) => new Uint8Array([...text].map((c) => c.charCodeAt(0)))
+    expect(library.classifyLibraryFile(bytes(0xff, 0xd8, 0xff, 0xe0), 'a.heic', null)).toEqual({
+      kind: 'image',
+      extension: 'jpg',
+      mimeType: 'image/jpeg'
+    })
+    expect(
+      library.classifyLibraryFile(bytes(0x89, 0x50, 0x4e, 0x47, 13, 10, 26, 10), 'x', null).mimeType
+    ).toBe('image/png')
+    expect(library.classifyLibraryFile(ascii('RIFF0000WEBP'), 'p', null).extension).toBe('webp')
+    expect(library.classifyLibraryFile(ascii('%PDF-1.7'), 'plan', null)).toEqual({
+      kind: 'document',
+      extension: 'pdf',
+      mimeType: 'application/pdf'
+    })
+    expect(library.classifyLibraryFile(ascii('hello'), 'Notes.TXT', 'text/plain')).toEqual({
+      kind: 'document',
+      extension: 'txt',
+      mimeType: 'text/plain'
+    })
+    expect(library.classifyLibraryFile(ascii('x'), 'blob', 'nonsense').mimeType).toBe(
+      'application/octet-stream'
+    )
+    expect(library.cleanFileName('../dir/a:b?.txt')).toBe('a_b_.txt')
+  })
+
   it('tags an item with project labels, filters by them and offers them on tasks', async () => {
     const { projectLabels } = await import('../../mobile/src/data/queries')
     const tagged = library.setLibraryItemTags(phone(), 'n1', [' boiler ', 'site', 'site'])

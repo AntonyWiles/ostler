@@ -456,7 +456,15 @@
     "fileOnPc": "il file è sul tuo PC",
     "newNote": "Nuova nota",
     "noteTitle": "Titolo",
-    "noteBody": "Scrivi la nota. **Grassetto**, elenchi e link funzionano come sul PC."
+    "noteBody": "Scrivi la nota. **Grassetto**, elenchi e link funzionano come sul PC.",
+    "newLink": "Aggiungi link",
+    "addFile": "Aggiungi file",
+    "addPhoto": "Aggiungi foto",
+    "takePhoto": "Scatta foto",
+    "linkUrl": "Indirizzo (https://…)",
+    "linkTitle": "Titolo (facoltativo)",
+    "noCamera": "{{brand}} non può usare la fotocamera. Consentilo nelle impostazioni di Android.",
+    "unreadable": "Impossibile leggere il file."
   },
   "schedule": {
     "view": "Calendario",

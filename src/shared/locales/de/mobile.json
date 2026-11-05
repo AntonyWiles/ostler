@@ -456,7 +456,15 @@
     "fileOnPc": "die Datei ist auf deinem PC",
     "newNote": "Neue Notiz",
     "noteTitle": "Titel",
-    "noteBody": "Schreib deine Notiz. **Fett**, Listen und Links funktionieren wie am PC."
+    "noteBody": "Schreib deine Notiz. **Fett**, Listen und Links funktionieren wie am PC.",
+    "newLink": "Link hinzufügen",
+    "addFile": "Datei hinzufügen",
+    "addPhoto": "Foto hinzufügen",
+    "takePhoto": "Foto aufnehmen",
+    "linkUrl": "Adresse (https://…)",
+    "linkTitle": "Titel (optional)",
+    "noCamera": "{{brand}} darf die Kamera nicht nutzen. Erlaube es in den Android-Einstellungen.",
+    "unreadable": "Die Datei konnte nicht gelesen werden."
   },
   "schedule": {
     "view": "Zeitplan",
