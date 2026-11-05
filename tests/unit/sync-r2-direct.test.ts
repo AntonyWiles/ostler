@@ -4,7 +4,8 @@ import path from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { attachChangeRecorder } from '../../electron/services/change-history/recorder'
 import type { LibraryFileStore } from '../../electron/services/sync/library-files'
-import { PERSONAL_FOLDER, type PendingRequest } from '../../electron/services/sync/pairing'
+import { PERSONAL_FOLDER } from '../../electron/services/sync/pairing'
+import type { PendingRequest } from '../../electron/services/sync/personal-space'
 import { R2Bridge } from '../../electron/services/sync/r2-bridge'
 import {
   isR2Location,
