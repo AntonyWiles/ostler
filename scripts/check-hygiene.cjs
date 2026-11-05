@@ -8,15 +8,21 @@
  *
  *   node scripts/check-hygiene.cjs           every tracked file + untracked, not-ignored files
  *   node scripts/check-hygiene.cjs --staged  only what is staged (the pre-commit hook)
+ *   node scripts/check-hygiene.cjs --push    every file in the commits being pushed (the
+ *                                            pre-push hook; reads git's ref lines on stdin)
  *
  * Personal identifiers come from the machine running the check (git
  * user.email, the OS user name and home folder), so none are written here.
  * A line that legitimately needs a flagged value can carry `hygiene-allow`.
+ *
+ * Bucket credentials, plain or base64-encoded, and the exact values in this
+ * clone's own secret files are refused too (scripts/lib/credential-scan.cjs).
  */
 const fs = require('node:fs')
 const os = require('node:os')
 const path = require('node:path')
 const { execFileSync } = require('node:child_process')
+const { credentialReason, localSecrets, scanBuffer } = require('./lib/credential-scan.cjs')
 
 const MAX_BYTES = 1024 * 1024
 
@@ -31,6 +37,7 @@ const FORBIDDEN_PATHS = [
   [/\.(db|db-wal|db-shm|db-journal|sqlite|sqlite3)$/i, 'local database'],
   [/(^|\/)\.env(\.(?!example$)[^/]+)?$/, 'environment file'],
   [/\.(pem|key|p12|pfx|keystore|jks)$/i, 'key or certificate'],
+  [/(^|\/)secrets\//i, 'secrets folder'],
   [/\.(tmp|temp|bak|orig|rej|swp|swo)$|~$/i, 'scratch or editor leftover'],
   [/(^|\/)(\.DS_Store|Thumbs\.db|desktop\.ini)$/i, 'OS file'],
   [/\.(zip|7z|rar|tar|gz|tgz|exe|msi|dmg|appimage|deb|rpm|apk|aab|asar)$/i, 'archive or binary'],
@@ -102,6 +109,11 @@ function contentProblems(file, text, personal) {
   const lines = text.split(/\r?\n/)
   lines.forEach((line, index) => {
     if (line.includes('hygiene-allow')) return
+    const credential = credentialReason(line)
+    if (credential) {
+      problems.push(`${file}:${index + 1}: ${credential}`)
+      return
+    }
     const rules = [...SECRET_PATTERNS, ...personal, [PERSONAL_MAILBOX, 'personal email address']]
     for (const [pattern, reason] of rules) {
       if (pattern.test(line)) {
@@ -119,18 +131,52 @@ function git(root, args) {
 
 const list = (output) => output.split('\0').filter(Boolean)
 
-function readTarget(root, file, staged) {
-  if (staged) {
-    return execFileSync('git', ['show', `:${file}`], { cwd: root, maxBuffer: 64 * 1024 * 1024 })
+/** `rev` is undefined for the working tree, '' for the index, or a commit. */
+function readTarget(root, file, rev) {
+  if (rev !== undefined) {
+    return execFileSync('git', ['show', `${rev}:${file}`], {
+      cwd: root,
+      maxBuffer: 64 * 1024 * 1024
+    })
   }
   return fs.readFileSync(path.join(root, file))
+}
+
+const ZERO = /^0+$/
+
+/** [commit, file] for every file added or changed by the commits a push sends. */
+function pushedFiles(root, refLines) {
+  const targets = []
+  for (const line of refLines.split(/\r?\n/).filter(Boolean)) {
+    const [, localSha, , remoteSha] = line.split(' ')
+    if (!localSha || ZERO.test(localSha)) continue // deleting a remote branch
+    const range = ZERO.test(remoteSha)
+      ? [localSha, '--not', '--remotes']
+      : [`${remoteSha}..${localSha}`]
+    for (const commit of git(root, ['rev-list', ...range])
+      .split(/\s+/)
+      .filter(Boolean)) {
+      const changed = git(root, [
+        'diff-tree',
+        '-r',
+        '--root',
+        '--no-commit-id',
+        '--name-only',
+        '--diff-filter=ACMR',
+        '-z',
+        commit
+      ])
+      for (const file of list(changed)) targets.push([commit, file])
+    }
+  }
+  return targets
 }
 
 function isBinary(buffer) {
   return buffer.subarray(0, 8000).includes(0)
 }
 
-function main(root, { staged }) {
+function main(root, { staged, push }) {
   const problems = []
   const personal = personalPatterns({
     email: (() => {
@@ -144,23 +190,33 @@ function main(root, { staged }) {
     homeDir: os.homedir()
   })
 
-  const files = staged
-    ? list(git(root, ['diff', '--cached', '--name-only', '--diff-filter=ACMR', '-z']))
-    : list(git(root, ['ls-files', '-z'])).filter((file) => fs.existsSync(path.join(root, file)))
+  const secrets = localSecrets(root)
+  const targets = push
+    ? pushedFiles(root, push)
+    : (staged
+        ? list(git(root, ['diff', '--cached', '--name-only', '--diff-filter=ACMR', '-z']))
+        : list(git(root, ['ls-files', '-z'])).filter((file) => fs.existsSync(path.join(root, file)))
+      ).map((file) => [staged ? '' : undefined, file])
 
-  for (const file of files) {
+  for (const [rev, file] of targets) {
+    const where = rev ? `${rev.slice(0, 8)}:${file}` : file
     const reason = forbiddenPathReason(file)
-    if (reason) problems.push(`${file}: ${reason} must not be committed`)
-    const buffer = readTarget(root, file, staged)
+    if (reason) problems.push(`${where}: ${reason} must not be committed`)
+    const buffer = readTarget(root, file, rev)
+    for (const secret of scanBuffer(buffer, secrets).filter((hit) => hit.startsWith('secret '))) {
+      problems.push(`${where}: ${secret}`)
+    }
     if (buffer.length > MAX_BYTES && !/^build\//.test(file)) {
-      problems.push(`${file}: ${(buffer.length / 1048576).toFixed(1)} MB, over the 1 MB limit`)
+      problems.push(`${where}: ${(buffer.length / 1048576).toFixed(1)} MB, over the 1 MB limit`)
     }
     if (!isBinary(buffer))
-      problems.push(...contentProblems(file, buffer.toString('utf8'), personal))
+      problems.push(...contentProblems(where, buffer.toString('utf8'), personal))
   }
 
   // Untracked files that git would pick up: junk must be ignored or removed.
-  const untracked = list(git(root, ['ls-files', '--others', '--exclude-standard', '-z']))
+  const untracked = push
+    ? []
+    : list(git(root, ['ls-files', '--others', '--exclude-standard', '-z']))
   for (const file of untracked) {
     const reason = forbiddenPathReason(file)
     if (reason) problems.push(`${file}: untracked ${reason}; delete it or add it to .gitignore`)
@@ -177,7 +233,8 @@ function main(root, { staged }) {
 
 if (require.main === module) {
   process.exitCode = main(require('./lib/root.cjs').projectRoot, {
-    staged: process.argv.includes('--staged')
+    staged: process.argv.includes('--staged'),
+    push: process.argv.includes('--push') ? fs.readFileSync(0, 'utf8') || ' ' : null
   })
 }
 

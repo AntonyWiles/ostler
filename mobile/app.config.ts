@@ -23,6 +23,15 @@ const IOS_URL_SCHEME =
  */
 const DEV_VARIANT = process.env.OSTLER_ANDROID_VARIANT === 'dev'
 
+// A test build can carry a bucket and its keys (sideload-android.cjs --r2-config). Expo inlines the
+// variable into the JavaScript bundle, so a build of the real app with it set would ship the keys.
+if (!DEV_VARIANT && process.env.EXPO_PUBLIC_OSTLER_BUILT_IN_R2) {
+  throw new Error(
+    'EXPO_PUBLIC_OSTLER_BUILT_IN_R2 is set for a build of the real app; unset it. Built-in bucket ' +
+      'keys are for the dev variant only (OSTLER_ANDROID_VARIANT=dev).'
+  )
+}
+
 /**
  * Signs release builds with the Play upload key named in the user's own
  * `%USERPROFILE%\.gradle\gradle.properties` (OSTLER_UPLOAD_*; docs/mobile/releasing.md). Without

@@ -9,9 +9,15 @@
  * characters, and a mapped drive (`subst`) does not help: Node resolves it back to the long path
  * and Gradle then refuses to mix the two. It also refuses uncommitted changes, so every bundle
  * matches a commit, and a bundle signed with the debug key, which Play refuses.
+ *
+ * Test builds can carry bucket keys (sideload-android.cjs --r2-config), so the release also refuses
+ * to start with those settings in the environment, empties Metro's transform cache (shared by every
+ * checkout on the machine, so it could hold a test build's inlined keys), and scans the finished
+ * bundle for credentials before it reports success (scripts/lib/credential-scan.cjs).
  */
 const { execFileSync, spawnSync } = require('node:child_process')
 const fs = require('node:fs')
+const os = require('node:os')
 const path = require('node:path')
 
 const mobile = path.resolve(__dirname, '..')
@@ -29,6 +35,10 @@ function fail(message) {
 // The dev variant (app.config.ts) is a separate test app with its own package; Play never gets it.
 if (process.env.OSTLER_ANDROID_VARIANT) {
   fail('OSTLER_ANDROID_VARIANT is set; unset it, a release is always the real app')
+}
+
+for (const name of ['EXPO_PUBLIC_OSTLER_BUILT_IN_R2', 'OSTLER_SIDELOAD_R2_CONFIG']) {
+  if (process.env[name]) fail(`${name} is set; unset it, test-build bucket keys never go to Play`)
 }
 
 function readVersion() {
@@ -82,6 +92,8 @@ if (git('status', '--porcelain') !== '') {
 const { version, code } = readVersion()
 const commit = git('rev-parse', '--short', 'HEAD')
 
+fs.rmSync(path.join(os.tmpdir(), 'metro-cache'), { recursive: true, force: true })
+
 // Generates mobile/android/ (ignored) and applies the release signing from app.config.ts.
 run('npx', ['expo', 'prebuild', '--platform', 'android'], mobile)
 const android = path.join(mobile, 'android')
@@ -98,6 +110,20 @@ const cert = execFileSync('keytool', ['-printcert', '-jarfile', bundle], { encod
 if (/CN=Android Debug/.test(cert)) {
   fail('the bundle is signed with the debug key: set the OSTLER_UPLOAD_* Gradle properties')
 }
+
+// The JavaScript bundle is where an inlined EXPO_PUBLIC_ value would sit.
+const scan = require(path.join(repo, 'scripts', 'lib', 'credential-scan.cjs'))
+const entry = 'base/assets/index.android.bundle'
+const js = scan.readZipEntry(bundle, entry)
+if (!js) fail(`could not read ${entry} from the bundle to check it for credentials`)
+const leaks = scan.scanBuffer(js, scan.localSecrets(repo))
+if (leaks.length) {
+  fail(
+    `the bundle holds credentials (${leaks.join(', ')}); do not upload it. Delete it and rebuild.`
+  )
+}
+console.log('release: bundle checked, no credentials in it')
+
 const sha1 = /SHA1: ([0-9A-F:]+)/.exec(cert)
 console.log(
   `release: ${version} (${code}) from commit ${commit}, signed by ${sha1 ? sha1[1] : 'an unknown key'}`

@@ -20,7 +20,8 @@ describe('check-hygiene', () => {
       'notes.bak',
       'scratch/try.ts',
       '.claude/settings.local.json',
-      'i18n-dump.txt'
+      'i18n-dump.txt',
+      'secrets/r2-dev.json'
     ]) {
       expect(forbiddenPathReason(file), file).not.toBeNull()
     }

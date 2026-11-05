@@ -1,0 +1,6 @@
+#!/bin/sh
+# Last check before anything reaches GitHub: every file in the commits being
+# pushed goes through the same hygiene check as a commit, including bucket
+# credentials and this clone's own secret values (scripts/lib/credential-scan.cjs).
+# Enable once per clone with: git config core.hooksPath .githooks
+exec node scripts/check-hygiene.cjs --push
