@@ -107,6 +107,9 @@ const config: ExpoConfig = {
   plugins: [
     'react-native-quick-crypto',
     'expo-secure-store',
+    // Local notifications: reminders, the Today summary, the running timer, new Inbox items and
+    // sync trouble. Adds POST_NOTIFICATIONS (asked for on Android 13+ when first useful).
+    ['expo-notifications', { icon: './assets/android-icon-monochrome.png', color: '#4f6fe0' }],
     // The launch screen: the Ostler mark on the theme's page colour (light and dark).
     [
       'expo-splash-screen',

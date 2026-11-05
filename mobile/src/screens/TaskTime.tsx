@@ -16,6 +16,7 @@ import {
 } from '../data/time'
 import { RADIUS, SPACE, type Theme } from '../theme'
 import { Chip, editErrorText } from './EditBits'
+import { askForNotificationsOnce } from '../notifications'
 
 /** "1:02:05" for a running timer, so it visibly ticks. */
 export function elapsedText(seconds: number): string {
@@ -138,7 +139,10 @@ export function TaskTime({
               label={t('mobile:time.start')}
               theme={theme}
               selected
-              onPress={() => attempt(() => void startTimer(db, projectId, taskId))}
+              onPress={() => {
+                if (attempt(() => void startTimer(db, projectId, taskId)))
+                  void askForNotificationsOnce()
+              }}
             />
             <Chip
               label={t('mobile:time.log')}

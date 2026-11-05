@@ -23,7 +23,9 @@
     "theme": "Theme",
     "themeSystem": "System",
     "themeLight": "Light",
-    "themeDark": "Dark"
+    "themeDark": "Dark",
+    "notifications": "Notifications",
+    "notificationsHint": "Reminders, timer, Today and Inbox"
   },
   "join": {
     "open": "Join a project",
@@ -565,5 +567,42 @@
     "recordFailed": "Could not record: {{message}}",
     "transcribeFailed": "Could not write out the words: {{message}}. The sound is still recorded.",
     "nothingRecorded": "Nothing was recorded."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "intro": "Choose what this phone tells you about.",
+    "due": "Reminders and due dates",
+    "dueHint": "When a task’s reminder goes off",
+    "timer": "Running timer",
+    "timerHint": "Shows while a timer runs, with Stop",
+    "inbox": "Inbox",
+    "inboxHint": "When something new arrives",
+    "today": "Today summary",
+    "todayHint": "Your tasks for the day, each morning",
+    "todayTime": "Time",
+    "sync": "Sync problems",
+    "syncHint": "Only when sync has failed for a while",
+    "blocked": "Notifications are off for {{brand}} in the phone’s settings.",
+    "openPhoneSettings": "Open phone settings",
+    "allow": "Turn on notifications",
+    "dueToday": "Due today",
+    "dueOn": "Due {{date}}",
+    "reminder": "Reminder",
+    "todayTitle_one": "Today: {{count}} task",
+    "todayTitle_other": "Today: {{count}} tasks",
+    "todayTitleOverdue_one": "Today: {{count}} task, {{overdue}} overdue",
+    "todayTitleOverdue_other": "Today: {{count}} tasks, {{overdue}} overdue",
+    "todayMore": "{{names}} and {{count}} more",
+    "timerTitle": "Timer: {{task}}",
+    "timerTitleNoTask": "Timer running",
+    "timerBody": "Since {{time}} · {{elapsed}} so far",
+    "stop": "Stop",
+    "syncTitle": "Sync needs attention",
+    "syncBody": "{{brand}} has not been able to sync for a while. Open it to check.",
+    "channelDue": "Reminders",
+    "channelTimer": "Timer",
+    "channelToday": "Today summary",
+    "channelInbox": "Inbox",
+    "channelSync": "Sync"
   }
 }

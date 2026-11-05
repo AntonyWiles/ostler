@@ -28,6 +28,9 @@ import { Project, type ProjectView } from './src/screens/Project'
 import { Projects } from './src/screens/Projects'
 import { Search } from './src/screens/Search'
 import { Settings } from './src/screens/Settings'
+import { NotificationSettingsScreen } from './src/screens/NotificationSettings'
+import { useNotifications } from './src/useNotifications'
+import type { NotificationTarget } from './src/data/notifications'
 import { TaskDetail } from './src/screens/TaskDetail'
 import { TopBar } from './src/screens/TopBar'
 import { useIsDark, useTheme } from './src/theme'
@@ -74,6 +77,7 @@ function checkDatabase(db: OstlerDatabase): Check {
 type Screen =
   | 'home'
   | 'settings'
+  | 'notifications'
   | 'join'
   | 'pairing'
   | 'project'
@@ -237,7 +241,8 @@ export default function App() {
     } else if (screen === 'task') setScreen(taskFrom)
     else if (screen === 'project') setScreen(projectFrom)
     else if (screen === 'library') setScreen(libraryFrom)
-    else if (screen === 'join' || screen === 'pairing') setScreen('settings')
+    else if (screen === 'join' || screen === 'pairing' || screen === 'notifications')
+      setScreen('settings')
     else setScreen('home')
   }, [screen, taskFrom, projectFrom, libraryFrom, taskTrail])
   // The phone's Back button steps out of a screen instead of closing the app.
@@ -342,6 +347,21 @@ export default function App() {
     [openProject, openTask]
   )
 
+  // Notifications: reminders, Today, the timer, new Inbox items and sync trouble. A tap opens its
+  // task, else its tab.
+  const openNotification = useCallback(
+    (target: NotificationTarget) => {
+      if (target.taskId) openTask(target.taskId, 'home')
+      else if (target.projectId) openProject(target.projectId)
+      else if (target.tab) {
+        setTab(target.tab)
+        setScreen('home')
+      }
+    },
+    [openTask, openProject]
+  )
+  useNotifications(db, sync, version, openNotification, edited)
+
   // The Inbox tab shows how many items are unread.
   const unread = useMemo(() => {
     if (db === null || version < 0) return 0
@@ -395,6 +415,7 @@ export default function App() {
         onBack={home}
         onJoin={() => setScreen('join')}
         onPairing={() => setScreen('pairing')}
+        onNotifications={() => setScreen('notifications')}
         r2={{
           setup: r2Setup ?? null,
           lastSyncedAt: sync?.lastSyncedAt() ?? null,
@@ -406,6 +427,7 @@ export default function App() {
       />
     )
   }
+  if (screen === 'notifications') return page(<NotificationSettingsScreen onBack={goBack} />)
   if (screen === 'pairing') return page(<Pairing pairing={pairing} onBack={goBack} />)
   if (screen === 'join') {
     return page(

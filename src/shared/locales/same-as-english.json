@@ -322,6 +322,8 @@
   "Text": ["de"],
   "Text: {{text}}": ["de"],
   "Timeline": ["it"],
+  "Timer": ["de", "it"],
+  "Timer: {{task}}": ["de", "it"],
   "Token": ["de", "es", "it", "pt-BR"],
   "tokens": ["es", "pt-BR"],
   "Tokens": ["de", "es", "pt-BR"],
