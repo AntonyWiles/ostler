@@ -400,7 +400,8 @@ export default function App() {
           lastSyncedAt: sync?.lastSyncedAt() ?? null,
           incomingCode: incomingSetupCode,
           onCodeUsed: () => setIncomingSetupCode(null),
-          onSyncNow: syncNow
+          onSyncNow: syncNow,
+          pairing
         }}
       />
     )

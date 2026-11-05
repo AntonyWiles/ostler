@@ -508,5 +508,30 @@
     "recordFailed": "无法录音：{{message}}",
     "transcribeFailed": "无法转写文字：{{message}}。声音仍在录制。",
     "nothingRecorded": "没有录到任何内容。"
+  },
+  "advancedSync": {
+    "enterByHand": "改为手动输入存储桶信息",
+    "byHandIntro": "输入你的 Cloudflare R2 存储桶信息。在 Cloudflare 中为此存储桶创建具有 Object Read & Write 权限的 R2 API 令牌。",
+    "accountId": "账户 ID",
+    "bucketName": "存储桶名称",
+    "accessKeyId": "访问密钥 ID",
+    "secretAccessKey": "秘密访问密钥",
+    "test": "测试连接",
+    "testOk": "已连接到存储桶。",
+    "testFailed": "无法访问存储桶。请检查信息和网络连接。",
+    "wrongKeys": "存储桶拒绝了这些密钥。请检查访问密钥 ID 和秘密密钥。",
+    "badDetails": "请检查信息：账户 ID 为 32 个字符（0–9、a–f），存储桶名称为小写。",
+    "savedByHand": "存储桶已设置。",
+    "useCode": "改用设置代码",
+    "noSpaceYet": "此存储桶还没有个人空间。在这台手机上创建它；之后你的电脑可以用设置代码加入。",
+    "startSpace": "在此创建我的个人空间",
+    "spaceStarted": "个人空间已创建。要添加你的电脑，请与它分享一个设置代码。",
+    "spaceExists": "此存储桶已有个人空间。请使用“从我的其他设备设置”加入。",
+    "startFailed": "无法创建个人空间。请检查网络连接后重试。",
+    "lookForDevices": "查找请求加入的设备",
+    "noRequests": "没有设备请求加入。",
+    "asksToJoin": "{{name}} 请求加入。仅当它显示此代码时才允许：",
+    "allow": "允许",
+    "allowed": "已允许 {{name}}。它马上就会完成加入。"
   }
 }

@@ -508,5 +508,30 @@
     "recordFailed": "Enregistrement impossible : {{message}}",
     "transcribeFailed": "Impossible d’écrire le texte : {{message}}. Le son est toujours enregistré.",
     "nothingRecorded": "Rien n’a été enregistré."
+  },
+  "advancedSync": {
+    "enterByHand": "Saisir plutôt les informations du bucket",
+    "byHandIntro": "Saisissez les informations de votre bucket Cloudflare R2. Dans Cloudflare, créez un jeton d’API R2 avec Object Read & Write pour ce bucket.",
+    "accountId": "ID de compte",
+    "bucketName": "Nom du bucket",
+    "accessKeyId": "ID de clé d’accès",
+    "secretAccessKey": "Clé d’accès secrète",
+    "test": "Tester la connexion",
+    "testOk": "Connecté au bucket.",
+    "testFailed": "Impossible de joindre le bucket. Vérifiez les informations et votre connexion.",
+    "wrongKeys": "Le bucket a refusé ces clés. Vérifiez l’ID de clé d’accès et la clé secrète.",
+    "badDetails": "Vérifiez les informations : l’ID de compte compte 32 caractères (0–9, a–f) et le nom du bucket est en minuscules.",
+    "savedByHand": "Bucket configuré.",
+    "useCode": "Utiliser plutôt un code de configuration",
+    "noSpaceYet": "Ce bucket n’a pas encore d’espace personnel. Créez-le sur ce téléphone ; votre PC pourra le rejoindre plus tard avec un code de configuration.",
+    "startSpace": "Créer mon espace personnel ici",
+    "spaceStarted": "Espace personnel créé. Pour ajouter votre PC, partagez-lui un code de configuration.",
+    "spaceExists": "Ce bucket a déjà un espace personnel. Utilisez Configurer depuis mon autre appareil pour le rejoindre.",
+    "startFailed": "Impossible de créer l’espace personnel. Vérifiez votre connexion et réessayez.",
+    "lookForDevices": "Chercher les appareils qui veulent rejoindre",
+    "noRequests": "Aucun appareil ne demande à rejoindre.",
+    "asksToJoin": "{{name}} demande à rejoindre. Autorisez-le seulement s’il affiche ce code :",
+    "allow": "Autoriser",
+    "allowed": "{{name}} est autorisé. Il finit de rejoindre dans un instant."
   }
 }

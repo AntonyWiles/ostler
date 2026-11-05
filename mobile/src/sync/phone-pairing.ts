@@ -15,13 +15,17 @@ import type { DriveClient } from '../../../electron/services/sync/drive-client'
 import { driveLocation } from '../../../electron/services/sync/drive-transport'
 import type { SyncTransport } from '../../../electron/services/sync/folder-transport'
 import {
+  allowDevice,
   completePairing,
+  createPersonalSpaceAt,
   DEVICES_FOLDER,
   PERSONAL_FOLDER,
   pairingCodeInSpace,
+  pendingRequests,
   PersonalSpaceError,
   personalShareOf,
-  requestPairing
+  requestPairing,
+  type PendingRequest
 } from '../../../electron/services/sync/pairing'
 import { joinPlace, readShareFile } from '../../../electron/services/sync/sharing'
 import { BRAND } from '../../../src/shared/brand'
@@ -45,6 +49,8 @@ export interface PhonePairingOptions {
   client?: Pick<DriveClient, 'findInRoot'>
   /** Advanced sync: finds the personal space somewhere else (an R2 bucket); null when it isn't there. */
   findSpace?(): Promise<string | null>
+  /** Advanced sync: where this phone may start a new personal space (`r2:Ostler`); none with Drive only. */
+  newSpace?: string
   /** Opens a Drive place (`gdrive:<folderId>/…`) as a transport. */
   openTransport(place: string): SyncTransport
   /** This phone's name as the PC lists it in the allow notice. */
@@ -148,6 +154,49 @@ export class PhonePairing {
     if (this.current.phase === 'looking' || this.current.phase === 'waiting') {
       this.update({ phase: 'idle', code: null, failure: null })
     }
+  }
+
+  /** True when this phone may start the personal space itself: a bucket is set up and it holds none yet. */
+  canStartSpace(): boolean {
+    return (
+      this.options.newSpace !== undefined &&
+      this.current.phase === 'failed' &&
+      this.current.failure === 'no-space'
+    )
+  }
+
+  /**
+   * Starts the personal space in the bucket, laid out as a PC lays it out (`personal-space.ts`), so
+   * a PC given the bucket later finds it and asks to join. Throws `PersonalSpaceError` with
+   * `wrong-folder` when a space is already there (join it instead) and `already-personal` when
+   * this phone is in one.
+   */
+  async startSpace(): Promise<void> {
+    const space = this.options.newSpace
+    if (space === undefined) throw new PersonalSpaceError('no-personal-space')
+    this.cancel()
+    await createPersonalSpaceAt(
+      this.options.db,
+      space,
+      this.options.deviceName,
+      this.options.openTransport
+    )
+    this.update({ phase: 'paired', code: null, failure: null })
+    this.options.onPaired()
+  }
+
+  /** Devices asking to join the personal space in the bucket, with the code each shows; none without a bucket. */
+  async requests(): Promise<PendingRequest[]> {
+    const space = this.options.newSpace
+    if (space === undefined || !personalShareOf(this.options.db)) return []
+    return pendingRequests(this.options.db, space, this.options.openTransport)
+  }
+
+  /** Lets a device that asked (a PC given the bucket) into the personal space in the bucket. */
+  async allow(deviceId: string): Promise<void> {
+    const space = this.options.newSpace
+    if (space === undefined) throw new PersonalSpaceError('no-personal-space')
+    await allowDevice(this.options.db, space, deviceId, this.options.openTransport)
   }
 
   // ─── Steps ──────────────────────────────────────────────────────────────

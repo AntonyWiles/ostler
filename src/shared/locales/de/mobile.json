@@ -508,5 +508,30 @@
     "recordFailed": "Aufnahme fehlgeschlagen: {{message}}",
     "transcribeFailed": "Der Text konnte nicht erstellt werden: {{message}}. Der Ton wird weiter aufgenommen.",
     "nothingRecorded": "Es wurde nichts aufgenommen."
+  },
+  "advancedSync": {
+    "enterByHand": "Stattdessen Bucket-Daten eingeben",
+    "byHandIntro": "Gib die Daten deines Cloudflare-R2-Buckets ein. Erstelle in Cloudflare ein R2-API-Token mit Object Read & Write für diesen Bucket.",
+    "accountId": "Konto-ID",
+    "bucketName": "Bucket-Name",
+    "accessKeyId": "Zugriffsschlüssel-ID",
+    "secretAccessKey": "Geheimer Zugriffsschlüssel",
+    "test": "Verbindung testen",
+    "testOk": "Mit dem Bucket verbunden.",
+    "testFailed": "Bucket nicht erreichbar. Prüfe die Daten und deine Verbindung.",
+    "wrongKeys": "Der Bucket hat diese Schlüssel abgelehnt. Prüfe Zugriffsschlüssel-ID und geheimen Schlüssel.",
+    "badDetails": "Prüfe die Daten: Die Konto-ID hat 32 Zeichen (0–9, a–f) und der Bucket-Name ist kleingeschrieben.",
+    "savedByHand": "Bucket eingerichtet.",
+    "useCode": "Stattdessen einen Einrichtungscode verwenden",
+    "noSpaceYet": "Dieser Bucket hat noch keinen persönlichen Bereich. Starte ihn auf diesem Telefon; dein PC kann ihm später mit einem Einrichtungscode beitreten.",
+    "startSpace": "Meinen persönlichen Bereich hier starten",
+    "spaceStarted": "Persönlicher Bereich gestartet. Teile einen Einrichtungscode mit deinem PC, um ihn hinzuzufügen.",
+    "spaceExists": "Dieser Bucket hat bereits einen persönlichen Bereich. Tritt ihm über „Von meinem anderen Gerät einrichten“ bei.",
+    "startFailed": "Der persönliche Bereich konnte nicht gestartet werden. Prüfe deine Verbindung und versuche es erneut.",
+    "lookForDevices": "Nach Geräten suchen, die beitreten möchten",
+    "noRequests": "Kein Gerät möchte beitreten.",
+    "asksToJoin": "{{name}} möchte beitreten. Erlaube es nur, wenn es diesen Code zeigt:",
+    "allow": "Erlauben",
+    "allowed": "{{name}} ist erlaubt. Der Beitritt ist gleich abgeschlossen."
   }
 }

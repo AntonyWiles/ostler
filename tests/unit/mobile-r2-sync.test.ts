@@ -4,7 +4,17 @@ import path from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { attachChangeRecorder } from '../../electron/services/change-history/recorder'
 import type { LibraryFileStore } from '../../electron/services/sync/library-files'
-import { PERSONAL_FOLDER } from '../../electron/services/sync/pairing'
+import {
+  PERSONAL_FOLDER,
+  PersonalSpaceError,
+  personalShareOf
+} from '../../electron/services/sync/pairing'
+import {
+  completePairing,
+  pairingCodeInSpace,
+  requestPairing,
+  spaceFolderUnder
+} from '../../electron/services/sync/personal-space'
 import { R2Bridge } from '../../electron/services/sync/r2-bridge'
 import {
   isR2Location,
@@ -118,6 +128,7 @@ describe('advanced sync: the phone is one of the PC’s devices through an R2 bu
           return null
         }
       },
+      newSpace: r2Location('Ostler'),
       openTransport,
       deviceName: 'Test phone',
       onPaired: () => sync.startPersonal(),
@@ -131,7 +142,7 @@ describe('advanced sync: the phone is one of the PC’s devices through an R2 bu
       await sync.dispose()
       db.close()
     })
-    return { sync, pairing, db, logged, changes }
+    return { sync, pairing, db, logged, changes, openTransport }
   }
 
   it('pairs, brings every project down and carries the phone’s edits back to the PC', async () => {
@@ -209,5 +220,53 @@ describe('advanced sync: the phone is one of the PC’s devices through an R2 bu
     for (let i = 0; i < 288; i++) await mobile.changes.check()
     expect(bucket.classA).toBe(0)
     expect(bucket.classB).toBe(288)
+  })
+
+  it('starts the personal space from a phone with only a bucket, where a PC finds it and joins', async () => {
+    const bucket = new FakeR2()
+    const mobile = await phone(bucket)
+    await mobile.pairing.start()
+    expect(mobile.pairing.state().failure).toBe('no-space')
+    expect(mobile.pairing.canStartSpace()).toBe(true)
+
+    await mobile.pairing.startSpace()
+    expect(mobile.pairing.state().phase).toBe('paired')
+    expect(mobile.pairing.canStartSpace()).toBe(false)
+    // The layout a PC makes (personal-space.ts): r2:Ostler/Personal and r2:Ostler/devices.
+    expect(r2Location('Ostler')).toBe(spaceFolderUnder(r2Location('')))
+    expect(bucket.keys()).toContain('Ostler/Personal/share.json')
+    expect(
+      bucket.keys().some((key) => /^Ostler\/devices\/[0-9a-f]{32}\.ostlerdevice$/.test(key))
+    ).toBe(true)
+
+    // A PC given the bucket asks to join; the phone shows the same code and allows it.
+    const pc = new Database(
+      await createMigratedDatabase(fs.mkdtempSync(path.join(tempDir(), 'pc-')))
+    )
+    closers.push(() => pc.close())
+    const space = spaceFolderUnder(r2Location(''))
+    await requestPairing(pc, space, 'Ann laptop', mobile.openTransport)
+    const [request] = await mobile.pairing.requests()
+    expect(request.deviceName).toBe('Ann laptop')
+    expect(await pairingCodeInSpace(pc, space, mobile.openTransport)).toBe(request.code)
+    await mobile.pairing.allow(request.deviceId)
+    expect(await mobile.pairing.requests()).toEqual([])
+    expect(await completePairing(pc, space, mobile.openTransport)).toBe('paired')
+    expect(personalShareOf(pc)?.share_id).toBe(personalShareOf(mobile.db)?.share_id)
+  })
+
+  it('won’t start a second personal space in a bucket that has one', async () => {
+    const bucket = new FakeR2()
+    const first = await phone(bucket)
+    await first.pairing.start()
+    await first.pairing.startSpace()
+    const second = await phone(bucket)
+    await second.pairing.start()
+    expect(second.pairing.state().phase).toBe('waiting')
+    expect(second.pairing.canStartSpace()).toBe(false)
+    second.pairing.cancel()
+    await expect(second.pairing.startSpace()).rejects.toEqual(
+      new PersonalSpaceError('wrong-folder')
+    )
   })
 })
