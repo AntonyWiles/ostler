@@ -7,7 +7,9 @@ import type {
 import {
   dropIndex,
   dropPlacement,
+  normalizeColumnOptions,
   sortWorkItems,
+  type BoardColumnOptions,
   type BoardSortBy,
   type BoardSortDir
 } from '@shared/planning/board'
@@ -92,6 +94,14 @@ export function useBoardInteraction(
     return shown.length > 0 ? shown : columns
   }, [columns, boardHiddenColumns, peekHiddenColumns])
   const boardShowBoxes = boardView.options.showBoxes
+  // Each column's own sort, length, height and card details (MOP-79).
+  const boardColumnOptions = boardView.options.columnOptions
+  const setBoardColumnOptions = (key: string, options: BoardColumnOptions | null) => {
+    const next = { ...boardColumnOptions }
+    if (options && Object.keys(options).length > 0) next[key] = options
+    else delete next[key]
+    boardView.setOptions({ columnOptions: next })
+  }
   const setBoardShowBoxes = (showBoxes: boolean) => boardView.setOptions({ showBoxes })
 
   const toggleLaneCollapsed = (laneId: string) =>
@@ -279,6 +289,9 @@ export function useBoardInteraction(
     /** Whether every card shows its selection box, from the toolbar; off by default. */
     boardShowBoxes,
     setBoardShowBoxes,
+    /** Each column's own options in this view, by column key (MOP-79). */
+    boardColumnOptions,
+    setBoardColumnOptions,
     boardHideDone: boardView.hideDone,
     setBoardHideDone: boardView.setHideDone,
     collapsedLaneIds,
@@ -324,6 +337,8 @@ export interface BoardViewOptions {
   showBoxes: boolean
   /** Columns this view leaves out, by column key, from View options. None by default. */
   hiddenColumns: string[]
+  /** Each column's own options, by column key (MOP-79). None by default. */
+  columnOptions: Record<string, BoardColumnOptions>
 }
 
 const BOARD_GROUPS: readonly BoardGroupBy[] = [
@@ -366,7 +381,8 @@ export const BOARD_VIEW_SPEC: TaskViewSpec<BoardViewOptions> = {
               )
             )
           ]
-        : []
+        : [],
+      columnOptions: normalizeColumnOptions(value.columnOptions)
     }
   }
 }

@@ -181,7 +181,23 @@
     "countEdit_other": "{{count}}件のタスク。クリックしてWIP上限を編集します。",
     "countOnly_other": "{{count}}件のタスク",
     "countLimitEdit_other": "{{count}}件（上限{{limit}}件）のタスク。クリックしてWIP上限を編集します。",
-    "countOverLimitEdit_other": "{{count}}件（上限{{limit}}件）のタスク、WIP上限超過。クリックしてWIP上限を編集します。"
+    "countOverLimitEdit_other": "{{count}}件（上限{{limit}}件）のタスク、WIP上限超過。クリックしてWIP上限を編集します。",
+    "columnOptions": {
+      "open": "{{column}} の列オプション",
+      "title": "{{column}} のオプション",
+      "sortBoard": "ボードと同じ",
+      "maxCards": "表示するカード",
+      "maxCardsAll": "すべて",
+      "maxHeight": "列の高さ",
+      "heightAuto": "カードに合わせる",
+      "heightShort": "低",
+      "heightMedium": "中",
+      "heightTall": "高",
+      "showFields": "カードにカスタムフィールドを表示",
+      "showMore": "さらに {{hidden}} 件表示",
+      "showFewer": "表示を減らす",
+      "reset": "列をリセット"
+    }
   },
   "createRecordModal": {
     "in": "{{description}} 追加先: {{selectedProjectName}}。",

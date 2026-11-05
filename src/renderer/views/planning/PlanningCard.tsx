@@ -117,6 +117,7 @@ export function PlanningCard({
   selected = false,
   selecting = false,
   showBoxes = false,
+  hideFields = false,
   focused,
   dragging = false,
   subtaskCount = 0,
@@ -131,6 +132,8 @@ export function PlanningCard({
   selecting?: boolean
   /** The Board's toolbar shows the selection boxes even with nothing selected. */
   showBoxes?: boolean
+  /** Its column's options leave the custom fields off (MOP-79). */
+  hideFields?: boolean
   /** The board's keyboard cursor is on this card. */
   focused?: boolean
   subtaskCount?: number
@@ -169,7 +172,7 @@ export function PlanningCard({
   const people = usePeople()
   const signOff = signOffBadgeOf(useProjectSignOffs(item.projectId), item.id) !== null
   // The custom fields the person chose for cards, in their order, that this task has (R2.2).
-  const cardFields = ws.boardCardFields.flatMap((fieldId) => {
+  const cardFields = (hideFields ? [] : ws.boardCardFields).flatMap((fieldId) => {
     const field = ws.fields.find((candidate) => candidate.id === fieldId)
     if (!field || !hasFieldValue(item.fieldValues, fieldId)) return []
     const text = fieldValueText(field, item.fieldValues?.[fieldId])

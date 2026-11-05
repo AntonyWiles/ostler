@@ -245,3 +245,65 @@ export function todayLists(
     blockedNow: items.filter((item) => projectedStatus(item) === 'blocked')
   }
 }
+
+/**
+ * One Board column's own options in a saved view (MOP-79). Every field is
+ * optional: a column without one follows the board.
+ */
+export interface BoardColumnOptions {
+  /** The column's own sort; absent, the board's. Never Manual: that order is the board's. */
+  sortBy?: Exclude<BoardSortBy, 'manual'>
+  sortDir?: BoardSortDir
+  /** Cards shown before "Show N more"; absent, all of them. */
+  maxCards?: number
+  /** The column's cards scroll inside this height, in pixels; absent, the column fits its cards. */
+  maxHeight?: number
+  /** Leave the custom fields off this column's cards. */
+  hideFields?: boolean
+}
+
+const COLUMN_SORTS: readonly BoardSortBy[] = ['priority', 'targetDate', 'title', 'created']
+
+const positiveInt = (value: unknown): number | undefined =>
+  typeof value === 'number' && Number.isInteger(value) && value > 0 && value <= 10000
+    ? value
+    : undefined
+
+/** Column options as stored, cleaned: unknown fields and empty entries dropped. */
+export function normalizeColumnOptions(raw: unknown): Record<string, BoardColumnOptions> {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {}
+  const out: Record<string, BoardColumnOptions> = {}
+  for (const [key, entry] of Object.entries(raw as Record<string, unknown>)) {
+    if (!entry || typeof entry !== 'object') continue
+    const value = entry as Record<string, unknown>
+    const options: BoardColumnOptions = {}
+    if (COLUMN_SORTS.includes(value.sortBy as BoardSortBy)) {
+      options.sortBy = value.sortBy as BoardColumnOptions['sortBy']
+      options.sortDir = value.sortDir === 'desc' ? 'desc' : 'asc'
+    }
+    const maxCards = positiveInt(value.maxCards)
+    if (maxCards) options.maxCards = maxCards
+    const maxHeight = positiveInt(value.maxHeight)
+    if (maxHeight) options.maxHeight = maxHeight
+    if (value.hideFields === true) options.hideFields = true
+    if (Object.keys(options).length > 0) out[key] = options
+  }
+  return out
+}
+
+/**
+ * A column's cards as it shows them: in its own sort when it has one, then cut
+ * to `maxCards` unless expanded. `hidden` is how many the cut left out.
+ */
+export function columnCards(
+  items: PlanningWorkItem[],
+  options: BoardColumnOptions | undefined,
+  expanded: boolean
+): { shown: PlanningWorkItem[]; sorted: PlanningWorkItem[]; hidden: number } {
+  const sorted = options?.sortBy
+    ? sortWorkItems(items, options.sortBy, options.sortDir ?? 'asc')
+    : items
+  const max = options?.maxCards
+  if (expanded || !max || sorted.length <= max) return { shown: sorted, sorted, hidden: 0 }
+  return { shown: sorted.slice(0, max), sorted, hidden: sorted.length - max }
+}

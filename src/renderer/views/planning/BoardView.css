@@ -102,14 +102,19 @@
   margin-left: auto;
 }
 
-/* "Select all" shows on demand, like a card's own box. */
-.board-column__actions .ui-icon-button[aria-pressed] {
+/* "Select all" and the column's options show on demand, like a card's own
+   box; options stay shown once the column has some (MOP-79). */
+.board-column__actions .ui-icon-button[aria-pressed],
+.board-column__actions .board-column__options {
   opacity: 0;
 }
 
 .board-column__header:hover .ui-icon-button[aria-pressed],
 .board-column__actions .ui-icon-button[aria-pressed]:focus-visible,
-.board-column__actions .ui-icon-button[aria-pressed].is-visible {
+.board-column__actions .ui-icon-button[aria-pressed].is-visible,
+.board-column__header:hover .board-column__options,
+.board-column__actions .board-column__options:focus-visible,
+.board-column__actions .board-column__options.is-visible {
   opacity: 1;
 }
 
@@ -118,6 +123,15 @@
   flex-direction: column;
   gap: var(--space-200);
   padding: var(--space-100) var(--space-200) var(--space-200);
+}
+
+/* A column with a set height scrolls its own cards (MOP-79). */
+.board-column__items--scroll {
+  overflow-y: auto;
+}
+
+.board-column__more {
+  align-self: flex-start;
 }
 
 /* A long column renders only the cards near the screen (P9.1). */

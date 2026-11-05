@@ -8,12 +8,13 @@ import {
   type ReactNode
 } from 'react'
 import type { PlanningWorkItem, PlanningWorkItemStatus } from '@shared/ostler-api'
-import { dropIndex } from '@shared/planning/board'
+import { columnCards, dropIndex } from '@shared/planning/board'
 import { fieldIdOf, groupByField, groupTasks, isGroupableField } from '@shared/planning/list'
 import { groupableSubprojects } from './subproject-ui'
 import { type PlanningWorkspace } from '../../hooks/usePlanningWorkspace'
 import { MemoPlanningCard } from './PlanningCard'
 import { BoardColumnItems } from './BoardColumnItems'
+import { BoardColumnOptionsButton } from './BoardColumnOptions'
 import { BoardFilterBar } from './BoardToolbar'
 import { TaskBulkBar, TaskToolbarRow } from './TaskBulkBar'
 import { useBoardKeyboardNav, type BoardPlaceMove } from '../../hooks/useBoardKeyboardNav'
@@ -193,6 +194,12 @@ export function BoardView({ ws, toolbarEnd }: { ws: PlanningWorkspace; toolbarEn
   const boardRef = useRef<HTMLDivElement | null>(null)
   useReorderMotion(boardRef)
   const selecting = selectedIds.length > 0
+  // Columns cut to their "Cards shown" that are showing all of them for now.
+  const [expandedColumns, setExpandedColumns] = useState<string[]>([])
+  const toggleExpanded = (key: string) =>
+    setExpandedColumns((current) =>
+      current.includes(key) ? current.filter((candidate) => candidate !== key) : [...current, key]
+    )
   const selectedSet = useMemo(() => new Set(selectedIds), [selectedIds])
   const toggleSelected = (id: string, checked: boolean) =>
     setSelectedIds((current) =>
@@ -327,9 +334,14 @@ export function BoardView({ ws, toolbarEnd }: { ws: PlanningWorkspace; toolbarEn
     () =>
       ws.shownColumns.map((column) => ({
         ...column,
-        items: ws.itemsByStatus.get(column.key) ?? []
+        // In the column's own sort when it has one, so j and k follow the cards.
+        items: columnCards(
+          ws.itemsByStatus.get(column.key) ?? [],
+          ws.boardColumnOptions[column.key],
+          true
+        ).sorted
       })),
-    [ws.shownColumns, ws.itemsByStatus]
+    [ws.shownColumns, ws.itemsByStatus, ws.boardColumnOptions]
   )
   // A project may hide columns (R2.4), and a view more for now (Columns in
   // the toolbar): the grid has as many as it shows.
@@ -454,8 +466,25 @@ export function BoardView({ ws, toolbarEnd }: { ws: PlanningWorkspace; toolbarEn
                   : []
 
   /** One column, on the board or inside a lane. */
-  const renderColumn = (target: BoardColumn, items: PlanningWorkItem[], lane?: Swimlane) => {
+  const renderColumn = (target: BoardColumn, columnItems: PlanningWorkItem[], lane?: Swimlane) => {
     const { status, key } = target
+    const options = ws.boardColumnOptions[key]
+    // A column with its own sort is in that order; a drop there only changes status.
+    const sortBy = options?.sortBy ?? ws.boardSortBy
+    const sortDir = options?.sortBy ? (options.sortDir ?? 'asc') : ws.boardSortDir
+    const expandKey = `${lane?.id ?? ''}|${key}`
+    const sorted = columnCards(columnItems, options, true).sorted
+    // The keyboard cursor on a card past the cut shows the rest.
+    const focusedPastCut =
+      !lane &&
+      options?.maxCards !== undefined &&
+      sorted.findIndex((item) => item.id === focusedItemId) >= options.maxCards
+    const { shown, hidden } = columnCards(
+      sorted,
+      options && { ...options, sortBy: undefined },
+      expandedColumns.includes(expandKey) || focusedPastCut
+    )
+    const items = sorted
     const word = target.label
     // "Ready", or "Ready in Website launch" inside a swimlane.
     const column = lane
@@ -465,13 +494,7 @@ export function BoardView({ ws, toolbarEnd }: { ws: PlanningWorkspace; toolbarEn
     const isDropTarget = ws.dragOverStatus === key && ws.dragOverLaneId === laneId
     const insertAt =
       isDropTarget && dragged
-        ? dropIndex(
-            items,
-            dragged,
-            ws.boardSortBy,
-            ws.boardSortDir,
-            ws.dragOverIndex ?? items.length
-          )
+        ? dropIndex(items, dragged, sortBy, sortDir, ws.dragOverIndex ?? items.length)
         : null
     const allSelected = items.length > 0 && items.every((item) => selectedSet.has(item.id))
     const onDragOver = (event: DragEvent<HTMLElement>) => {
@@ -479,7 +502,7 @@ export function BoardView({ ws, toolbarEnd }: { ws: PlanningWorkspace; toolbarEn
       event.dataTransfer.dropEffect = 'move'
       if (ws.dragOverStatus !== key) ws.setDragOverStatus(key)
       if (ws.dragOverLaneId !== laneId) ws.setDragOverLaneId(laneId)
-      if (ws.boardSortBy === 'manual') {
+      if (sortBy === 'manual') {
         const index = pointerIndex(event.currentTarget, event.clientY, items)
         if (ws.dragOverIndex !== index) ws.setDragOverIndex(index)
       }
@@ -493,7 +516,12 @@ export function BoardView({ ws, toolbarEnd }: { ws: PlanningWorkspace; toolbarEn
       )
     // Right-click on the column's own space (MOP-36); a card keeps its own menu.
     const columnMenu = (): MenuEntry[] => [
-      { label: t('tasks:boardView.newTask', { column }), icon: Plus, disabled: !canCreate, onSelect: createHere },
+      {
+        label: t('tasks:boardView.newTask', { column }),
+        icon: Plus,
+        disabled: !canCreate,
+        onSelect: createHere
+      },
       ...(items.length > 0
         ? [
             {
@@ -548,7 +576,12 @@ export function BoardView({ ws, toolbarEnd }: { ws: PlanningWorkspace; toolbarEn
             // A selected card carries the whole selection with it.
             const alongside =
               dataId && selectedSet.has(dataId) ? selectedIds.filter((id) => id !== dataId) : []
-            ws.dropWorkItem(key, milestoneId, dataId || undefined, items)
+            ws.dropWorkItem(
+              key,
+              milestoneId,
+              dataId || undefined,
+              sortBy === 'manual' ? items : undefined
+            )
             if (alongside.length > 0) moveAlongside(alongside, target, milestoneId)
           }}
         >
@@ -563,6 +596,7 @@ export function BoardView({ ws, toolbarEnd }: { ws: PlanningWorkspace; toolbarEn
               limited={target.columnId === null}
             />
             <div className="board-column__actions">
+              <BoardColumnOptionsButton ws={ws} columnKey={key} column={column} />
               {items.length > 0 && (
                 <IconButton
                   size="sm"
@@ -586,9 +620,12 @@ export function BoardView({ ws, toolbarEnd }: { ws: PlanningWorkspace; toolbarEn
               />
             </div>
           </header>
-          <div className="board-column__items">
+          <div
+            className={`board-column__items${options?.maxHeight ? ' board-column__items--scroll' : ''}`}
+            style={options?.maxHeight ? { maxHeight: options.maxHeight } : undefined}
+          >
             <BoardColumnItems
-              items={items}
+              items={shown}
               insertAt={insertAt}
               draggedId={ws.draggingWorkItemId}
               focusedId={lane ? null : focusedItemId}
@@ -602,6 +639,7 @@ export function BoardView({ ws, toolbarEnd }: { ws: PlanningWorkspace; toolbarEn
                   selected={selectedSet.has(item.id)}
                   selecting={selecting}
                   showBoxes={ws.boardShowBoxes}
+                  hideFields={options?.hideFields === true}
                   subtaskCount={subtaskCounts.get(item.id) ?? 0}
                   onToggle={(checked) => toggleSelected(item.id, checked)}
                 />
@@ -609,6 +647,21 @@ export function BoardView({ ws, toolbarEnd }: { ws: PlanningWorkspace; toolbarEn
             />
             {/* Kept while a card is dragged over: removing the node under the
               pointer mid-drag makes Chromium drop the drop. */}
+            {(hidden > 0 ||
+              (expandedColumns.includes(expandKey) &&
+                options?.maxCards !== undefined &&
+                items.length > options.maxCards)) && (
+              <Button
+                size="sm"
+                variant="ghost"
+                className="board-column__more"
+                onClick={() => toggleExpanded(expandKey)}
+              >
+                {hidden > 0
+                  ? t('tasks:boardView.columnOptions.showMore', { hidden })
+                  : t('tasks:boardView.columnOptions.showFewer')}
+              </Button>
+            )}
             {!ws.loading && items.length === 0 && (
               <p className="board-column__empty">{t('tasks:boardView.noTasks')}</p>
             )}
