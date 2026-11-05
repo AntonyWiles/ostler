@@ -546,5 +546,20 @@
     "asksToJoin": "{{name}} が参加を求めています。このコードが表示されている場合のみ許可してください:",
     "allow": "許可",
     "allowed": "{{name}} を許可しました。まもなく参加が完了します。"
+  },
+  "attachments": {
+    "title": "添付ファイル",
+    "remove": "外す"
+  },
+  "share": {
+    "title": "{{brand}} に共有",
+    "project": "プロジェクト",
+    "newTask": "新しいタスク",
+    "toLibrary": "ライブラリに追加",
+    "files": "ファイル: {{number}}",
+    "cancel": "キャンセル",
+    "taskDone": "{{project}} にタスクを追加しました。",
+    "libraryDone": "{{project}} のライブラリに追加しました。",
+    "nothing": "この共有から追加できるものはありません。"
   }
 }

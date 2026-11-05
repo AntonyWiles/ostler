@@ -568,5 +568,20 @@
     "recordFailed": "Could not record: {{message}}",
     "transcribeFailed": "Could not write out the words: {{message}}. The sound is still recorded.",
     "nothingRecorded": "Nothing was recorded."
+  },
+  "attachments": {
+    "title": "Attachments",
+    "remove": "Remove"
+  },
+  "share": {
+    "title": "Share to {{brand}}",
+    "project": "Project",
+    "newTask": "New task",
+    "toLibrary": "Add to Library",
+    "files": "Files: {{number}}",
+    "cancel": "Cancel",
+    "taskDone": "Task added to {{project}}.",
+    "libraryDone": "Added to the Library of {{project}}.",
+    "nothing": "Nothing to add from this share."
   }
 }

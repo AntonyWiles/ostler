@@ -18,7 +18,10 @@ import { Timesheet } from './src/screens/Timesheet'
 import { Team } from './src/screens/Team'
 import { Contacts } from './src/screens/Contacts'
 import { LibraryReader } from './src/screens/ProjectLibrary'
+import { useShareIntent } from 'expo-share-intent'
 import { QuickCapture } from './src/screens/QuickCapture'
+import { ShareTarget } from './src/screens/ShareTarget'
+import { sharePayload, type SharePayload } from './src/data/share-intake'
 import { projectName } from './src/data/project-display'
 import { RunningTimerBar } from './src/screens/TaskTime'
 import { Join } from './src/screens/Join'
@@ -134,6 +137,16 @@ export default function App() {
     const timer = setTimeout(() => setCaptured(null), 4000)
     return () => clearTimeout(timer)
   }, [captured])
+  // What another app shared to Ostler (Android's share sheet), waiting for a project and a choice.
+  const [incomingShare, setIncomingShare] = useState<SharePayload | null>(null)
+  const { hasShareIntent, shareIntent, resetShareIntent } = useShareIntent()
+  useEffect(() => {
+    if (!hasShareIntent) return
+    const payload = sharePayload(shareIntent)
+    resetShareIntent()
+    if (payload === null) setCaptured(t('mobile:share.nothing'))
+    else setIncomingShare(payload)
+  }, [hasShareIntent, shareIntent, resetShareIntent])
   const dbRef = useRef<OstlerDatabase | null>(null)
 
   // The database stays open for the life of the app: the sync loop writes to it. It is never
@@ -415,6 +428,22 @@ export default function App() {
         invite={pendingInvite}
         onInviteUsed={inviteUsed}
         onBack={goBack}
+      />
+    )
+  }
+  if (incomingShare !== null && db !== null) {
+    return page(
+      <ShareTarget
+        db={db}
+        share={incomingShare}
+        theme={theme}
+        onDone={(message) => {
+          setIncomingShare(null)
+          edited()
+          setCaptured(message)
+          setScreen('home')
+        }}
+        onCancel={() => setIncomingShare(null)}
       />
     )
   }

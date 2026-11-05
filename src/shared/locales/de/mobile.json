@@ -546,5 +546,20 @@
     "asksToJoin": "{{name}} möchte beitreten. Erlaube es nur, wenn es diesen Code zeigt:",
     "allow": "Erlauben",
     "allowed": "{{name}} ist erlaubt. Der Beitritt ist gleich abgeschlossen."
+  },
+  "attachments": {
+    "title": "Anhänge",
+    "remove": "Entfernen"
+  },
+  "share": {
+    "title": "An {{brand}} teilen",
+    "project": "Projekt",
+    "newTask": "Neue Aufgabe",
+    "toLibrary": "Zur Bibliothek hinzufügen",
+    "files": "Dateien: {{number}}",
+    "cancel": "Abbrechen",
+    "taskDone": "Aufgabe zu {{project}} hinzugefügt.",
+    "libraryDone": "Zur Bibliothek von {{project}} hinzugefügt.",
+    "nothing": "Aus dieser Freigabe gibt es nichts hinzuzufügen."
   }
 }

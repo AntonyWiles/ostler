@@ -546,5 +546,20 @@
     "asksToJoin": "{{name}} chiede di unirsi. Consentilo solo se mostra questo codice:",
     "allow": "Consenti",
     "allowed": "{{name}} è consentito. Finirà di unirsi tra poco."
+  },
+  "attachments": {
+    "title": "Allegati",
+    "remove": "Rimuovi"
+  },
+  "share": {
+    "title": "Condividi su {{brand}}",
+    "project": "Progetto",
+    "newTask": "Nuova attività",
+    "toLibrary": "Aggiungi alla libreria",
+    "files": "File allegati: {{number}}",
+    "cancel": "Annulla",
+    "taskDone": "Attività aggiunta a {{project}}.",
+    "libraryDone": "Aggiunto alla libreria di {{project}}.",
+    "nothing": "Niente da aggiungere da questa condivisione."
   }
 }

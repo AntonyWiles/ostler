@@ -546,5 +546,20 @@
     "asksToJoin": "{{name}} demande à rejoindre. Autorisez-le seulement s’il affiche ce code :",
     "allow": "Autoriser",
     "allowed": "{{name}} est autorisé. Il finit de rejoindre dans un instant."
+  },
+  "attachments": {
+    "title": "Pièces jointes",
+    "remove": "Retirer"
+  },
+  "share": {
+    "title": "Partager vers {{brand}}",
+    "project": "Projet",
+    "newTask": "Nouvelle tâche",
+    "toLibrary": "Ajouter à la bibliothèque",
+    "files": "Fichiers : {{number}}",
+    "cancel": "Annuler",
+    "taskDone": "Tâche ajoutée à {{project}}.",
+    "libraryDone": "Ajouté à la bibliothèque de {{project}}.",
+    "nothing": "Rien à ajouter depuis ce partage."
   }
 }
