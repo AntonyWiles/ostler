@@ -19,6 +19,8 @@ import { formatAudioDuration, isAudioMime } from '@shared/audio-files'
 import { itemLinkUrl } from '@shared/item-links'
 import { BRAND } from '@shared/brand'
 import { LibraryRepository } from '../../../electron/services/database/library-repository'
+import { addLibraryFile } from './library'
+import type { QueryDb } from './queries'
 import { cleanTitle } from '../../../electron/services/library-title'
 import {
   addTaskComment,
@@ -140,6 +142,32 @@ export function addVoiceMemo(
       )
     })()
     return item
+  })
+}
+
+/**
+ * Adds a voice memo to a project's Library on its own, attached to no task: a document holding
+ * the sound file, with the transcript (when there is one) as its body and the tags chosen while
+ * saving. Sync sends the recording as it does any file the phone added. Returns the item.
+ */
+export function addLibraryVoiceMemo(
+  db: QueryDb,
+  projectId: string,
+  input: VoiceMemoInput & { tags?: string[] }
+): LibraryItem {
+  return guarded(() => {
+    if (!isAudioMime(input.mimeType)) throw new EditRefused('bad-recording')
+    return addLibraryFile(db, projectId, {
+      itemId: input.itemId,
+      kind: 'document',
+      fileName: input.fileName,
+      mimeType: input.mimeType,
+      sizeBytes: input.sizeBytes,
+      sha256: input.sha256,
+      title: cleanTitle(input.title) || input.fileName,
+      body: input.transcript,
+      tags: input.tags ?? []
+    })
   })
 }
 

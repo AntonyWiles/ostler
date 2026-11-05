@@ -1,7 +1,8 @@
 /**
  * A project's Library on the phone, to read and add to: briefs, guides, notes, links, whiteboards' outlines
  * and the names of documents and pictures, through the desktop's own `LibraryRepository`. Files
- * themselves stay on the PC; the phone shows what they are.
+ * the phone added (photos, picked files, voice memos) are kept on the phone too; others stay on
+ * the PC and the phone shows what they are.
  *
  * Plain functions over anything shaped like a database, so this file imports no React Native code.
  */
@@ -233,7 +234,13 @@ export function addLibraryLink(
 export function addLibraryFile(
   db: QueryDb,
   projectId: string,
-  input: LibraryFileInput & { kind: 'image' | 'document'; title?: string; tags?: string[] }
+  input: LibraryFileInput & {
+    kind: 'image' | 'document'
+    title?: string
+    /** The item's text, e.g. a voice memo's transcript. */
+    body?: string
+    tags?: string[]
+  }
 ): LibraryItem {
   if (!SHA256.test(input.sha256) || input.sizeBytes <= 0)
     throw new Refusal('This file is empty or could not be read')
@@ -248,7 +255,7 @@ export function addLibraryFile(
       id: input.itemId,
       kind: input.kind,
       title: title.slice(0, MAX_TITLE_CHARS),
-      body: '',
+      body: input.body?.trim() ?? '',
       url: null,
       file: {
         fileName,

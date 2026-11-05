@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import type { EditDb } from '../../mobile/src/data/edits'
+import type { QueryDb } from '../../mobile/src/data/queries'
 import { useTempDir } from '../helpers/temp-dir'
 
 const { PlanningService } = await import('../../electron/services/planning-service')
@@ -90,5 +91,32 @@ describe('voice memos on the phone', () => {
     expect(comment.body.length).toBeLessThanOrEqual(10_000)
     expect(comment.body.endsWith('…')).toBe(true)
     expect(memos.taskVoiceMemos(phone(), taskId)[0].transcript).toBe(long)
+  })
+
+  it('records a memo straight into the Library: no task, transcript as body, tags kept', () => {
+    const memo = input({ title: '  Ideas for the kitchen  ' })
+    const item = memos.addLibraryVoiceMemo(db as unknown as QueryDb, PROJECT, {
+      ...memo,
+      tags: ['ideas', 'notes']
+    })
+    expect(item).toMatchObject({
+      id: memo.itemId,
+      projectId: PROJECT,
+      kind: 'document',
+      title: 'Ideas for the kitchen',
+      body: 'Check the trap under the sink',
+      tags: ['ideas', 'notes'],
+      file: { fileName: memo.fileName, mimeType: 'audio/mp4', sha256: SHA }
+    })
+    expect(db.prepare('SELECT COUNT(*) AS n FROM library_work_item_attachments').get()).toEqual({
+      n: 0
+    })
+    expect(db.prepare('SELECT COUNT(*) AS n FROM planning_comments').get()).toEqual({ n: 0 })
+    expect(() =>
+      memos.addLibraryVoiceMemo(db as unknown as QueryDb, PROJECT, {
+        ...input(),
+        mimeType: 'application/pdf'
+      })
+    ).toThrow(EditRefused)
   })
 })
