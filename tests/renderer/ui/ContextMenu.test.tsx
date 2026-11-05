@@ -50,6 +50,18 @@ describe('ContextMenu', () => {
     expect(screen.queryByRole('menu')).not.toBeInTheDocument()
   })
 
+  it('closes on a press where the page cancels the mousedown, as drag handles do (MOP-46)', () => {
+    const { target } = setup()
+    const handle = document.createElement('div')
+    handle.addEventListener('pointerdown', (event) => event.preventDefault())
+    document.body.append(handle)
+    fireEvent.contextMenu(target, { clientX: 10, clientY: 20 })
+    // Only a pointerdown: its preventDefault cancels the mousedown.
+    fireEvent.pointerDown(handle)
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument()
+    handle.remove()
+  })
+
   it('ignores F10 without Shift', () => {
     const { target } = setup()
     fireEvent.keyDown(target, { key: 'F10' })

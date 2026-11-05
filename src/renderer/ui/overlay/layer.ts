@@ -291,7 +291,13 @@ export function useAnchoredLayer({
     const floating = floatingRef.current
     const anchor = anchorRef.current
     if (floating && anchor) layerAnchors.set(floating, anchor)
-    const onMouseDown = (event: MouseEvent) => {
+    // Pointerdown as well as mousedown: a page that calls preventDefault on
+    // pointerdown (drag handles, resizers, the timeline) cancels the mousedown
+    // that would follow, which left menus open on a press there (MOP-46).
+    // Both arrive for one press, so the layer closes once.
+    let closed = false
+    const onPress = (event: Event) => {
+      if (closed) return
       const target = event.target as Node | null
       if (!target) return
       const panel = floatingRef.current
@@ -301,11 +307,13 @@ export function useAnchoredLayer({
       // on, often most of the screen: a press anywhere there closes it (MOP-46).
       if (!atPoint && anchorRef.current?.contains(target)) return
       if (panel && inLayerOpenedFrom(panel, target)) return
+      closed = true
       closeRef.current()
     }
-    document.addEventListener('mousedown', onMouseDown, true)
+    const events = ['pointerdown', 'mousedown'] as const
+    for (const name of events) document.addEventListener(name, onPress, true)
     return () => {
-      document.removeEventListener('mousedown', onMouseDown, true)
+      for (const name of events) document.removeEventListener(name, onPress, true)
       if (floating) layerAnchors.delete(floating)
     }
   }, [open, atPoint, anchorRef, floatingRef])
