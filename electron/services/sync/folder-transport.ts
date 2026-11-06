@@ -115,6 +115,11 @@ export class FolderTransport implements SyncTransport {
     // Such a file could never be listed, so it is refused up front.
     if (isHiddenOrTemp(path.basename(target))) throw new SyncTransportError('bad-path')
     if (await exists(target)) throw new SyncTransportError('exists')
+    // A shared folder on a drive that is gone (Google Drive closed, a USB disk out) is never made
+    // again from here: that would write into an empty stand-in, or fail on the drive letter.
+    if (!(await exists(this.root))) {
+      throw Object.assign(new Error(`Sync folder not found: ${this.root}`), { code: 'ENOENT' })
+    }
 
     const folder = path.dirname(target)
     await fs.promises.mkdir(folder, { recursive: true })

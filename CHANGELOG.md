@@ -51,6 +51,10 @@ Help › What's new, and the Unreleased section until a version has its own.
 
 ### Fixed
 
+- Shared folder sync no longer repeats "Sync folder refused: exists" on every change when nothing
+  has changed since its last snapshot, which slowed the app down until it stopped responding.
+- A shared folder on a drive that isn't there (Google Drive closed, say) is no longer recreated on
+  every sync attempt. Sync says the folder can't be found, once, and carries on when it is back.
 - **A task marked Done is no longer blocked.** Moving a task to Done, on the PC or the phone,
   resolves its open blockers, so it leaves Needs you, the Inbox and the Blockers panel. Blockers
   left open on tasks that were already done no longer show either.

@@ -222,6 +222,8 @@ interface Running {
   transport: SyncTransport
   status: ShareStatus
   problems: ShareProblem[]
+  /** The last step failure logged, until a step succeeds; the same one is not logged again. */
+  lastFailure?: string
   /** One step at a time. */
   queue: Promise<void>
   stopWatch: () => void
@@ -1099,9 +1101,15 @@ export class SyncService {
       if (this.stopped || this.running.get(running.projectId) !== running) return
       try {
         await step()
+        running.lastFailure = undefined
       } catch (error) {
         this.setStatus(running, 'cannot-reach-folder', [])
-        this.options.logError('Shared folder sync failed:', error)
+        // Logged once per failure: a folder that stays out of reach would repeat it on every step.
+        const failure = String(error)
+        if (running.lastFailure !== failure) {
+          running.lastFailure = failure
+          this.options.logError('Shared folder sync failed:', error)
+        }
       }
     })
     return running.queue

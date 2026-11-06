@@ -22,7 +22,7 @@ import { openSecret, sealSecret } from './platform'
 import { quote, tableShape, type TableShape } from '../change-history/table-shape'
 import { advanceTaskCounter } from './task-numbers'
 import { observeRemoteStamp, withSyncApplying } from './capture'
-import type { SyncTransport } from './folder-transport'
+import { SyncTransportError, type SyncTransport } from './folder-transport'
 import {
   decodeSnapshot,
   encodeSnapshot,
@@ -70,7 +70,12 @@ export async function writeSnapshot(
   if (project) snapshot.project = project
   snapshot.applied[share.device_id] = await highestPushed(transport, share.device_id)
   const path = `snapshots/${share.device_id}/${snapshot.stamp}.ostlersnap`
-  await transport.writeOnce(path, encodeSnapshot(snapshot, keys))
+  try {
+    await transport.writeOnce(path, encodeSnapshot(snapshot, keys))
+  } catch (error) {
+    // The name is the newest stamp: one already there holds this same state (nothing changed since).
+    if (!(error instanceof SyncTransportError && error.reason === 'exists')) throw error
+  }
   return path
 }
 
