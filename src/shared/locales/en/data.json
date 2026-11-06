@@ -352,7 +352,11 @@
     "cancel": "Cancel",
     "chooseWhere": "Choose where…",
     "exported": "Saved {{projectName}} as a web page",
-    "includeStatusUpdate": "Include the latest status update"
+    "includeStatusUpdate": "Include the latest status update",
+    "includeComments": "Include task comments",
+    "includeGoals": "Include goals and their check-ins",
+    "includeMilestoneDetails": "Include milestone details (outcome, goal, success criteria)",
+    "includeTaskDetails": "Include task details (priority, estimate, labels, checklist, notes)"
   },
   "shareReport": {
     "exported": "Exported {{date}}",
@@ -388,7 +392,32 @@
     },
     "footer": "Made with {{appName}}.",
     "statusUpdate": "Status",
-    "statusUpdateBy": "{{name}}, {{date}}"
+    "statusUpdateBy": "{{name}}, {{date}}",
+    "goals": "Goals",
+    "noGoals": "No goals.",
+    "goalStatus": {
+      "active": "Active",
+      "achieved": "Achieved",
+      "archived": "Archived"
+    },
+    "outcome": "Outcome",
+    "successCriteria": "Success criteria",
+    "forGoal": "Goal: {{title}}",
+    "measure": "From {{start}} to {{target}} {{unit}} by {{date}}",
+    "latest": "Latest: {{value}} {{unit}} on {{date}}",
+    "checkIns": "Check-ins",
+    "checkInLine": "{{date}}: {{value}} {{unit}}",
+    "comments": "Comments",
+    "commentBy": "{{name}}, {{date}}",
+    "detail": {
+      "priority": "Priority",
+      "estimate": "Estimate",
+      "labels": "Labels",
+      "checklist": "Checklist",
+      "blocked": "Blocked",
+      "verification": "Verification notes",
+      "wontDo": "Won't do"
+    }
   },
   "githubImport": {
     "untitledIssue": "Issue {{number}}",

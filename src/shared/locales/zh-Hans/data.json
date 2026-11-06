@@ -333,7 +333,11 @@
     "cancel": "取消",
     "chooseWhere": "选择保存位置…",
     "exported": "已将 {{projectName}} 保存为网页",
-    "includeStatusUpdate": "包括最新的状态更新"
+    "includeStatusUpdate": "包括最新的状态更新",
+    "includeComments": "包括任务评论",
+    "includeGoals": "包括目标及其签到",
+    "includeMilestoneDetails": "包括里程碑详情（成果、目标、成功标准）",
+    "includeTaskDetails": "包括任务详情（优先级、估算、标签、清单、备注）"
   },
   "shareReport": {
     "exported": "导出于 {{date}}",
@@ -369,7 +373,32 @@
     },
     "footer": "由 {{appName}} 制作。",
     "statusUpdate": "状态",
-    "statusUpdateBy": "{{name}}，{{date}}"
+    "statusUpdateBy": "{{name}}，{{date}}",
+    "goals": "目标",
+    "noGoals": "没有目标。",
+    "goalStatus": {
+      "active": "进行中",
+      "achieved": "已达成",
+      "archived": "已归档"
+    },
+    "outcome": "成果",
+    "successCriteria": "成功标准",
+    "forGoal": "目标：{{title}}",
+    "measure": "从 {{start}} 到 {{target}} {{unit}}，截止 {{date}}",
+    "latest": "最新：{{date}} 为 {{value}} {{unit}}",
+    "checkIns": "签到",
+    "checkInLine": "{{date}}：{{value}} {{unit}}",
+    "comments": "评论",
+    "commentBy": "{{name}}，{{date}}",
+    "detail": {
+      "priority": "优先级",
+      "estimate": "估算",
+      "labels": "标签",
+      "checklist": "清单",
+      "blocked": "已阻塞",
+      "verification": "验证备注",
+      "wontDo": "不做"
+    }
   },
   "githubImport": {
     "untitledIssue": "议题 {{number}}",

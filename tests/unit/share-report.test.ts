@@ -195,12 +195,101 @@ describe('shareable report', () => {
     expect(byMilestone).not.toMatch(/<h3>Ready /)
   })
 
+  it('includes goals, milestone details, task details and comments when asked', () => {
+    const html = buildShareReport({
+      project: { name: 'P' },
+      keyNumbers,
+      tasks: [
+        task({
+          id: 'a',
+          title: 'Book it',
+          milestoneId: 'm1',
+          priority: 'high',
+          labels: ['venue'],
+          acceptanceCriteria: ['Call hall'],
+          checkedCriteria: ['Call hall'],
+          verificationNotes: 'Checked <b>twice</b>'
+        })
+      ],
+      milestones: [
+        { ...milestone, goalId: 'g1', outcome: 'Hall booked', successCriteria: ['Deposit paid'] }
+      ],
+      decisions: [],
+      goals: [
+        {
+          id: 'g1',
+          projectId: 'p',
+          title: 'Fill the hall',
+          outcome: 'Full house',
+          status: 'active',
+          measure: {
+            unit: 'guests',
+            startValue: 0,
+            targetValue: 50,
+            startDate: '2026-10-01',
+            targetDate: '2026-11-20',
+            direction: 'up'
+          },
+          createdAt: 1,
+          updatedAt: 1
+        }
+      ],
+      goalCheckIns: {
+        g1: [
+          {
+            goalId: 'g1',
+            projectId: 'p',
+            date: '2026-10-05',
+            value: 12,
+            note: 'Slow start',
+            recordedAt: 1
+          }
+        ]
+      },
+      comments: {
+        a: [
+          {
+            id: 'c1',
+            projectId: 'p',
+            workItemId: 'a',
+            authorKind: 'human',
+            authorPersonId: null,
+            body: 'Hall is **free**',
+            createdAt: 1,
+            updatedAt: 1,
+            deletedAt: null
+          }
+        ]
+      },
+      personName: () => null,
+      options: { goals: true, milestoneDetails: true, taskDetails: true, comments: true },
+      now: Date.UTC(2026, 10, 1),
+      renderMarkdown: renderShareMarkdown
+    })
+    for (const text of [
+      'Fill the hall',
+      'Slow start',
+      'Hall booked',
+      'Deposit paid',
+      'venue',
+      'Call hall',
+      'Checked',
+      'Hall is <strong>free</strong>'
+    ])
+      expect(html).toContain(text)
+    expect(html).not.toContain('<b>twice</b>')
+  })
+
   it('reads unknown options as the defaults', () => {
     expect(normalizeShareReportOptions({ finished: 'yes', groupBy: 'owner' })).toEqual({
       descriptions: false,
       decisions: false,
       finished: true,
       people: true,
+      comments: false,
+      goals: false,
+      milestoneDetails: false,
+      taskDetails: false,
       groupBy: 'status'
     })
   })

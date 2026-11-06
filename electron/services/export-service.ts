@@ -1,5 +1,6 @@
 import type {
   CalendarExportOptions,
+  PlanningComment,
   PlanningWorkItem,
   ShareReportOptions,
   TaskCsvExportRequest,
@@ -169,6 +170,19 @@ export function buildCostsCsv(
   return { text, costCount: costs.length }
 }
 
+/** Every live comment in the project, by task id, oldest first. */
+function commentsByTask(
+  planning: PlanningService,
+  projectId: string
+): Record<string, PlanningComment[]> {
+  const result: Record<string, PlanningComment[]> = {}
+  for (const task of planning.listWorkItems(projectId)) {
+    const comments = planning.listComments(task.id)
+    if (comments.length > 0) result[task.id] = comments
+  }
+  return result
+}
+
 function peopleNames(planning: PlanningService): Map<string, string> {
   return new Map(
     new PeopleRepository(planning.database).list(true).map((person) => [person.id, person.name])
@@ -280,6 +294,11 @@ export function buildProjectShareReport(
     tasks: planning.listWorkItems(project.id),
     milestones: planning.listMilestones(project.id),
     decisions: resolved.decisions ? planning.listDecisions(project.id) : [],
+    goals: resolved.goals || resolved.milestoneDetails ? planning.listGoals(project.id) : [],
+    goalCheckIns: resolved.goals ? planning.goalCheckIns.listForProject(project.id) : {},
+    comments: resolved.comments ? commentsByTask(planning, project.id) : {},
+    commentAuthor: (comment) =>
+      comment.authorPersonId ? (people.get(comment.authorPersonId) ?? null) : null,
     statusUpdate: resolved.statusUpdate ? planning.statusUpdates.latest(project.id) : null,
     personName: (id) => people.get(id) ?? null,
     columns: planning.columns.get(project.id),

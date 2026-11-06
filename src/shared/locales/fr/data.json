@@ -371,7 +371,11 @@
     "cancel": "Annuler",
     "chooseWhere": "Choisir l’emplacement…",
     "exported": "{{projectName}} enregistré comme page web",
-    "includeStatusUpdate": "Inclure la dernière mise à jour de statut"
+    "includeStatusUpdate": "Inclure la dernière mise à jour de statut",
+    "includeComments": "Inclure les commentaires des tâches",
+    "includeGoals": "Inclure les objectifs et leurs relevés",
+    "includeMilestoneDetails": "Inclure les détails des jalons (résultat, objectif, critères de réussite)",
+    "includeTaskDetails": "Inclure les détails des tâches (priorité, estimation, étiquettes, liste de contrôle, notes)"
   },
   "shareReport": {
     "exported": "Exporté le {{date}}",
@@ -407,7 +411,32 @@
     },
     "footer": "Créé avec {{appName}}.",
     "statusUpdate": "Statut",
-    "statusUpdateBy": "{{name}}, {{date}}"
+    "statusUpdateBy": "{{name}}, {{date}}",
+    "goals": "Objectifs",
+    "noGoals": "Aucun objectif.",
+    "goalStatus": {
+      "active": "Actif",
+      "achieved": "Atteint",
+      "archived": "Archivé"
+    },
+    "outcome": "Résultat",
+    "successCriteria": "Critères de réussite",
+    "forGoal": "Objectif : {{title}}",
+    "measure": "De {{start}} à {{target}} {{unit}} d’ici le {{date}}",
+    "latest": "Dernier relevé : {{value}} {{unit}} le {{date}}",
+    "checkIns": "Relevés",
+    "checkInLine": "{{date}} : {{value}} {{unit}}",
+    "comments": "Commentaires",
+    "commentBy": "{{name}}, {{date}}",
+    "detail": {
+      "priority": "Priorité",
+      "estimate": "Estimation",
+      "labels": "Étiquettes",
+      "checklist": "Liste de contrôle",
+      "blocked": "Bloquée",
+      "verification": "Notes de vérification",
+      "wontDo": "Ne sera pas faite"
+    }
   },
   "githubImport": {
     "untitledIssue": "Issue {{number}}",

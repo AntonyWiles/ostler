@@ -371,7 +371,11 @@
     "cancel": "Cancelar",
     "chooseWhere": "Elige dónde…",
     "exported": "Se guardó {{projectName}} como página web",
-    "includeStatusUpdate": "Incluir la última actualización de estado"
+    "includeStatusUpdate": "Incluir la última actualización de estado",
+    "includeComments": "Incluir los comentarios de las tareas",
+    "includeGoals": "Incluir los objetivos y sus registros",
+    "includeMilestoneDetails": "Incluir los detalles de los hitos (resultado, objetivo, criterios de éxito)",
+    "includeTaskDetails": "Incluir los detalles de las tareas (prioridad, estimación, etiquetas, lista de comprobación, notas)"
   },
   "shareReport": {
     "exported": "Exportado el {{date}}",
@@ -407,7 +411,32 @@
     },
     "footer": "Hecho con {{appName}}.",
     "statusUpdate": "Estado",
-    "statusUpdateBy": "{{name}}, {{date}}"
+    "statusUpdateBy": "{{name}}, {{date}}",
+    "goals": "Objetivos",
+    "noGoals": "Sin objetivos.",
+    "goalStatus": {
+      "active": "Activo",
+      "achieved": "Logrado",
+      "archived": "Archivado"
+    },
+    "outcome": "Resultado",
+    "successCriteria": "Criterios de éxito",
+    "forGoal": "Objetivo: {{title}}",
+    "measure": "De {{start}} a {{target}} {{unit}} para el {{date}}",
+    "latest": "Último: {{value}} {{unit}} el {{date}}",
+    "checkIns": "Registros",
+    "checkInLine": "{{date}}: {{value}} {{unit}}",
+    "comments": "Comentarios",
+    "commentBy": "{{name}}, {{date}}",
+    "detail": {
+      "priority": "Prioridad",
+      "estimate": "Estimación",
+      "labels": "Etiquetas",
+      "checklist": "Lista de comprobación",
+      "blocked": "Bloqueada",
+      "verification": "Notas de verificación",
+      "wontDo": "No se hará"
+    }
   },
   "githubImport": {
     "untitledIssue": "Incidencia {{number}}",

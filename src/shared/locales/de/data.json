@@ -352,7 +352,11 @@
     "cancel": "Abbrechen",
     "chooseWhere": "Ziel auswählen…",
     "exported": "{{projectName}} als Webseite gespeichert",
-    "includeStatusUpdate": "Das neueste Statusupdate einbeziehen"
+    "includeStatusUpdate": "Das neueste Statusupdate einbeziehen",
+    "includeComments": "Aufgabenkommentare einbeziehen",
+    "includeGoals": "Ziele und ihre Check-ins einbeziehen",
+    "includeMilestoneDetails": "Meilensteindetails einbeziehen (Ergebnis, Ziel, Erfolgskriterien)",
+    "includeTaskDetails": "Aufgabendetails einbeziehen (Priorität, Schätzung, Labels, Checkliste, Notizen)"
   },
   "shareReport": {
     "exported": "Exportiert am {{date}}",
@@ -388,7 +392,32 @@
     },
     "footer": "Erstellt mit {{appName}}.",
     "statusUpdate": "Status",
-    "statusUpdateBy": "{{name}}, {{date}}"
+    "statusUpdateBy": "{{name}}, {{date}}",
+    "goals": "Ziele",
+    "noGoals": "Keine Ziele.",
+    "goalStatus": {
+      "active": "Aktiv",
+      "achieved": "Erreicht",
+      "archived": "Archiviert"
+    },
+    "outcome": "Ergebnis",
+    "successCriteria": "Erfolgskriterien",
+    "forGoal": "Ziel: {{title}}",
+    "measure": "Von {{start}} auf {{target}} {{unit}} bis {{date}}",
+    "latest": "Zuletzt: {{value}} {{unit}} am {{date}}",
+    "checkIns": "Zwischenstände",
+    "checkInLine": "{{date}}: {{value}} {{unit}}",
+    "comments": "Kommentare",
+    "commentBy": "{{name}}, {{date}}",
+    "detail": {
+      "priority": "Priorität",
+      "estimate": "Schätzung",
+      "labels": "Labels",
+      "checklist": "Checkliste",
+      "blocked": "Blockiert",
+      "verification": "Prüfnotizen",
+      "wontDo": "Wird nicht gemacht"
+    }
   },
   "githubImport": {
     "untitledIssue": "Issue {{number}}",

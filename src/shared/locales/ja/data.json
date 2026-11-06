@@ -333,7 +333,11 @@
     "cancel": "キャンセル",
     "chooseWhere": "保存先を選択…",
     "exported": "{{projectName}}をWebページとして保存しました",
-    "includeStatusUpdate": "最新のステータス更新を含める"
+    "includeStatusUpdate": "最新のステータス更新を含める",
+    "includeComments": "タスクのコメントを含める",
+    "includeGoals": "目標とそのチェックインを含める",
+    "includeMilestoneDetails": "マイルストーンの詳細（成果、目標、成功基準）を含める",
+    "includeTaskDetails": "タスクの詳細（優先度、見積もり、ラベル、チェックリスト、メモ）を含める"
   },
   "shareReport": {
     "exported": "{{date}}にエクスポート",
@@ -369,7 +373,32 @@
     },
     "footer": "{{appName}}で作成。",
     "statusUpdate": "ステータス",
-    "statusUpdateBy": "{{name}}、{{date}}"
+    "statusUpdateBy": "{{name}}、{{date}}",
+    "goals": "目標",
+    "noGoals": "目標はありません。",
+    "goalStatus": {
+      "active": "進行中",
+      "achieved": "達成",
+      "archived": "アーカイブ済み"
+    },
+    "outcome": "成果",
+    "successCriteria": "成功基準",
+    "forGoal": "目標: {{title}}",
+    "measure": "{{start}} から {{target}} {{unit}} へ（{{date}} まで）",
+    "latest": "最新: {{date}} に {{value}} {{unit}}",
+    "checkIns": "チェックイン",
+    "checkInLine": "{{date}}: {{value}} {{unit}}",
+    "comments": "コメント",
+    "commentBy": "{{name}}、{{date}}",
+    "detail": {
+      "priority": "優先度",
+      "estimate": "見積もり",
+      "labels": "ラベル",
+      "checklist": "チェックリスト",
+      "blocked": "ブロック中",
+      "verification": "検証メモ",
+      "wontDo": "対応しない"
+    }
   },
   "githubImport": {
     "untitledIssue": "Issue {{number}}",

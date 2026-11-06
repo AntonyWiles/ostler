@@ -427,6 +427,14 @@ export interface ShareReportOptions {
   groupBy?: 'status' | 'milestone'
   /** The latest status update (N5.5; default false). */
   statusUpdate?: boolean
+  /** Each task's comments (default false). */
+  comments?: boolean
+  /** The goals, with their measures and check-ins (default false). */
+  goals?: boolean
+  /** Each milestone's outcome, goal and success criteria (default false). */
+  milestoneDetails?: boolean
+  /** Each task's priority, estimate, labels, checklist and notes (default false). */
+  taskDetails?: boolean
 }
 
 export type PrintableView = 'list' | 'overview' | 'timeline' | 'shopping'

@@ -6,7 +6,16 @@ import { readShareReportOptions, writeShareReportOptions } from './share-options
 import '../ExportProjectDialog.css'
 import { t } from '@shared/i18n'
 
-type Flag = 'descriptions' | 'decisions' | 'finished' | 'people' | 'statusUpdate'
+type Flag =
+  | 'descriptions'
+  | 'decisions'
+  | 'finished'
+  | 'people'
+  | 'statusUpdate'
+  | 'comments'
+  | 'goals'
+  | 'milestoneDetails'
+  | 'taskDetails'
 
 /**
  * "Share as a web page…" (R4.1, D37): the project as one self-contained
@@ -93,6 +102,10 @@ export function ShareReportDialog({
         {flag('finished', t('data:shareReportDialog.includeFinished'))}
         {flag('people', t('data:shareReportDialog.includePeople'))}
         {flag('statusUpdate', t('data:shareReportDialog.includeStatusUpdate'))}
+        {flag('goals', t('data:shareReportDialog.includeGoals'))}
+        {flag('milestoneDetails', t('data:shareReportDialog.includeMilestoneDetails'))}
+        {flag('taskDetails', t('data:shareReportDialog.includeTaskDetails'))}
+        {flag('comments', t('data:shareReportDialog.includeComments'))}
         {error && (
           <p className="ui-field__error" role="alert">
             {error}

@@ -1,5 +1,7 @@
 import type {
   PlanningColumnSettings,
+  PlanningComment,
+  PlanningGoal,
   PlanningDecision,
   PlanningMilestone,
   PlanningWorkItem,
@@ -8,11 +10,12 @@ import type {
   ShareReportOptions,
   StatusUpdate
 } from '../ostler-api'
+import type { GoalCheckIn } from '../goal-measures'
 import { statusUpdateHealthLabel } from '../status-updates'
 import { BRAND } from '../brand'
 import { formatIsoDate } from '../dates'
 import { formatDate, formatNumber } from '../format'
-import { TASK_STATUSES, taskColumnLabel, taskStatusLabel } from '../task-labels'
+import { TASK_STATUSES, taskColumnLabel, taskPriorityLabel, taskStatusLabel } from '../task-labels'
 import { currentLanguage, t } from '../i18n'
 
 /*
@@ -46,6 +49,10 @@ export function normalizeShareReportOptions(value: unknown): ResolvedShareReport
     finished: flag('finished', true),
     people: flag('people', true),
     groupBy: raw['groupBy'] === 'milestone' ? 'milestone' : 'status',
+    comments: flag('comments', false),
+    goals: flag('goals', false),
+    milestoneDetails: flag('milestoneDetails', false),
+    taskDetails: flag('taskDetails', false),
     ...(flag('statusUpdate', false) ? { statusUpdate: true as const } : {})
   }
 }
@@ -56,6 +63,14 @@ export interface ShareReportInput {
   tasks: readonly PlanningWorkItem[]
   milestones: readonly PlanningMilestone[]
   decisions: readonly PlanningDecision[]
+  /** The goals, shown when the option asks for them. */
+  goals?: readonly PlanningGoal[]
+  /** Each goal's check-ins by goal id, oldest first. */
+  goalCheckIns?: Readonly<Record<string, readonly GoalCheckIn[]>>
+  /** Live comments by task id, oldest first, shown when the option asks for them. */
+  comments?: Readonly<Record<string, readonly PlanningComment[]>>
+  /** Who wrote a comment: a person's name, or null. */
+  commentAuthor?: (comment: PlanningComment) => string | null
   /** The latest status update (N5.5), shown when the option asks for it. */
   statusUpdate?: StatusUpdate | null
   personName: (personId: string) => string | null
@@ -101,6 +116,12 @@ td.n{white-space:nowrap}
 .desc p,.md p{margin:4px 0}
 .decision{border:1px solid var(--line);border-radius:8px;padding:8px 16px;margin:12px 0}
 .decision h3{margin-top:8px}
+.facts{color:var(--muted);font-size:13px;margin:4px 0}
+.facts b{font-weight:600}
+.comment{border-left:3px solid var(--line);padding:0 0 0 10px;margin:6px 0;font-size:13px}
+.goal{border:1px solid var(--line);border-radius:8px;padding:8px 16px;margin:12px 0}
+.goal h3{margin-top:8px}
+ul.plain{margin:4px 0;padding-left:20px}
 h4{font-size:14px;margin:12px 0 4px}
 footer{margin-top:40px}
 @media (max-width:600px){main{padding:20px 12px}td.n{white-space:normal}th,td{padding:6px 4px}}
@@ -116,6 +137,8 @@ function progressBar(done: number, total: number): string {
     `</svg>`
   )
 }
+
+const fact = (label: string, value: string) => `<b>${escapeHtml(label)}:</b> ${escapeHtml(value)}`
 
 /** The page's HTML. */
 export function buildShareReport(input: ShareReportInput): string {
@@ -165,6 +188,63 @@ export function buildShareReport(input: ShareReportInput): string {
       `</dl></section>`
   )
 
+  if (options.goals) {
+    parts.push(`<section><h2>${escapeHtml(t('data:shareReport.goals'))}</h2>`)
+    const goals = input.goals ?? []
+    if (goals.length === 0)
+      parts.push(`<p class="empty">${escapeHtml(t('data:shareReport.noGoals'))}</p>`)
+    for (const goal of goals) {
+      const measure = goal.measure
+      const unit = measure?.unit ?? ''
+      const checkIns = input.goalCheckIns?.[goal.id] ?? []
+      const latest = checkIns.at(-1)
+      parts.push(
+        `<article class="goal"><h3>${escapeHtml(goal.title)}</h3>` +
+          `<p class="facts">${fact(t('data:shareReport.column.status'), t(`data:shareReport.goalStatus.${goal.status}`))}</p>` +
+          (goal.outcome.trim()
+            ? `<h4>${escapeHtml(t('data:shareReport.outcome'))}</h4><div class="md">${input.renderMarkdown(goal.outcome)}</div>`
+            : '') +
+          (measure
+            ? `<p class="facts">${escapeHtml(
+                t('data:shareReport.measure', {
+                  start: formatNumber(measure.startValue),
+                  target: formatNumber(measure.targetValue),
+                  unit,
+                  date: formatIsoDate(measure.targetDate)
+                })
+              )}</p>` +
+              (latest
+                ? `<p class="facts">${escapeHtml(
+                    t('data:shareReport.latest', {
+                      value: formatNumber(latest.value),
+                      unit,
+                      date: formatIsoDate(latest.date)
+                    })
+                  )}</p>`
+                : '')
+            : '') +
+          (checkIns.length > 0
+            ? `<h4>${escapeHtml(t('data:shareReport.checkIns'))}</h4><ul class="plain">` +
+              checkIns
+                .map(
+                  (checkIn) =>
+                    `<li>${escapeHtml(
+                      t('data:shareReport.checkInLine', {
+                        date: formatIsoDate(checkIn.date),
+                        value: formatNumber(checkIn.value),
+                        unit
+                      })
+                    )}${checkIn.note.trim() ? ` &ndash; ${escapeHtml(checkIn.note)}` : ''}</li>`
+                )
+                .join('') +
+              `</ul>`
+            : '') +
+          `</article>`
+      )
+    }
+    parts.push(`</section>`)
+  }
+
   // Milestones, with their progress over every task in them.
   const milestones = [...input.milestones].sort(
     (a, b) =>
@@ -189,6 +269,22 @@ export function buildShareReport(input: ShareReportInput): string {
           `<td class="n">${date(milestone.targetDate)}</td>` +
           `<td>${escapeHtml(t('tasks:milestoneCard.tasksDone', { done, count: inIt.length }))}${progressBar(done, inIt.length)}</td></tr>`
       )
+      if (options.milestoneDetails) {
+        const goal = input.goals?.find((entry) => entry.id === milestone.goalId)
+        const detail =
+          (goal
+            ? `<p class="facts">${escapeHtml(t('data:shareReport.forGoal', { title: goal.title }))}</p>`
+            : '') +
+          (milestone.outcome.trim()
+            ? `<h4>${escapeHtml(t('data:shareReport.outcome'))}</h4><div class="md">${input.renderMarkdown(milestone.outcome)}</div>`
+            : '') +
+          (milestone.successCriteria.length > 0
+            ? `<h4>${escapeHtml(t('data:shareReport.successCriteria'))}</h4><ul class="plain">${milestone.successCriteria
+                .map((criterion) => `<li>${escapeHtml(criterion)}</li>`)
+                .join('')}</ul>`
+            : '')
+        if (detail) parts.push(`<tr><td colspan="4" class="desc">${detail}</td></tr>`)
+      }
     }
     parts.push(`</tbody></table>`)
   }
@@ -237,8 +333,48 @@ export function buildShareReport(input: ShareReportInput): string {
         options.descriptions && task.description.trim()
           ? `<div class="desc md">${input.renderMarkdown(task.description)}</div>`
           : ''
+      const facts: string[] = []
+      if (options.taskDetails) {
+        facts.push(fact(t('data:shareReport.detail.priority'), taskPriorityLabel(task.priority)))
+        if (task.estimate !== null)
+          facts.push(fact(t('data:shareReport.detail.estimate'), formatNumber(task.estimate)))
+        if (task.labels.length > 0)
+          facts.push(fact(t('data:shareReport.detail.labels'), task.labels.join(', ')))
+        if (task.blockedReason?.trim())
+          facts.push(fact(t('data:shareReport.detail.blocked'), task.blockedReason))
+        if (task.resolution === 'wont-do')
+          facts.push(fact(t('data:shareReport.detail.wontDo'), task.resolutionReason?.trim() ?? ''))
+      }
+      let extra = facts.length > 0 ? `<div class="facts">${facts.join(' &middot; ')}</div>` : ''
+      if (options.taskDetails && task.acceptanceCriteria.length > 0) {
+        const checked = new Set(task.checkedCriteria)
+        extra +=
+          `<h4>${escapeHtml(t('data:shareReport.detail.checklist'))}</h4><ul class="plain">` +
+          task.acceptanceCriteria
+            .map(
+              (item) => `<li>${checked.has(item) ? '&#9745;' : '&#9744;'} ${escapeHtml(item)}</li>`
+            )
+            .join('') +
+          `</ul>`
+      }
+      if (options.taskDetails && task.verificationNotes.trim())
+        extra += `<h4>${escapeHtml(t('data:shareReport.detail.verification'))}</h4><div class="md">${input.renderMarkdown(task.verificationNotes)}</div>`
+      const taskComments = options.comments ? (input.comments?.[task.id] ?? []) : []
+      if (taskComments.length > 0) {
+        extra +=
+          `<h4>${escapeHtml(t('data:shareReport.comments'))}</h4>` +
+          taskComments
+            .map((comment) => {
+              const author = options.people ? (input.commentAuthor?.(comment) ?? '') : ''
+              const when = formatDate(comment.createdAt, { dateStyle: 'medium' })
+              return `<div class="comment"><div class="meta">${escapeHtml(
+                author ? t('data:shareReport.commentBy', { name: author, date: when }) : when
+              )}</div><div class="md">${input.renderMarkdown(comment.body)}</div></div>`
+            })
+            .join('')
+      }
       parts.push(
-        `<tr><td>${escapeHtml(task.title)}${description}</td>` +
+        `<tr><td>${escapeHtml(task.title)}${description}${extra ? `<div class="desc">${extra}</div>` : ''}</td>` +
           `<td class="n">${escapeHtml(taskColumnLabel(task, input.columns))}</td>` +
           (options.people ? `<td>${escapeHtml(person(task.assigneeId))}</td>` : '') +
           `<td class="n">${date(task.startDate)}</td>` +
