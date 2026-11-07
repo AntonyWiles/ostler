@@ -541,7 +541,7 @@ const ROUTES: AutomationRouteDef[] = [
     method: 'GET',
     path: '/work-items',
     description:
-      'List work items on the Board, in manual order (the order the Board shows under Manual order; move one with POST /work-items/:workItemId/move). ?status=blocked,ready keeps only those statuses (as the app shows them). ?fields=key,title,status sends only those fields of each task, plus id; without it every field is sent. ?scope=archived lists the project archive; ?scope=deleted lists the recycle bin (each item has deletedAt; it is purged 30 days after). ?filter=<JSON TaskFilter> keeps only the tasks that match, by the same rule as every view in the app: { match: "all" | "any", conditions: [{ field, op, value }] }. Fields and operators: text contains|notContains "words"; status, priority is|isNot [values]; assignee is|isNot [person ids, "me", "nobody"]; labels hasAny|hasAll|hasNone [labels]; milestone, goal is|isNot [ids, "none"]; subproject is|isNot [workstream ids, "none"] (a workstream is a sub-project; see GET /subprojects); iteration is|isNot [iteration ids, "none", "current"] ("current" is the active iteration, or with none active the unfinished one whose dates include today, its end day too); due, start is "today"|"overdue"|"thisWeek"|"next7Days"|"none"|"any", or before|after "YYYY-MM-DD"; created, updated is "today"|"thisWeek"|"last7Days", or before|after a date; estimate, impact, effort is "set"|"empty", or equals|lessThan|greaterThan a number; checklist is "complete"|"incomplete"; hasComments, recurring, someday, inTriage is true|false (inTriage: waiting in To triage; ?scope=triage lists only those, oldest first); showFrom is "hidden"|"shown"|"today"|"none"|"any", or before|after "YYYY-MM-DD" ("hidden" is a task in Someday or shown from a later day, by the same rule that keeps it off Home, My work, the Board and the List; "shown" is every other task). Custom fields: { field: "custom", fieldId, op, value }: text contains|notContains "words"; number equals|lessThan|greaterThan a number, or between [low, high]; date before|after "YYYY-MM-DD"; choice is|isNot [option ids]; choices hasAny|hasAll|hasNone [option ids]; checkbox is true|false; any field isEmpty "empty"|"set". An invalid filter is refused with HTTP 400 and a message saying what is wrong. URL-encode the JSON. ?include=linkedFrom adds linkedFrom to each: the texts of this project that link to it, as in GET /links.',
+      'List work items on the Board, in manual order (the order the Board shows under Manual order; move one with POST /work-items/:workItemId/move). Archived tasks and tasks in the recycle bin are left out, so a dependency id may name a task this list lacks; GET /work-items/:workItemId finds any task. ?status=blocked,ready keeps only those statuses (as the app shows them). ?fields=key,title,status sends only those fields of each task, plus id; without it every field is sent. ?scope=archived lists the project archive; ?scope=deleted lists the recycle bin (each item has deletedAt; it is purged 30 days after). ?filter=<JSON TaskFilter> keeps only the tasks that match, by the same rule as every view in the app: { match: "all" | "any", conditions: [{ field, op, value }] }. Fields and operators: text contains|notContains "words"; status, priority is|isNot [values]; assignee is|isNot [person ids, "me", "nobody"]; labels hasAny|hasAll|hasNone [labels]; milestone, goal is|isNot [ids, "none"]; subproject is|isNot [workstream ids, "none"] (a workstream is a sub-project; see GET /subprojects); iteration is|isNot [iteration ids, "none", "current"] ("current" is the active iteration, or with none active the unfinished one whose dates include today, its end day too); due, start is "today"|"overdue"|"thisWeek"|"next7Days"|"none"|"any", or before|after "YYYY-MM-DD"; created, updated is "today"|"thisWeek"|"last7Days", or before|after a date; estimate, impact, effort is "set"|"empty", or equals|lessThan|greaterThan a number; checklist is "complete"|"incomplete"; hasComments, recurring, someday, inTriage is true|false (inTriage: waiting in To triage; ?scope=triage lists only those, oldest first); showFrom is "hidden"|"shown"|"today"|"none"|"any", or before|after "YYYY-MM-DD" ("hidden" is a task in Someday or shown from a later day, by the same rule that keeps it off Home, My work, the Board and the List; "shown" is every other task). Custom fields: { field: "custom", fieldId, op, value }: text contains|notContains "words"; number equals|lessThan|greaterThan a number, or between [low, high]; date before|after "YYYY-MM-DD"; choice is|isNot [option ids]; choices hasAny|hasAll|hasNone [option ids]; checkbox is true|false; any field isEmpty "empty"|"set". An invalid filter is refused with HTTP 400 and a message saying what is wrong. URL-encode the JSON. ?include=linkedFrom adds linkedFrom to each: the texts of this project that link to it, as in GET /links.',
     request:
       '?filter=%7B%22conditions%22%3A%5B%7B%22field%22%3A%22due%22%2C%22op%22%3A%22is%22%2C%22value%22%3A%22overdue%22%7D%5D%7D (the URL-encoded form of {"conditions":[{"field":"due","op":"is","value":"overdue"}]})',
     response:
@@ -688,15 +688,15 @@ const ROUTES: AutomationRouteDef[] = [
     method: 'GET',
     path: '/work-items/:workItemId',
     description:
-      'Return one work item, by its id or its ID (BRI-26), with its status as the app shows it. Finds it in the archive and the recycle bin too.',
-    response: '{ ok: true, value: PlanningWorkItem }'
+      'Return one work item, by its id or its ID (BRI-26), with its status as the app shows it. Finds it in the archive and the recycle bin too: inRecycleBin and archived say where it is kept. A task in the recycle bin takes no changes, comments or other writes (HTTP 409) until POST /work-items/:workItemId/restore; copying it and deleting it for good still work.',
+    response: '{ ok: true, value: PlanningWorkItem & { inRecycleBin: boolean, archived: boolean } }'
   },
   {
     method: 'GET',
     path: '/work-items/by-key/:key',
     description:
-      "Return one work item by its ID, such as SHOP-12: this project's prefix (GET /task-prefix) and the task's number, in capitals or small letters. Finds it in the archive and the recycle bin too. An ID of another project, or a number no task has, is HTTP 404. Every work item carries number (never reused in its project, even after a task is deleted) and key (the ID); the id stays the key every other route takes.",
-    response: '{ ok: true, value: PlanningWorkItem }'
+      "Return one work item by its ID, such as SHOP-12: this project's prefix (GET /task-prefix) and the task's number, in capitals or small letters. Finds it in the archive and the recycle bin too (inRecycleBin and archived say which). An ID of another project, or a number no task has, is HTTP 404. Every work item carries number (never reused in its project, even after a task is deleted) and key (the ID); the id stays the key every other route takes.",
+    response: '{ ok: true, value: PlanningWorkItem & { inRecycleBin: boolean, archived: boolean } }'
   },
   {
     method: 'PATCH',
@@ -1633,6 +1633,19 @@ export class AutomationHttpServer {
       // A project file is the request body itself, streamed to disk by the import.
       const isProjectFile = isImport && id === 'project'
       const matched = matchRoute(ROUTES, req.method ?? 'GET', parts.slice(2))
+      // A task in the recycle bin takes no work: only a restore, a copy or a
+      // permanent delete. Anything else would quietly change a task no view shows.
+      const taskRoute =
+        req.method !== 'GET' && resource === 'work-items' && id
+          ? matchRoute(ROUTES, req.method ?? 'GET', parts.slice(2), true)?.route.path
+          : undefined
+      if (
+        taskRoute?.startsWith('/work-items/:workItemId') &&
+        !BIN_SAFE_TASK_ROUTES.has(`${req.method} ${taskRoute}`)
+      ) {
+        const binned = this.binnedTask(project, id!)
+        if (binned) return respondJson(res, 409, { ok: false, error: binnedTaskError(binned) })
+      }
       const body = isProjectFile
         ? {}
         : await readJsonRecord(
@@ -2085,10 +2098,7 @@ export class AutomationHttpServer {
         const found = this.planning.findWorkItemByNumber(project.id, parsed.number)
         if (!found) return respondJson(res, 404, { ok: false, error: 'No task has that ID' })
         const harness = this.harness?.getState(project)
-        return respondJson(res, 200, {
-          ok: true,
-          value: { ...found, status: projectWorkItemStatus(found, harness) }
-        })
+        return respondJson(res, 200, { ok: true, value: oneWorkItem(found, harness) })
       }
       if (
         req.method === 'GET' &&
@@ -2103,10 +2113,7 @@ export class AutomationHttpServer {
         if (found.projectId !== project.id)
           throw new Refusal('Planning work item belongs to another project')
         const harness = this.harness?.getState(project)
-        return respondJson(res, 200, {
-          ok: true,
-          value: { ...found, status: projectWorkItemStatus(found, harness) }
-        })
+        return respondJson(res, 200, { ok: true, value: oneWorkItem(found, harness) })
       }
       if (req.method === 'GET' && resource === 'work-items' && !id) {
         const params = new URL(req.url ?? '/', 'http://127.0.0.1').searchParams
@@ -3460,6 +3467,18 @@ export class AutomationHttpServer {
     }))
   }
 
+  /** This project's task `id` if it is in the recycle bin; anything else (no task, live, another project's) is left to the route. */
+  private binnedTask(project: WatchedProject, id: string): PlanningWorkItem | undefined {
+    if (!this.planning) return undefined
+    let found: PlanningWorkItem
+    try {
+      found = this.planning.getWorkItem(id)
+    } catch {
+      return undefined
+    }
+    return found.projectId === project.id && found.deletedAt ? found : undefined
+  }
+
   private linkedWorkItem(project: WatchedProject, taskId: string): PlanningWorkItem | undefined {
     return this.planning
       ?.listWorkItems(project.id)
@@ -3594,6 +3613,7 @@ export class AutomationHttpServer {
         const current = planning.getWorkItem(byKey ?? rawId)
         if (current.projectId !== project.id)
           throw new Refusal(`items[${index}] belongs to another project`)
+        if (current.deletedAt) throw new Refusal(`items[${index}]: ${binnedTaskError(current)}`)
         if (fields.moveDependents !== undefined)
           throw new Refusal(`items[${index}]: moveDependents is for PATCH /work-items/:workItemId`)
         try {
@@ -3698,6 +3718,33 @@ function countStatuses<T extends { status: string }, S extends string>(
 }
 
 const API_STATUSES = ['backlog', 'ready', 'active', 'blocked', 'review', 'done']
+
+/**
+ * One task as GET /work-items/:workItemId answers it: its status as the app
+ * shows it, and where it is kept, since those routes find archived and binned
+ * tasks too and their status alone would make them look live.
+ */
+function oneWorkItem(item: PlanningWorkItem, harness: Parameters<typeof projectWorkItemStatus>[1]) {
+  return {
+    ...item,
+    status: projectWorkItemStatus(item, harness),
+    inRecycleBin: Boolean(item.deletedAt),
+    archived: Boolean(item.archivedAt)
+  }
+}
+
+/** The writes a task in the recycle bin still takes: deleting it for good, restoring it, copying it. */
+const BIN_SAFE_TASK_ROUTES = new Set([
+  'DELETE /work-items/:workItemId',
+  'POST /work-items/:workItemId/restore',
+  'POST /work-items/:workItemId/copy'
+])
+
+/** The refusal for a write to a task in the recycle bin. */
+function binnedTaskError(item: PlanningWorkItem): string {
+  const name = item.key ?? item.id
+  return `${name} is in the recycle bin; restore it first (POST /work-items/${name}/restore)`
+}
 
 /**
  * GET /blocked: each blocked task with its reason and what it waits on, and

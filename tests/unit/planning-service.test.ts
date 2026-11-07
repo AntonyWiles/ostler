@@ -274,6 +274,30 @@ describe('PlanningService', () => {
     ).toThrow('Planning dependencies cannot cross projects')
   })
 
+  it('keeps a task editable when a task it depends on goes to the recycle bin', () => {
+    const human = { kind: 'human' } as const
+    const binned = service.createWorkItem('project-one', { title: 'Binned' }, human)
+    const live = service.createWorkItem('project-one', { title: 'Live' }, human)
+    const dependant = service.createWorkItem(
+      'project-one',
+      { title: 'Dependant', dependencyIds: [binned.id, live.id] },
+      human
+    )
+    service.moveWorkItemToBin(binned.id, human)
+
+    // A change that leaves dependencies alone, and one that keeps the binned one.
+    expect(service.updateWorkItem(dependant.id, { status: 'active' }, human).status).toBe('active')
+    expect(
+      service.updateWorkItem(dependant.id, { dependencyIds: [binned.id] }, human).dependencyIds
+    ).toEqual([binned.id])
+
+    // Adding a binned task as a new dependency names it and why.
+    const other = service.createWorkItem('project-one', { title: 'Other' }, human)
+    expect(() => service.updateWorkItem(other.id, { dependencyIds: [binned.id] }, human)).toThrow(
+      /is in the recycle bin/
+    )
+  })
+
   it('rejects dependency cycles and invalid dates', () => {
     const first = service.createWorkItem('project-one', { title: 'First' }, { kind: 'human' })
     const second = service.createWorkItem(

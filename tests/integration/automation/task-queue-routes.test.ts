@@ -446,6 +446,39 @@ describe('automation-http-server.ts task queue routes', () => {
     )
   })
 
+  it('says a task is in the recycle bin and refuses work on it, leaving its dependants editable', async () => {
+    const base = `/automation/${project.id}/work-items`
+    const human = { kind: 'human' } as const
+    const binned = planning.createWorkItem(project.id, { title: 'Binned', status: 'ready' }, human)
+    const dependant = planning.createWorkItem(
+      project.id,
+      { title: 'Waits', dependencyIds: [binned.id] },
+      human
+    )
+    expect((await call('DELETE', `${base}/${binned.id}`)).status).toBe(200)
+
+    const read = await json<{ value: { inRecycleBin: boolean; archived: boolean } }>(
+      await call('GET', `${base}/${binned.id}`)
+    )
+    expect(read.value).toMatchObject({ inRecycleBin: true, archived: false })
+
+    const patched = await call('PATCH', `${base}/${binned.id}`, { status: 'done' })
+    expect(patched.status).toBe(409)
+    expect((await json<{ error: string }>(patched)).error).toMatch(/recycle bin/)
+    expect((await call('POST', `${base}/${binned.id}/comments`, { body: 'Done' })).status).toBe(409)
+    const batch = await call('PATCH', `${base}/batch`, {
+      items: [{ id: binned.id, status: 'done' }]
+    })
+    expect(batch.status).toBe(400)
+    expect(planning.getWorkItem(binned.id).status).toBe('ready')
+
+    expect((await call('PATCH', `${base}/${dependant.id}`, { title: 'Still waits' })).status).toBe(
+      200
+    )
+    expect((await call('POST', `${base}/${binned.id}/restore`)).status).toBe(200)
+    expect((await call('PATCH', `${base}/${binned.id}`, { status: 'done' })).status).toBe(200)
+  })
+
   it('refuses to archive or bin work an agent still has queued', async () => {
     const item = planning.createWorkItem(
       project.id,

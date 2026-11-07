@@ -61,12 +61,14 @@ export function helpRoute({
 export function matchRoute(
   routes: readonly AutomationRouteDef[],
   method: string,
-  segments: readonly string[]
+  segments: readonly string[],
+  /** Also match routes the server still answers inline (no handler of their own). */
+  anyRoute = false
 ): { route: AutomationRouteDef; params: Record<string, string> } | null {
   let best: { route: AutomationRouteDef; params: Record<string, string> } | null = null
   let bestLiterals = -1
   for (const route of routes) {
-    if (!route.handler || route.method !== method) continue
+    if ((!route.handler && !anyRoute) || route.method !== method) continue
     const pattern = route.path.split('/').filter(Boolean)
     if (pattern.length !== segments.length) continue
     const params: Record<string, string> = {}

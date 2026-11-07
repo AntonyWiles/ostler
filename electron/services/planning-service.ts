@@ -1752,12 +1752,23 @@ export class PlanningService {
                 : updates.subtaskPhaseName
             )
           )
-    onField('dependencyIds', () =>
-      this.validateDependencies(current.id, current.projectId, dependencyIds, {
-        parentWorkItemId: current.parentWorkItemId,
-        subtaskPhaseNumber
-      })
-    )
+    // A change that touches neither the dependencies nor the subtask's phase
+    // leaves them as they were, so it never fails on them.
+    const dependenciesTouched =
+      updates.dependencyIds !== undefined ||
+      updates.dependencyLinks !== undefined ||
+      updates.subtaskPhaseNumber !== undefined ||
+      updates.subtaskPhaseName !== undefined
+    if (dependenciesTouched)
+      onField('dependencyIds', () =>
+        this.validateDependencies(
+          current.id,
+          current.projectId,
+          dependencyIds,
+          { parentWorkItemId: current.parentWorkItemId, subtaskPhaseNumber },
+          current.dependencyIds
+        )
+      )
     const item: PlanningWorkItem = {
       ...current,
       milestoneId,
@@ -3945,7 +3956,8 @@ export class PlanningService {
     itemId: string,
     projectId: string,
     dependencyIds: string[],
-    scope?: { parentWorkItemId: string | null; subtaskPhaseNumber: number | null }
+    scope?: { parentWorkItemId: string | null; subtaskPhaseNumber: number | null },
+    saved: readonly string[] = []
   ): void {
     if (dependencyIds.includes(itemId))
       throw new Refusal(t('errors:planningService.workItemCannotDepend'))
@@ -3955,14 +3967,25 @@ export class PlanningService {
     const items = this.listKeptWorkItems(projectId)
     const itemIds = new Set(items.map((item) => item.id))
     for (const dependencyId of dependencyIds) {
-      if (!itemIds.has(dependencyId)) {
-        const other = this.db
-          .prepare('SELECT project_id FROM planning_work_items WHERE id = ?')
-          .get(dependencyId) as { project_id: string } | undefined
-        if (other) throw new Refusal('Planning dependencies cannot cross projects')
-        throw new Refusal('Planning dependency not found')
-      }
+      if (itemIds.has(dependencyId)) continue
+      // A dependency the task already had that has since gone to the recycle
+      // bin (or been purged) stays: it no longer holds the task back
+      // (`unmetDependencyIds`), and it comes back with a restore.
+      if (saved.includes(dependencyId)) continue
+      const other = this.db
+        .prepare('SELECT project_id, number, deleted_at FROM planning_work_items WHERE id = ?')
+        .get(dependencyId) as
+        { project_id: string; number: number | null; deleted_at: number | null } | undefined
+      if (!other) throw new Refusal('Planning dependency not found')
+      if (other.project_id !== projectId)
+        throw new Refusal('Planning dependencies cannot cross projects')
+      const name = taskKey(this.getTaskPrefix(other.project_id), other.number) ?? dependencyId
+      throw new Refusal(
+        `${name} is in the recycle bin, so nothing can depend on it; restore it first`
+      )
     }
+    // Only kept tasks take part in the checks below; a binned one kept above is inert.
+    dependencyIds = dependencyIds.filter((dependencyId) => itemIds.has(dependencyId))
 
     if (scope?.parentWorkItemId) {
       // Depending on your own parent is a trap, not a relationship: a parent is
