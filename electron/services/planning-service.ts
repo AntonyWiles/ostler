@@ -2968,6 +2968,11 @@ export class PlanningService {
     const from = this.requireWorkItem(fromWorkItemId)
     this.requireProject(from.projectId)
     if (toWorkItemId === from.id) throw new Refusal(t('errors:planningService.linkToItself'))
+    // Name the missing task, so a caller can tell it from the task it acts on.
+    const known = this.db
+      .prepare('SELECT 1 FROM planning_work_items WHERE id = ?')
+      .get(toWorkItemId)
+    if (!known) throw new Refusal(`No task has the id ${toWorkItemId}`)
     const to = this.requireWorkItem(toWorkItemId)
     if (to.projectId !== from.projectId)
       throw new Refusal(t('errors:planningService.linkOtherProject'))
@@ -3976,10 +3981,14 @@ export class PlanningService {
         .prepare('SELECT project_id, number, deleted_at FROM planning_work_items WHERE id = ?')
         .get(dependencyId) as
         { project_id: string; number: number | null; deleted_at: number | null } | undefined
-      if (!other) throw new Refusal('Planning dependency not found')
-      if (other.project_id !== projectId)
-        throw new Refusal('Planning dependencies cannot cross projects')
+      if (!other)
+        throw new Refusal(`Planning dependency not found: no task has the id ${dependencyId}`)
       const name = taskKey(this.getTaskPrefix(other.project_id), other.number) ?? dependencyId
+      // Name the task, so a caller can drop it instead of sending it again.
+      if (other.project_id !== projectId)
+        throw new Refusal(
+          `Planning dependencies cannot cross projects: ${name} belongs to another project; remove it from dependencyIds`
+        )
       throw new Refusal(
         `${name} is in the recycle bin, so nothing can depend on it; restore it first`
       )

@@ -24,7 +24,11 @@ export function taskIdForKey(
 }
 
 /** One id or ID from a body, as an id: an ID no task has is refused. */
-function resolveOne(planning: FindsByNumber, project: WatchedProject, value: unknown): unknown {
+export function resolveOne(
+  planning: FindsByNumber,
+  project: WatchedProject,
+  value: unknown
+): unknown {
   if (typeof value !== 'string') return value
   const id = taskIdForKey(planning, project, value)
   if (id === null) throw new Refusal(`No task of this project has the ID ${value}`)

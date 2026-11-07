@@ -177,6 +177,8 @@ and are not part of a work item. Read them with their own route.
 
 - `kind` is `relates`, `duplicates` (this task is a duplicate of `toWorkItemId`) or `copied-from`
   (this task was copied from it).
+- `toWorkItemId` and `originalId` take the other task's id or its ID (`BRI-26`), as
+  `dependencyIds` do.
 - Each link has `role`, how it reads from the task you asked about: `relates`, `duplicate-of` or
   `duplicated-by`, `copied-from` or `copied-to`, with the other task's `otherWorkItemId`,
   `otherTitle`, `otherStatus` and `otherClosed` (archived, won't do or in the recycle bin).

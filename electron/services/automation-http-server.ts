@@ -134,7 +134,7 @@ import { MONEY_ROUTES } from './automation/money'
 import { CALENDARS_ROUTES } from './automation/calendars'
 import { localLinksAsText } from '@shared/local-links'
 import { buildHelp } from './automation/help'
-import { pickFields, workItemBodyFromApi, taskIdForKey } from './automation/task-keys'
+import { pickFields, workItemBodyFromApi, taskIdForKey, resolveOne } from './automation/task-keys'
 import { PEOPLE_ROUTES } from './automation/people'
 import { DAYS_OFF_ROUTES } from './automation/days-off'
 import { CONTACTS_ROUTES } from './automation/contacts'
@@ -2723,13 +2723,17 @@ export class AutomationHttpServer {
       return respondJson(res, 404, { ok: false, error: 'Unknown route' })
     if (planning.getWorkItem(id).projectId !== project.id)
       throw new Refusal('Planning work item belongs to another project')
+    // The other task may be named by its ID (BRI-26) as well as its id, as in
+    // dependencyIds and parentWorkItemId.
+    const toWorkItemId = resolveOne(planning, project, body?.toWorkItemId)
+    const originalId = resolveOne(planning, project, body?.originalId)
     let value: unknown
     let mutated = true
     if (action === 'links' && !extra && req.method === 'GET') {
       value = planning.listWorkItemLinks(id)
       mutated = false
     } else if (action === 'links' && !extra && req.method === 'POST') {
-      value = planning.addWorkItemLink(id, body?.toWorkItemId, body?.kind, AUTOMATION_ACTOR)
+      value = planning.addWorkItemLink(id, toWorkItemId, body?.kind, AUTOMATION_ACTOR)
     } else if (action === 'links' && extra && req.method === 'DELETE') {
       planning.removeWorkItemLink(id, extra, AUTOMATION_ACTOR)
       value = { id: extra, deleted: true }
@@ -2743,7 +2747,7 @@ export class AutomationHttpServer {
         this.harness,
         project,
         id,
-        body?.originalId,
+        originalId,
         AUTOMATION_ACTOR,
         { cancelQueuedWork: cancelQueuedWork === true }
       )
